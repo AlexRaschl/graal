@@ -1,5 +1,5 @@
 package org.graalvm.collections.list;
 
-public class SpecifiedArrayList {
+public interface SpecifiedArrayList<E> extends Iterable<E>, Cloneable {
 
 }
