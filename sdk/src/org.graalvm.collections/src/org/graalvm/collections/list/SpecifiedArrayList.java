@@ -1,6 +1,5 @@
 package org.graalvm.collections.list;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -183,7 +182,7 @@ public interface SpecifiedArrayList<E> extends Iterable<E>, Cloneable {
      *
      * @param index
      * @return
-     * @throws IndexOutOfBoundsException if
+     * @throws IndexOutOfBoundsException if index is out of Range
      */
     public ListIterator<E> listIterator(int index);
 

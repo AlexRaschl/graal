@@ -10,7 +10,7 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
-    // TODO CHECK if NULL Insertion and NULL Removal is needed.
+    // TODO CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
 
     private final static int INITIAL_CAPACITY = 16;
     private final static int GROW_FACTOR = 2;
@@ -21,7 +21,7 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     private Object elems[];
 
     /**
-     * TODO JAVADOC
+     * TODO DOC
      *
      * @param initialCapacity
      */
@@ -35,7 +35,7 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     /**
-     * TODO JAVADOC
+     * TODO DOC
      *
      */
     public SpecifiedArrayListImpl() {
@@ -43,7 +43,7 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     /**
-     * TODO JAVADOC
+     * TODO DOC
      *
      * @param collection
      */
@@ -66,7 +66,6 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     public Object[] toArray() {
         return Arrays.copyOfRange(elems, 0, size);
-
     }
 
     public boolean add(E e) {
@@ -111,7 +110,7 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
      */
     private void fastRemove(int index) {
         System.arraycopy(elems, index + 1, elems, index, size - index - 1);
-        elems[size--] = null;
+        elems[--size] = null;
     }
 
     public boolean containsAll(Collection<?> c) {
@@ -127,7 +126,8 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         if (cSize == 0)
             return false;
 
-        ensureCapacity(size + cSize);
+        ensureCapacity(size + cSize);// Useful if c is large
+
         System.arraycopy(c.toArray(), 0, elems, size, cSize);
         size = size + cSize;
         return true;
@@ -145,9 +145,8 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
             if (remove(obj))
                 removed++;
         }
-        if (removed >= elems.length / GROW_FACTOR + 1) {
-            trimToSize(elems.length / GROW_FACTOR + 1);
-        }
+
+        trimIfUseful(removed);
         return removed != 0;
     }
 
@@ -159,9 +158,7 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
                 removed++;
             }
         }
-        if (removed >= elems.length / GROW_FACTOR + 1) {
-            trimToSize(elems.length / GROW_FACTOR + 1);
-        }
+        trimIfUseful(removed);
         return removed != 0;
     }
 
@@ -239,49 +236,6 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return new ListItr(index);
     }
 
-    private class ListItr extends Itr implements ListIterator<E> {
-
-        ListItr(int startIndex) {
-            super();
-            checkBoundaries(startIndex);
-            super.cursor = startIndex;
-        }
-
-        public boolean hasPrevious() {
-            return super.cursor >= 0;
-        }
-
-        public E previous() {
-
-        }
-
-        public int nextIndex() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        public int previousIndex() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        public void remove() {
-            // TODO Auto-generated method stub
-
-        }
-
-        public void set(E e) {
-            // TODO Auto-generated method stub
-
-        }
-
-        public void add(E e) {
-            // TODO Auto-generated method stub
-
-        }
-
-    }
-
     public Iterator<E> iterator() {
         return new Itr();
     }
@@ -289,9 +243,11 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     private class Itr implements Iterator<E> {
 
         protected int cursor;
+        protected int lastRet;
 
         Itr() {
             cursor = 0;
+            lastRet = -1;
         }
 
         public boolean hasNext() {
@@ -299,9 +255,68 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         }
 
         public E next() {
+            // No boundary check here because hasNext needs to be called before
             Object elem = elems[cursor];
-            cursor++;
+            lastRet = ++cursor;
             return castUnchecked(elem);
+        }
+
+    }
+
+    /**
+     * Not Fail Fast!!!!!
+     *
+     * TODO CHECK if ConcurrentModificationExceptions are needed for this specific task (Most Likely
+     * this will be needed and I will need to make it Fail Fast)
+     **/
+    private class ListItr extends Itr implements ListIterator<E> {
+
+        ListItr(int startIndex) {
+            super();
+            checkBoundaries(startIndex);
+            cursor = startIndex;
+        }
+
+        public boolean hasPrevious() {
+            return cursor > 0;
+        }
+
+        public E previous() {
+            // Check if checkBoundaries is valid here because it could be that a check for elems.length is
+            // needed instead
+            checkBoundaries(cursor - 1); // Throws ArrayIndexOutOfBoundsException
+            Object[] elemsLocal = SpecifiedArrayListImpl.this.elems;
+            lastRet = --cursor;
+            return castUnchecked(elemsLocal[cursor]);
+        }
+
+        public int nextIndex() {
+            return cursor;
+        }
+
+        public int previousIndex() {
+            return cursor - 1;
+        }
+
+        public void remove() {
+            if (lastRet == -1)
+                throw new IllegalStateException("Set or add Operation has been already excecuted!");
+
+            SpecifiedArrayListImpl.this.remove(lastRet);
+            cursor = lastRet;
+            lastRet = -1;
+        }
+
+        public void set(E e) {
+            if (lastRet == -1)
+                throw new IllegalStateException("Remove or add Operation has been already excecuted!");
+            SpecifiedArrayListImpl.this.set(cursor, e);
+
+        }
+
+        public void add(E e) {
+            SpecifiedArrayListImpl.this.add(cursor, e);
+            cursor++;
         }
 
     }
@@ -355,6 +370,13 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
 
+    }
+
+    private void trimIfUseful(int removed) {
+        int threshold = (elems.length / GROW_FACTOR) + 1; // TODO Find more efficient strategy
+        if (removed >= threshold) {
+            trimToSize(threshold);
+        }
     }
 
     @SuppressWarnings("unchecked")
