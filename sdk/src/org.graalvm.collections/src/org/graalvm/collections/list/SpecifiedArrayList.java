@@ -209,15 +209,12 @@ public interface SpecifiedArrayList<E> extends Iterable<E>, Cloneable {
      * data effectively.
      *
      * @param capacity that the List should be able to hold at minimum
-     * @return
      */
-    public boolean ensureCapacity(int capacity);
+    public void ensureCapacity(int capacity);
 
     /**
-     * Ensures that the internal Array is at most of size capacity.
-     *
-     * @param capacity Capacity the list is trimmed to
+     * Trims the capacity of the SAR to so be it's current size;
      */
-    public void trimToSize(int capacity);
+    public void trimToSize();
 
 }

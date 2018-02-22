@@ -15,6 +15,8 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     private final static int INITIAL_CAPACITY = 16;
     private final static int GROW_FACTOR = 2;
 
+    private final static int CAPACITY_GROWING_THRESHOLD = 32;
+
     // private final static Object[] EMPTY_ARRAY = {};
 
     private int size;
@@ -65,7 +67,7 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     public Object[] toArray() {
-        return Arrays.copyOfRange(elems, 0, size);
+        return Arrays.copyOf(elems, size);
     }
 
     public boolean add(E e) {
@@ -166,7 +168,8 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         for (int i = 0; i < size; i++) {
             elems[i] = null;
         }
-        trimToSize(INITIAL_CAPACITY); // TODO CHECK IF SIZE shrinking is useful;
+        size = 0;
+        trim(INITIAL_CAPACITY); // TODO CHECK IF SIZE shrinking is useful;
         System.gc();
     }
 
@@ -357,13 +360,25 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return "SpecifiedArrayListImpl [size=" + size + ", elems=" + Arrays.toString(elems) + "]";
     }
 
-    public boolean ensureCapacity(int capacity) {
-        // TODO Auto-generated method stub
-        return false;
+    public void ensureCapacity(int capacity) {
+        int curCapacity = elems.length;
+        if (curCapacity < capacity) {
+            // If we ensure that there is enough capacity it will be most likely that not much more elements
+            // than this capacity will be added in the near future.
+            // TODO CHECK IF USEFUL IN PROJECT
+            int newLength;
+            if (capacity <= CAPACITY_GROWING_THRESHOLD) {
+                newLength = capacity;
+            } else {
+                newLength = capacity + INITIAL_CAPACITY;
+            }
+            elems = Arrays.copyOf(elems, newLength);
+        }
     }
 
-    public void trimToSize(int capacity) {
-        // TODO Auto-generated method stub
+    public void trimToSize() {
+        if (elems.length >= size)
+            elems = Arrays.copyOf(elems, size);
     }
 
     private void checkBoundaries(int index) {
@@ -375,8 +390,12 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     private void trimIfUseful(int removed) {
         int threshold = (elems.length / GROW_FACTOR) + 1; // TODO Find more efficient strategy
         if (removed >= threshold) {
-            trimToSize(threshold);
+            trim(threshold);
         }
+    }
+
+    private void trim(int capacity) {
+        // TODO Implement
     }
 
     @SuppressWarnings("unchecked")
