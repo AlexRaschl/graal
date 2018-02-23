@@ -71,18 +71,9 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     public boolean add(E e) {
-        if (size == elems.length)
-            grow();
+        growIfNeeded();
         elems[size++] = e;
         return true;
-    }
-
-    /**
-     * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
-     */
-    private void grow() {
-        int newLength = elems.length * GROW_FACTOR;
-        elems = Arrays.copyOf(elems, newLength);
     }
 
     public boolean remove(Object o) {
@@ -103,16 +94,6 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
             }
         }
         return false;
-    }
-
-    /**
-     * Removes the Object at given index without any checks.
-     *
-     * @param index index of object to be removed
-     */
-    private void fastRemove(int index) {
-        System.arraycopy(elems, index + 1, elems, index, size - index - 1);
-        elems[--size] = null;
     }
 
     public boolean containsAll(Collection<?> c) {
@@ -187,7 +168,7 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     public void add(int index, E element) {
         checkBoundaries(index);
-        ensureCapacity(size + 1);
+        growIfNeeded();
         System.arraycopy(elems, index, elems, index + 1, size - index);
         elems[index] = element;
         size++;
@@ -231,16 +212,16 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return -1;
     }
 
+    public Iterator<E> iterator() {
+        return new Itr();
+    }
+
     public ListIterator<E> listIterator() {
         return new ListItr(0);
     }
 
     public ListIterator<E> listIterator(int index) {
         return new ListItr(index);
-    }
-
-    public Iterator<E> iterator() {
-        return new Itr();
     }
 
     private class Itr implements Iterator<E> {
@@ -381,6 +362,12 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
             elems = Arrays.copyOf(elems, size);
     }
 
+    //
+    //
+    // -------------------PRIVATE METHODS------------------------
+    //
+    //
+
     private void checkBoundaries(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
@@ -394,8 +381,34 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         }
     }
 
+    /**
+     * Removes the Object at given index without any checks.
+     *
+     * @param index index of object to be removed
+     */
+    private void fastRemove(int index) {
+        System.arraycopy(elems, index + 1, elems, index, size - index - 1);
+        elems[--size] = null;
+    }
+
+    /**
+     * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
+     */
+    private void grow() {
+        int newLength = elems.length * GROW_FACTOR;
+        elems = Arrays.copyOf(elems, newLength);
+    }
+
+    private void growIfNeeded() {
+        if (size == elems.length)
+            grow();
+    }
+
+    /** Performs a "hard" cut with potential data loss */
     private void trim(int capacity) {
-        // TODO Implement
+        if (capacity < 0)
+            throw new IllegalArgumentException();
+        System.arraycopy(elems, 0, elems, 0, capacity);
     }
 
     @SuppressWarnings("unchecked")

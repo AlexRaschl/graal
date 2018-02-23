@@ -2,6 +2,7 @@ package org.graalvm.collections.test.list;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Random;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
@@ -12,17 +13,17 @@ import org.junit.*;
 
 public class SpecifiedArrayListSimpleTest {
 
-    private static int[] testData;
-    private final static int TEST_SIZE = 10;
+    private static Integer[] testData;
+    private final static int TEST_SIZE = 20;
     private ArrayList<Integer> referenceList;
     private SpecifiedArrayList<Integer> testList;
     private final Random r = new Random();
 
     @BeforeClass
     public static void setup() {
-        testData = new int[TEST_SIZE];
+        testData = new Integer[TEST_SIZE];
         for (int i = 0; i < TEST_SIZE; i++) {
-            testData[i] = i;
+            testData[i] = new Integer(i);
         }
     }
 
@@ -31,13 +32,13 @@ public class SpecifiedArrayListSimpleTest {
         // SpecifiedArrayList
         testList = new SpecifiedArrayListImpl<>();
         for (int i = 0; i < TEST_SIZE; i++) {
-            testList.add(i); // Assuming Add works like intended
+            testList.add(testData[i]); // Assuming Add works like intended
         }
 
         // ArrayList
         referenceList = new ArrayList<>();
         for (int i = 0; i < TEST_SIZE; i++) {
-            referenceList.add(i);
+            referenceList.add(testData[i]);
         }
 
     }
@@ -45,6 +46,7 @@ public class SpecifiedArrayListSimpleTest {
     @After
     public void teardownSAR() {
         testList = null;
+        referenceList = null;
         System.gc();
     }
 
@@ -113,7 +115,7 @@ public class SpecifiedArrayListSimpleTest {
 
     @Test
     public void testToArray() {
-        Assert.assertTrue(compareIntArrays(testList.toArray(), referenceList.toArray()));
+        Assert.assertTrue(compareLists(testList, referenceList));
     }
 
     @Test
@@ -158,6 +160,11 @@ public class SpecifiedArrayListSimpleTest {
 
     }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testInvalidSet() {
+        referenceList.set(TEST_SIZE, new Integer(TEST_SIZE));
+    }
+
     @Test
     public void addAt() {
         for (int i = 0; i < TEST_SIZE; i++) {
@@ -170,6 +177,42 @@ public class SpecifiedArrayListSimpleTest {
         }
     }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testInvalidAddAt() {
+
+        referenceList.add(Integer.MAX_VALUE - 10, new Integer(TEST_SIZE));
+    }
+
+    @Test
+    public void testIndexOf() {
+        for (int i = 0; i < TEST_SIZE; i++) {
+            Assert.assertEquals(testList.indexOf(testData[i]), referenceList.indexOf(testData[i]));
+        }
+    }
+
+    @Test
+    public void testLastIndexOf() {
+        for (int i = 0; i < TEST_SIZE; i++) {
+            Assert.assertEquals(testList.lastIndexOf(testData[i]), referenceList.lastIndexOf(testData[i]));
+        }
+    }
+
+    @Test
+    public void testIterator() {
+        Iterator<Integer> testIt = testList.iterator();
+        Iterator<Integer> referenceIt = referenceList.iterator();
+
+        while (testIt.hasNext()) {
+            Integer curr = testIt.next();
+            if (referenceIt.hasNext()) {
+                Assert.assertSame(curr, referenceIt.next());
+            } else {
+                Assert.fail("Reference Iterator has already reached end!");
+            }
+        }
+
+    }
+
     /** Assuming they have the same length */
     private static boolean compareIntArrays(Object[] arr1, Object[] arr2) {
         for (int i = 0; i < arr1.length; i++) {
@@ -177,5 +220,9 @@ public class SpecifiedArrayListSimpleTest {
                 return false;
         }
         return true;
+    }
+
+    private static boolean compareLists(SpecifiedArrayList<Integer> sar, ArrayList<Integer> ar) {
+        return compareIntArrays(sar.toArray(), ar.toArray());
     }
 }
