@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
@@ -239,10 +240,22 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         }
 
         public E next() {
-            // No boundary check here because hasNext needs to be called before
+
+            if (cursor >= size)
+                throw new NoSuchElementException();
             Object elem = elems[cursor];
-            lastRet = ++cursor;
+            lastRet = cursor++;
             return castUnchecked(elem);
+        }
+
+        /** Moved this here because also supported by Iterator in ArrayList */
+        public void remove() {
+            if (lastRet == -1)
+                throw new IllegalStateException("Set or add Operation has been already excecuted!");
+
+            SpecifiedArrayListImpl.this.remove(lastRet);
+            cursor = lastRet;
+            lastRet = -1;
         }
 
     }
@@ -266,9 +279,8 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         }
 
         public E previous() {
-            // Check if checkBoundaries is valid here because it could be that a check for elems.length is
-            // needed instead
-            checkBoundaries(cursor - 1); // Throws ArrayIndexOutOfBoundsException
+            if (cursor < 0)
+                throw new NoSuchElementException();
             Object[] elemsLocal = SpecifiedArrayListImpl.this.elems;
             lastRet = --cursor;
             return castUnchecked(elemsLocal[cursor]);
@@ -280,15 +292,6 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
         public int previousIndex() {
             return cursor - 1;
-        }
-
-        public void remove() {
-            if (lastRet == -1)
-                throw new IllegalStateException("Set or add Operation has been already excecuted!");
-
-            SpecifiedArrayListImpl.this.remove(lastRet);
-            cursor = lastRet;
-            lastRet = -1;
         }
 
         public void set(E e) {

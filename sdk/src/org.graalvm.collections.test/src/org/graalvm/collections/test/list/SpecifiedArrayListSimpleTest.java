@@ -3,6 +3,8 @@ package org.graalvm.collections.test.list;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
@@ -14,7 +16,7 @@ import org.junit.*;
 public class SpecifiedArrayListSimpleTest {
 
     private static Integer[] testData;
-    private final static int TEST_SIZE = 20;
+    private final static int TEST_SIZE = 200;
     private ArrayList<Integer> referenceList;
     private SpecifiedArrayList<Integer> testList;
     private final Random r = new Random();
@@ -211,6 +213,51 @@ public class SpecifiedArrayListSimpleTest {
             }
         }
 
+    }
+
+    @Test
+    public void testIteratorRemove() {
+        Iterator<Integer> testIt = testList.iterator();
+        Iterator<Integer> referenceIt = referenceList.iterator();
+
+        while (testIt.hasNext()) {
+            testIt.next();
+            if (referenceIt.hasNext()) {
+                referenceIt.next();
+                referenceIt.remove();
+                testIt.remove();
+            } else {
+                Assert.fail("Reference Iterator has already reached end!");
+            }
+        }
+        System.out.println("Remaining size of testList is:" + testList.size());
+        System.out.println("Remaining size of referenceList is: " + referenceList.size());
+        Assert.assertEquals(testList.size(), referenceList.size());
+        Assert.assertTrue(testList.isEmpty());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testInvalidIteratorNext() {
+        Iterator<Integer> testIt = testList.iterator();
+        for (int i = 0; i <= TEST_SIZE + 1; i++)
+            testIt.next();
+    }
+
+    @Test
+    public void testListIterator() {
+        ListIterator<Integer> testIt = testList.listIterator();
+        ListIterator<Integer> referenceIt = referenceList.listIterator();
+
+        while (testIt.hasNext()) {
+            Assert.assertEquals(testIt.nextIndex(), referenceIt.nextIndex());
+            Assert.assertEquals(testIt.previousIndex(), referenceIt.previousIndex());
+            Integer curr = testIt.next();
+            if (referenceIt.hasNext()) {
+                Assert.assertSame(curr, referenceIt.next());
+            } else {
+                Assert.fail("Reference Iterator has already reached end!");
+            }
+        }
     }
 
     /** Assuming they have the same length */
