@@ -12,7 +12,9 @@ import org.graalvm.collections.list.SpecifiedArrayList;
  * <li>Distribution of Operators</li>
  *
  *
- * TODO Maybe implement function to generate code for programming language R
+ * TODO Maybe implement function to generate code for programming language R.
+ *
+ * TODO Check if tracking also useful for Itr/ListItr
  */
 
 public interface StatisticalSpecifiedArrayList<E> extends SpecifiedArrayList<E> {
