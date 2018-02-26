@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
-public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
+public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     // TODO CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
 
@@ -168,7 +166,8 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     public void add(int index, E element) {
-        checkBoundaries(index);
+        if (index < 0 || index > size)
+            throw new IndexOutOfBoundsException();
         growIfNeeded();
         System.arraycopy(elems, index, elems, index + 1, size - index);
         elems[index] = element;
@@ -297,12 +296,14 @@ public final class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         public void set(E e) {
             if (lastRet == -1)
                 throw new IllegalStateException("Remove or add Operation has been already excecuted!");
-            SpecifiedArrayListImpl.this.set(cursor, e);
+            SpecifiedArrayListImpl.this.set(lastRet, e);
 
         }
 
         public void add(E e) {
             SpecifiedArrayListImpl.this.add(cursor, e);
+            // TODO check if LastRet = -1 needed
+            // lastRet = -1;
             cursor++;
         }
 
