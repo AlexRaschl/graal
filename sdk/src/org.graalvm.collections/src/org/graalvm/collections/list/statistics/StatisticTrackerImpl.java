@@ -25,6 +25,7 @@ public class StatisticTrackerImpl {
         ADD_ALL_INDEXED,
         REMOVE_OBJ,
         REMOVE_INDEXED,
+        REMOVE_ALL,
         RETAIN_ALL,
         CLEAR,
         GET_INDEXED,
@@ -57,19 +58,35 @@ public class StatisticTrackerImpl {
         ID = nextID++;
         this.localOpMap = new HashMap<>(Operation.values().length);
         this.typeClass = typeClass;
+        this.modifications = 0;
+        addTypeTo(globalTypeMap, typeClass);
     }
 
     public void countOP(Operation op) {
-        addOPGlobal(op);
-        addOPLocal(op);
+        addOpTo(globalOpMap, op);
+        addOpTo(localOpMap, op);
     }
 
-    private void addOPGlobal(Operation op) {
-
+    public void modified() {
+        modifications++;
     }
 
-    private void addOPLocal(Operation op) {
+    private static void addOpTo(HashMap<Operation, AtomicInteger> map, Operation op) {
+        AtomicInteger curr = map.getOrDefault(op, null);
+        if (curr == null) {
+            map.put(op, new AtomicInteger(1));
+        } else {
+            curr.getAndIncrement();
+        }
+    }
 
+    private static void addTypeTo(HashMap<Class<?>, AtomicInteger> map, Class<?> c) {
+        AtomicInteger curr = map.getOrDefault(c, null);
+        if (curr == null) {
+            map.put(c, new AtomicInteger(1));
+        } else {
+            curr.getAndIncrement();
+        }
     }
 
 }

@@ -1,16 +1,18 @@
 package org.graalvm.collections.list.statistics;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.graalvm.collections.list.SpecifiedArrayListImpl;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.*;
 
 public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalSpecifiedArrayList<E> {
 
     // TODO Reflection
-    private final StatisticTrackerImpl tracker = new StatisticTrackerImpl(null);
+    private final StatisticTrackerImpl tracker = new StatisticTrackerImpl((Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
 
     /**
      * TODO DOC
@@ -18,8 +20,8 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
      * @param initialCapacity
      */
     protected StatisticalSpecifiedArrayListImpl(int initialCapacity) {
-
         super(initialCapacity);
+        tracker.countOP(CSTR_CAP);
     }
 
     /**
@@ -28,6 +30,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
      */
     public StatisticalSpecifiedArrayListImpl() {
         super(INITIAL_CAPACITY);
+        tracker.countOP(CSTR_STD);
     }
 
     /**
@@ -36,151 +39,171 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
      * @param collection
      */
     public StatisticalSpecifiedArrayListImpl(Collection<E> collection) {
-
+        super(collection);
+        tracker.countOP(CSTR_COLL);
     }
 
     @Override
     public int size() {
-        // TODO Auto-generated method stub
-        return 0;
+        return super.size(); // TODO check if count needed
     }
 
     @Override
     public boolean isEmpty() {
-        // TODO Auto-generated method stub
-        return false;
+        // TODO check if count needed
+        return super.isEmpty();
     }
 
     @Override
     public boolean contains(Object o) {
-        // TODO Auto-generated method stub
-        return false;
+        tracker.countOP(CONTAINS);
+        return super.contains(o);
     }
 
     @Override
     public Object[] toArray() {
-        // TODO Auto-generated method stub
-        return null;
+        tracker.countOP(TO_ARRAY);
+        return super.toArray();
     }
 
     @Override
     public boolean add(E e) {
-        // TODO Auto-generated method stub
-        return false;
+        tracker.countOP(ADD_OBJ);
+        tracker.modified();
+        return super.add(e);
     }
 
     @Override
     public boolean remove(Object o) {
-        // TODO Auto-generated method stub
-        return false;
+        tracker.countOP(REMOVE_OBJ);
+        tracker.modified();
+        return super.remove(o);
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        // TODO Auto-generated method stub
-        return false;
+        tracker.countOP(CONTAINS_ALL);
+        return super.containsAll(c);
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        // TODO Auto-generated method stub
-        return false;
+        tracker.countOP(ADD_ALL);
+        boolean res = super.containsAll(c);
+        if (res)
+            tracker.modified();
+        return res;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        // TODO Auto-generated method stub
-        return false;
+        tracker.countOP(ADD_ALL_INDEXED);
+
+        boolean res = super.addAll(index, c);
+        if (res)
+            tracker.modified();
+        return res;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        // TODO Auto-generated method stub
-        return false;
+        tracker.countOP(REMOVE_ALL);
+        boolean res = super.removeAll(c);
+        if (res)
+            tracker.modified();
+        return res;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        // TODO Auto-generated method stub
-        return false;
+        tracker.countOP(RETAIN_ALL);
+        boolean res = super.retainAll(c);
+        if (res)
+            tracker.modified();
+        return res;
     }
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
-
+        // TODO check if count needed
+        super.clear();
     }
 
     @Override
     public E get(int index) {
-        // TODO Auto-generated method stub
-        return null;
+        tracker.countOP(GET_INDEXED);
+        return super.get(index);
     }
 
     @Override
     public E set(int index, E element) {
-        // TODO Auto-generated method stub
-        return null;
+        tracker.countOP(SET_INDEXED);
+        tracker.modified();
+        return super.set(index, element);
     }
 
     @Override
     public void add(int index, E element) {
-        // TODO Auto-generated method stub
-
+        tracker.countOP(ADD_INDEXED);
+        tracker.modified();
+        super.add(index, element);
     }
 
     @Override
     public E remove(int index) {
-        // TODO Auto-generated method stub
-        return null;
+        tracker.countOP(REMOVE_INDEXED);
+        tracker.modified();
+        return super.remove(index);
     }
 
     @Override
     public int indexOf(Object o) {
-        // TODO Auto-generated method stub
-        return 0;
+        tracker.countOP(INDEX_OF);
+        return super.indexOf(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        // TODO Auto-generated method stub
-        return 0;
+        tracker.countOP(INDEX_OF_LAST);
+        return super.lastIndexOf(o);
     }
 
     @Override
     public ListIterator<E> listIterator() {
-        // TODO Auto-generated method stub
-        return null;
+        tracker.countOP(CREATE_LIST_ITR);
+        return super.listIterator();
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        // TODO Auto-generated method stub
-        return null;
+        tracker.countOP(CREATE_LIST_ITR_INDEXED);
+        return super.listIterator(index);
     }
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        // TODO Auto-generated method stub
-        return null;
+        tracker.countOP(SUBLIST);
+        return super.subList(fromIndex, toIndex);
     }
 
     @Override
     public Iterator<E> iterator() {
-        // TODO Auto-generated method stub
-        return null;
+        tracker.countOP(ITERATOR);
+        return super.iterator();
     }
 
     @Override
     public void ensureCapacity(int capacity) {
-        // TODO Auto-generated method stub
-
+        tracker.countOP(ENSURE_CAP);
+        // TODO check if boolean Retval is needed for tracker.modified, would destroy API
+        super.ensureCapacity(capacity);
     }
 
     @Override
     public void trimToSize() {
-        // TODO Auto-generated method stub
-
+        tracker.countOP(TRIM_TO_SIZE);
+        // TODO check if boolean Retval is needed for tracker.modified, would destroy API
+        super.trimToSize();
     }
 
 }

@@ -368,6 +368,20 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     //
     //
+    // -------------------POTECTED METHODS------------------------
+    //
+    //
+
+    protected double getLoadFactor() {
+        return (size / elems.length);
+    }
+
+    protected int getCapacity() {
+        return elems.length;
+    }
+
+    //
+    //
     // -------------------PRIVATE METHODS------------------------
     //
     //
