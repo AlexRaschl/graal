@@ -16,17 +16,15 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     private final static int CAPACITY_GROWING_THRESHOLD = 32;
 
-    // private final static Object[] EMPTY_ARRAY = {};
-
     private int size;
     private Object elems[];
 
     /**
-     * TODO DOC
+     * Creates an instance of SpecifiedArrayListImpl with a given initial capacity.
      *
-     * @param initialCapacity
+     * @param initialCapacity Capacity the list will have from beginning
      */
-    protected SpecifiedArrayListImpl(int initialCapacity) {
+    public SpecifiedArrayListImpl(int initialCapacity) {
         if (size >= 0) {
             this.size = 0;
             this.elems = new Object[initialCapacity];
@@ -36,7 +34,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     /**
-     * TODO DOC
+     * Creates an instance of SpecifiedArrayListImpl.
      *
      */
     public SpecifiedArrayListImpl() {
@@ -44,7 +42,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     /**
-     * TODO DOC
+     * Creates an instance of SpecifiedArrayListImpl that holds the elements of the given collection.
      *
      * @param collection
      */
@@ -373,7 +371,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     //
 
     protected double getLoadFactor() {
-        return (size / elems.length);
+        return ((double) size / elems.length);
     }
 
     protected int getCapacity() {
@@ -394,7 +392,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     private void trimIfUseful(int removed) {
         int threshold = (elems.length / GROW_FACTOR) + 1; // TODO Find more efficient strategy
-        if (removed >= threshold) {
+        if (removed >= threshold && threshold > size) {
             trim(threshold);
         }
     }

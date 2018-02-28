@@ -1,15 +1,13 @@
 package org.graalvm.collections.list.statistics;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class StatisticTrackerImpl {
+public class StatisticTrackerImpl implements StatisticTracker {
     // _____GLOBAL FIELDS______
     // ID
     private static int nextID = 0;
-    // Size and Capacity
-    private static int totalSizeAtEnd = 0;
-    private static int capacityAtEnd = 0;
 
     // Operations
     static enum Operation {
@@ -43,27 +41,39 @@ public class StatisticTrackerImpl {
         TRIM_TO_SIZE,
     }
 
-    private static final HashMap<Operation, AtomicInteger> globalOpMap = new HashMap<>(Operation.values().length);
-
-    // Type Distribution
-    private static final HashMap<Class<?>, AtomicInteger> globalTypeMap = new HashMap<>();
-
     // _____LOCAL FIELDS______
     private final int ID;
+
+    // Map of Operations performed on the list
     private final HashMap<Operation, AtomicInteger> localOpMap;
-    private final Class<?> typeClass;
+
+    // Type
+    private Type type;
+    private boolean isAdded = false;
+
     private int modifications;
 
-    public StatisticTrackerImpl(Class<?> typeClass) {
+    @SuppressWarnings("rawtypes") private final StatisticalSpecifiedArrayListImpl list; // No Use of get, add, ....
+
+    public StatisticTrackerImpl(StatisticalSpecifiedArrayListImpl list) {
         ID = nextID++;
         this.localOpMap = new HashMap<>(Operation.values().length);
-        this.typeClass = typeClass;
         this.modifications = 0;
-        addTypeTo(globalTypeMap, typeClass);
+        this.list = list;
+
+        Statistics.addTracker(this);
+    }
+
+    public void setType(Class<?> c) {
+        if (!isAdded) {
+            this.type = (Type) c;
+            addTypeTo(Statistics.globalTypeMap, type);
+            isAdded = true;
+        }
     }
 
     public void countOP(Operation op) {
-        addOpTo(globalOpMap, op);
+        addOpTo(Statistics.globalOpMap, op);
         addOpTo(localOpMap, op);
     }
 
@@ -80,13 +90,40 @@ public class StatisticTrackerImpl {
         }
     }
 
-    private static void addTypeTo(HashMap<Class<?>, AtomicInteger> map, Class<?> c) {
-        AtomicInteger curr = map.getOrDefault(c, null);
+    private static void addTypeTo(HashMap<Type, AtomicInteger> map, Type t) {
+        AtomicInteger curr = map.getOrDefault(t, null);
         if (curr == null) {
-            map.put(c, new AtomicInteger(1));
+            map.put(t, new AtomicInteger(1));
         } else {
             curr.getAndIncrement();
         }
+    }
+
+    public void printGeneralInformation() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("LOCAL INFORMATION: \n");
+        sb.append("of StatisticTrackerImpl with ID: " + this.ID + "\n");
+        sb.append("Tracks list of: " + this.type.getTypeName() + "\n");
+        sb.append("Current used Size: " + list.size() + "\n");
+        sb.append("Current Capacity: " + list.getCurrentCapacity() + "\n");
+        sb.append("Current load factor: " + list.getCurrentLoadFactor() + "\n");
+        sb.append("Modifications made so far: " + modifications + "\n");
+        sb.append("Operation Usage: \n");
+        sb.append(Statistics.getPrettyOpMapContentString(localOpMap) + "\n");
+        sb.append("END of Summary! \n\n");
+        System.out.print(sb.toString());
+    }
+
+    static int getNextID() {
+        return nextID;
+    }
+
+    public int getCurrentCapacity() {
+        return list.getCurrentCapacity();
+    }
+
+    public int getCurrentSize() {
+        return list.size();
     }
 
 }

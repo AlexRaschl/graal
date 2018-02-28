@@ -1,0 +1,63 @@
+package org.graalvm.collections.test.list.statistics;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
+import org.graalvm.collections.list.statistics.Statistics;
+
+//TODO make JUnit Test /This simple implementation is only to check if my general idea/approach works
+public class StatisticsSimpleTest {
+    private final static int TEST_SIZE = 10;
+
+    public static void main(String[] args) {
+        StatisticalSpecifiedArrayListImpl<Integer> testList = new StatisticalSpecifiedArrayListImpl<>();
+        Random r = new Random();
+        for (int i = 0; i < TEST_SIZE; i++) {
+            testList.add(new Integer(r.nextInt(100)));
+        }
+
+        StatisticalSpecifiedArrayListImpl<char[]> testList2 = new StatisticalSpecifiedArrayListImpl<>(3);
+        for (int i = 0; i < TEST_SIZE; i++) {
+            Integer integer = new Integer(r.nextInt(100));
+            testList2.add(Integer.toBinaryString(integer).toCharArray());
+        }
+        testList2.size();
+        testList2.contains(new Integer(10));
+        testList2.get(TEST_SIZE - 1);
+        testList2.ensureCapacity(TEST_SIZE * 4);
+        testList2.iterator();
+
+        StatisticalSpecifiedArrayListImpl<String[]> testList3 = new StatisticalSpecifiedArrayListImpl<>(3);
+        for (int i = 0; i < TEST_SIZE; i++) {
+            Integer integer = new Integer(r.nextInt(100));
+            String[] s = new String[1];
+            s[0] = Integer.toHexString(integer);
+            testList3.add(s);
+        }
+
+        StatisticalSpecifiedArrayListImpl<ArrayList<String>> testList4 = new StatisticalSpecifiedArrayListImpl<>(3);
+        for (int i = 0; i < TEST_SIZE; i++) {
+            Integer integer = new Integer(r.nextInt(100));
+            ArrayList<String> list = new ArrayList<>();
+            list.add(Integer.toOctalString(integer));
+            testList4.add(list);
+        }
+
+        StatisticalSpecifiedArrayListImpl<ArrayList<String>> testList5 = new StatisticalSpecifiedArrayListImpl<>(3);
+        for (int i = 0; i < TEST_SIZE; i++) {
+            Integer integer = new Integer(r.nextInt(100));
+            ArrayList<String> list = new ArrayList<>();
+            list.add(Integer.toOctalString(integer));
+            testList5.add(list);
+        }
+
+        StatisticalSpecifiedArrayListImpl<Integer> testList6 = new StatisticalSpecifiedArrayListImpl<>();
+
+        for (int i = 0; i < TEST_SIZE; i++) {
+            testList6.add(new Integer(r.nextInt(100)));
+        }
+        Statistics.printOverallSummary();
+
+    }
+}

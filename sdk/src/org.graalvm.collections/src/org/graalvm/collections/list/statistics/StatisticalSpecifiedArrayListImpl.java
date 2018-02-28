@@ -1,6 +1,5 @@
 package org.graalvm.collections.list.statistics;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -9,17 +8,21 @@ import java.util.ListIterator;
 import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.*;
 
-public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalSpecifiedArrayList<E> {
+public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalCollection, StatisticalSpecifiedArrayList<E> {
 
-    // TODO Reflection
-    private final StatisticTrackerImpl tracker = new StatisticTrackerImpl((Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+    // TODO Check if Reflection works -> NO -> find solution -> kinda cheeky solution found and
+    // implemented -> find better one
+    //
+    // private final StatisticTrackerImpl tracker = new StatisticTrackerImpl(((ParameterizedType)
+    // getClass().getGenericSuperclass()).getActualTypeArguments()[0], this);
+    private final StatisticTrackerImpl tracker = new StatisticTrackerImpl(this);
 
     /**
      * TODO DOC
      *
      * @param initialCapacity
      */
-    protected StatisticalSpecifiedArrayListImpl(int initialCapacity) {
+    public StatisticalSpecifiedArrayListImpl(int initialCapacity) {
         super(initialCapacity);
         tracker.countOP(CSTR_CAP);
     }
@@ -40,6 +43,8 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
      */
     public StatisticalSpecifiedArrayListImpl(Collection<E> collection) {
         super(collection);
+        if (collection.size() != 0)
+            tracker.setType(collection.iterator().next().getClass());
         tracker.countOP(CSTR_COLL);
     }
 
@@ -70,6 +75,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public boolean add(E e) {
         tracker.countOP(ADD_OBJ);
         tracker.modified();
+        tracker.setType(e.getClass());
         return super.add(e);
     }
 
@@ -90,6 +96,9 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public boolean addAll(Collection<? extends E> c) {
         tracker.countOP(ADD_ALL);
         boolean res = super.containsAll(c);
+        if (c.size() != 0)
+            tracker.setType(c.iterator().next().getClass());
+
         if (res)
             tracker.modified();
         return res;
@@ -98,6 +107,8 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         tracker.countOP(ADD_ALL_INDEXED);
+        if (c.size() != 0)
+            tracker.setType(c.iterator().next().getClass());
 
         boolean res = super.addAll(index, c);
         if (res)
@@ -139,6 +150,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public E set(int index, E element) {
         tracker.countOP(SET_INDEXED);
         tracker.modified();
+        tracker.setType(element.getClass());
         return super.set(index, element);
     }
 
@@ -146,6 +158,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public void add(int index, E element) {
         tracker.countOP(ADD_INDEXED);
         tracker.modified();
+        tracker.setType(element.getClass());
         super.add(index, element);
     }
 
@@ -195,15 +208,23 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     @Override
     public void ensureCapacity(int capacity) {
         tracker.countOP(ENSURE_CAP);
-        // TODO check if boolean Retval is needed for tracker.modified, would destroy API
+        // TODO check if boolean Retval is needed for usage of tracker.modified, would destroy API
         super.ensureCapacity(capacity);
     }
 
     @Override
     public void trimToSize() {
         tracker.countOP(TRIM_TO_SIZE);
-        // TODO check if boolean Retval is needed for tracker.modified, would destroy API
+        // TODO check if boolean Retval is needed for usage of tracker.modified, would destroy API
         super.trimToSize();
+    }
+
+    public double getCurrentLoadFactor() {
+        return super.getLoadFactor();
+    }
+
+    public int getCurrentCapacity() {
+        return super.getCapacity();
     }
 
 }
