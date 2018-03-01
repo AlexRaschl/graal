@@ -8,8 +8,11 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
+import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 
 public class Statistics {
+
+    private final static char DATA_SEPARATOR = ';';
 
     // List of all StatisticTrackers
     static final LinkedList<StatisticTrackerImpl> trackers = new LinkedList<>();
@@ -66,6 +69,60 @@ public class Statistics {
         return size;
     }
 
+    // TODO USE StringBuilder
+    public static String[] getOpHistogramData() {
+        String[] dataArr = new String[globalOpMap.size() + 1];
+        Iterator<Entry<Operation, AtomicInteger>> itr = globalOpMap.entrySet().iterator();
+
+        dataArr[0] = "Operation" + DATA_SEPARATOR + " Occurrences" + DATA_SEPARATOR;
+        int n = 1;
+        while (itr.hasNext()) {
+            Entry<Operation, AtomicInteger> entry = itr.next();
+            dataArr[n++] = entry.getKey().name() + DATA_SEPARATOR + " " + entry.getValue().get() + DATA_SEPARATOR + " ";
+        }
+        return dataArr;
+    }
+
+    // TODO USE StringBuilder
+    public static String[] getTypeHistogramData() {
+        String[] dataArr = new String[globalTypeMap.size() + 1];
+        Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
+
+        dataArr[0] = "Type" + DATA_SEPARATOR + " Occurrences" + DATA_SEPARATOR;
+        int n = 1;
+        while (itr.hasNext()) {
+            Entry<Type, AtomicInteger> entry = itr.next();
+            dataArr[n++] = entry.getKey().getTypeName() + DATA_SEPARATOR + " " + entry.getValue().get() + DATA_SEPARATOR + " ";
+        }
+        return dataArr;
+    }
+
+    private static final int INTERVAL_SIZE = 10;
+
+    // TODO USE StringBuilder
+    public static String[] getLoadFactorHistogramData() {
+        int[] intervalOccurrences = new int[INTERVAL_SIZE];
+        String[] dataArr = new String[INTERVAL_SIZE];
+        double stepSize = 100 / INTERVAL_SIZE;
+        for (StatisticTrackerImpl t : trackers) {
+            double lf = t.getCurrentLoadFactor() * 100.0;
+            int i = 1;
+            while (i <= INTERVAL_SIZE) {
+                if (lf < i * stepSize) {
+                    intervalOccurrences[i - 1]++;
+                    break;
+                }
+                i++;
+            }
+        }
+
+        dataArr[0] = "Upper Bound" + DATA_SEPARATOR + " Occurrences" + DATA_SEPARATOR;
+        for (int i = 1; i < INTERVAL_SIZE; i++) {
+            dataArr[i] = "<" + i * 10 + "%" + DATA_SEPARATOR + " " + intervalOccurrences[i - 1] + DATA_SEPARATOR + " ";
+        }
+        return dataArr;
+    }
+
     static String getPrettyOpMapContentString(HashMap<Operation, AtomicInteger> map) {
         StringBuilder sb = new StringBuilder();
         Iterator<Entry<Operation, AtomicInteger>> itr = map.entrySet().iterator();
@@ -85,7 +142,7 @@ public class Statistics {
         int n = 0;
         while (itr.hasNext()) {
             Entry<Type, AtomicInteger> entry = itr.next();
-            sb.append(++n + ": Class: " + entry.getKey().getTypeName() + ", Usages: " + entry.getValue().get() + "\n");
+            sb.append(++n + ": Type: " + entry.getKey().getTypeName() + ", Usages: " + entry.getValue().get() + "\n");
         }
         return sb.toString();
     }

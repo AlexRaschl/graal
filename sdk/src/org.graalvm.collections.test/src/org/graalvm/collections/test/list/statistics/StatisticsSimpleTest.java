@@ -59,5 +59,17 @@ public class StatisticsSimpleTest {
         }
         Statistics.printOverallSummary();
 
+        String[] data = Statistics.getOpHistogramData();
+        for (String s : data)
+            System.out.println(s);
+
+        data = Statistics.getTypeHistogramData();
+        for (String s : data)
+            System.out.println(s);
+
+        data = Statistics.getLoadFactorHistogramData();
+        for (String s : data)
+            System.out.println(s);
+
     }
 }

@@ -4,9 +4,7 @@ import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
 
 /**
  * The StatisticTracker is used to generate and store statistics about the
- * StatisticalSpecifiedArrayList. Therefore it is recommended to generate a Wrapper class for this
- * ADS, which keeps the functionality of the original ADS but also holds an Instance of a
- * StatisticTracker to gather information during runtime.
+ * StatisticalSpecifiedArrayList.
  *
  */
 interface StatisticTracker { // TODO check if Interface is needed
@@ -18,5 +16,11 @@ interface StatisticTracker { // TODO check if Interface is needed
     void modified();
 
     void printGeneralInformation();
+
+    int getCurrentCapacity();
+
+    int getCurrentSize();
+
+    double getCurrentLoadFactor();
 
 }
