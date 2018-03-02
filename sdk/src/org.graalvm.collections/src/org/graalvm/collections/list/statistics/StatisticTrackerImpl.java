@@ -43,6 +43,8 @@ public class StatisticTrackerImpl implements StatisticTracker {
         TO_STRING,
         ENSURE_CAP,
         TRIM_TO_SIZE,
+        EMPTY,
+        SIZE
     }
 
     // _____LOCAL FIELDS______
@@ -60,6 +62,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
 
     @SuppressWarnings("rawtypes") private final StatisticalSpecifiedArrayListImpl list; // No Use of get, add, ....
 
+    @SuppressWarnings("rawtypes")
     public StatisticTrackerImpl(StatisticalSpecifiedArrayListImpl list) {
         ID = nextID++;
         this.localOpMap = new HashMap<>(Operation.values().length);
@@ -69,9 +72,9 @@ public class StatisticTrackerImpl implements StatisticTracker {
         Statistics.addTracker(this);
     }
 
-    public void setType(Class<?> c) {
+    void setType(Class<?> c) {
         if (!isAdded) {
-            this.type = (Type) c;
+            this.type = c;
             addTypeTo(Statistics.globalTypeMap, type);
             isAdded = true;
         }

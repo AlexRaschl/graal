@@ -17,7 +17,7 @@ import org.junit.Test;
 public class SpecifiedArrayListSimpleTest {
 
     private static Integer[] testData;
-    private final static int TEST_SIZE = 2031;
+    private final static int TEST_SIZE = 20031;
     private ArrayList<Integer> referenceList;
     private SpecifiedArrayList<Integer> testList;
     private final Random r = new Random();
@@ -66,6 +66,11 @@ public class SpecifiedArrayListSimpleTest {
     }
 
     @Test
+    public void testSize() {
+        Assert.assertEquals("Size check: ", testList.size(), referenceList.size());
+    }
+
+    @Test
     public void testSimpleRemove() {
         for (int i = TEST_SIZE - 1; i >= 0; i--) {
             Assert.assertEquals("Result: ", testList.remove(new Integer(i)), referenceList.remove(new Integer(i)));
@@ -82,6 +87,11 @@ public class SpecifiedArrayListSimpleTest {
             Assert.assertEquals("Result: ", testList.remove(index), referenceList.remove(index));
             Assert.assertEquals("Size check:", testList.size(), referenceList.size());
         }
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testInvalidRemoveAt() {
+        referenceList.remove(TEST_SIZE);
     }
 
     @Test
@@ -182,7 +192,6 @@ public class SpecifiedArrayListSimpleTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testInvalidAddAt() {
-
         referenceList.add(Integer.MAX_VALUE - 10, new Integer(TEST_SIZE));
     }
 
@@ -343,17 +352,70 @@ public class SpecifiedArrayListSimpleTest {
                 Assert.fail("Reference Iterator has already reached end!");
             }
         }
-        System.out.println("Remaining size of testList is:" + testList.size());
-        System.out.println("Remaining size of referenceList is: " + referenceList.size());
+        // System.out.println("Remaining size of testList is:" + testList.size());
+        // System.out.println("Remaining size of referenceList is: " + referenceList.size());
         Assert.assertEquals(testList.size(), referenceList.size());
         Assert.assertTrue(testList.isEmpty());
+    }
+
+    @Test
+    public void testRandomInsertionsAndRemovals() {
+        SpecifiedArrayList<Integer> testList2 = new SpecifiedArrayListImpl<>(TEST_SIZE);
+        ArrayList<Integer> referenceList2 = new ArrayList<>(TEST_SIZE);
+        testList2.add(1);
+        referenceList2.add(1);
+        double d = r.nextDouble();
+
+        for (int k = 1; k < 20; k++) {
+            for (int i = 0; i < TEST_SIZE * k; i++) {
+                int integer = r.nextInt(1000);
+                if (d < 0.5) {
+                    if (d < 0.33) {
+                        testList2.add(new Integer(integer));
+                        referenceList2.add(new Integer(integer));
+                    } else {
+                        int size = testList2.size();
+                        if (size >= 1) {
+                            int insert = size == 0 ? 0 : r.nextInt(size);
+                            testList2.add(insert, new Integer(integer));
+                            referenceList2.add(insert, new Integer(integer));
+                        }
+                    }
+
+                } else {
+                    if (d < 0.33) {
+                        testList2.remove(new Integer(integer));
+                        referenceList2.remove(new Integer(integer));
+                    } else {
+
+                        int size = testList2.size();
+                        if (size >= 1) {
+                            int remove = size == 0 ? 0 : r.nextInt(size);
+                            testList2.remove(remove);
+                            referenceList2.remove(remove);
+                        }
+                    }
+
+                }
+                d = r.nextDouble();
+                Assert.assertTrue(compareLists(testList2, referenceList2));
+            }
+        }
+
     }
 
     /** Assuming they have the same length */
     private static boolean compareIntArrays(Object[] arr1, Object[] arr2) {
         for (int i = 0; i < arr1.length; i++) {
-            if ((int) arr1[i] != (int) arr2[i])
+            if (arr1[i] == null && arr2[i] == null) {
+                continue;
+            } else if (arr1[i] == null || arr2[i] == null) {
                 return false;
+            } else if (((Integer) arr1[i]).intValue() != ((Integer) arr2[i]).intValue()) {
+
+                return false;
+            }
+
         }
         return true;
     }

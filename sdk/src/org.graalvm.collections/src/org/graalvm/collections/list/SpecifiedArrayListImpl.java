@@ -119,27 +119,11 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     public boolean removeAll(Collection<?> c) {
-        int removed = 0;
-
-        for (Object obj : c) {
-            if (remove(obj))
-                removed++;
-        }
-
-        trimIfUseful(removed);
-        return removed != 0;
+        return removeCollection(c, false);
     }
 
     public boolean retainAll(Collection<?> c) {
-        int removed = 0;
-        for (int i = 0; i < size; i++) {
-            if (!c.contains(elems[i])) {
-                fastRemove(i);
-                removed++;
-            }
-        }
-        trimIfUseful(removed);
-        return removed != 0;
+        return removeCollection(c, true);
     }
 
     public void clear() {
@@ -147,7 +131,6 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
             elems[i] = null;
         }
         size = 0;
-        trim(INITIAL_CAPACITY); // TODO CHECK IF SIZE shrinking is useful;
         System.gc();
     }
 
@@ -301,15 +284,14 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         public void add(E e) {
             SpecifiedArrayListImpl.this.add(cursor, e);
             // TODO check if LastRet = -1 needed
-            // lastRet = -1;
+            lastRet = -1;
             cursor++;
         }
 
     }
 
-    // TODO CHECK IF NEEDED
     public List<E> subList(int fromIndex, int toIndex) {
-        // TODO Auto-generated method stub
+        // TODO CHECK IF NEEDED
         return null;
     }
 
@@ -390,9 +372,9 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     }
 
-    private void trimIfUseful(int removed) {
+    private void trimIfUseful() {
         int threshold = (elems.length / GROW_FACTOR) + 1; // TODO Find more efficient strategy
-        if (removed >= threshold && threshold > size) {
+        if (threshold > size && threshold < elems.length) {
             trim(threshold);
         }
     }
@@ -425,6 +407,31 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         if (capacity < 0)
             throw new IllegalArgumentException();
         System.arraycopy(elems, 0, elems, 0, capacity);
+    }
+
+    private boolean removeCollection(Collection<?> c, boolean isRetained) {
+        int removed = 0;
+        int w = 0, i = 0;
+
+        for (; i < size; i++) {
+            if (c.contains(elems[i]) == isRetained) {
+                elems[w] = elems[i];
+                w++;
+            } else {
+                removed++;
+            }
+        }
+        if (i != size) {
+            System.arraycopy(elems, i, elems, w, size - i);
+            w += size - i;
+        }
+        if (w != size) {
+            for (int j = w; j < size; j++)
+                elems[j] = null;
+            size = w;
+        }
+        trimIfUseful();
+        return removed != 0;
     }
 
     @SuppressWarnings("unchecked")

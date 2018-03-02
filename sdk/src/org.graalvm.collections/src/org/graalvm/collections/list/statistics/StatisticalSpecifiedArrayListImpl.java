@@ -18,9 +18,9 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     private final StatisticTrackerImpl tracker = new StatisticTrackerImpl(this);
 
     /**
-     * TODO DOC
+     * Creates an instance of StatisticalSpecifiedArrayListImpl with a given initial capacity.
      *
-     * @param initialCapacity
+     * @param initialCapacity Capacity the list will have from beginning
      */
     public StatisticalSpecifiedArrayListImpl(int initialCapacity) {
         super(initialCapacity);
@@ -28,7 +28,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     }
 
     /**
-     * TODO DOC
+     * Creates an instance of StatisticalSpecifiedArrayListImpl.
      *
      */
     public StatisticalSpecifiedArrayListImpl() {
@@ -37,7 +37,8 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     }
 
     /**
-     * TODO DOC
+     * Creates an instance of StatisticalSpecifiedArrayListImpl that holds the elements of the given
+     * collection.
      *
      * @param collection
      */
@@ -50,12 +51,13 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
 
     @Override
     public int size() {
-        return super.size(); // TODO check if count needed
+        tracker.countOP(SIZE);
+        return super.size();
     }
 
     @Override
     public boolean isEmpty() {
-        // TODO check if count needed
+        tracker.countOP(EMPTY);
         return super.isEmpty();
     }
 
@@ -136,7 +138,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
 
     @Override
     public void clear() {
-        // TODO check if count needed
+        tracker.countOP(CLEAR);
         super.clear();
     }
 
@@ -208,14 +210,16 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     @Override
     public void ensureCapacity(int capacity) {
         tracker.countOP(ENSURE_CAP);
-        // TODO check if boolean Retval is needed for usage of tracker.modified, would destroy API
+        // DONE check if boolean Retval is needed for usage of tracker.modified, would destroy API ->Not
+        // needed
         super.ensureCapacity(capacity);
     }
 
     @Override
     public void trimToSize() {
         tracker.countOP(TRIM_TO_SIZE);
-        // TODO check if boolean Retval is needed for usage of tracker.modified, would destroy API
+        // DONE check if boolean Retval is needed for usage of tracker.modified, would destroy API ->Not
+        // needed
         super.trimToSize();
     }
 

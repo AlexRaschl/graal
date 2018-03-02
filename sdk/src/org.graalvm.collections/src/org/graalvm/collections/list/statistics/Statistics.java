@@ -8,10 +8,10 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
-import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 
 public class Statistics {
 
+    // For CSV file creation
     private final static char DATA_SEPARATOR = ';';
 
     // List of all StatisticTrackers
@@ -102,7 +102,7 @@ public class Statistics {
     // TODO USE StringBuilder
     public static String[] getLoadFactorHistogramData() {
         int[] intervalOccurrences = new int[INTERVAL_SIZE];
-        String[] dataArr = new String[INTERVAL_SIZE];
+        String[] dataArr = new String[INTERVAL_SIZE + 1];
         double stepSize = 100 / INTERVAL_SIZE;
         for (StatisticTrackerImpl t : trackers) {
             double lf = t.getCurrentLoadFactor() * 100.0;
@@ -116,9 +116,9 @@ public class Statistics {
             }
         }
 
-        dataArr[0] = "Upper Bound" + DATA_SEPARATOR + " Occurrences" + DATA_SEPARATOR;
-        for (int i = 1; i < INTERVAL_SIZE; i++) {
-            dataArr[i] = "<" + i * 10 + "%" + DATA_SEPARATOR + " " + intervalOccurrences[i - 1] + DATA_SEPARATOR + " ";
+        dataArr[0] = "Upper Bound" + DATA_SEPARATOR + " Load Factor Percentage" + DATA_SEPARATOR;
+        for (int i = 1; i <= INTERVAL_SIZE; i++) {
+            dataArr[i] = "[" + (i - 1) * 10 + "%, " + i * 10 + "%[" + DATA_SEPARATOR + " " + intervalOccurrences[i - 1] + DATA_SEPARATOR + " ";
         }
         return dataArr;
     }
