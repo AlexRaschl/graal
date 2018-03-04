@@ -59,13 +59,13 @@ public class SpecifiedArrayListEnhancedTest {
             testList.add(null);
             referenceList.add(null);
         }
-        Assert.assertTrue(compareLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
 
         for (int i = 0; i < TEST_SIZE / 10; i++) {
             testList.add(i, null);
             referenceList.add(i, null);
         }
-        Assert.assertTrue(compareLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
     }
 
     @Test
@@ -74,19 +74,19 @@ public class SpecifiedArrayListEnhancedTest {
             testList.add(null);
             referenceList.add(null);
         }
-        Assert.assertTrue(compareLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
 
         for (int i = 0; i < TEST_SIZE / 10; i++) {
             testList.add(i, null);
             referenceList.add(i, null);
         }
-        Assert.assertTrue(compareLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
 
         for (int i = 0; i < TEST_SIZE / 10; i++) {
             Assert.assertTrue(testList.remove(null));
             Assert.assertTrue(referenceList.remove(null));
         }
-        Assert.assertTrue(compareLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
         for (int i = 0; i < TEST_SIZE / 10; i++) {
             Assert.assertTrue(testList.remove(null));
             Assert.assertTrue(referenceList.remove(null));
@@ -193,21 +193,49 @@ public class SpecifiedArrayListEnhancedTest {
 
     }
 
-    /** Assuming they have the same length */
-    private static boolean compareStringArrays(Object[] arr1, Object[] arr2) {
-        for (int i = 0; i < arr1.length; i++) {
-            if (arr1[i] == null && arr2[i] == null) {
-                continue;
-            } else if (arr1[i] == null || arr2[i] == null) {
-                return false;
-            } else if (!arr1[i].equals(arr2[i])) {
-                return false;
+    @Test
+    public void testRandomInsertionsAndRemovals() {
+        SpecifiedArrayList<Integer> testList2 = new SpecifiedArrayListImpl<>(TEST_SIZE);
+        ArrayList<Integer> referenceList2 = new ArrayList<>(TEST_SIZE);
+        testList2.add(1);
+        referenceList2.add(1);
+        double d = r.nextDouble();
+
+        for (int k = 1; k < 20; k++) {
+            for (int i = 0; i < TEST_SIZE * k; i++) {
+                int integer = r.nextInt(1000);
+                if (d < 0.5) {
+                    if (d < 0.33) {
+                        testList2.add(new Integer(integer));
+                        referenceList2.add(new Integer(integer));
+                    } else {
+                        int size = testList2.size();
+                        if (size >= 1) {
+                            int insert = size == 0 ? 0 : r.nextInt(size);
+                            testList2.add(insert, new Integer(integer));
+                            referenceList2.add(insert, new Integer(integer));
+                        }
+                    }
+
+                } else {
+                    if (d < 0.33) {
+                        testList2.remove(new Integer(integer));
+                        referenceList2.remove(new Integer(integer));
+                    } else {
+
+                        int size = testList2.size();
+                        if (size >= 1) {
+                            int remove = size == 0 ? 0 : r.nextInt(size);
+                            testList2.remove(remove);
+                            referenceList2.remove(remove);
+                        }
+                    }
+
+                }
+                d = r.nextDouble();
+                Assert.assertTrue(TestUtilities.compareIntLists(testList2, referenceList2));
             }
         }
-        return true;
     }
 
-    private static boolean compareLists(SpecifiedArrayList<String> sar, ArrayList<String> ar) {
-        return compareStringArrays(sar.toArray(), ar.toArray());
-    }
 }
