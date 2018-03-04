@@ -15,8 +15,10 @@ import org.graalvm.collections.list.SpecifiedArrayList;
  * TODO Check if tracking also useful for Itr/ListItr
  *
  * TODO Check if this Interface is needed
+ *
+ * @author Alex R.
  */
 
-public interface StatisticalSpecifiedArrayList<E> extends StatisticalCollection, SpecifiedArrayList<E> {
+interface StatisticalSpecifiedArrayList<E> extends StatisticalCollection, SpecifiedArrayList<E> {
 
 }

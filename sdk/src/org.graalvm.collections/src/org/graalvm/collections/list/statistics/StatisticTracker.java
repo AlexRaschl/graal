@@ -45,4 +45,21 @@ interface StatisticTracker {
      */
     double getCurrentLoadFactor();
 
+    /**
+     * Returns the ID of the tracker
+     *
+     * @return ID
+     */
+    int getID();
+
+    /**
+     * Creates a String Array that containing the gathered information about the operation distribution
+     * of this StatisticTracker. One ArrayFiled corresponds to one line of data. The data entries in one
+     * line are separated by the given separator.
+     *
+     * @param separator Char to be used to separate Data entries
+     * @return
+     */
+    String[] getOpDataLines(final char separator);
+
 }

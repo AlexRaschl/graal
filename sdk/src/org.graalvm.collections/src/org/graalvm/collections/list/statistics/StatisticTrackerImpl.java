@@ -101,23 +101,68 @@ public class StatisticTrackerImpl implements StatisticTracker {
         return list.getCurrentLoadFactor();
     }
 
+    public int getID() {
+        return ID;
+    }
+
     static int getNextID() {
         return nextID;
     }
 
     public void printGeneralInformation() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("LOCAL INFORMATION: \n");
-        sb.append("of StatisticTrackerImpl with ID: " + this.ID + "\n");
-        sb.append("Tracks list of: " + this.type.getTypeName() + "\n");
-        sb.append("Current used Size: " + list.size() + "\n");
-        sb.append("Current Capacity: " + list.getCurrentCapacity() + "\n");
-        sb.append("Current load factor: " + list.getCurrentLoadFactor() + "\n");
-        sb.append("Modifications made so far: " + modifications + "\n");
+        StringBuilder sb = new StringBuilder(200);
+        // sb.append("LOCAL INFORMATION: \n");
+        sb.append("StatisticTrackerImpl with ID: ");
+        sb.append(this.ID);
+        sb.append('\n');
+        sb.append("Tracks list of: ");
+        sb.append(this.type.getTypeName());
+        sb.append('\n');
+        sb.append("Current used Size: ");
+        sb.append(list.size());
+        sb.append('\n');
+        sb.append("Current Capacity: ");
+        sb.append(list.getCurrentCapacity());
+        sb.append('\n');
+        sb.append("Current load factor: ");
+        sb.append(list.getCurrentLoadFactor());
+        sb.append('\n');
+        sb.append("Modifications made so far: ");
+        sb.append(modifications);
+        sb.append('\n');
         sb.append("Operation Usage: \n");
         sb.append(Statistics.getPrettyOpMapContentString(localOpMap));
         sb.append("END of Summary! \n\n");
         System.out.print(sb.toString());
+    }
+
+    // TODO USE StringBuilder
+    public String[] getOpDataLines(final char separator) {
+        String[] dataArr = new String[localOpMap.size() + 1];
+        Iterator<Entry<Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
+
+        StringBuilder sb = new StringBuilder(30);
+        sb.append("Operation Occurrences");
+        sb.append(separator);
+        dataArr[0] = sb.toString();
+        sb = new StringBuilder(50);
+
+        int n = 1;
+        while (itr.hasNext()) {
+            Entry<Operation, AtomicInteger> entry = itr.next();
+
+            sb.append(entry.getKey().name());
+            sb.append(separator);
+            sb.append(' ');
+            sb.append(entry.getValue().get());
+            sb.append(separator);
+            sb.append(' ');
+            dataArr[n++] = sb.toString();
+            sb = new StringBuilder(50);
+            // dataArr[n++] = entry.getKey().name() + separator + " " + entry.getValue().get() + separator + "
+            // ";
+        }
+        return dataArr;
     }
 
     private static void addOpTo(HashMap<Operation, AtomicInteger> map, Operation op) {

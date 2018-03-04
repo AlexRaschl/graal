@@ -11,11 +11,8 @@ import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
 
 public class Statistics {
 
-    // For CSV file creation
-    private final static char DATA_SEPARATOR = ';';
-
     // List of all StatisticTrackers
-    static final LinkedList<StatisticTrackerImpl> trackers = new LinkedList<>();
+    static final LinkedList<StatisticTracker> trackers = new LinkedList<>();
 
     // Map of all Operations performed
     static final HashMap<Operation, AtomicInteger> globalOpMap = new HashMap<>(Operation.values().length);
@@ -30,23 +27,43 @@ public class Statistics {
         trackers.add(tracker);
     }
 
+    public static StatisticTracker getTrackerByID(int id) {
+        Iterator<StatisticTracker> itr = trackers.iterator();
+        while (itr.hasNext()) {
+            StatisticTracker t = itr.next();
+            if (t.getID() == id)
+                return t;
+        }
+        return null;
+    }
+
     public static void printOverallSummary() {
         printGlobalInformation();
 
-        for (StatisticTrackerImpl t : trackers) {
+        for (StatisticTracker t : trackers) {
             t.printGeneralInformation();
         }
     }
 
     static void printGlobalInformation() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(200);
         sb.append("GLOBAL INFORMATION: \n");
-        sb.append("Current used Size: " + getCurrentTotalSize() + "\n");
-        sb.append("Current available Capacity: " + getCurrentTotalCapacity() + "\n");
-        sb.append("Current load factor: " + ((double) getCurrentTotalSize()) / getCurrentTotalCapacity() + "\n");
-        sb.append("Trackers allocated: " + StatisticTrackerImpl.getNextID() + "\n\n");
+        sb.append("Current used Size: ");
+        sb.append(getCurrentTotalSize());
+        sb.append('\n');
+        sb.append("Current available Capacity: ");
+        sb.append(getCurrentTotalCapacity());
+        sb.append('\n');
+        sb.append("Current load factor: ");
+        sb.append(((double) getCurrentTotalSize()) / getCurrentTotalCapacity());
+        sb.append('\n');
+        sb.append("Trackers allocated: ");
+        sb.append(StatisticTrackerImpl.getNextID());
+        sb.append('\n');
         sb.append("OPERATION USAGE: \n");
-        sb.append(getPrettyOpMapContentString(globalOpMap) + "\n");
+        sb.append('\n');
+        sb.append(getPrettyOpMapContentString(globalOpMap));
+        sb.append('\n');
         sb.append("TYPE DISTRIBUTION: \n");
         sb.append(getPrettyTypeMapContentString());
         sb.append("END of Summary! \n\n");
@@ -55,7 +72,7 @@ public class Statistics {
 
     private static int getCurrentTotalCapacity() {
         int capacity = 0;
-        for (StatisticTrackerImpl t : trackers) {
+        for (StatisticTracker t : trackers) {
             capacity += t.getCurrentCapacity();
         }
         return capacity;
@@ -63,36 +80,61 @@ public class Statistics {
 
     private static int getCurrentTotalSize() {
         int size = 0;
-        for (StatisticTrackerImpl t : trackers) {
+        for (StatisticTracker t : trackers) {
             size += t.getCurrentSize();
         }
         return size;
     }
 
     // TODO USE StringBuilder
-    public static String[] getOpHistogramData() {
+    public static String[] getOpDataLines(final char separator) {
         String[] dataArr = new String[globalOpMap.size() + 1];
         Iterator<Entry<Operation, AtomicInteger>> itr = globalOpMap.entrySet().iterator();
 
-        dataArr[0] = "Operation" + DATA_SEPARATOR + " Occurrences" + DATA_SEPARATOR;
+        StringBuilder sb = new StringBuilder(30);
+        sb.append("Operation Occurrences");
+        sb.append(separator);
+        dataArr[0] = sb.toString();
+        sb = new StringBuilder(50);
+
         int n = 1;
         while (itr.hasNext()) {
             Entry<Operation, AtomicInteger> entry = itr.next();
-            dataArr[n++] = entry.getKey().name() + DATA_SEPARATOR + " " + entry.getValue().get() + DATA_SEPARATOR + " ";
+
+            sb.append(entry.getKey().name());
+            sb.append(separator);
+            sb.append(' ');
+            sb.append(entry.getValue().get());
+            sb.append(separator);
+            sb.append(' ');
+            dataArr[n++] = sb.toString();
+            sb = new StringBuilder(50);
+            // dataArr[n++] = entry.getKey().name() + separator + " " + entry.getValue().get() + separator + "
+            // ";
         }
         return dataArr;
     }
 
-    // TODO USE StringBuilder
-    public static String[] getTypeHistogramData() {
+    // DONE USE StringBuilder
+    public static String[] getTypeDataLines(final char separator) {
         String[] dataArr = new String[globalTypeMap.size() + 1];
         Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
 
-        dataArr[0] = "Type" + DATA_SEPARATOR + " Occurrences" + DATA_SEPARATOR;
+        dataArr[0] = "Type Occurrences" + separator;
         int n = 1;
+        StringBuilder sb = new StringBuilder();
         while (itr.hasNext()) {
             Entry<Type, AtomicInteger> entry = itr.next();
-            dataArr[n++] = entry.getKey().getTypeName() + DATA_SEPARATOR + " " + entry.getValue().get() + DATA_SEPARATOR + " ";
+            sb.append(entry.getKey().getTypeName());
+            sb.append(separator);
+            sb.append(' ');
+            sb.append(entry.getValue().get());
+            sb.append(separator);
+            sb.append(' ');
+            dataArr[n++] = sb.toString();
+            sb = new StringBuilder();
+            // dataArr[n++] = entry.getKey().getTypeName() + separator + " " + entry.getValue().get() +
+            // separator + " ";
         }
         return dataArr;
     }
@@ -100,11 +142,11 @@ public class Statistics {
     private static final int INTERVAL_SIZE = 10;
 
     // TODO USE StringBuilder
-    public static String[] getLoadFactorHistogramData() {
+    public static String[] getLoadFactorDataLines(final char separator) {
         int[] intervalOccurrences = new int[INTERVAL_SIZE];
         String[] dataArr = new String[INTERVAL_SIZE + 1];
         double stepSize = 100 / INTERVAL_SIZE;
-        for (StatisticTrackerImpl t : trackers) {
+        for (StatisticTracker t : trackers) {
             double lf = t.getCurrentLoadFactor() * 100.0;
             int i = 1;
             while (i <= INTERVAL_SIZE) {
@@ -116,9 +158,23 @@ public class Statistics {
             }
         }
 
-        dataArr[0] = "Upper Bound" + DATA_SEPARATOR + " Load Factor Percentage" + DATA_SEPARATOR;
+        dataArr[0] = "Load Factor Intervals" + separator;
+        StringBuilder sb = new StringBuilder(25);
         for (int i = 1; i <= INTERVAL_SIZE; i++) {
-            dataArr[i] = "[" + (i - 1) * 10 + "%, " + i * 10 + "%[" + DATA_SEPARATOR + " " + intervalOccurrences[i - 1] + DATA_SEPARATOR + " ";
+            sb.append('[');
+            sb.append((i - 1) * stepSize);
+            sb.append("%, ");
+            sb.append(i * stepSize);
+            sb.append("%[");
+            sb.append(separator);
+            sb.append(' ');
+            sb.append(intervalOccurrences[i - 1]);
+            sb.append(separator);
+            sb.append(' ');
+            dataArr[i] = sb.toString();
+            sb = new StringBuilder(25);
+            // dataArr[i] = "[" + (i - 1) * stepSize + "%, " + i * stepSize + "%[" + separator + " " +
+            // intervalOccurrences[i - 1] + separator + " ";
         }
         return dataArr;
     }
@@ -130,7 +186,14 @@ public class Statistics {
         int n = 0;
         while (itr.hasNext()) {
             Entry<Operation, AtomicInteger> entry = itr.next();
-            sb.append(++n + ": Operation: " + entry.getKey().name() + ", Usages: " + entry.getValue().get() + "\n");
+            sb.append(++n);
+            sb.append(": Operation: ");
+            sb.append(entry.getKey().name());
+            sb.append(", Usages: ");
+            sb.append(entry.getValue().get());
+            sb.append('\n');
+            // sb.append(++n + ": Operation: " + entry.getKey().name() + ", Usages: " + entry.getValue().get() +
+            // "\n");
         }
         return sb.toString();
     }
@@ -142,7 +205,14 @@ public class Statistics {
         int n = 0;
         while (itr.hasNext()) {
             Entry<Type, AtomicInteger> entry = itr.next();
-            sb.append(++n + ": Type: " + entry.getKey().getTypeName() + ", Usages: " + entry.getValue().get() + "\n");
+            sb.append(++n);
+            sb.append(": Type: ");
+            sb.append(entry.getKey().getTypeName());
+            sb.append(", Usages: ");
+            sb.append(entry.getValue().get());
+            sb.append('\n');
+            // sb.append(++n + ": Type: " + entry.getKey().getTypeName() + ", Usages: " + entry.getValue().get()
+            // + "\n");
         }
         return sb.toString();
     }

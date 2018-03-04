@@ -3,12 +3,15 @@ package org.graalvm.collections.test.list.statistics;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.graalvm.collections.list.statistics.CSVGenerator;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
 
 //TODO make JUnit Test /This simple implementation is only to check if my general idea/approach works
 public class StatisticsSimpleTest {
     private final static int TEST_SIZE = 10;
+
+    private final static char DATA_SEPARATOR = ';';
 
     public static void main(String[] args) {
         StatisticalSpecifiedArrayListImpl<Integer> testList = new StatisticalSpecifiedArrayListImpl<>();
@@ -59,17 +62,26 @@ public class StatisticsSimpleTest {
         }
         Statistics.printOverallSummary();
 
-        String[] data = Statistics.getOpHistogramData();
+        String[] data = Statistics.getOpDataLines(DATA_SEPARATOR);
         for (String s : data)
             System.out.println(s);
+        System.out.println();
 
-        data = Statistics.getTypeHistogramData();
+        data = Statistics.getTypeDataLines(DATA_SEPARATOR);
         for (String s : data)
             System.out.println(s);
+        System.out.println();
 
-        data = Statistics.getLoadFactorHistogramData();
+        data = Statistics.getLoadFactorDataLines(DATA_SEPARATOR);
         for (String s : data)
             System.out.println(s);
+        System.out.println();
+
+        CSVGenerator.createFileOfGlobalInfo();
+
+        CSVGenerator.createFileOfTracker(1);
+
+        CSVGenerator.createFileOfEverything();
 
     }
 }

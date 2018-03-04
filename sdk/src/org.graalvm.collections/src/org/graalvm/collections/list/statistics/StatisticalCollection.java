@@ -3,6 +3,8 @@ package org.graalvm.collections.list.statistics;
 /**
  * Ensures that the current load factor and the current maximal capacity of a collection can be
  * determined.
+ *
+ * @author Alex R.
  */
 interface StatisticalCollection {
 
