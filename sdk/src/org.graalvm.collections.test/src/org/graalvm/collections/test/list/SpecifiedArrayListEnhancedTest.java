@@ -17,7 +17,7 @@ import org.junit.Test;
 
 public class SpecifiedArrayListEnhancedTest {
     private static String[] testData;
-    private final static int TEST_SIZE = 2031;
+    private final static int TEST_SIZE = 20031;
     private ArrayList<String> referenceList;
     private SpecifiedArrayList<String> testList;
     private final Random r = new Random();

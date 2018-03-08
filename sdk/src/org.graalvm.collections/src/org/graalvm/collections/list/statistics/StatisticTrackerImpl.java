@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
-
 public class StatisticTrackerImpl implements StatisticTracker {
     // _____GLOBAL FIELDS______
     // ID
@@ -136,31 +134,28 @@ public class StatisticTrackerImpl implements StatisticTracker {
         System.out.print(sb.toString());
     }
 
-    // TODO USE StringBuilder
-    public String[] getOpDataLines(final char separator) {
-        String[] dataArr = new String[localOpMap.size() + 1];
+    public String[] getOpDataLines(final char dataSeparator) {
+        String[] dataArr = new String[localOpMap.size()];
         Iterator<Entry<Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
 
-        StringBuilder sb = new StringBuilder(30);
-        sb.append("Operation Occurrences");
-        sb.append(separator);
-        dataArr[0] = sb.toString();
-        sb = new StringBuilder(50);
+// StringBuilder sb = new StringBuilder(30);
+// sb.append("Operation Occurrences");
+// sb.append(dataSeparator);
+// sb.append("Num");
+// dataArr[0] = sb.toString();
+        StringBuilder sb = new StringBuilder(50);
 
-        int n = 1;
+        int n = 0;
         while (itr.hasNext()) {
             Entry<Operation, AtomicInteger> entry = itr.next();
 
             sb.append(entry.getKey().name());
-            sb.append(separator);
+            sb.append(dataSeparator);
             sb.append(' ');
             sb.append(entry.getValue().get());
-            sb.append(separator);
-            sb.append(' ');
             dataArr[n++] = sb.toString();
             sb = new StringBuilder(50);
-            // dataArr[n++] = entry.getKey().name() + separator + " " + entry.getValue().get() + separator + "
-            // ";
+            // dataArr[n++] = entry.getKey().name() + separator + " " + entry.getValue().get();
         }
         return dataArr;
     }

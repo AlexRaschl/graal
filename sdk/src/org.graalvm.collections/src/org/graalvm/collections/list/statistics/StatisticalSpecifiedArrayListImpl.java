@@ -32,7 +32,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
      *
      */
     public StatisticalSpecifiedArrayListImpl() {
-        super(INITIAL_CAPACITY);
+        super();
         tracker.countOP(CSTR_STD);
     }
 
@@ -97,7 +97,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     @Override
     public boolean addAll(Collection<? extends E> c) {
         tracker.countOP(ADD_ALL);
-        boolean res = super.containsAll(c);
+        boolean res = super.addAll(c);
         if (c.size() != 0)
             tracker.setType(c.iterator().next().getClass());
 
@@ -210,16 +210,12 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     @Override
     public void ensureCapacity(int capacity) {
         tracker.countOP(ENSURE_CAP);
-        // DONE check if boolean Retval is needed for usage of tracker.modified, would destroy API ->Not
-        // needed
         super.ensureCapacity(capacity);
     }
 
     @Override
     public void trimToSize() {
         tracker.countOP(TRIM_TO_SIZE);
-        // DONE check if boolean Retval is needed for usage of tracker.modified, would destroy API ->Not
-        // needed
         super.trimToSize();
     }
 

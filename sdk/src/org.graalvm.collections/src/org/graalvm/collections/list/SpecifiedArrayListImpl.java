@@ -11,7 +11,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     // TODO CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
 
-    protected final static int INITIAL_CAPACITY = 16;
+    private final static int INITIAL_CAPACITY = 16;
     private final static int GROW_FACTOR = 2;
 
     private final static int CAPACITY_GROWING_THRESHOLD = 32;

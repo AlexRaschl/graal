@@ -19,6 +19,6 @@ import org.graalvm.collections.list.SpecifiedArrayList;
  * @author Alex R.
  */
 
-interface StatisticalSpecifiedArrayList<E> extends StatisticalCollection, SpecifiedArrayList<E> {
+public interface StatisticalSpecifiedArrayList<E> extends StatisticalCollection, SpecifiedArrayList<E> {
 
 }

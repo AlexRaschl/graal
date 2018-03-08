@@ -60,6 +60,6 @@ interface StatisticTracker {
      * @param separator Char to be used to separate Data entries
      * @return
      */
-    String[] getOpDataLines(final char separator);
+    String[] getOpDataLines(final char dataSeparator);
 
 }

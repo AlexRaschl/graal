@@ -86,65 +86,67 @@ public class Statistics {
         return size;
     }
 
-    // TODO USE StringBuilder
-    public static String[] getOpDataLines(final char separator) {
-        String[] dataArr = new String[globalOpMap.size() + 1];
+    /*
+     * Data Lines for CSV Generator
+     */
+    public static String[] getOpDataLines(final char dataSeparator) {
+        String[] dataArr = new String[globalOpMap.size()];
         Iterator<Entry<Operation, AtomicInteger>> itr = globalOpMap.entrySet().iterator();
 
-        StringBuilder sb = new StringBuilder(30);
-        sb.append("Operation Occurrences");
-        sb.append(separator);
-        dataArr[0] = sb.toString();
-        sb = new StringBuilder(50);
+// StringBuilder sb = new StringBuilder(30);
+// sb.append("Operation Occurrences");
+// sb.append(dataSeparator);
+// sb.append("Num");
+// dataArr[0] = sb.toString();
+        StringBuilder sb = new StringBuilder(50);
 
-        int n = 1;
+        int n = 0;
         while (itr.hasNext()) {
             Entry<Operation, AtomicInteger> entry = itr.next();
 
             sb.append(entry.getKey().name());
-            sb.append(separator);
+            sb.append(dataSeparator);
             sb.append(' ');
             sb.append(entry.getValue().get());
-            sb.append(separator);
-            sb.append(' ');
             dataArr[n++] = sb.toString();
             sb = new StringBuilder(50);
-            // dataArr[n++] = entry.getKey().name() + separator + " " + entry.getValue().get() + separator + "
-            // ";
+            // dataArr[n++] = entry.getKey().name() + separator + " " + entry.getValue().get();
         }
         return dataArr;
     }
 
-    // DONE USE StringBuilder
-    public static String[] getTypeDataLines(final char separator) {
-        String[] dataArr = new String[globalTypeMap.size() + 1];
+    /*
+     * Data Lines for CSV Generator
+     */
+    public static String[] getTypeDataLines(final char dataSeparator) {
+        String[] dataArr = new String[globalTypeMap.size()];
         Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
 
-        dataArr[0] = "Type Occurrences" + separator;
-        int n = 1;
-        StringBuilder sb = new StringBuilder();
+        // dataArr[0] = "Type Occurrences" + dataSeparator + "Num";
+
+        int n = 0;
+        StringBuilder sb = new StringBuilder(30);
         while (itr.hasNext()) {
             Entry<Type, AtomicInteger> entry = itr.next();
             sb.append(entry.getKey().getTypeName());
-            sb.append(separator);
+            sb.append(dataSeparator);
             sb.append(' ');
             sb.append(entry.getValue().get());
-            sb.append(separator);
-            sb.append(' ');
             dataArr[n++] = sb.toString();
             sb = new StringBuilder();
-            // dataArr[n++] = entry.getKey().getTypeName() + separator + " " + entry.getValue().get() +
-            // separator + " ";
+            // dataArr[n++] = entry.getKey().getTypeName() + separator + " " + entry.getValue().get();
         }
         return dataArr;
     }
 
     private static final int INTERVAL_SIZE = 10;
 
-    // TODO USE StringBuilder
-    public static String[] getLoadFactorDataLines(final char separator) {
+    /*
+     * Data Lines for CSV Generator
+     */
+    public static String[] getLoadFactorDataLines(final char dataSeparator) {
         int[] intervalOccurrences = new int[INTERVAL_SIZE];
-        String[] dataArr = new String[INTERVAL_SIZE + 1];
+        String[] dataArr = new String[INTERVAL_SIZE];
         double stepSize = 100 / INTERVAL_SIZE;
         for (StatisticTracker t : trackers) {
             double lf = t.getCurrentLoadFactor() * 100.0;
@@ -158,23 +160,21 @@ public class Statistics {
             }
         }
 
-        dataArr[0] = "Load Factor Intervals" + separator;
+        // dataArr[0] = "Load Factor Intervals" + dataSeparator + "Num";
         StringBuilder sb = new StringBuilder(25);
-        for (int i = 1; i <= INTERVAL_SIZE; i++) {
-            sb.append('[');
-            sb.append((i - 1) * stepSize);
+        for (int i = 0; i < INTERVAL_SIZE; i++) {
+            sb.append("[");
+            sb.append((i) * stepSize);
             sb.append("%, ");
-            sb.append(i * stepSize);
+            sb.append((i + 1) * stepSize);
             sb.append("%[");
-            sb.append(separator);
+            sb.append(dataSeparator);
             sb.append(' ');
-            sb.append(intervalOccurrences[i - 1]);
-            sb.append(separator);
-            sb.append(' ');
+            sb.append(intervalOccurrences[i]);
             dataArr[i] = sb.toString();
             sb = new StringBuilder(25);
             // dataArr[i] = "[" + (i - 1) * stepSize + "%, " + i * stepSize + "%[" + separator + " " +
-            // intervalOccurrences[i - 1] + separator + " ";
+            // intervalOccurrences[i - 1]
         }
         return dataArr;
     }
