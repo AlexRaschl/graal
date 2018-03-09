@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 
-    // TODO CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
+public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
+
+    // DONE CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
 
     private final static int INITIAL_CAPACITY = 16;
     private final static int GROW_FACTOR = 2;
@@ -20,11 +22,26 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     private Object elems[];
 
     /**
+     * Factory methods
+     */
+    public static <E> SpecifiedArrayList<E> createNew() {
+        return new SpecifiedArrayListImpl<>();
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(int initalCapacity) {
+        return new SpecifiedArrayListImpl<>(initalCapacity);
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+        return new SpecifiedArrayListImpl<>(c);
+    }
+
+    /**
      * Creates an instance of SpecifiedArrayListImpl with a given initial capacity.
      *
      * @param initialCapacity Capacity the list will have from beginning
      */
-    public SpecifiedArrayListImpl(int initialCapacity) {
+    protected SpecifiedArrayListImpl(int initialCapacity) {
         if (size >= 0) {
             this.size = 0;
             this.elems = new Object[initialCapacity];
@@ -37,7 +54,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
      * Creates an instance of SpecifiedArrayListImpl.
      *
      */
-    public SpecifiedArrayListImpl() {
+    protected SpecifiedArrayListImpl() {
         this(INITIAL_CAPACITY);
     }
 
@@ -46,33 +63,39 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
      *
      * @param collection
      */
-    public SpecifiedArrayListImpl(Collection<E> collection) {
+    protected SpecifiedArrayListImpl(Collection<E> collection) {
         this.size = collection.size();
         this.elems = Arrays.copyOf(collection.toArray(), collection.size());
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    @Override
     public boolean contains(Object o) {
         return indexOf(o) >= 0;
     }
 
+    @Override
     public Object[] toArray() {
         return Arrays.copyOf(elems, size);
     }
 
+    @Override
     public boolean add(E e) {
         growIfNeeded();
         elems[size++] = e;
         return true;
     }
 
+    @Override
     public boolean remove(Object o) {
         if (o == null) {
             for (int i = 0; i < size; i++) {
@@ -93,6 +116,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return false;
     }
 
+    @Override
     public boolean containsAll(Collection<?> c) {
         for (Object obj : c) {
             if (!contains(obj))
@@ -101,6 +125,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return true;
     }
 
+    @Override
     public boolean addAll(Collection<? extends E> c) {
         int cSize = c.size();
         if (cSize == 0)
@@ -113,19 +138,22 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return true;
     }
 
-    // TODO CHECK IF NEEDED
+    @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         return false;
     }
 
+    @Override
     public boolean removeAll(Collection<?> c) {
         return removeCollection(c, false);
     }
 
+    @Override
     public boolean retainAll(Collection<?> c) {
         return removeCollection(c, true);
     }
 
+    @Override
     public void clear() {
 // for (int i = 0; i < size; i++) {
 // elems[i] = null;
@@ -136,11 +164,13 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         System.gc();
     }
 
+    @Override
     public E get(int index) {
         checkBoundaries(index);
         return castUnchecked(elems[index]);
     }
 
+    @Override
     public E set(int index, E element) {
         checkBoundaries(index);
         Object oldElem = elems[index];
@@ -148,6 +178,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return castUnchecked(oldElem);
     }
 
+    @Override
     public void add(int index, E element) {
         if (index < 0 || index > size)
             throw new IndexOutOfBoundsException();
@@ -157,6 +188,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         size++;
     }
 
+    @Override
     public E remove(int index) {
         checkBoundaries(index);
         Object oldElem = elems[index];
@@ -165,6 +197,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return castUnchecked(oldElem);
     }
 
+    @Override
     public int indexOf(Object o) {
         if (o == null) {
             for (int i = 0; i < size; i++) {
@@ -180,6 +213,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return -1;
     }
 
+    @Override
     public int lastIndexOf(Object o) {
         if (o == null) {
             for (int i = size - 1; i >= 0; i--) {
@@ -195,14 +229,17 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return -1;
     }
 
+    @Override
     public Iterator<E> iterator() {
         return new Itr();
     }
 
+    @Override
     public ListIterator<E> listIterator() {
         return new ListItr(0);
     }
 
+    @Override
     public ListIterator<E> listIterator(int index) {
         return new ListItr(index);
     }
@@ -245,8 +282,8 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     /**
      * Not Fail Fast!!!!!
      *
-     * TODO CHECK if ConcurrentModificationExceptions are needed for this specific task (Most Likely
-     * this will be needed and I will need to make it Fail Fast)
+     * DONE CHECK if ConcurrentModificationExceptions are needed for this specific task (Most Likely
+     * this will be needed and I will need to make it Fail Fast) -> NOPE
      **/
     private class ListItr extends Itr implements ListIterator<E> {
 
@@ -292,8 +329,9 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
 
     }
 
+    @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        // TODO CHECK IF NEEDED
+        // DONE CHECK IF NEEDED -> Most likely not
         return null;
     }
 
@@ -328,6 +366,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return "SpecifiedArrayListImpl [size=" + size + ", elems=" + Arrays.toString(elems) + "]";
     }
 
+    @Override
     public void ensureCapacity(int capacity) {
         int curCapacity = elems.length;
         if (curCapacity < capacity) {
@@ -344,6 +383,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         }
     }
 
+    @Override
     public void trimToSize() {
         if (elems.length >= size)
             elems = Arrays.copyOf(elems, size);

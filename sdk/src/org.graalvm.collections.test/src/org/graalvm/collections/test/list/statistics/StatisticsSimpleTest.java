@@ -3,11 +3,11 @@ package org.graalvm.collections.test.list.statistics;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.statistics.CSVGenerator;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
 
-//TODO make JUnit Test /This simple implementation is only to check if my general idea/approach works
 public class StatisticsSimpleTest {
     private final static int TEST_SIZE = 10;
 
@@ -60,6 +60,13 @@ public class StatisticsSimpleTest {
         for (int i = 0; i < TEST_SIZE; i++) {
             testList6.add(new Integer(r.nextInt(100)));
         }
+
+        SpecifiedArrayList<Object> testList7 = StatisticalSpecifiedArrayListImpl.createNew();
+        testList7.add(new Object());
+        testList7.add(new Integer(0));
+        testList7.add(new String("ab"));
+        testList7.add(new ArrayList<Integer>());
+
         Statistics.printOverallSummary();
 
         String[] data = Statistics.getOpDataLines(DATA_SEPARATOR);

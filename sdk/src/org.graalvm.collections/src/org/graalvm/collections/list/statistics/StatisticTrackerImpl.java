@@ -1,6 +1,7 @@
 package org.graalvm.collections.list.statistics;
 
 import java.lang.reflect.Type;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class StatisticTrackerImpl implements StatisticTracker {
     // _____GLOBAL FIELDS______
     // ID
-    private static int nextID = 0;
+    private static int nextID = 1;
 
     // Operations
     static enum Operation {
@@ -45,11 +46,18 @@ public class StatisticTrackerImpl implements StatisticTracker {
         SIZE
     }
 
+    // Operations that are tracked more precisely
+    private static final EnumSet<Operation> SPECIAL_OPS = EnumSet.of(Operation.ADD_OBJ, Operation.REMOVE_OBJ, Operation.GET_INDEXED, Operation.SET_INDEXED);
+
     // _____LOCAL FIELDS______
     private final int ID;
 
     // Map of Operations performed on the list
     private final HashMap<Operation, AtomicInteger> localOpMap;
+
+    // Maps for tracking Operation Distribution based on inserted Types and Subtypes. Only Operations
+    // listed in SPECIAL_OPS are tracked
+    private final HashMap<Operation, HashMap<Type, AtomicInteger>> localTypeOpMap;
 
     // Type
     private Type type;
@@ -64,10 +72,16 @@ public class StatisticTrackerImpl implements StatisticTracker {
     public StatisticTrackerImpl(StatisticalSpecifiedArrayListImpl list) {
         ID = nextID++;
         this.localOpMap = new HashMap<>(Operation.values().length);
+        this.localTypeOpMap = new HashMap<>();
         this.modifications = 0;
         this.list = list;
 
-        Statistics.addTracker(this);
+        Statistics.addTracker(this); // TODO Synchronize
+    }
+
+    public void countOP(Operation op) {
+        addOpTo(Statistics.globalOpMap, op);
+        addOpTo(localOpMap, op);
     }
 
     void setType(Class<?> c) {
@@ -78,9 +92,23 @@ public class StatisticTrackerImpl implements StatisticTracker {
         }
     }
 
-    public void countOP(Operation op) {
-        addOpTo(Statistics.globalOpMap, op);
-        addOpTo(localOpMap, op);
+    void addTypeOpToMap(Operation op, Type t) {
+
+        if (!SPECIAL_OPS.contains(op))
+            return;
+        HashMap<Type, AtomicInteger> map = localTypeOpMap.getOrDefault(op, null);
+        if (map == null) {
+            map = new HashMap<>();
+            AtomicInteger i = new AtomicInteger(1);
+            map.put(t, i);
+        } else {
+            AtomicInteger curr = map.getOrDefault(t, null);
+            if (curr == null) {
+                map.put(t, new AtomicInteger(1));
+            } else {
+                curr.getAndIncrement();
+            }
+        }
     }
 
     public void modified() {

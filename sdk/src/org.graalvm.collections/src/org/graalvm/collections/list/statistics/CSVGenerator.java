@@ -94,7 +94,7 @@ public class CSVGenerator {
 
         int length = StatisticTrackerImpl.getNextID();
         String[] trackerInfo;
-        for (int i = 0; i < length; i++) {
+        for (int i = 1; i < length; i++) {
             trackerInfo = Statistics.getTrackerByID(i).getOpDataLines(DATA_SEPARATOR);
             writeToFile(file, "TRACKER_" + i + ": Operation Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, true);
             writeToFile(file, trackerInfo, true);

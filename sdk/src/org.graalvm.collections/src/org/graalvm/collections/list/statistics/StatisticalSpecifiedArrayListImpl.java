@@ -33,15 +33,42 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.SpecifiedArrayListImpl;
 
-public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalCollection, StatisticalSpecifiedArrayList<E> {
+/**
+ * This is an enhancement of the SpecifiedArrayList used to gather information during runtime. It
+ * uses a StatisticTracker object to store the generated Information. This object can be used to
+ * extract useful information about the SpecifiedArrayList like
+ * <li>Size</li>
+ * <li>Type Distribution</li>
+ * <li>Load Factor</li>
+ * <li>Distribution of Operators</li>
+ *
+ *
+ * DONE Check if tracking also useful for Itr/ListItr -> Not necessary
+ *
+ * Done Check if this Interface is needed -> Nope
+ *
+ * @author Alex R.
+ */
 
-    // TODO Check if Reflection works -> NO -> find solution -> kinda cheeky solution found and
-    // implemented -> find better one
-    //
-    // private final StatisticTrackerImpl tracker = new StatisticTrackerImpl(((ParameterizedType)
-    // getClass().getGenericSuperclass()).getActualTypeArguments()[0], this);
+public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalCollection {
+
+    /**
+     * Factory methods
+     */
+    public static <E> SpecifiedArrayList<E> createNew() {
+        return new StatisticalSpecifiedArrayListImpl<>();
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+        return new StatisticalSpecifiedArrayListImpl<>(c);
+    }
 
     /*
      * TODO track number of grows
@@ -106,9 +133,11 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
 
     @Override
     public boolean add(E e) {
+        Class<?> clazz = e.getClass();
         tracker.countOP(ADD_OBJ);
+        tracker.addTypeOpToMap(ADD_OBJ, clazz);
         tracker.modified();
-        tracker.setType(e.getClass());
+        tracker.setType(clazz);
         return super.add(e);
     }
 
@@ -116,6 +145,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public boolean remove(Object o) {
         tracker.countOP(REMOVE_OBJ);
         tracker.modified();
+        tracker.addTypeOpToMap(REMOVE_OBJ, o.getClass());
         return super.remove(o);
     }
 
@@ -176,14 +206,18 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     @Override
     public E get(int index) {
         tracker.countOP(GET_INDEXED);
-        return super.get(index);
+        E e = super.get(index);
+        tracker.addTypeOpToMap(GET_INDEXED, e.getClass());
+        return e;
     }
 
     @Override
     public E set(int index, E element) {
+        Class<?> clazz = element.getClass();
         tracker.countOP(SET_INDEXED);
         tracker.modified();
-        tracker.setType(element.getClass());
+        tracker.setType(clazz);
+        tracker.addTypeOpToMap(SET_INDEXED, clazz);
         return super.set(index, element);
     }
 

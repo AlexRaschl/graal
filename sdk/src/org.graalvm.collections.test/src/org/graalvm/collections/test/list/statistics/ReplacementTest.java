@@ -6,8 +6,8 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.statistics.CSVGenerator;
-import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayList;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.collections.test.list.TestUtilities;
@@ -23,7 +23,7 @@ public class ReplacementTest {
     private static Integer[] testData;
     private final static int TEST_SIZE = 2031;
     private ArrayList<Integer> referenceList;
-    private StatisticalSpecifiedArrayList<Integer> testList;
+    private SpecifiedArrayList<Integer> testList;
     private final Random r = new Random();
 
     @BeforeClass
@@ -37,7 +37,7 @@ public class ReplacementTest {
     @Before
     public void setupSAR() {
         // SpecifiedArrayList
-        testList = new StatisticalSpecifiedArrayListImpl<>(TEST_SIZE - 1);
+        testList = SpecifiedArrayList.createNew(TEST_SIZE - 1);
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(testData[i]); // Assuming Add works like intended
         }
@@ -81,7 +81,7 @@ public class ReplacementTest {
 
     @Test
     public void testAdd() {
-        testList = new StatisticalSpecifiedArrayListImpl<>();
+        testList = SpecifiedArrayList.createNew();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(i);
         }

@@ -17,7 +17,7 @@ import org.junit.Test;
 
 public class SpecifiedArrayListEnhancedTest {
     private static String[] testData;
-    private final static int TEST_SIZE = 20031;
+    private final static int TEST_SIZE = 2031;
     private ArrayList<String> referenceList;
     private SpecifiedArrayList<String> testList;
     private final Random r = new Random();
@@ -33,7 +33,7 @@ public class SpecifiedArrayListEnhancedTest {
     @Before
     public void setupSAR() {
         // SpecifiedArrayList
-        testList = new SpecifiedArrayListImpl<>();
+        testList = SpecifiedArrayListImpl.createNew();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(testData[i]); // Assuming Add works like intended
         }
@@ -102,7 +102,7 @@ public class SpecifiedArrayListEnhancedTest {
 
     @Test
     public void testSetOfOperations() {
-        testList = new SpecifiedArrayListImpl<>(20);
+        testList = SpecifiedArrayListImpl.createNew(20);
         referenceList = new ArrayList<>(20);
 
         testList.add("ABC");
@@ -120,7 +120,7 @@ public class SpecifiedArrayListEnhancedTest {
         Assert.assertTrue(testList.removeAll(Arrays.asList(arr)));
         Assert.assertTrue(testList.isEmpty() && testList.size() == 0);
         //
-        testList = new SpecifiedArrayListImpl<>(Arrays.asList(arr));
+        testList = SpecifiedArrayListImpl.createNew(Arrays.asList(arr));
         Assert.assertTrue(testList.size() == 4);
         testList.ensureCapacity(1000);
         testList.trimToSize();
@@ -130,7 +130,7 @@ public class SpecifiedArrayListEnhancedTest {
         Assert.assertFalse(testList.contains(null));
         Assert.assertFalse(testList.contains("a"));
         //
-        testList = new SpecifiedArrayListImpl<>();
+        testList = SpecifiedArrayListImpl.createNew();
         testList.add("ABC");
         testList.add(0, "def");
         testList.addAll(Arrays.asList(arr));
@@ -195,7 +195,7 @@ public class SpecifiedArrayListEnhancedTest {
 
     @Test
     public void testRandomInsertionsAndRemovals() {
-        SpecifiedArrayList<Integer> testList2 = new SpecifiedArrayListImpl<>(TEST_SIZE);
+        SpecifiedArrayList<Integer> testList2 = SpecifiedArrayListImpl.createNew(TEST_SIZE);
         ArrayList<Integer> referenceList2 = new ArrayList<>(TEST_SIZE);
         testList2.add(1);
         referenceList2.add(1);

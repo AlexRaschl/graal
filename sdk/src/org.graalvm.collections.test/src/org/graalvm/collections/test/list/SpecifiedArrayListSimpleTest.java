@@ -20,7 +20,7 @@ public class SpecifiedArrayListSimpleTest {
      * TODO REPLACE get comparison with TestUtils
      */
     private static Integer[] testData;
-    private final static int TEST_SIZE = 20031;
+    private final static int TEST_SIZE = 2031;
     private ArrayList<Integer> referenceList;
     private SpecifiedArrayList<Integer> testList;
     private final Random r = new Random();
@@ -36,7 +36,7 @@ public class SpecifiedArrayListSimpleTest {
     @Before
     public void setupSAR() {
         // SpecifiedArrayList
-        testList = new SpecifiedArrayListImpl<>();
+        testList = SpecifiedArrayListImpl.createNew();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(testData[i]); // Assuming Add works like intended
         }
@@ -58,14 +58,15 @@ public class SpecifiedArrayListSimpleTest {
 
     @Test
     public void testAdd() {
-        testList = new SpecifiedArrayListImpl<>();
+        testList = SpecifiedArrayListImpl.createNew();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(i);
         }
 
-        for (int i = 0; i < TEST_SIZE; i++) {
-            Assert.assertEquals("Result: ", testList.get(i), referenceList.get(i));
-        }
+// for (int i = 0; i < TEST_SIZE; i++) {
+// Assert.assertEquals("Result: ", testList.get(i), referenceList.get(i));
+// }
+        TestUtilities.compareLists(testList, referenceList);
     }
 
     @Test
@@ -169,9 +170,10 @@ public class SpecifiedArrayListSimpleTest {
             testList.set(i, i + 1);
             referenceList.set(i, i + 1);
             Assert.assertEquals(testList.size(), referenceList.size());
-            for (int j = 0; j < TEST_SIZE; j++) {
-                Assert.assertEquals(testList.get(j), referenceList.get(j));
-            }
+            TestUtilities.compareLists(testList, referenceList);
+// for (int j = 0; j < TEST_SIZE; j++) {
+// Assert.assertEquals(testList.get(j), referenceList.get(j));
+// }
         }
 
     }
@@ -187,9 +189,10 @@ public class SpecifiedArrayListSimpleTest {
             testList.add(i, i + 1);
             referenceList.add(i, i + 1);
             Assert.assertEquals(testList.size(), referenceList.size());
-            for (int j = 0; j < TEST_SIZE; j++) {
-                Assert.assertEquals(testList.get(j), referenceList.get(j));
-            }
+            TestUtilities.compareLists(testList, referenceList);
+// for (int j = 0; j < TEST_SIZE; j++) {
+// Assert.assertEquals(testList.get(j), referenceList.get(j));
+// }
         }
     }
 
