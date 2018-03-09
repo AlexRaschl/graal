@@ -16,6 +16,9 @@ import org.junit.Test;
 
 public class SpecifiedArrayListSimpleTest {
 
+    /**
+     * TODO REPLACE get comparison with TestUtils
+     */
     private static Integer[] testData;
     private final static int TEST_SIZE = 20031;
     private ArrayList<Integer> referenceList;
@@ -128,7 +131,7 @@ public class SpecifiedArrayListSimpleTest {
 
     @Test
     public void testToArray() {
-        Assert.assertTrue(TestUtilities.compareIntLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
     }
 
     @Test
@@ -313,7 +316,7 @@ public class SpecifiedArrayListSimpleTest {
                 Assert.fail("Reference Iterator has already reached end!");
             }
         }
-        Assert.assertTrue(TestUtilities.compareIntLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
     }
 
     @Test
@@ -334,7 +337,7 @@ public class SpecifiedArrayListSimpleTest {
                 Assert.fail("Reference Iterator has already reached end!");
             }
         }
-        Assert.assertTrue(TestUtilities.compareIntLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
     }
 
     @Test

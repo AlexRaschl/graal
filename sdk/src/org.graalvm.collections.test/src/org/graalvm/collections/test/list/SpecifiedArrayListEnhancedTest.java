@@ -59,13 +59,13 @@ public class SpecifiedArrayListEnhancedTest {
             testList.add(null);
             referenceList.add(null);
         }
-        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
 
         for (int i = 0; i < TEST_SIZE / 10; i++) {
             testList.add(i, null);
             referenceList.add(i, null);
         }
-        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
     }
 
     @Test
@@ -74,19 +74,19 @@ public class SpecifiedArrayListEnhancedTest {
             testList.add(null);
             referenceList.add(null);
         }
-        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
 
         for (int i = 0; i < TEST_SIZE / 10; i++) {
             testList.add(i, null);
             referenceList.add(i, null);
         }
-        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
 
         for (int i = 0; i < TEST_SIZE / 10; i++) {
             Assert.assertTrue(testList.remove(null));
             Assert.assertTrue(referenceList.remove(null));
         }
-        Assert.assertTrue(TestUtilities.compareStringLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
         for (int i = 0; i < TEST_SIZE / 10; i++) {
             Assert.assertTrue(testList.remove(null));
             Assert.assertTrue(referenceList.remove(null));
@@ -233,7 +233,7 @@ public class SpecifiedArrayListEnhancedTest {
 
                 }
                 d = r.nextDouble();
-                Assert.assertTrue(TestUtilities.compareIntLists(testList2, referenceList2));
+                Assert.assertTrue(TestUtilities.compareLists(testList2, referenceList2));
             }
         }
     }

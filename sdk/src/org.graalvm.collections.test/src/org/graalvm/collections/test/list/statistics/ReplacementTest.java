@@ -21,7 +21,7 @@ import org.junit.Test;
 public class ReplacementTest {
 
     private static Integer[] testData;
-    private final static int TEST_SIZE = 20031;
+    private final static int TEST_SIZE = 2031;
     private ArrayList<Integer> referenceList;
     private StatisticalSpecifiedArrayList<Integer> testList;
     private final Random r = new Random();
@@ -37,7 +37,7 @@ public class ReplacementTest {
     @Before
     public void setupSAR() {
         // SpecifiedArrayList
-        testList = new StatisticalSpecifiedArrayListImpl<>();
+        testList = new StatisticalSpecifiedArrayListImpl<>(TEST_SIZE - 1);
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(testData[i]); // Assuming Add works like intended
         }
@@ -74,6 +74,8 @@ public class ReplacementTest {
             System.out.println(s);
         System.out.println();
 
+        Statistics.printOverallSummary();
+
         CSVGenerator.createFileOfGlobalInfo();
     }
 
@@ -84,9 +86,12 @@ public class ReplacementTest {
             testList.add(i);
         }
 
-        for (int i = 0; i < TEST_SIZE; i++) {
-            Assert.assertEquals("Result: ", testList.get(i), referenceList.get(i));
-        }
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
+
+// for (int i = 0; i < TEST_SIZE; i++) {
+// Assert.assertEquals("Result: ", testList.get(i), referenceList.get(i));
+// Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
+// }
     }
 
     @Test
@@ -152,7 +157,7 @@ public class ReplacementTest {
 
     @Test
     public void testToArray() {
-        Assert.assertTrue(TestUtilities.compareIntLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
     }
 
     @Test
@@ -190,9 +195,10 @@ public class ReplacementTest {
             testList.set(i, i + 1);
             referenceList.set(i, i + 1);
             Assert.assertEquals(testList.size(), referenceList.size());
-            for (int j = 0; j < TEST_SIZE; j++) {
-                Assert.assertEquals(testList.get(j), referenceList.get(j));
-            }
+            Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
+// for (int j = 0; j < TEST_SIZE; j++) {
+// Assert.assertEquals(testList.get(j), referenceList.get(j));
+// }
         }
 
     }
@@ -208,9 +214,10 @@ public class ReplacementTest {
             testList.add(i, i + 1);
             referenceList.add(i, i + 1);
             Assert.assertEquals(testList.size(), referenceList.size());
-            for (int j = 0; j < TEST_SIZE; j++) {
-                Assert.assertEquals(testList.get(j), referenceList.get(j));
-            }
+            Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
+// for (int j = 0; j < TEST_SIZE; j++) {
+// Assert.assertEquals(testList.get(j), referenceList.get(j));
+// }
         }
     }
 
@@ -337,7 +344,7 @@ public class ReplacementTest {
                 Assert.fail("Reference Iterator has already reached end!");
             }
         }
-        Assert.assertTrue(TestUtilities.compareIntLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
     }
 
     @Test
@@ -358,7 +365,7 @@ public class ReplacementTest {
                 Assert.fail("Reference Iterator has already reached end!");
             }
         }
-        Assert.assertTrue(TestUtilities.compareIntLists(testList, referenceList));
+        Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
     }
 
     @Test

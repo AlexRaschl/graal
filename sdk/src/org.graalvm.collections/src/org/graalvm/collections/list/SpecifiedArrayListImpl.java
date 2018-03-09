@@ -127,9 +127,11 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     }
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            elems[i] = null;
-        }
+// for (int i = 0; i < size; i++) {
+// elems[i] = null;
+// }
+//
+        elems = new Object[INITIAL_CAPACITY];
         size = 0;
         System.gc();
     }
@@ -158,7 +160,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
     public E remove(int index) {
         checkBoundaries(index);
         Object oldElem = elems[index];
-        System.arraycopy(elems, index + 1, elems, index, size - index + 1);
+        System.arraycopy(elems, index + 1, elems, index, size - index - 1);
         size--;
         return castUnchecked(oldElem);
     }
@@ -304,6 +306,7 @@ public class SpecifiedArrayListImpl<E> implements SpecifiedArrayList<E> {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

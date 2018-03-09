@@ -1,12 +1,39 @@
 package org.graalvm.collections.list.statistics;
 
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ADD_ALL;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ADD_ALL_INDEXED;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ADD_INDEXED;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ADD_OBJ;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CLEAR;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CONTAINS;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CONTAINS_ALL;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CREATE_LIST_ITR;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CREATE_LIST_ITR_INDEXED;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CSTR_CAP;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CSTR_COLL;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CSTR_STD;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.EMPTY;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ENSURE_CAP;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.GET_INDEXED;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.INDEX_OF;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.INDEX_OF_LAST;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ITERATOR;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.REMOVE_ALL;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.REMOVE_INDEXED;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.REMOVE_OBJ;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.RETAIN_ALL;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.SET_INDEXED;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.SIZE;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.SUBLIST;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TO_ARRAY;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TRIM_TO_SIZE;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.graalvm.collections.list.SpecifiedArrayListImpl;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.*;
 
 public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalCollection, StatisticalSpecifiedArrayList<E> {
 
@@ -15,6 +42,10 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     //
     // private final StatisticTrackerImpl tracker = new StatisticTrackerImpl(((ParameterizedType)
     // getClass().getGenericSuperclass()).getActualTypeArguments()[0], this);
+
+    /*
+     * TODO track number of grows
+     */
     private final StatisticTrackerImpl tracker = new StatisticTrackerImpl(this);
 
     /**
@@ -226,5 +257,9 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public int getCurrentCapacity() {
         return super.getCapacity();
     }
+
+    /*
+     * TODO check if setType also needed in ListIterator/Iterator funcitons
+     */
 
 }
