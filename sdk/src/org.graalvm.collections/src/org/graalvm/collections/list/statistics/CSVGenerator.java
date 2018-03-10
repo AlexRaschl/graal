@@ -20,6 +20,8 @@ public class CSVGenerator {
     private final static String NAME_ALL = "all.csv";
     private final static String NAME_GBL = "gbl.csv";
     private final static String NAME_PREFIX = "TR";
+    private final static String NAME_OP_DISTR = "OpDistr.csv";
+    private final static String NAME_TYPE_OP_DISTR = "TypeOpDistr.csv";
 
     private final static boolean APPEND_MODE = false;
 
@@ -35,6 +37,36 @@ public class CSVGenerator {
             initialized = true;
     }
 
+    public static void createFileOfOperationDistributions() {
+        final String[] opLines = Statistics.getOpDataLines(DATA_SEPARATOR);
+        File file = createFile(NAME_OP_DISTR);
+        if (file == null)
+            return; // TODO Exception
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
+        writeToFile(file, opLines, true);
+
+        int length = StatisticTrackerImpl.getNextID();
+        String[] trackerInfo;
+        for (int i = 1; i < length; i++) {
+            trackerInfo = Statistics.getTrackerByID(i).getOpDataLines(DATA_SEPARATOR);
+            writeToFile(file, trackerInfo, true);
+        }
+    }
+
+    public static void createFileOfTypeOperationDistributions() {
+        File file = createFile(NAME_TYPE_OP_DISTR);
+        if (file == null)
+            return; // TODO Exception
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation on" + DATA_SEPARATOR + "Type" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
+        int length = StatisticTrackerImpl.getNextID();
+        String[] trackerInfo;
+
+        for (int i = 1; i < length; i++) {
+            trackerInfo = Statistics.getTrackerByID(i).getTypeOpDataLines(DATA_SEPARATOR);
+            writeToFile(file, trackerInfo, true);
+        }
+    }
+
     public static void createFileOfTracker(final int ID) {
         if (!initialized)
             return;
@@ -46,8 +78,8 @@ public class CSVGenerator {
         String[] opLines = tracker.getOpDataLines(DATA_SEPARATOR);
         File file = createFile(NAME_PREFIX + ID + ".csv");
         if (file == null)
-            return; // TODO Exception
-        writeToFile(file, "TRACKER_" + ID + ": Operation Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, APPEND_MODE);
+            return;
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
         writeToFile(file, opLines, true);
         writeToFile(file, LINE_SEPARATOR + "", true);
     }
@@ -63,11 +95,11 @@ public class CSVGenerator {
         if (file == null)
             return; // TODO Exception
 
-        writeToFile(file, "Operaton Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, APPEND_MODE);
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operaton" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
         writeToFile(file, opLines, true);
-        writeToFile(file, "Type Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, true);
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Type" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, true);
         writeToFile(file, typeLines, true);
-        writeToFile(file, "Load Factor Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, true);
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Load Factor" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, true);
         writeToFile(file, lfLines, true);
         writeToFile(file, LINE_SEPARATOR + "", true);
 
@@ -85,18 +117,18 @@ public class CSVGenerator {
         if (file == null)
             return; // TODO Exception
 
-        writeToFile(file, "Operaton Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, APPEND_MODE);
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operaton" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
         writeToFile(file, opLines, true);
-        writeToFile(file, "Type Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, true);
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Type" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, true);
         writeToFile(file, typeLines, true);
-        writeToFile(file, "Load Factor Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, true);
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Load Factor" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, true);
         writeToFile(file, lfLines, true);
 
         int length = StatisticTrackerImpl.getNextID();
         String[] trackerInfo;
         for (int i = 1; i < length; i++) {
             trackerInfo = Statistics.getTrackerByID(i).getOpDataLines(DATA_SEPARATOR);
-            writeToFile(file, "TRACKER_" + i + ": Operation Occurrences" + DATA_SEPARATOR + "Num" + LINE_SEPARATOR, true);
+            writeToFile(file, "TRACKER_" + i + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, true);
             writeToFile(file, trackerInfo, true);
             writeToFile(file, LINE_SEPARATOR + "", true);
         }
@@ -110,12 +142,10 @@ public class CSVGenerator {
             if (!file.exists()) {
                 file.createNewFile();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         return file;
-
     }
 
     private static void writeToFile(File file, String[] lines, boolean append) {
@@ -127,7 +157,6 @@ public class CSVGenerator {
                 w.write(s.getBytes());
                 w.write(LINE_SEPARATOR);
             }
-            w.write(LINE_SEPARATOR);
             w.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

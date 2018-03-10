@@ -27,7 +27,7 @@ public class Statistics {
         trackers.add(tracker);
     }
 
-    public static StatisticTracker getTrackerByID(int id) {
+    static StatisticTracker getTrackerByID(int id) {
         Iterator<StatisticTracker> itr = trackers.iterator();
         while (itr.hasNext()) {
             StatisticTracker t = itr.next();
@@ -45,7 +45,7 @@ public class Statistics {
         }
     }
 
-    static void printGlobalInformation() {
+    public static void printGlobalInformation() {
         StringBuilder sb = new StringBuilder(200);
         sb.append("GLOBAL INFORMATION: \n");
         sb.append("Current used Size: ");
@@ -54,11 +54,11 @@ public class Statistics {
         sb.append("Current available Capacity: ");
         sb.append(getCurrentTotalCapacity());
         sb.append('\n');
-        sb.append("Current load factor: ");
+        sb.append("Current global load factor: ");
         sb.append(((double) getCurrentTotalSize()) / getCurrentTotalCapacity());
         sb.append('\n');
         sb.append("Trackers allocated: ");
-        sb.append(StatisticTrackerImpl.getNextID());
+        sb.append(StatisticTrackerImpl.getNextID() - 1);
         sb.append('\n');
         sb.append("OPERATION USAGE: \n");
         sb.append('\n');
@@ -70,47 +70,25 @@ public class Statistics {
         System.out.print(sb.toString());
     }
 
-    private static int getCurrentTotalCapacity() {
-        int capacity = 0;
-        for (StatisticTracker t : trackers) {
-            capacity += t.getCurrentCapacity();
-        }
-        return capacity;
-    }
-
-    private static int getCurrentTotalSize() {
-        int size = 0;
-        for (StatisticTracker t : trackers) {
-            size += t.getCurrentSize();
-        }
-        return size;
-    }
-
     /*
      * Data Lines for CSV Generator
      */
     public static String[] getOpDataLines(final char dataSeparator) {
         String[] dataArr = new String[globalOpMap.size()];
         Iterator<Entry<Operation, AtomicInteger>> itr = globalOpMap.entrySet().iterator();
-
-// StringBuilder sb = new StringBuilder(30);
-// sb.append("Operation Occurrences");
-// sb.append(dataSeparator);
-// sb.append("Num");
-// dataArr[0] = sb.toString();
         StringBuilder sb = new StringBuilder(50);
 
         int n = 0;
         while (itr.hasNext()) {
             Entry<Operation, AtomicInteger> entry = itr.next();
-
+            sb.append(0);
+            sb.append(dataSeparator);
             sb.append(entry.getKey().name());
             sb.append(dataSeparator);
             sb.append(' ');
             sb.append(entry.getValue().get());
             dataArr[n++] = sb.toString();
             sb = new StringBuilder(50);
-            // dataArr[n++] = entry.getKey().name() + separator + " " + entry.getValue().get();
         }
         return dataArr;
     }
@@ -122,19 +100,18 @@ public class Statistics {
         String[] dataArr = new String[globalTypeMap.size()];
         Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
 
-        // dataArr[0] = "Type Occurrences" + dataSeparator + "Num";
-
         int n = 0;
         StringBuilder sb = new StringBuilder(30);
         while (itr.hasNext()) {
             Entry<Type, AtomicInteger> entry = itr.next();
+            sb.append(0);
+            sb.append(dataSeparator);
             sb.append(entry.getKey().getTypeName());
             sb.append(dataSeparator);
             sb.append(' ');
             sb.append(entry.getValue().get());
             dataArr[n++] = sb.toString();
             sb = new StringBuilder();
-            // dataArr[n++] = entry.getKey().getTypeName() + separator + " " + entry.getValue().get();
         }
         return dataArr;
     }
@@ -160,9 +137,10 @@ public class Statistics {
             }
         }
 
-        // dataArr[0] = "Load Factor Intervals" + dataSeparator + "Num";
         StringBuilder sb = new StringBuilder(25);
         for (int i = 0; i < INTERVAL_SIZE; i++) {
+            sb.append(0);
+            sb.append(dataSeparator);
             sb.append("[");
             sb.append((i) * stepSize);
             sb.append("%, ");
@@ -173,8 +151,6 @@ public class Statistics {
             sb.append(intervalOccurrences[i]);
             dataArr[i] = sb.toString();
             sb = new StringBuilder(25);
-            // dataArr[i] = "[" + (i - 1) * stepSize + "%, " + i * stepSize + "%[" + separator + " " +
-            // intervalOccurrences[i - 1]
         }
         return dataArr;
     }
@@ -192,8 +168,6 @@ public class Statistics {
             sb.append(", Usages: ");
             sb.append(entry.getValue().get());
             sb.append('\n');
-            // sb.append(++n + ": Operation: " + entry.getKey().name() + ", Usages: " + entry.getValue().get() +
-            // "\n");
         }
         return sb.toString();
     }
@@ -211,10 +185,24 @@ public class Statistics {
             sb.append(", Usages: ");
             sb.append(entry.getValue().get());
             sb.append('\n');
-            // sb.append(++n + ": Type: " + entry.getKey().getTypeName() + ", Usages: " + entry.getValue().get()
-            // + "\n");
         }
         return sb.toString();
+    }
+
+    private static int getCurrentTotalCapacity() {
+        int capacity = 0;
+        for (StatisticTracker t : trackers) {
+            capacity += t.getCurrentCapacity();
+        }
+        return capacity;
+    }
+
+    private static int getCurrentTotalSize() {
+        int size = 0;
+        for (StatisticTracker t : trackers) {
+            size += t.getCurrentSize();
+        }
+        return size;
     }
 
 }

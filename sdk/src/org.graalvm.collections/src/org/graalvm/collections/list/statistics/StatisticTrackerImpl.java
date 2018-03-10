@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
+
+import org.omg.CORBA.DATA_CONVERSION;
 
 public class StatisticTrackerImpl implements StatisticTracker {
     // _____GLOBAL FIELDS______
@@ -63,7 +66,8 @@ public class StatisticTrackerImpl implements StatisticTracker {
     private Type type;
     private boolean isAdded = false;
 
-    // Number of times the content of the list has changed
+    // Number of times the content of the list has changed NOTE: Changes made by Iterators are not
+    // tracked
     private int modifications;
 
     @SuppressWarnings("rawtypes") private final StatisticalSpecifiedArrayListImpl list; // No Use of get, add, ....
@@ -82,33 +86,6 @@ public class StatisticTrackerImpl implements StatisticTracker {
     public void countOP(Operation op) {
         addOpTo(Statistics.globalOpMap, op);
         addOpTo(localOpMap, op);
-    }
-
-    void setType(Class<?> c) {
-        if (!isAdded) {
-            this.type = c;
-            addTypeTo(Statistics.globalTypeMap, type);
-            isAdded = true;
-        }
-    }
-
-    void addTypeOpToMap(Operation op, Type t) {
-
-        if (!SPECIAL_OPS.contains(op))
-            return;
-        HashMap<Type, AtomicInteger> map = localTypeOpMap.getOrDefault(op, null);
-        if (map == null) {
-            map = new HashMap<>();
-            AtomicInteger i = new AtomicInteger(1);
-            map.put(t, i);
-        } else {
-            AtomicInteger curr = map.getOrDefault(t, null);
-            if (curr == null) {
-                map.put(t, new AtomicInteger(1));
-            } else {
-                curr.getAndIncrement();
-            }
-        }
     }
 
     public void modified() {
@@ -131,13 +108,93 @@ public class StatisticTrackerImpl implements StatisticTracker {
         return ID;
     }
 
-    static int getNextID() {
-        return nextID;
+    public String[] getOpDataLines(final char dataSeparator) {
+        final String[] dataArr = new String[localOpMap.size()];
+        final Iterator<Entry<Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
+        StringBuilder sb = new StringBuilder(50);
+
+        int n = 0;
+        while (itr.hasNext()) {
+            Entry<Operation, AtomicInteger> entry = itr.next();
+            sb.append(this.ID);
+            sb.append(dataSeparator);
+            sb.append(entry.getKey().name());
+            sb.append(dataSeparator);
+            sb.append(' ');
+            sb.append(entry.getValue().get());
+            dataArr[n++] = sb.toString();
+            sb = new StringBuilder(50);
+        }
+        return dataArr;
+    }
+
+    public String[] getTypeOpDataLines(char dataSeparator) {
+        final String[][] dataArr = new String[localTypeOpMap.size()][];
+        initStrings(dataArr);
+        final Iterator<Entry<Operation, HashMap<Type, AtomicInteger>>> itr = localTypeOpMap.entrySet().iterator();
+        int n = 0;
+        while (itr.hasNext()) {
+            Entry<Operation, HashMap<Type, AtomicInteger>> entry = itr.next();
+            Operation op = entry.getKey();
+            HashMap<Type, AtomicInteger> map = entry.getValue();
+            dataArr[n] = new String[map.size()];
+            putData(dataArr[n], op, map, this.ID, dataSeparator);
+            n++;
+        }
+        return getFlatStringArray(dataArr);
+    }
+
+    private static void initStrings(String[][] dataArr) {
+        for (int r = 0; r < dataArr.length; r++) {
+            dataArr[r] = new String[0];
+        }
+    }
+
+    private static void putData(String[] dataLines, Operation op, HashMap<Type, AtomicInteger> map, int ID, char dataSeparator) {
+
+        final Iterator<Entry<Type, AtomicInteger>> itr = map.entrySet().iterator();
+
+        StringBuilder sb = new StringBuilder(50);
+        int n = 0;
+        while (itr.hasNext()) {
+            Entry<Type, AtomicInteger> entry = itr.next();
+            sb.append(ID);
+            sb.append(dataSeparator);
+            sb.append(op.name());
+            sb.append(dataSeparator);
+            sb.append(entry.getKey().getTypeName());
+            sb.append(dataSeparator);
+            sb.append(entry.getValue().get());
+            sb.append(dataSeparator);
+            dataLines[n++] = sb.toString();
+            sb = new StringBuilder(50);
+
+        }
+
+    }
+
+    private static String[] getFlatStringArray(String[][] dataArr) {
+        int dim1 = dataArr.length;
+        if (dim1 == 0)
+            return new String[0];
+        if (dataArr[0] == null) {
+            return null; // TODO handle case
+        }
+
+        int dim2 = dataArr[0].length;
+
+        final String[] result = new String[dataArr.length * dataArr[0].length];
+        int i = 0;
+        for (int r = 0; r < dim1; r++) {
+            for (int c = 0; c < dim2; c++) {
+                result[i++] = dataArr[r][c];
+            }
+        }
+        return result;
     }
 
     public void printGeneralInformation() {
         StringBuilder sb = new StringBuilder(200);
-        // sb.append("LOCAL INFORMATION: \n");
         sb.append("StatisticTrackerImpl with ID: ");
         sb.append(this.ID);
         sb.append('\n');
@@ -162,30 +219,36 @@ public class StatisticTrackerImpl implements StatisticTracker {
         System.out.print(sb.toString());
     }
 
-    public String[] getOpDataLines(final char dataSeparator) {
-        String[] dataArr = new String[localOpMap.size()];
-        Iterator<Entry<Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
+    static int getNextID() {
+        return nextID;
+    }
 
-// StringBuilder sb = new StringBuilder(30);
-// sb.append("Operation Occurrences");
-// sb.append(dataSeparator);
-// sb.append("Num");
-// dataArr[0] = sb.toString();
-        StringBuilder sb = new StringBuilder(50);
-
-        int n = 0;
-        while (itr.hasNext()) {
-            Entry<Operation, AtomicInteger> entry = itr.next();
-
-            sb.append(entry.getKey().name());
-            sb.append(dataSeparator);
-            sb.append(' ');
-            sb.append(entry.getValue().get());
-            dataArr[n++] = sb.toString();
-            sb = new StringBuilder(50);
-            // dataArr[n++] = entry.getKey().name() + separator + " " + entry.getValue().get();
+    void setType(Class<?> c) {
+        if (!isAdded) {
+            this.type = c;
+            addTypeTo(Statistics.globalTypeMap, type);
+            isAdded = true;
         }
-        return dataArr;
+    }
+
+    void addTypeOpToMap(Operation op, Type t) {
+
+        if (!SPECIAL_OPS.contains(op))
+            return;
+        HashMap<Type, AtomicInteger> map = localTypeOpMap.getOrDefault(op, null);
+        if (map == null) {
+            map = new HashMap<>();
+            AtomicInteger i = new AtomicInteger(1);
+            map.put(t, i);
+            localTypeOpMap.put(op, map);
+        } else {
+            AtomicInteger curr = map.getOrDefault(t, null);
+            if (curr == null) {
+                map.put(t, new AtomicInteger(1));
+            } else {
+                curr.getAndIncrement();
+            }
+        }
     }
 
     private static void addOpTo(HashMap<Operation, AtomicInteger> map, Operation op) {

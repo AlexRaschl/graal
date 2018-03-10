@@ -90,5 +90,9 @@ public class StatisticsSimpleTest {
 
         CSVGenerator.createFileOfEverything();
 
+        CSVGenerator.createFileOfOperationDistributions();
+
+        CSVGenerator.createFileOfTypeOperationDistributions();
+
     }
 }
