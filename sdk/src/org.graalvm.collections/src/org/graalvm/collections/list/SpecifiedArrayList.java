@@ -26,15 +26,15 @@ public abstract class SpecifiedArrayList<E> implements Iterable<E>, Cloneable {
      * Factory methods
      */
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new StatisticalSpecifiedArrayListImpl<>();
+        return new SpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
+        return new SpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new StatisticalSpecifiedArrayListImpl<>(c);
+        return new SpecifiedArrayListImpl<>(c);
     }
 
     /**

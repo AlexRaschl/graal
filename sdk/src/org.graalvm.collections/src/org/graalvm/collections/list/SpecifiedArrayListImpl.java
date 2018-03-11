@@ -41,7 +41,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      *
      * @param initialCapacity Capacity the list will have from beginning
      */
-    protected SpecifiedArrayListImpl(int initialCapacity) {
+    public SpecifiedArrayListImpl(int initialCapacity) {
         if (size >= 0) {
             this.size = 0;
             this.elems = new Object[initialCapacity];
@@ -54,7 +54,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * Creates an instance of SpecifiedArrayListImpl.
      *
      */
-    protected SpecifiedArrayListImpl() {
+    public SpecifiedArrayListImpl() {
         this(INITIAL_CAPACITY);
     }
 
@@ -63,7 +63,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      *
      * @param collection
      */
-    protected SpecifiedArrayListImpl(Collection<E> collection) {
+    public SpecifiedArrayListImpl(Collection<E> collection) {
         this.size = collection.size();
         this.elems = Arrays.copyOf(collection.toArray(), collection.size());
     }
@@ -155,13 +155,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public void clear() {
-// for (int i = 0; i < size; i++) {
-// elems[i] = null;
-// }
-//
-        elems = new Object[INITIAL_CAPACITY];
+        for (int i = 0; i < size; i++) {
+            elems[i] = null;
+        }
+
+        // elems = new Object[INITIAL_CAPACITY];
         size = 0;
-        System.gc();
     }
 
     @Override
@@ -428,21 +427,17 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param index index of object to be removed
      */
     private void fastRemove(int index) {
-        System.arraycopy(elems, index + 1, elems, index, size - index - 1);
+        int numMoved = size - index - 1;
+        if (0 < numMoved)
+            System.arraycopy(elems, index + 1, elems, index, numMoved);
         elems[--size] = null;
     }
 
-    /**
-     * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
-     */
-    private void grow() {
-        int newLength = elems.length * GROW_FACTOR;
-        elems = Arrays.copyOf(elems, newLength);
-    }
-
     private void growIfNeeded() {
-        if (size == elems.length)
-            grow();
+        if (size == elems.length) {
+            int newLength = elems.length * GROW_FACTOR;
+            elems = Arrays.copyOf(elems, newLength);
+        }
     }
 
     /** Performs a "hard" cut with potential data loss */

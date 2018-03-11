@@ -48,7 +48,7 @@ import org.graalvm.collections.list.SpecifiedArrayListImpl;
  *
  * DONE Check if tracking also useful for Itr/ListItr -> Not necessary
  *
- * Done Check if this Interface is needed -> Nope
+ * Done Check if the Interface is needed -> Nope
  *
  * @author Alex R.
  */
@@ -159,8 +159,12 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public boolean addAll(Collection<? extends E> c) {
         tracker.countOP(ADD_ALL);
         boolean res = super.addAll(c);
-        if (c.size() != 0)
-            tracker.setType(c.iterator().next().getClass());
+
+        if (c.size() != 0) {
+            Class<?> clazz;
+            clazz = c.iterator().next().getClass();
+            tracker.addTypeOpToMap(ADD_ALL, clazz);
+        }
 
         if (res)
             tracker.modified();
@@ -170,8 +174,12 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         tracker.countOP(ADD_ALL_INDEXED);
-        if (c.size() != 0)
-            tracker.setType(c.iterator().next().getClass());
+
+        if (c.size() != 0) {
+            Class<?> clazz;
+            clazz = c.iterator().next().getClass();
+            tracker.addTypeOpToMap(ADD_ALL, clazz);
+        }
 
         boolean res = super.addAll(index, c);
         if (res)
