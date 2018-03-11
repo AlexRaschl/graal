@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
-
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     // DONE CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
@@ -161,6 +159,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
         // elems = new Object[INITIAL_CAPACITY];
         size = 0;
+        // System.gc();
     }
 
     @Override
@@ -427,17 +426,21 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param index index of object to be removed
      */
     private void fastRemove(int index) {
-        int numMoved = size - index - 1;
-        if (0 < numMoved)
-            System.arraycopy(elems, index + 1, elems, index, numMoved);
+        System.arraycopy(elems, index + 1, elems, index, size - index - 1);
         elems[--size] = null;
     }
 
+    /**
+     * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
+     */
+    private void grow() {
+        int newLength = elems.length * GROW_FACTOR;
+        elems = Arrays.copyOf(elems, newLength);
+    }
+
     private void growIfNeeded() {
-        if (size == elems.length) {
-            int newLength = elems.length * GROW_FACTOR;
-            elems = Arrays.copyOf(elems, newLength);
-        }
+        if (size == elems.length)
+            grow();
     }
 
     /** Performs a "hard" cut with potential data loss */
