@@ -2,6 +2,7 @@ package org.graalvm.compiler.microbenchmarks.graal.collections;
 
 import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.compiler.microbenchmarks.graal.GraalBenchmark;
+import org.graalvm.compiler.microbenchmarks.graal.collections.ArrayListBenchmark.ThreadState;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Scope;
@@ -35,6 +36,18 @@ public class SpecifiedArrayListBenchmark extends GraalBenchmark {
         }
         for (int i = 0; i < N; ++i) {
             state.list.remove(new Integer(i));
+        }
+        state.list.clear();
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void addIndexOfAndClear(ThreadState state) {
+        for (int i = 0; i < N; ++i) {
+            state.list.add(i);
+        }
+        for (int i = 0; i < N; ++i) {
+            state.list.indexOf(new Integer(i));
         }
         state.list.clear();
     }
@@ -75,6 +88,17 @@ public class SpecifiedArrayListBenchmark extends GraalBenchmark {
         }
         for (int i = 0; i < N; ++i) {
             state.list.remove(new Integer(i));
+        }
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void addIndexOf(ClearedThreadState state) {
+        for (int i = 0; i < N; ++i) {
+            state.list.add(i);
+        }
+        for (int i = 0; i < N; ++i) {
+            state.list.indexOf(new Integer(i));
         }
     }
 }

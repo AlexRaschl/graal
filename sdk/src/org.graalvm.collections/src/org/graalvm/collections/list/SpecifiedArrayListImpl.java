@@ -40,7 +40,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param initialCapacity Capacity the list will have from beginning
      */
     public SpecifiedArrayListImpl(int initialCapacity) {
-        if (size >= 0) {
+        if (initialCapacity >= 0) {
             this.size = 0;
             this.elems = new Object[initialCapacity];
         } else {
