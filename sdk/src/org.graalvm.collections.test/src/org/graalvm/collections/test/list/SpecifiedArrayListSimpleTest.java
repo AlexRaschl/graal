@@ -362,4 +362,12 @@ public class SpecifiedArrayListSimpleTest {
         Assert.assertTrue(testList.isEmpty());
     }
 
+    @Test
+    public void TestAddNull() {
+        testList = SpecifiedArrayListImpl.createNew();
+        for (int i = 0; i < TEST_SIZE; i++) {
+            testList.add(null);
+        }
+    }
+
 }

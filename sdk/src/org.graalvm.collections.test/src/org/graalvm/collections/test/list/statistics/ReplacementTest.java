@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.CSVGenerator;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
@@ -387,4 +388,11 @@ public class ReplacementTest {
         Assert.assertTrue(testList.isEmpty());
     }
 
+    @Test
+    public void TestAddNull() {
+        testList = new StatisticalSpecifiedArrayListImpl<>();
+        for (int i = 0; i < TEST_SIZE; i++) {
+            testList.add(null);
+        }
+    }
 }

@@ -6,39 +6,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     // DONE CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
 
-    /*
-     * Default Capacity for new Instances
-     */
     private final static int INITIAL_CAPACITY = 16;
-
-    /*
-     * Default Growing Factor
-     */
     private final static int GROW_FACTOR = 2;
 
-    /*
-     * Shared empty Array for empty instances of SpecifiedArrayListImpl
-     */
-    private static final Object[] EMPTY_ELEMS = {};
-
-    private static final Object[] EMPTY_ELEMS_DEFAULT_CAP = {};
-
-    private static final int MAX_LENGTH = Integer.MAX_VALUE - 8;
-
-    /*
-     * Special Growing Theshold optimized for small list sizes
-     */
-    // private final static int CAPACITY_GROWING_THRESHOLD = 32;
+    private final static int CAPACITY_GROWING_THRESHOLD = 32;
 
     private int size;
-
-    transient Object elems[];
+    private Object elems[];
 
     /**
      * Factory methods
@@ -61,12 +40,11 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param initialCapacity Capacity the list will have from beginning
      */
     public SpecifiedArrayListImpl(int initialCapacity) {
-        if (initialCapacity > 0) {
+        if (initialCapacity >= 0) {
+            this.size = 0;
             this.elems = new Object[initialCapacity];
-        } else if (initialCapacity == 0) {
-            this.elems = EMPTY_ELEMS;
         } else {
-            throw new IllegalArgumentException("Initial capacity cannot be less than 0");
+            throw new IllegalArgumentException();
         }
     }
 
@@ -75,7 +53,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      *
      */
     public SpecifiedArrayListImpl() {
-        elems = EMPTY_ELEMS_DEFAULT_CAP;
+        this(INITIAL_CAPACITY);
     }
 
     /**
@@ -84,14 +62,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param collection
      */
     public SpecifiedArrayListImpl(Collection<E> collection) {
-        elems = collection.toArray();
-        size = elems.length;
-        if (size != 0) {
-            if (elems.getClass() != Object[].class)
-                elems = Arrays.copyOf(elems, size, Object[].class);
-        } else {
-            elems = EMPTY_ELEMS;
-        }
+        this.size = collection.size();
+        this.elems = Arrays.copyOf(collection.toArray(), collection.size());
     }
 
     @Override
@@ -115,54 +87,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     @Override
-    public void ensureCapacity(int minCapacity) {
-        int minExpand = (elems != EMPTY_ELEMS_DEFAULT_CAP)
-                        // any size if not default element table
-                        ? 0
-                        // larger than default for default empty table. It's already
-                        // supposed to be at default size.
-                        : INITIAL_CAPACITY;
-
-        if (minCapacity > minExpand) {
-            ensureExplicitCapacity(minCapacity);
-        }
-    }
-
-    private void ensureCapacityInternal(int minCapacity) {
-        if (elems == EMPTY_ELEMS_DEFAULT_CAP) {
-            minCapacity = Math.max(INITIAL_CAPACITY, minCapacity);
-        }
-
-        ensureExplicitCapacity(minCapacity);
-    }
-
-    private void ensureExplicitCapacity(int minCapacity) {
-        if (minCapacity - elems.length > 0)
-            grow(minCapacity);
-    }
-
-    private void grow(int minCapacity) {
-        // overflow-conscious code
-        int oldCapacity = elems.length;
-        int newCapacity = oldCapacity + (oldCapacity >> 1);
-        // int newCapacity = oldCapacity << 2;
-        if (newCapacity - minCapacity < 0)
-            newCapacity = minCapacity;
-        if (newCapacity - MAX_LENGTH > 0)
-            newCapacity = hugeCapacity(minCapacity);
-        // minCapacity is usually close to size, so this is a win:
-        elems = Arrays.copyOf(elems, newCapacity);
-    }
-
-    private static int hugeCapacity(int minCapacity) {
-        if (minCapacity < 0) // overflow
-            throw new OutOfMemoryError();
-        return (minCapacity > MAX_LENGTH) ? Integer.MAX_VALUE : MAX_LENGTH;
-    }
-
-    @Override
     public boolean add(E e) {
-        ensureCapacityInternal(size + 1);
+        growIfNeeded();
         elems[size++] = e;
         return true;
     }
@@ -203,7 +129,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         if (cSize == 0)
             return false;
 
-        ensureCapacityInternal(size + cSize);// Useful if c is large
+        ensureCapacity(size + cSize);// Useful if c is large
 
         System.arraycopy(c.toArray(), 0, elems, size, cSize);
         size = size + cSize;
@@ -217,13 +143,11 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        Objects.requireNonNull(c);
         return removeCollection(c, false);
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        Objects.requireNonNull(c);
         return removeCollection(c, true);
     }
 
@@ -232,8 +156,6 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         for (int i = 0; i < size; i++) {
             elems[i] = null;
         }
-
-        // elems = EMPTY_ELEMS_DEFAULT_CAP;
 
         // elems = new Object[INITIAL_CAPACITY];
         size = 0;
@@ -256,9 +178,9 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public void add(int index, E element) {
-        if (index > size || index < 0)
+        if (index < 0 || index > size)
             throw new IndexOutOfBoundsException();
-        ensureCapacityInternal(size + 1);
+        growIfNeeded();
         System.arraycopy(elems, index, elems, index + 1, size - index);
         elems[index] = element;
         size++;
@@ -268,7 +190,6 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     public E remove(int index) {
         checkBoundaries(index);
         Object oldElem = elems[index];
-        // TODO check if special case removal at end needs to be optimized
         System.arraycopy(elems, index + 1, elems, index, size - index - 1);
         size--;
         return castUnchecked(oldElem);
@@ -276,14 +197,15 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public int indexOf(Object o) {
-        if (o != null) {
+
+        if (o == null) {
             for (int i = 0; i < size; i++) {
-                if (o.equals(elems[i]))
+                if (elems[i] == null)
                     return i;
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (elems[i] == null)
+                if (o.equals(elems[i]))
                     return i;
             }
         }
@@ -443,33 +365,27 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         return "SpecifiedArrayListImpl [size=" + size + ", elems=" + Arrays.toString(elems) + "]";
     }
 
-// @Override
-// public void ensureCapacity(int capacity) {
-// int curCapacity = elems.length;
-// if (curCapacity < capacity) {
-// // If we ensure that there is enough capacity it will be most likely that not much more elements
-// // than this capacity will be added in the near future.
-// // TODO CHECK IF USEFUL IN PROJECT
-// int newLength;
-// if (capacity <= CAPACITY_GROWING_THRESHOLD) {
-// newLength = capacity;
-// } else {
-// newLength = capacity + INITIAL_CAPACITY;
-// }
-// elems = Arrays.copyOf(elems, newLength);
-// }
-// }
+    @Override
+    public void ensureCapacity(int capacity) {
+        int curCapacity = elems.length;
+        if (curCapacity < capacity) {
+            // If we ensure that there is enough capacity it will be most likely that not much more elements
+            // than this capacity will be added in the near future.
+            // TODO CHECK IF USEFUL IN PROJECT
+            int newLength;
+            if (capacity <= CAPACITY_GROWING_THRESHOLD) {
+                newLength = capacity;
+            } else {
+                newLength = capacity + INITIAL_CAPACITY;
+            }
+            elems = Arrays.copyOf(elems, newLength);
+        }
+    }
 
     @Override
     public void trimToSize() {
-        if (elems.length >= size) {
-            if (size != 0) {
-                elems = Arrays.copyOf(elems, size);
-            } else {
-                elems = EMPTY_ELEMS;
-            }
-        }
-
+        if (elems.length >= size)
+            elems = Arrays.copyOf(elems, size);
     }
 
     //
@@ -493,7 +409,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     //
 
     private void checkBoundaries(int index) {
-        if (index >= size)
+        if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
 
     }
@@ -511,23 +427,22 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param index index of object to be removed
      */
     private void fastRemove(int index) {
-        // TODO check if special case removal at end is useful
         System.arraycopy(elems, index + 1, elems, index, size - index - 1);
         elems[--size] = null;
     }
 
-// /**
-// * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
-// */
-// private void grow() {
-// int newLength = elems.length * GROW_FACTOR;
-// elems = Arrays.copyOf(elems, newLength);
-// }
+    /**
+     * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
+     */
+    private void grow() {
+        int newLength = elems.length * GROW_FACTOR;
+        elems = Arrays.copyOf(elems, newLength);
+    }
 
-// private void growIfNeeded() {
-// if (size == elems.length)
-// grow();
-// }
+    private void growIfNeeded() {
+        if (size == elems.length)
+            grow();
+    }
 
     /** Performs a "hard" cut with potential data loss */
     private void trim(int capacity) {
