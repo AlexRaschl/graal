@@ -27,6 +27,7 @@ import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Opera
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.SUBLIST;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TO_ARRAY;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TRIM_TO_SIZE;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.GROW;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -103,8 +104,14 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public StatisticalSpecifiedArrayListImpl(Collection<E> collection) {
         super(collection);
         if (collection.size() != 0)
-            tracker.setType(collection.iterator().next().getClass());
+            tracker.setType(checkNull(collection.iterator().next()));
         tracker.countOP(CSTR_COLL);
+    }
+
+    @Override
+    protected void grow() {
+        tracker.countOP(GROW);
+        super.grow();
     }
 
     @Override
@@ -133,7 +140,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
 
     @Override
     public boolean add(E e) {
-        Class<?> clazz = e.getClass();
+        Class<?> clazz = checkNull(e);
         tracker.countOP(ADD_OBJ);
         tracker.addTypeOpToMap(ADD_OBJ, clazz);
         tracker.modified();
@@ -145,7 +152,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public boolean remove(Object o) {
         tracker.countOP(REMOVE_OBJ);
         tracker.modified();
-        tracker.addTypeOpToMap(REMOVE_OBJ, o.getClass());
+        tracker.addTypeOpToMap(REMOVE_OBJ, o == null ? NoObject.class : o.getClass());
         return super.remove(o);
     }
 
@@ -162,7 +169,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
 
         if (c.size() != 0) {
             Class<?> clazz;
-            clazz = c.iterator().next().getClass();
+            clazz = checkNull(c.iterator().next());
             tracker.addTypeOpToMap(ADD_ALL, clazz);
         }
 
@@ -177,7 +184,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
 
         if (c.size() != 0) {
             Class<?> clazz;
-            clazz = c.iterator().next().getClass();
+            clazz = checkNull(c.iterator().next());
             tracker.addTypeOpToMap(ADD_ALL, clazz);
         }
 
@@ -215,13 +222,13 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public E get(int index) {
         tracker.countOP(GET_INDEXED);
         E e = super.get(index);
-        tracker.addTypeOpToMap(GET_INDEXED, e.getClass());
+        tracker.addTypeOpToMap(GET_INDEXED, checkNull(e));
         return e;
     }
 
     @Override
     public E set(int index, E element) {
-        Class<?> clazz = element.getClass();
+        Class<?> clazz = checkNull(element);
         tracker.countOP(SET_INDEXED);
         tracker.modified();
         tracker.setType(clazz);
@@ -233,7 +240,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public void add(int index, E element) {
         tracker.countOP(ADD_INDEXED);
         tracker.modified();
-        tracker.setType(element.getClass());
+        tracker.setType(checkNull(element));
         super.add(index, element);
     }
 
@@ -298,6 +305,14 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
 
     public int getCurrentCapacity() {
         return super.getCapacity();
+    }
+
+    private Class<?> checkNull(E e) {
+        if (e == null) {
+            return NoObject.class;
+        } else {
+            return e.getClass();
+        }
     }
 
     /*

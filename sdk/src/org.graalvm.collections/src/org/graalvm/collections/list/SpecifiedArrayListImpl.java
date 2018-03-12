@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     // DONE CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
@@ -151,6 +155,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         return removeCollection(c, true);
     }
 
+    // TODO Could only set size to 0 for fast clear
     @Override
     public void clear() {
         for (int i = 0; i < size; i++) {
@@ -434,8 +439,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     /**
      * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
      */
-    private void grow() {
-        int newLength = elems.length * GROW_FACTOR;
+    protected void grow() {
+        int newLength = elems.length * GROW_FACTOR; // TODO remove Protected
         elems = Arrays.copyOf(elems, newLength);
     }
 

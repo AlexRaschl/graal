@@ -20,21 +20,21 @@ import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl
  * @author Alex R.
  *
  */
-public abstract class SpecifiedArrayList<E> implements Iterable<E>, Cloneable {
+public abstract class SpecifiedArrayList<E> implements Iterable<E> {
 
     /**
      * Factory methods
      */
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayListImpl<>();
+        return new StatisticalSpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayListImpl<>(initalCapacity);
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayListImpl<>(c);
+        return new StatisticalSpecifiedArrayListImpl<>(c);
     }
 
     /**

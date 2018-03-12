@@ -38,7 +38,7 @@ public class ReplacementTest {
     @Before
     public void setupSAR() {
         // SpecifiedArrayList
-        testList = SpecifiedArrayList.createNew(TEST_SIZE - 1);
+        testList = SpecifiedArrayList.createNew();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(testData[i]); // Assuming Add works like intended
         }
@@ -78,6 +78,8 @@ public class ReplacementTest {
         Statistics.printOverallSummary();
 
         CSVGenerator.createFileOfGlobalInfo();
+        CSVGenerator.createFileOfOperationDistributions();
+        CSVGenerator.createFileOfTypeOperationDistributions();
     }
 
     @Test
@@ -393,6 +395,7 @@ public class ReplacementTest {
         testList = new StatisticalSpecifiedArrayListImpl<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(null);
+            testList.add(i);
         }
     }
 }

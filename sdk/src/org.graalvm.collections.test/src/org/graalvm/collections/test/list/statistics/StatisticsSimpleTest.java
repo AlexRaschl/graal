@@ -9,7 +9,7 @@ import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl
 import org.graalvm.collections.list.statistics.Statistics;
 
 public class StatisticsSimpleTest {
-    private final static int TEST_SIZE = 10;
+    private final static int TEST_SIZE = 2031;
 
     private final static char DATA_SEPARATOR = ';';
 
@@ -20,7 +20,7 @@ public class StatisticsSimpleTest {
             testList.add(new Integer(r.nextInt(100)));
         }
 
-        StatisticalSpecifiedArrayListImpl<char[]> testList2 = new StatisticalSpecifiedArrayListImpl<>(3);
+        StatisticalSpecifiedArrayListImpl<char[]> testList2 = new StatisticalSpecifiedArrayListImpl<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             Integer integer = new Integer(r.nextInt(100));
             testList2.add(Integer.toBinaryString(integer).toCharArray());
@@ -31,7 +31,7 @@ public class StatisticsSimpleTest {
         testList2.ensureCapacity(TEST_SIZE * 4);
         testList2.iterator();
 
-        StatisticalSpecifiedArrayListImpl<String[]> testList3 = new StatisticalSpecifiedArrayListImpl<>(3);
+        StatisticalSpecifiedArrayListImpl<String[]> testList3 = new StatisticalSpecifiedArrayListImpl<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             Integer integer = new Integer(r.nextInt(100));
             String[] s = new String[1];
@@ -39,7 +39,7 @@ public class StatisticsSimpleTest {
             testList3.add(s);
         }
 
-        StatisticalSpecifiedArrayListImpl<ArrayList<String>> testList4 = new StatisticalSpecifiedArrayListImpl<>(3);
+        StatisticalSpecifiedArrayListImpl<ArrayList<String>> testList4 = new StatisticalSpecifiedArrayListImpl<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             Integer integer = new Integer(r.nextInt(100));
             ArrayList<String> list = new ArrayList<>();
@@ -47,7 +47,7 @@ public class StatisticsSimpleTest {
             testList4.add(list);
         }
 
-        StatisticalSpecifiedArrayListImpl<ArrayList<String>> testList5 = new StatisticalSpecifiedArrayListImpl<>(3);
+        StatisticalSpecifiedArrayListImpl<ArrayList<String>> testList5 = new StatisticalSpecifiedArrayListImpl<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             Integer integer = new Integer(r.nextInt(100));
             ArrayList<String> list = new ArrayList<>();

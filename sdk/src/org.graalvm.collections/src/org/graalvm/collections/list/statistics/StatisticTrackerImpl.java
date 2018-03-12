@@ -46,7 +46,8 @@ public class StatisticTrackerImpl implements StatisticTracker {
         ENSURE_CAP,
         TRIM_TO_SIZE,
         EMPTY,
-        SIZE
+        SIZE,
+        GROW
     }
 
     // Operations that are tracked more precisely
@@ -165,7 +166,6 @@ public class StatisticTrackerImpl implements StatisticTracker {
             sb.append(entry.getKey().getTypeName());
             sb.append(dataSeparator);
             sb.append(entry.getValue().get());
-            sb.append(dataSeparator);
             dataLines[n++] = sb.toString();
             sb = new StringBuilder(50);
 
