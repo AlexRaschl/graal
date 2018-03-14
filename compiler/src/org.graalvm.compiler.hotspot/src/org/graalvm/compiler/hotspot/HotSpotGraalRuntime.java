@@ -36,6 +36,7 @@ import java.util.Map;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.statistics.CSVGenerator;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.api.runtime.GraalRuntime;
 import org.graalvm.compiler.core.CompilationWrapper.ExceptionAction;
@@ -284,6 +285,12 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
         BenchmarkCounters.shutdown(runtime(), options, runtimeStartTime);
 
         outputDirectory.close();
+
+        /*
+         * TODO Remember CSVGenerator
+         */
+        CSVGenerator.createFileOfOperationDistributions("");
+        CSVGenerator.createFileOfTypeOperationDistributions("");
     }
 
     void clearMetrics() {

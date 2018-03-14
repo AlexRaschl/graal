@@ -37,7 +37,7 @@ public class CSVGenerator {
             initialized = true;
     }
 
-    public static void createFileOfOperationDistributions() {
+    public static synchronized void createFileOfOperationDistributions(String namePrefix) {
         final String[] opLines = Statistics.getOpDataLines(DATA_SEPARATOR);
         File file = createFile(NAME_OP_DISTR);
         if (file == null)
@@ -53,7 +53,7 @@ public class CSVGenerator {
         }
     }
 
-    public static void createFileOfTypeOperationDistributions() {
+    public static synchronized void createFileOfTypeOperationDistributions(String namePrefix) {
         File file = createFile(NAME_TYPE_OP_DISTR);
         if (file == null)
             return; // TODO Exception
@@ -67,7 +67,7 @@ public class CSVGenerator {
         }
     }
 
-    public static void createFileOfTracker(final int ID) {
+    public static synchronized void createFileOfTracker(final int ID, String namePrefix) {
         if (!initialized)
             return;
 
@@ -84,7 +84,7 @@ public class CSVGenerator {
         writeToFile(file, LINE_SEPARATOR + "", true);
     }
 
-    public static void createFileOfGlobalInfo() {
+    public static synchronized void createFileOfGlobalInfo(String namePrefix) {
         if (!initialized)
             return;
         String[] opLines = Statistics.getOpDataLines(DATA_SEPARATOR);
@@ -105,7 +105,7 @@ public class CSVGenerator {
 
     }
 
-    public static void createFileOfEverything() {
+    public static synchronized void createFileOfEverything(String namePrefix) {
         if (!initialized)
             return;
 
@@ -148,7 +148,7 @@ public class CSVGenerator {
         return file;
     }
 
-    private static void writeToFile(File file, String[] lines, boolean append) {
+    private static synchronized void writeToFile(File file, String[] lines, boolean append) {
 
         try {
             FileOutputStream w = new FileOutputStream(file, append);
@@ -165,7 +165,7 @@ public class CSVGenerator {
         }
     }
 
-    private static void writeToFile(File file, String string, boolean append) {
+    private static synchronized void writeToFile(File file, String string, boolean append) {
         try {
             FileOutputStream w = new FileOutputStream(file, append);
             w.write(string.getBytes());

@@ -85,7 +85,9 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     public void countOP(Operation op) {
-        addOpTo(Statistics.globalOpMap, op);
+        synchronized (Statistics.globalOpMap) {
+            addOpTo(Statistics.globalOpMap, op);
+        }
         addOpTo(localOpMap, op);
     }
 
@@ -225,9 +227,11 @@ public class StatisticTrackerImpl implements StatisticTracker {
 
     void setType(Class<?> c) {
         if (!isAdded) {
-            this.type = c;
-            addTypeTo(Statistics.globalTypeMap, type);
-            isAdded = true;
+            synchronized (Statistics.globalTypeMap) {
+                this.type = c;
+                addTypeTo(Statistics.globalTypeMap, type);
+                isAdded = true;
+            }
         }
     }
 

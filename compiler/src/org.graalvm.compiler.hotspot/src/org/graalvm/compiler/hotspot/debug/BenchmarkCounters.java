@@ -36,6 +36,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.graalvm.collections.list.statistics.CSVGenerator;
 import org.graalvm.compiler.core.common.SuppressFBWarnings;
 import org.graalvm.compiler.debug.CSVUtil;
 import org.graalvm.compiler.debug.GraalError;

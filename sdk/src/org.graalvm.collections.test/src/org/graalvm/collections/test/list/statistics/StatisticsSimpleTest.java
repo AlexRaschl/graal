@@ -86,15 +86,15 @@ public class StatisticsSimpleTest {
             System.out.println(s);
         System.out.println();
 
-        CSVGenerator.createFileOfGlobalInfo();
+        CSVGenerator.createFileOfGlobalInfo("");
 
-        CSVGenerator.createFileOfTracker(1);
+        CSVGenerator.createFileOfTracker(1, "");
 
-        CSVGenerator.createFileOfEverything();
+        CSVGenerator.createFileOfEverything("");
 
-        CSVGenerator.createFileOfOperationDistributions();
+        CSVGenerator.createFileOfOperationDistributions("");
 
-        CSVGenerator.createFileOfTypeOperationDistributions();
+        CSVGenerator.createFileOfTypeOperationDistributions("");
 
     }
 }

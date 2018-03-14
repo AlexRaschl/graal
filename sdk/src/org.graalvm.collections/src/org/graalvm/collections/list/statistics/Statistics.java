@@ -23,11 +23,11 @@ public class Statistics {
     /*
      * Instances of StatisticTrackerImpl call this function to enlist themselves in the trackers list.
      */
-    public static void addTracker(StatisticTrackerImpl tracker) {
+    public static synchronized void addTracker(StatisticTrackerImpl tracker) {
         trackers.add(tracker);
     }
 
-    static StatisticTracker getTrackerByID(int id) {
+    static synchronized StatisticTracker getTrackerByID(int id) {
         Iterator<StatisticTracker> itr = trackers.iterator();
         while (itr.hasNext()) {
             StatisticTracker t = itr.next();
@@ -45,7 +45,7 @@ public class Statistics {
         }
     }
 
-    public static void printGlobalInformation() {
+    public static synchronized void printGlobalInformation() {
         StringBuilder sb = new StringBuilder(200);
         sb.append("GLOBAL INFORMATION: \n");
         sb.append("Current used Size: ");
@@ -73,7 +73,7 @@ public class Statistics {
     /*
      * Data Lines for CSV Generator
      */
-    public static String[] getOpDataLines(final char dataSeparator) {
+    public static synchronized String[] getOpDataLines(final char dataSeparator) {
         String[] dataArr = new String[globalOpMap.size()];
         Iterator<Entry<Operation, AtomicInteger>> itr = globalOpMap.entrySet().iterator();
         StringBuilder sb = new StringBuilder(50);
@@ -96,7 +96,7 @@ public class Statistics {
     /*
      * Data Lines for CSV Generator
      */
-    public static String[] getTypeDataLines(final char dataSeparator) {
+    public static synchronized String[] getTypeDataLines(final char dataSeparator) {
         String[] dataArr = new String[globalTypeMap.size()];
         Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
 
@@ -121,7 +121,7 @@ public class Statistics {
     /*
      * Data Lines for CSV Generator
      */
-    public static String[] getLoadFactorDataLines(final char dataSeparator) {
+    public static synchronized String[] getLoadFactorDataLines(final char dataSeparator) {
         int[] intervalOccurrences = new int[INTERVAL_SIZE];
         String[] dataArr = new String[INTERVAL_SIZE];
         double stepSize = 100 / INTERVAL_SIZE;
@@ -189,7 +189,7 @@ public class Statistics {
         return sb.toString();
     }
 
-    private static int getCurrentTotalCapacity() {
+    private static synchronized int getCurrentTotalCapacity() {
         int capacity = 0;
         for (StatisticTracker t : trackers) {
             capacity += t.getCurrentCapacity();
@@ -197,7 +197,7 @@ public class Statistics {
         return capacity;
     }
 
-    private static int getCurrentTotalSize() {
+    private static synchronized int getCurrentTotalSize() {
         int size = 0;
         for (StatisticTracker t : trackers) {
             size += t.getCurrentSize();

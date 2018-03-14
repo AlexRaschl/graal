@@ -77,9 +77,9 @@ public class ReplacementTest {
 
         Statistics.printOverallSummary();
 
-        CSVGenerator.createFileOfGlobalInfo();
-        CSVGenerator.createFileOfOperationDistributions();
-        CSVGenerator.createFileOfTypeOperationDistributions();
+        CSVGenerator.createFileOfGlobalInfo("");
+        CSVGenerator.createFileOfOperationDistributions("");
+        CSVGenerator.createFileOfTypeOperationDistributions("");
     }
 
     @Test

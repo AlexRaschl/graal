@@ -61,6 +61,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.graalvm.collections.EconomicMap;
+import org.graalvm.collections.list.statistics.CSVGenerator;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.api.runtime.GraalRuntime;
 import org.graalvm.compiler.core.CompilerThreadFactory;
@@ -409,8 +410,8 @@ public abstract class GraalTruffleRuntime implements TruffleRuntime, TruffleComp
             getTvmci().markFrameMaterializeCalled(descriptor);
         } catch (Throwable ex) {
             /*
-             * Backward compatibility: do nothing on old Truffle version where the field in
-             * FrameDescriptor does not exist.
+             * Backward compatibility: do nothing on old Truffle version where the field in FrameDescriptor does
+             * not exist.
              */
         }
     }
@@ -421,8 +422,8 @@ public abstract class GraalTruffleRuntime implements TruffleRuntime, TruffleComp
             return getTvmci().getFrameMaterializeCalled(descriptor);
         } catch (Throwable ex) {
             /*
-             * Backward compatibility: be conservative on old Truffle version where the field in
-             * FrameDescriptor does not exist.
+             * Backward compatibility: be conservative on old Truffle version where the field in FrameDescriptor
+             * does not exist.
              */
             return true;
         }
@@ -667,6 +668,11 @@ public abstract class GraalTruffleRuntime implements TruffleRuntime, TruffleComp
         if (tcp != null) {
             tcp.shutdown();
         }
+        /*
+         * TODO Remember CSVGenerator
+         */
+        CSVGenerator.createFileOfOperationDistributions("");
+        CSVGenerator.createFileOfTypeOperationDistributions("");
     }
 
     @SuppressWarnings("try")
@@ -801,10 +807,9 @@ public abstract class GraalTruffleRuntime implements TruffleRuntime, TruffleComp
             if (compilationFuture != null && isCompiling(optimizedCallTarget)) {
                 optimizedCallTarget.resetCompilationTask();
                 /*
-                 * Cancellation of an installed task: There are two dimensions here: First we set
-                 * the cancel bit in the task, this allows the compiler to, cooperatively, stop
-                 * compilation and throw a non permanent bailout and then we cancel the future which
-                 * might have already stopped at that point in time.
+                 * Cancellation of an installed task: There are two dimensions here: First we set the cancel bit in
+                 * the task, this allows the compiler to, cooperatively, stop compilation and throw a non permanent
+                 * bailout and then we cancel the future which might have already stopped at that point in time.
                  */
                 task.cancel();
                 // Either the task finished already, or it was cancelled.
@@ -866,12 +871,12 @@ public abstract class GraalTruffleRuntime implements TruffleRuntime, TruffleComp
     public abstract void invalidateInstalledCode(OptimizedCallTarget optimizedCallTarget, Object source, CharSequence reason);
 
     /**
-     * Notifies this runtime when a Truffle AST is being executed in the Truffle interpreter even
-     * though compiled code is available for the AST.
+     * Notifies this runtime when a Truffle AST is being executed in the Truffle interpreter even though
+     * compiled code is available for the AST.
      *
-     * If this runtime uses a special entry point to switch to compiled Truffle code, then this
-     * means the code with the special entry point was deoptimized or otherwise removed from the
-     * code cache and needs to be re-installed.
+     * If this runtime uses a special entry point to switch to compiled Truffle code, then this means
+     * the code with the special entry point was deoptimized or otherwise removed from the code cache
+     * and needs to be re-installed.
      */
     public void bypassedCompiledCode() {
     }
@@ -897,10 +902,9 @@ public abstract class GraalTruffleRuntime implements TruffleRuntime, TruffleComp
             return selectObjectLayoutFactory(graalLoader);
         } else {
             /*
-             * The Graal module (i.e., jdk.internal.vm.compiler) is loaded by the platform class
-             * loader on JDK 9. Its module dependencies such as Truffle are supplied via
-             * --module-path which means they are loaded by the app class loader. As such, we need
-             * to search the app class loader path as well.
+             * The Graal module (i.e., jdk.internal.vm.compiler) is loaded by the platform class loader on JDK
+             * 9. Its module dependencies such as Truffle are supplied via --module-path which means they are
+             * loaded by the app class loader. As such, we need to search the app class loader path as well.
              */
             ServiceLoader<LayoutFactory> appLoader = ServiceLoader.load(LayoutFactory.class, LayoutFactory.class.getClassLoader());
             return selectObjectLayoutFactory(CollectionsUtil.concat(graalLoader, appLoader));
@@ -1032,10 +1036,9 @@ public abstract class GraalTruffleRuntime implements TruffleRuntime, TruffleComp
 
     public static class LazyFrameBoxingQuery {
         /**
-         * The flag is checked from within a Truffle compilation and we need to constant fold the
-         * decision. In addition, we want only one of {@link FrameWithoutBoxing} and
-         * {@link FrameWithBoxing} seen as reachable in AOT mode, so we need to be able to constant
-         * fold the decision as early as possible.
+         * The flag is checked from within a Truffle compilation and we need to constant fold the decision.
+         * In addition, we want only one of {@link FrameWithoutBoxing} and {@link FrameWithBoxing} seen as
+         * reachable in AOT mode, so we need to be able to constant fold the decision as early as possible.
          */
         public static final boolean useFrameWithoutBoxing = TruffleCompilerOptions.getValue(TruffleUseFrameWithoutBoxing);
 
