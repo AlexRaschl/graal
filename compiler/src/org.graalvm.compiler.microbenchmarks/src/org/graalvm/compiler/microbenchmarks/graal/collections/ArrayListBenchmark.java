@@ -23,6 +23,8 @@
 package org.graalvm.compiler.microbenchmarks.graal.collections;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.graalvm.compiler.microbenchmarks.graal.GraalBenchmark;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -58,6 +60,18 @@ public class ArrayListBenchmark extends GraalBenchmark {
     public void addNullAndClear(ThreadState state) {
         for (int i = 0; i < N; ++i) {
             state.list.add(null);
+        }
+        state.list.clear();
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void addRemoveBoxedAndClear(ThreadState state) {
+        for (int i = 0; i < N; ++i) {
+            state.list.add(i);
+        }
+        for (int i = 0; i < N; ++i) {
+            state.list.remove(new Integer(i));
         }
         state.list.clear();
     }
@@ -105,33 +119,55 @@ public class ArrayListBenchmark extends GraalBenchmark {
         for (int i = 0; i < N; ++i) {
             state.list.indexOf(state.integers[i]);
         }
-        state.list.clear();
     }
 
-//
-// @Benchmark
-// @Warmup(iterations = 20)
-// public void addRemoveBoxedAndClear(ThreadState state) {
-// for (int i = 0; i < N; ++i) {
-// state.list.add(i);
-// }
-// for (int i = 0; i < N; ++i) {
-// state.list.remove(new Integer(i));
-// }
-// state.list.clear();
-// }
-//
-// @Benchmark
-// @Warmup(iterations = 20)
-// public void addIndexOfAndClear(ThreadState state) {
-// for (int i = 0; i < N; ++i) {
-// state.list.add(i);
-// }
-// for (int i = 0; i < N; ++i) {
-// state.list.indexOf(new Integer(i));
-// }
-// state.list.clear();
-// }
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void removeObj(AddedClearedThreadState state) {
+        for (int i = 0; i < N; ++i) {
+            state.list.remove(new Integer(i));
+        }
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void containsObj(AddedClearedThreadState state) {
+        for (int i = 0; i < N; ++i) {
+            state.list.contains(new Integer(i));
+        }
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void getObj(AddedClearedThreadState state) {
+        for (int i = 0; i < N; ++i) {
+            state.list.get(i);
+        }
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void setAt(AddedClearedThreadState state) {
+        for (int i = 0; i < N; ++i) {
+            state.list.set(i, i - 1);
+        }
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void iteratorUsage(AddedClearedThreadState state) {
+        Iterator<Integer> itr = state.list.iterator();
+        while (itr.hasNext())
+            itr.next();
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void listIteratorUsage(AddedClearedThreadState state) {
+        ListIterator<Integer> itr = state.list.listIterator();
+        while (itr.hasNext())
+            itr.next();
+    }
 
 // @Benchmark
 // @Warmup(iterations = 20)
@@ -144,6 +180,19 @@ public class ArrayListBenchmark extends GraalBenchmark {
 // state.list.remove(new Integer(i));
 // }
 // }
+
+// @Benchmark
+// @Warmup(iterations = 20)
+// public void addIndexOfAndClear(ThreadState state) {
+// for (int i = 0; i < N; ++i) {
+// state.list.add(i);
+// }
+// for (int i = 0; i < N; ++i) {
+// state.list.indexOf(new Integer(i));
+// }
+// state.list.clear();
+// }
+
 //
 // @Benchmark
 // @Warmup(iterations = 20)

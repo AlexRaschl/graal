@@ -65,7 +65,9 @@ public class StatisticsSimpleTest {
         testList7.add(new Object());
         testList7.add(new Integer(0));
         testList7.add(new String("ab"));
+        testList7.add(new String("abc"));
         testList7.add(new ArrayList<Integer>());
+        testList7.add(null);
 
         Statistics.printOverallSummary();
 
