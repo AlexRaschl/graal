@@ -668,11 +668,6 @@ public abstract class GraalTruffleRuntime implements TruffleRuntime, TruffleComp
         if (tcp != null) {
             tcp.shutdown();
         }
-        /*
-         * TODO Remember CSVGenerator
-         */
-        CSVGenerator.createFileOfOperationDistributions("");
-        CSVGenerator.createFileOfTypeOperationDistributions("");
     }
 
     @SuppressWarnings("try")

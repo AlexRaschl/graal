@@ -273,4 +273,9 @@ public class StatisticTrackerImpl implements StatisticTracker {
         }
     }
 
+    public StackTraceElement getAllocationSite() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

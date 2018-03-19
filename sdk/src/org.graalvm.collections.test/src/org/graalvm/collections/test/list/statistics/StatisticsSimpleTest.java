@@ -14,7 +14,7 @@ public class StatisticsSimpleTest {
     private final static char DATA_SEPARATOR = ';';
 
     public static void main(String[] args) {
-        StatisticalSpecifiedArrayListImpl<Integer> testList = new StatisticalSpecifiedArrayListImpl<>();
+        StatisticalSpecifiedArrayListImpl<Integer> testList = new StatisticalSpecifiedArrayListImpl<>(10);
         Random r = new Random();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(new Integer(r.nextInt(100)));

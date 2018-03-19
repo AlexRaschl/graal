@@ -39,6 +39,14 @@ interface StatisticTracker {
     int getCurrentSize();
 
     /**
+     * Returns the StackTraceElement that describes the allocation site of the List tracked by the
+     * Tracker
+     *
+     * @return StackTraceElement of Allocation site
+     */
+    StackTraceElement getAllocationSite();
+
+    /**
      * Returns the current load factor of the tracked list
      *
      * @return load factor of list

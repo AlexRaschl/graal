@@ -84,6 +84,11 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public StatisticalSpecifiedArrayListImpl(int initialCapacity) {
         super(initialCapacity);
         tracker.countOP(CSTR_CAP);
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace()[1].getClassName());
+        }
     }
 
     /**
