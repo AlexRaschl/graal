@@ -289,8 +289,9 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
         /*
          * TODO Remember CSVGenerator
          */
-        CSVGenerator.createFileOfOperationDistributions("");
-        CSVGenerator.createFileOfTypeOperationDistributions("");
+        // CSVGenerator.createFileOfOperationDistributions("");
+        // CSVGenerator.createFileOfTypeOperationDistributions("");
+        CSVGenerator.createFileOfAllocationSites(this.getClass().getSimpleName());
     }
 
     void clearMetrics() {

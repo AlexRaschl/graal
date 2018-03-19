@@ -80,6 +80,7 @@ public class ReplacementTest {
         CSVGenerator.createFileOfGlobalInfo("");
         CSVGenerator.createFileOfOperationDistributions("");
         CSVGenerator.createFileOfTypeOperationDistributions("");
+        CSVGenerator.createFileOfAllocationSites("");
     }
 
     @Test

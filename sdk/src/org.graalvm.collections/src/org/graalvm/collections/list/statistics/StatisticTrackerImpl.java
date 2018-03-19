@@ -65,6 +65,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
 
     // Type
     private Type type;
+    private StackTraceElement allocSiteElem;
     private boolean isAdded = false;
 
     // Number of times the content of the list has changed NOTE: Changes made by Iterators are not
@@ -255,6 +256,11 @@ public class StatisticTrackerImpl implements StatisticTracker {
         }
     }
 
+    void setAllocSiteElem(StackTraceElement elem) {
+        if (allocSiteElem == null)
+            this.allocSiteElem = elem;
+    }
+
     private static void addOpTo(HashMap<Operation, AtomicInteger> map, Operation op) {
         AtomicInteger curr = map.getOrDefault(op, null);
         if (curr == null) {
@@ -274,8 +280,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     public StackTraceElement getAllocationSite() {
-        // TODO Auto-generated method stub
-        return null;
+        return allocSiteElem;
     }
 
 }

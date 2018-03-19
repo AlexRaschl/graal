@@ -60,11 +60,16 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
      * Factory methods
      */
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new StatisticalSpecifiedArrayListImpl<>();
+        StatisticalSpecifiedArrayListImpl<E> list = new StatisticalSpecifiedArrayListImpl<>();
+        list.setAllocationSite();
+        return list;
+
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
+        StatisticalSpecifiedArrayListImpl<E> list = new StatisticalSpecifiedArrayListImpl<>();
+        list.setAllocationSite();
+        return list;
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
@@ -84,11 +89,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public StatisticalSpecifiedArrayListImpl(int initialCapacity) {
         super(initialCapacity);
         tracker.countOP(CSTR_CAP);
-        try {
-            throw new Exception();
-        } catch (Exception e) {
-            System.out.println(e.getStackTrace()[1].getClassName());
-        }
+        setAllocationSite();
     }
 
     /**
@@ -98,6 +99,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
     public StatisticalSpecifiedArrayListImpl() {
         super();
         tracker.countOP(CSTR_STD);
+        setAllocationSite();
     }
 
     /**
@@ -111,6 +113,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
         if (collection.size() != 0)
             tracker.setType(checkNull(collection.iterator().next()));
         tracker.countOP(CSTR_COLL);
+        setAllocationSite();
     }
 
     @Override
@@ -317,6 +320,21 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
             return NoObject.class;
         } else {
             return e.getClass();
+        }
+    }
+
+    private void setAllocationSite() {
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            // e.printStackTrace();
+            StackTraceElement[] elems = e.getStackTrace();
+            if (elems.length > 2 && !elems[2].getMethodName().equals("createNew")) {
+                tracker.setAllocSiteElem(elems[2]);
+            } else {
+                tracker.setAllocSiteElem(elems[3]);
+            }
+
         }
     }
 

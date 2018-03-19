@@ -20,7 +20,9 @@ import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl
  * @author Alex R.
  *
  */
-public abstract class SpecifiedArrayList<E> implements Iterable<E> {
+
+// TODO Implements List<E>
+public abstract class SpecifiedArrayList<E> implements List<E> {
 
     /**
      * Factory methods

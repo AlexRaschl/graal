@@ -1,15 +1,12 @@
 package org.graalvm.collections.list;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-
-import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
@@ -91,6 +88,18 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     @Override
+    public <T> T[] toArray(T[] a) {
+        if (a.length < size)
+            // Make a new array of a's runtime type, but my contents:
+            return (T[]) Arrays.copyOf(elems, size, a.getClass());
+        System.arraycopy(elems, 0, a, 0, size);
+        if (a.length > size)
+            a[size] = null;
+        return a;
+
+    }
+
+    @Override
     public boolean add(E e) {
         growIfNeeded();
         elems[size++] = e;
@@ -140,9 +149,30 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         return true;
     }
 
+    /*
+     * Not optimized for insertions at end use addAll(Collection c) instead (non-Javadoc)
+     *
+     * @see org.graalvm.collections.list.SpecifiedArrayList#addAll(int, java.util.Collection)
+     */
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        return false;
+        if (index < 0 || index > size)
+            throw new IndexOutOfBoundsException();
+
+        if (c.size() == 0)
+            return false;
+
+        final Object[] arr = c.toArray();
+        int nElems = arr.length;
+
+        ensureCapacity(size + nElems);
+        System.arraycopy(elems, index, elems, index + nElems, size - index);
+        System.arraycopy(arr, 0, elems, index, nElems);
+
+        size += nElems;
+
+        return true;
+
     }
 
     @Override
@@ -333,10 +363,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     }
 
+    // TODO ATTENTION VERY UNOPTIMIZED AND ALSO TYPE POLLUTED
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        // DONE CHECK IF NEEDED -> Most likely not
-        return null;
+        ArrayList<E> list = new ArrayList<>();
+        list.addAll((Collection<? extends E>) Arrays.asList(elems));
+        return list.subList(fromIndex, toIndex);
     }
 
     @Override

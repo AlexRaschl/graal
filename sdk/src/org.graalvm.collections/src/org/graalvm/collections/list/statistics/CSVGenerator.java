@@ -19,9 +19,10 @@ public class CSVGenerator {
 
     private final static String NAME_ALL = "all.csv";
     private final static String NAME_GBL = "gbl.csv";
-    private final static String NAME_PREFIX = "TR";
+    private final static String TR_PREFIX = "TR";
     private final static String NAME_OP_DISTR = "OpDistr.csv";
     private final static String NAME_TYPE_OP_DISTR = "TypeOpDistr.csv";
+    private final static String ALLOC_SITE = "AllocSites.csv";
 
     private final static boolean APPEND_MODE = false;
 
@@ -37,9 +38,18 @@ public class CSVGenerator {
             initialized = true;
     }
 
+    public static synchronized void createFileOfAllocationSites(String namePrefix) {
+        final String[] allocSites = Statistics.getAllocSiteLines(DATA_SEPARATOR);
+        final File file = createFile(namePrefix + ALLOC_SITE);
+        if (file == null)
+            return;
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Allocation Sites" + LINE_SEPARATOR, APPEND_MODE);
+        writeToFile(file, allocSites, true);
+    }
+
     public static synchronized void createFileOfOperationDistributions(String namePrefix) {
         final String[] opLines = Statistics.getOpDataLines(DATA_SEPARATOR);
-        File file = createFile(NAME_OP_DISTR);
+        File file = createFile(namePrefix + NAME_OP_DISTR);
         if (file == null)
             return; // TODO Exception
         writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
@@ -54,7 +64,7 @@ public class CSVGenerator {
     }
 
     public static synchronized void createFileOfTypeOperationDistributions(String namePrefix) {
-        File file = createFile(NAME_TYPE_OP_DISTR);
+        File file = createFile(namePrefix + NAME_TYPE_OP_DISTR);
         if (file == null)
             return; // TODO Exception
         writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation on" + DATA_SEPARATOR + "Type" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
@@ -76,7 +86,7 @@ public class CSVGenerator {
             throw new NoSuchElementException();
 
         String[] opLines = tracker.getOpDataLines(DATA_SEPARATOR);
-        File file = createFile(NAME_PREFIX + ID + ".csv");
+        File file = createFile(namePrefix + TR_PREFIX + ID + ".csv");
         if (file == null)
             return;
         writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
@@ -91,7 +101,7 @@ public class CSVGenerator {
         String[] typeLines = Statistics.getTypeDataLines(DATA_SEPARATOR);
         String[] lfLines = Statistics.getLoadFactorDataLines(DATA_SEPARATOR);
 
-        File file = createFile(NAME_GBL);
+        File file = createFile(namePrefix + NAME_GBL);
         if (file == null)
             return; // TODO Exception
 
@@ -113,7 +123,7 @@ public class CSVGenerator {
         String[] typeLines = Statistics.getTypeDataLines(DATA_SEPARATOR);
         String[] lfLines = Statistics.getLoadFactorDataLines(DATA_SEPARATOR);
 
-        File file = createFile(NAME_ALL);
+        File file = createFile(namePrefix + NAME_ALL);
         if (file == null)
             return; // TODO Exception
 

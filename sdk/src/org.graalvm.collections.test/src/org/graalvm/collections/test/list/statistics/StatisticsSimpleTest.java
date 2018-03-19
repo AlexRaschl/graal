@@ -69,6 +69,15 @@ public class StatisticsSimpleTest {
         testList7.add(new ArrayList<Integer>());
         testList7.add(null);
 
+        SpecifiedArrayList<Object> testList8 = SpecifiedArrayList.createNew();
+        testList8.add(new NullPointerException());
+        testList8.add(new Integer(0));
+        testList8.add(new String("ab"));
+        testList8.add(new String("abc"));
+        testList8.add(new ArrayList<Integer>());
+        testList8.add(null);
+        testList8.add(null);
+
         Statistics.printOverallSummary();
 
         String[] data = Statistics.getOpDataLines(DATA_SEPARATOR);
@@ -95,6 +104,8 @@ public class StatisticsSimpleTest {
         CSVGenerator.createFileOfOperationDistributions("");
 
         CSVGenerator.createFileOfTypeOperationDistributions("");
+
+        CSVGenerator.createFileOfAllocationSites("");
 
     }
 }

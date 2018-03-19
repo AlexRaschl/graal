@@ -93,6 +93,22 @@ public class Statistics {
         return dataArr;
     }
 
+    public static String[] getAllocSiteLines(final char dataSeparator) {
+        final String[] allocSites = new String[trackers.size()];
+        StringBuilder sb = new StringBuilder(50);
+
+        int i = 0;
+        for (StatisticTracker t : trackers) {
+            sb.append(t.getID());
+            sb.append(dataSeparator);
+            sb.append(t.getAllocationSite().getClassName());
+            allocSites[i++] = sb.toString();
+
+            sb = new StringBuilder(50);
+        }
+        return allocSites;
+    }
+
     /*
      * Data Lines for CSV Generator
      */
