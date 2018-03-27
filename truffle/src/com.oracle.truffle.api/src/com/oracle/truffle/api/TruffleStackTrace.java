@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.frame.Frame;
 import com.oracle.truffle.api.frame.FrameInstance;
@@ -146,7 +144,7 @@ final class TruffleStackTrace extends Exception {
             stackFrameLimit = -1;
         }
         // add the lazily captured stack frames above the manually queried ones
-        SpecifiedArrayList<TracebackElement> elements = SpecifiedArrayList.createNew();
+        ArrayList<TracebackElement> elements = new ArrayList<>();
         TracebackElement currentElement = lazy.current;
         while (currentElement != null) {
             elements.add(currentElement);
@@ -154,7 +152,7 @@ final class TruffleStackTrace extends Exception {
         }
         Collections.reverse(elements);
 
-        List<TruffleStackTraceElement> frames = SpecifiedArrayList.createNew();
+        List<TruffleStackTraceElement> frames = new ArrayList<>();
         for (TracebackElement element : elements) {
             if (element.root != null) {
                 frames.add(new TruffleStackTraceElement(topCallSite, element.root, element.frame));
@@ -190,8 +188,9 @@ final class TruffleStackTrace extends Exception {
     private static final class LazyStackTrace extends Throwable {
 
         /**
-         * The root of a linked list of pieces of information about the stack trace of the exception. Only
-         * used, i.e., non-null, as long as the exception wasn't queried for the full stack trace.
+         * The root of a linked list of pieces of information about the stack trace of the
+         * exception. Only used, i.e., non-null, as long as the exception wasn't queried for the
+         * full stack trace.
          */
         private TracebackElement current;
 

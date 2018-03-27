@@ -37,8 +37,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.TruffleOptions;
 import com.oracle.truffle.api.source.SourceSection;
@@ -67,7 +65,7 @@ public final class NodeUtil {
     }
 
     private static final class RecursiveNodeIterator implements Iterator<Node> {
-        private final List<Iterator<Node>> iteratorStack = SpecifiedArrayList.createNew();
+        private final List<Iterator<Node>> iteratorStack = new ArrayList<>();
 
         RecursiveNodeIterator(final Node node) {
             iteratorStack.add(new Iterator<Node>() {
@@ -179,7 +177,7 @@ public final class NodeUtil {
     /** @since 0.8 or earlier */
     public static List<Node> findNodeChildren(Node node) {
         CompilerAsserts.neverPartOfCompilation("do not call Node.findNodeChildren from compiled code");
-        List<Node> nodes = SpecifiedArrayList.createNew();
+        List<Node> nodes = new ArrayList<>();
         NodeClass nodeClass = node.getNodeClass();
 
         for (Object nodeField : nodeClass.getNodeFields()) {
@@ -447,8 +445,8 @@ public final class NodeUtil {
     }
 
     /**
-     * Get the nth parent of a node, where the 0th parent is the node itself. Returns null if there are
-     * less than n ancestors.
+     * Get the nth parent of a node, where the 0th parent is the node itself. Returns null if there
+     * are less than n ancestors.
      *
      * @since 0.8 or earlier
      */
@@ -503,7 +501,7 @@ public final class NodeUtil {
 
     /** @since 0.8 or earlier */
     public static <T> List<T> findAllParents(Node start, Class<T> clazz) {
-        List<T> parents = SpecifiedArrayList.createNew();
+        List<T> parents = new ArrayList<>();
         T parent = findParent(start, clazz);
         while (parent != null) {
             parents.add(parent);
@@ -514,7 +512,7 @@ public final class NodeUtil {
 
     /** @since 0.8 or earlier */
     public static List<Node> collectNodes(Node parent, Node child) {
-        List<Node> nodes = SpecifiedArrayList.createNew();
+        List<Node> nodes = new ArrayList<>();
         Node current = child;
         while (current != null) {
             nodes.add(current);
@@ -542,7 +540,7 @@ public final class NodeUtil {
 
     /** @since 0.8 or earlier */
     public static <T> List<T> findAllNodeInstances(final Node root, final Class<T> clazz) {
-        final List<T> nodeList = SpecifiedArrayList.createNew();
+        final List<T> nodeList = new ArrayList<>();
         root.accept(new NodeVisitor() {
             public boolean visit(Node node) {
                 if (clazz.isInstance(node)) {
@@ -699,8 +697,8 @@ public final class NodeUtil {
     }
 
     /**
-     * Prints a human readable form of a {@link Node} AST to the given {@link PrintStream}. This print
-     * method does not check for cycles in the node structure.
+     * Prints a human readable form of a {@link Node} AST to the given {@link PrintStream}. This
+     * print method does not check for cycles in the node structure.
      *
      * @param out the stream to print to.
      * @param node the root node to write
@@ -732,7 +730,7 @@ public final class NodeUtil {
 
         p.print(nodeName(node));
 
-        SpecifiedArrayList<Object> childFields = SpecifiedArrayList.createNew();
+        ArrayList<Object> childFields = new ArrayList<>();
         String sep = "";
         p.print("(");
         NodeClass nodeClass = NodeClass.get(node);

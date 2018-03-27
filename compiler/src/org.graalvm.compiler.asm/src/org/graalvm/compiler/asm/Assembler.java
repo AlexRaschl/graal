@@ -22,12 +22,11 @@
  */
 package org.graalvm.compiler.asm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 import jdk.vm.ci.code.Register;
 import jdk.vm.ci.code.StackSlot;
@@ -179,8 +178,8 @@ public abstract class Assembler {
     }
 
     /**
-     * Gets a name for a label, creating it if it does not yet exist. By default, the returned name is
-     * only unique with the scope of this assembler.
+     * Gets a name for a label, creating it if it does not yet exist. By default, the returned name
+     * is only unique with the scope of this assembler.
      */
     public String nameOf(Label l) {
         if (nameMap == null) {
@@ -203,8 +202,8 @@ public abstract class Assembler {
     /**
      * Returns a target specific placeholder address that can be used for code patching.
      *
-     * @param instructionStartPosition The start of the instruction, i.e., the value that is used as the
-     *            key for looking up placeholder patching information.
+     * @param instructionStartPosition The start of the instruction, i.e., the value that is used as
+     *            the key for looking up placeholder patching information.
      */
     public abstract AbstractAddress getPlaceholder(int instructionStartPosition);
 
@@ -229,7 +228,7 @@ public abstract class Assembler {
 
     public LabelHint requestLabelHint(Label label) {
         if (jumpDisplacementHints == null) {
-            jumpDisplacementHints = SpecifiedArrayList.createNew();
+            jumpDisplacementHints = new ArrayList<>();
         }
         LabelHint hint = new LabelHint(label, position());
         this.jumpDisplacementHints.add(hint);

@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.options.OptionDescriptor;
 import org.graalvm.options.OptionDescriptors;
 import org.graalvm.options.OptionValues;
@@ -118,8 +117,8 @@ public abstract class TruffleInstrument {
      * <p>
      * The method may {@link Env#registerService(java.lang.Object) register} additional
      * {@link Registration#services() services} - e.g. objects to be exposed via
-     * {@link com.oracle.truffle.api.vm.PolyglotRuntime.Instrument#lookup lookup query}. For example to
-     * expose a debugger one could define an abstract debugger controller:
+     * {@link com.oracle.truffle.api.vm.PolyglotRuntime.Instrument#lookup lookup query}. For example
+     * to expose a debugger one could define an abstract debugger controller:
      * </p>
      *
      * {@codesnippet DebuggerController}
@@ -140,10 +139,10 @@ public abstract class TruffleInstrument {
 
     /**
      * Invoked once on an {@linkplain TruffleInstrument instance} when it becomes
-     * {@linkplain com.oracle.truffle.api.vm.PolyglotEngine.Instrument#setEnabled(boolean) disabled} ,
-     * possibly because the underlying {@linkplain com.oracle.truffle.api.vm.PolyglotEngine engine} has
-     * been disposed. A disposed instance is no longer usable. If the instrument is re-enabled, the
-     * engine will create a new instance.
+     * {@linkplain com.oracle.truffle.api.vm.PolyglotEngine.Instrument#setEnabled(boolean) disabled}
+     * , possibly because the underlying {@linkplain com.oracle.truffle.api.vm.PolyglotEngine
+     * engine} has been disposed. A disposed instance is no longer usable. If the instrument is
+     * re-enabled, the engine will create a new instance.
      *
      * @param env environment information for the instrument
      * @since 0.12
@@ -164,12 +163,12 @@ public abstract class TruffleInstrument {
     /**
      * Returns a set of option descriptors that are supported by this instrument. Option values are
      * accessible using the {@link Env#getOptions() environment} when the instrument is
-     * {@link #onCreate(Env) created}. By default no options are available for an instrument. Options
-     * returned by this method must specify the {@link Registration#id() instrument id} as
+     * {@link #onCreate(Env) created}. By default no options are available for an instrument.
+     * Options returned by this method must specify the {@link Registration#id() instrument id} as
      * {@link OptionDescriptor#getName() name} prefix for each option. For example if the id of the
      * instrument is "debugger" then a valid option name would be "debugger.Enabled". The instrument
-     * will automatically be {@link #onCreate(Env) created} if one of the specified options was provided
-     * by the engine. To construct option descriptors from a list then
+     * will automatically be {@link #onCreate(Env) created} if one of the specified options was
+     * provided by the engine. To construct option descriptors from a list then
      * {@link OptionDescriptors#create(List)} can be used.
      *
      * @see Option For an example of declaring the option descriptor using an annotation.
@@ -251,13 +250,13 @@ public abstract class TruffleInstrument {
 
         /**
          * Registers additional service. This method can be called multiple time, but only during
-         * {@link #onCreate(com.oracle.truffle.api.instrumentation.TruffleInstrument.Env) initialization of
-         * the instrument}. These services are made available to users via
+         * {@link #onCreate(com.oracle.truffle.api.instrumentation.TruffleInstrument.Env)
+         * initialization of the instrument}. These services are made available to users via
          * {@link com.oracle.truffle.api.vm.PolyglotEngine.Instrument#lookup} query method.
          *
          * This method can only be called from
-         * {@link #onCreate(com.oracle.truffle.api.instrumentation.TruffleInstrument.Env)} method - then the
-         * services are collected and cannot be changed anymore.
+         * {@link #onCreate(com.oracle.truffle.api.instrumentation.TruffleInstrument.Env)} method -
+         * then the services are collected and cannot be changed anymore.
          *
          * @param service a service to be returned from associated
          *            {@link com.oracle.truffle.api.vm.PolyglotEngine.Instrument#lookup}
@@ -274,8 +273,8 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Queries a {@link TruffleLanguage language implementation} for a special service. The services can
-         * be provided by the language by directly implementing them when subclassing
+         * Queries a {@link TruffleLanguage language implementation} for a special service. The
+         * services can be provided by the language by directly implementing them when subclassing
          * {@link TruffleLanguage}.
          *
          * @param <S> the requested type
@@ -289,10 +288,11 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Returns an additional service provided by this instrument, specified by type. If an instrument is
-         * not enabled, it will be enabled automatically by requesting a supported service. If the
-         * instrument does not provide a service for a given type it will not be enabled automatically. An
-         * {@link IllegalArgumentException} is thrown if a service is looked up from the current instrument.
+         * Returns an additional service provided by this instrument, specified by type. If an
+         * instrument is not enabled, it will be enabled automatically by requesting a supported
+         * service. If the instrument does not provide a service for a given type it will not be
+         * enabled automatically. An {@link IllegalArgumentException} is thrown if a service is
+         * looked up from the current instrument.
          *
          * @param <S> the requested type
          * @param instrument identification of the instrument to query
@@ -309,8 +309,8 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Returns a map {@link LanguageInfo#getId() language id} to {@link LanguageInfo language info} of
-         * all languages that are installed in the environment.
+         * Returns a map {@link LanguageInfo#getId() language id} to {@link LanguageInfo language
+         * info} of all languages that are installed in the environment.
          *
          * @since 0.26
          */
@@ -319,8 +319,8 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Returns a map {@link InstrumentInfo#getId() instrument id} to {@link InstrumentInfo instrument
-         * info} of all instruments that are installed in the environment.
+         * Returns a map {@link InstrumentInfo#getId() instrument id} to {@link InstrumentInfo
+         * instrument info} of all instruments that are installed in the environment.
          *
          * @since 0.26
          */
@@ -329,7 +329,7 @@ public abstract class TruffleInstrument {
         }
 
         Object[] onCreate(TruffleInstrument instrument) {
-            List<Object> arr = SpecifiedArrayList.createNew();
+            List<Object> arr = new ArrayList<>();
             services = arr;
             try {
                 instrument.onCreate(this);
@@ -341,7 +341,8 @@ public abstract class TruffleInstrument {
 
         /**
          * Returns option values for the options described in
-         * {@link TruffleLanguage#getOptionDescriptors()}. The returned options are never <code>null</code>.
+         * {@link TruffleLanguage#getOptionDescriptors()}. The returned options are never
+         * <code>null</code>.
          *
          * @since 0.27
          */
@@ -350,13 +351,14 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Evaluates source of (potentially different) language using the current context.The names of
-         * arguments are parameters for the resulting {#link CallTarget} that allow the <code>source</code>
-         * to reference the actual parameters passed to {@link CallTarget#call(java.lang.Object...)}.
+         * Evaluates source of (potentially different) language using the current context.The names
+         * of arguments are parameters for the resulting {#link CallTarget} that allow the
+         * <code>source</code> to reference the actual parameters passed to
+         * {@link CallTarget#call(java.lang.Object...)}.
          *
          * @param source the source to evaluate
-         * @param argumentNames the names of {@link CallTarget#call(java.lang.Object...)} arguments that can
-         *            be referenced from the source
+         * @param argumentNames the names of {@link CallTarget#call(java.lang.Object...)} arguments
+         *            that can be referenced from the source
          * @return the call target representing the parsed result
          * @throws IOException if the parsing or evaluation fails for some reason
          * @since 0.12
@@ -367,12 +369,14 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Parses source snippet of the node's language at the provided node location. The result is an AST
-         * fragment represented by {@link ExecutableNode} that accepts frames valid at the provided node
-         * location, or <code>null</code> when inline parsing is not supported by the language.
+         * Parses source snippet of the node's language at the provided node location. The result is
+         * an AST fragment represented by {@link ExecutableNode} that accepts frames valid at the
+         * provided node location, or <code>null</code> when inline parsing is not supported by the
+         * language.
          *
          * @param source a source snippet to parse at the provided node location
-         * @param node a context location where the source is parsed at, must not be <code>null</code>
+         * @param node a context location where the source is parsed at, must not be
+         *            <code>null</code>
          * @param frame a frame location where the source is parsed at, can be <code>null</code>
          * @return the executable fragment representing the parsed result, or <code>null</code>
          * @since 0.31
@@ -412,10 +416,12 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Returns <code>true</code> if the given root node is considered an engine evaluation root for the
-         * current execution context. Multiple such root nodes can appear on stack frames returned by
-         * {@link TruffleRuntime#iterateFrames(com.oracle.truffle.api.frame.FrameInstanceVisitor)}. A
-         * debugger implementation might use this information to hide stack frames of other engines.
+         * Returns <code>true</code> if the given root node is considered an engine evaluation root
+         * for the current execution context. Multiple such root nodes can appear on stack frames
+         * returned by
+         * {@link TruffleRuntime#iterateFrames(com.oracle.truffle.api.frame.FrameInstanceVisitor)}.
+         * A debugger implementation might use this information to hide stack frames of other
+         * engines.
          *
          * @param root the root node to check
          * @return <code>true</code> if engine root else <code>false</code>
@@ -426,14 +432,16 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Uses the original language of the node to print a string representation of this value. The
-         * behavior of this method is undefined if a type unknown to the language is passed as value.
+         * Uses the original language of the node to print a string representation of this value.
+         * The behavior of this method is undefined if a type unknown to the language is passed as
+         * value.
          *
          * @param node a node
          * @param value a known value of that language
          * @return a human readable string representation of the value.
          * @since 0.17
-         * @deprecated use {@link #toString(com.oracle.truffle.api.nodes.LanguageInfo, java.lang.Object)}
+         * @deprecated use
+         *             {@link #toString(com.oracle.truffle.api.nodes.LanguageInfo, java.lang.Object)}
          *             and retrieve {@link LanguageInfo} from
          *             <code>node.getRootNode().getLanguageInfo()</code>.
          */
@@ -444,8 +452,8 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Uses the provided language to print a string representation of this value. The behavior of this
-         * method is undefined if a type unknown to the language is passed as a value.
+         * Uses the provided language to print a string representation of this value. The behavior
+         * of this method is undefined if a type unknown to the language is passed as a value.
          *
          * @param language a language
          * @param value a known value of that language
@@ -459,10 +467,10 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Find a meta-object of a value, if any. The meta-object represents a description of the object,
-         * reveals it's kind and it's features. Some information that a meta-object might define includes
-         * the base object's type, interface, class, methods, attributes, etc. When no meta-object is known,
-         * <code>null</code> is returned.
+         * Find a meta-object of a value, if any. The meta-object represents a description of the
+         * object, reveals it's kind and it's features. Some information that a meta-object might
+         * define includes the base object's type, interface, class, methods, attributes, etc. When
+         * no meta-object is known, <code>null</code> is returned.
          *
          * @param node a node
          * @param value a value to find the meta-object of
@@ -480,11 +488,12 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Uses the provided language to find a meta-object of a value, if any. The meta-object represents a
-         * description of the object, reveals it's kind and it's features. Some information that a
-         * meta-object might define includes the base object's type, interface, class, methods, attributes,
-         * etc. When no meta-object is known, <code>null</code> is returned. For the best results, use the
-         * {@link #findLanguage(java.lang.Object) value's language}, if any.
+         * Uses the provided language to find a meta-object of a value, if any. The meta-object
+         * represents a description of the object, reveals it's kind and it's features. Some
+         * information that a meta-object might define includes the base object's type, interface,
+         * class, methods, attributes, etc. When no meta-object is known, <code>null</code> is
+         * returned. For the best results, use the {@link #findLanguage(java.lang.Object) value's
+         * language}, if any.
          *
          * @param language a language
          * @param value a value to find the meta-object of
@@ -516,8 +525,9 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Uses the provided language to find a source location where a value is declared, if any. For the
-         * best results, use the {@link #findLanguage(java.lang.Object) value's language}, if any.
+         * Uses the provided language to find a source location where a value is declared, if any.
+         * For the best results, use the {@link #findLanguage(java.lang.Object) value's language},
+         * if any.
          *
          * @param language a language
          * @param value a value to get the source location for
@@ -531,11 +541,13 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Find a language that created the value, if any. This method will return <code>null</code> for
-         * values representing a primitive value, or objects that are not associated with any language.
+         * Find a language that created the value, if any. This method will return <code>null</code>
+         * for values representing a primitive value, or objects that are not associated with any
+         * language.
          *
          * @param value the value to find a language of
-         * @return the language, or <code>null</code> when there is no language associated with the value.
+         * @return the language, or <code>null</code> when there is no language associated with the
+         *         value.
          * @since 0.27
          */
         public LanguageInfo findLanguage(Object value) {
@@ -573,20 +585,22 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Find a list of local scopes enclosing the given {@link Node node}. The scopes contain variables
-         * that are valid at the provided node and that have a relation to it. Unless the node is in a
-         * global scope, it is expected that there is at least one scope provided, that corresponds to the
-         * enclosing function. Global top scopes are provided by {@link #findTopScopes(java.lang.String)}.
-         * The iteration order corresponds with the scope nesting, from the inner-most to the outer-most.
+         * Find a list of local scopes enclosing the given {@link Node node}. The scopes contain
+         * variables that are valid at the provided node and that have a relation to it. Unless the
+         * node is in a global scope, it is expected that there is at least one scope provided, that
+         * corresponds to the enclosing function. Global top scopes are provided by
+         * {@link #findTopScopes(java.lang.String)}. The iteration order corresponds with the scope
+         * nesting, from the inner-most to the outer-most.
          * <p>
          * Scopes may depend on the information provided by the frame. <br/>
          * Lexical scopes are returned when <code>frame</code> argument is <code>null</code>.
          *
          * @param node a node to get the enclosing scopes for. The node needs to be inside a
          *            {@link RootNode} associated with a language.
-         * @param frame The current frame the node is in, or <code>null</code> for lexical access when the
-         *            program is not running, or is not suspended at the node's location.
-         * @return an {@link Iterable} providing list of scopes from the inner-most to the outer-most.
+         * @param frame The current frame the node is in, or <code>null</code> for lexical access
+         *            when the program is not running, or is not suspended at the node's location.
+         * @return an {@link Iterable} providing list of scopes from the inner-most to the
+         *         outer-most.
          * @see TruffleLanguage#findLocalScopes(java.lang.Object, com.oracle.truffle.api.nodes.Node,
          *      com.oracle.truffle.api.frame.Frame)
          * @since 0.30
@@ -607,11 +621,12 @@ public abstract class TruffleInstrument {
         }
 
         /**
-         * Find a list of top scopes of a language. The iteration order corresponds with the scope nesting,
-         * from the inner-most to the outer-most.
+         * Find a list of top scopes of a language. The iteration order corresponds with the scope
+         * nesting, from the inner-most to the outer-most.
          *
          * @param languageId a language id.
-         * @return a list of top scopes, can be empty when no top scopes are provided by the language
+         * @return a list of top scopes, can be empty when no top scopes are provided by the
+         *         language
          * @see TruffleLanguage#findTopScopes(java.lang.Object)
          * @since 0.30
          */
@@ -633,8 +648,8 @@ public abstract class TruffleInstrument {
     }
 
     /**
-     * Annotation that registers an {@link TruffleInstrument instrument} implementations for automatic
-     * discovery.
+     * Annotation that registers an {@link TruffleInstrument instrument} implementations for
+     * automatic discovery.
      *
      * @since 0.12
      */
@@ -643,45 +658,47 @@ public abstract class TruffleInstrument {
     public @interface Registration {
 
         /**
-         * A custom machine identifier for this instrument. If not defined then the fully qualified class
-         * name is used.
-         *
+         * A custom machine identifier for this instrument. If not defined then the fully qualified
+         * class name is used.
+         * 
          * @since 0.12
          */
         String id() default "";
 
         /**
          * The name of the instrument in an arbitrary format for humans.
-         *
+         * 
          * @since 0.12
          */
         String name() default "";
 
         /**
          * The version for instrument in an arbitrary format.
-         *
+         * 
          * @since 0.12
          */
         String version() default "";
 
         /**
-         * Specifies whether the instrument is accessible using the polyglot API. Internal instruments are
-         * only accessible from other instruments or guest languages.
+         * Specifies whether the instrument is accessible using the polyglot API. Internal
+         * instruments are only accessible from other instruments or guest languages.
          *
          * @since 0.27
          */
         boolean internal() default false;
 
         /**
-         * Declarative list of classes this instrument is known to provide. The instrument is supposed to
-         * override its {@link #onCreate(com.oracle.truffle.api.instrumentation.TruffleInstrument.Env)
-         * onCreate} method and instantiate and {@link Env#registerService(java.lang.Object) register} all
+         * Declarative list of classes this instrument is known to provide. The instrument is
+         * supposed to override its
+         * {@link #onCreate(com.oracle.truffle.api.instrumentation.TruffleInstrument.Env) onCreate}
+         * method and instantiate and {@link Env#registerService(java.lang.Object) register} all
          * here in defined services.
          * <p>
-         * Instruments {@link com.oracle.truffle.api.vm.PolyglotEngine.Instrument#setEnabled(boolean) get
+         * Instruments
+         * {@link com.oracle.truffle.api.vm.PolyglotEngine.Instrument#setEnabled(boolean) get
          * automatically enabled} when their registered
-         * {@link com.oracle.truffle.api.vm.PolyglotEngine.Instrument#lookup(java.lang.Class) service is
-         * requested}.
+         * {@link com.oracle.truffle.api.vm.PolyglotEngine.Instrument#lookup(java.lang.Class)
+         * service is requested}.
          *
          * @since 0.25
          * @return list of service types that this instrument can provide

@@ -43,7 +43,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Test;
-import org.graalvm.collections.list.SpecifiedArrayList;
+
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Instrument;
@@ -119,7 +119,7 @@ public class ThreadsEventsTest {
             context.eval(Source.create(InstrumentationTestLanguage.ID, "ROOT(DEFINE(foo, STATEMENT), LOOP(" + numThreads + ", SPAWN(foo)), JOIN())"));
         }
         assertEquals(2 + 2 * numThreads, events.size());
-        List<ThreadEvent> startEvents = SpecifiedArrayList.createNew(1 + numThreads);
+        List<ThreadEvent> startEvents = new ArrayList<>(1 + numThreads);
         for (ThreadEvent event : events) {
             if (event.isNew) {
                 startEvents.add(event);
@@ -161,7 +161,7 @@ public class ThreadsEventsTest {
         }
 
         assertEquals(2 * numThreads, events.size());
-        List<ThreadEvent> startEvents = SpecifiedArrayList.createNew(numThreads);
+        List<ThreadEvent> startEvents = new ArrayList<>(numThreads);
         for (ThreadEvent event : events) {
             if (event.isNew) {
                 startEvents.add(event);
@@ -231,7 +231,7 @@ public class ThreadsEventsTest {
     public static class TestThreadsInstrument extends TruffleInstrument implements ThreadsListener {
 
         static boolean includeStartedThreads = false;
-        final List<ThreadEvent> events = Collections.synchronizedList(SpecifiedArrayList.createNew());
+        final List<ThreadEvent> events = Collections.synchronizedList(new ArrayList<>());
 
         @Override
         protected void onCreate(Env env) {

@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,8 +58,6 @@ import com.oracle.truffle.api.interop.TruffleObject;
 import com.oracle.truffle.api.nodes.LanguageInfo;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Instrument;
 import org.graalvm.polyglot.PolyglotException;
@@ -745,7 +744,7 @@ public class AllocationReporterTest {
 
             void addChild(AllocNode node) {
                 if (children == null) {
-                    children = SpecifiedArrayList.createNew();
+                    children = new ArrayList<>();
                 }
                 children.add(node);
             }

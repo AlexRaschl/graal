@@ -39,7 +39,6 @@ import com.oracle.truffle.api.instrumentation.StandardTags;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument.Registration;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Instrument;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.SourceSection;
@@ -128,7 +127,7 @@ public class SourceSectionListenerTest extends AbstractInstrumentationTest {
     private SourceSection[] sections(String code, String... match) throws IOException {
         Source source = Source.newBuilder(InstrumentationTestLanguage.ID, code, "sourceSectionTest").build();
 
-        List<SourceSection> sections = SpecifiedArrayList.createNew();
+        List<SourceSection> sections = new ArrayList<>();
         sections.add(createSection(source, 0, code.length()));
         for (String matchExpression : match) {
             int index = -1;
@@ -173,10 +172,10 @@ public class SourceSectionListenerTest extends AbstractInstrumentationTest {
 
     @Registration(id = "testLoadSourceSection1", services = {TestLoadSourceSection1.class, Object.class})
     public static class TestLoadSourceSection1 extends TruffleInstrument {
-        List<LoadSourceSectionEvent> onlyNewEvents = SpecifiedArrayList.createNew();
-        List<LoadSourceSectionEvent> allEvents = SpecifiedArrayList.createNew();
-        List<LoadSourceSectionEvent> onlyStatements = SpecifiedArrayList.createNew();
-        List<LoadSourceSectionEvent> onlyExpressions = SpecifiedArrayList.createNew();
+        List<LoadSourceSectionEvent> onlyNewEvents = new ArrayList<>();
+        List<LoadSourceSectionEvent> allEvents = new ArrayList<>();
+        List<LoadSourceSectionEvent> onlyStatements = new ArrayList<>();
+        List<LoadSourceSectionEvent> onlyExpressions = new ArrayList<>();
         Instrumenter instrumenter = null;
 
         @Override

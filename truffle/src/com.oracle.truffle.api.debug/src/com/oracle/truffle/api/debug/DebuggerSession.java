@@ -39,8 +39,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.Assumption;
 import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.CompilerDirectives;
@@ -171,9 +169,7 @@ public final class DebuggerSession implements Closeable {
 
     private final Debugger debugger;
     private final SuspendedCallback callback;
-
-    // TODO REMEMBER SYNCHRONIZED
-    private final List<Breakpoint> breakpoints = Collections.synchronizedList(SpecifiedArrayList.createNew());
+    private final List<Breakpoint> breakpoints = Collections.synchronizedList(new ArrayList<>());
 
     private EventBinding<? extends ExecutionEventNodeFactory> callBinding;
     private EventBinding<? extends ExecutionEventNodeFactory> statementBinding;
@@ -221,8 +217,8 @@ public final class DebuggerSession implements Closeable {
     }
 
     /**
-     * Returns the {@link Debugger debugger} instance that this session is associated with. Can be used
-     * also after the session has already been closed.
+     * Returns the {@link Debugger debugger} instance that this session is associated with. Can be
+     * used also after the session has already been closed.
      *
      * @since 0.17
      */
@@ -301,11 +297,11 @@ public final class DebuggerSession implements Closeable {
     }
 
     /**
-     * Suspends the next execution on the first thread that is encountered. After the first thread was
-     * suspended no further executions are suspended unless {@link #suspendNextExecution()} is called
-     * again. If multiple threads are executing at the same time then there are no guarantees on which
-     * thread is going to be suspended. Will throw an {@link IllegalStateException} if the session is
-     * already closed.
+     * Suspends the next execution on the first thread that is encountered. After the first thread
+     * was suspended no further executions are suspended unless {@link #suspendNextExecution()} is
+     * called again. If multiple threads are executing at the same time then there are no guarantees
+     * on which thread is going to be suspended. Will throw an {@link IllegalStateException} if the
+     * session is already closed.
      *
      * @since 0.17
      */
@@ -338,8 +334,8 @@ public final class DebuggerSession implements Closeable {
     }
 
     /**
-     * Suspends the current or the next execution on all threads. All new executing threads will start
-     * suspended until {@link #resumeAll()} is called or the session is closed. Will throw an
+     * Suspends the current or the next execution on all threads. All new executing threads will
+     * start suspended until {@link #resumeAll()} is called or the session is closed. Will throw an
      * {@link IllegalStateException} if the session is already closed.
      */
     // TODO make part of public API as soon as PolyglotEngine is thread-safe
@@ -529,11 +525,11 @@ public final class DebuggerSession implements Closeable {
     }
 
     /**
-     * Returns all breakpoints {@link #install(com.oracle.truffle.api.debug.Breakpoint) installed} in
-     * this session, in the install order. The returned list contains a current snapshot of breakpoints,
-     * those that were {@link Breakpoint#dispose() disposed}, or
-     * {@link Debugger#install(com.oracle.truffle.api.debug.Breakpoint) installed on Debugger} are not
-     * included.
+     * Returns all breakpoints {@link #install(com.oracle.truffle.api.debug.Breakpoint) installed}
+     * in this session, in the install order. The returned list contains a current snapshot of
+     * breakpoints, those that were {@link Breakpoint#dispose() disposed}, or
+     * {@link Debugger#install(com.oracle.truffle.api.debug.Breakpoint) installed on Debugger} are
+     * not included.
      *
      * @since 0.17
      * @see Debugger#getBreakpoints()
@@ -547,7 +543,7 @@ public final class DebuggerSession implements Closeable {
         synchronized (this.breakpoints) {
             // need to synchronize manually breakpoints are iterated which is not
             // synchronized by default.
-            b = SpecifiedArrayList.createNew(this.breakpoints);
+            b = new ArrayList<>(this.breakpoints);
         }
         return Collections.unmodifiableList(b);
     }
@@ -557,8 +553,8 @@ public final class DebuggerSession implements Closeable {
      * enabled/disabled state. Breakpoints need to be active to actually break the execution. The
      * breakpoints are active by default.
      *
-     * @param active <code>true</code> to make all breakpoints active, <code>false</code> to make all
-     *            breakpoints inactive.
+     * @param active <code>true</code> to make all breakpoints active, <code>false</code> to make
+     *            all breakpoints inactive.
      * @since 0.24
      */
     public void setBreakpointsActive(boolean active) {
@@ -566,8 +562,8 @@ public final class DebuggerSession implements Closeable {
     }
 
     /**
-     * Test whether breakpoints are active in this session. Breakpoints do not break execution when not
-     * active.
+     * Test whether breakpoints are active in this session. Breakpoints do not break execution when
+     * not active.
      *
      * @since 0.24
      */
@@ -578,9 +574,9 @@ public final class DebuggerSession implements Closeable {
     /**
      * Adds a new breakpoint to this session and makes it capable of suspending execution.
      * <p>
-     * The breakpoint suspends execution by making a {@link SuspendedCallback callback} to this session,
-     * together with an event description that includes {@linkplain SuspendedEvent#getBreakpoints()
-     * which breakpoint(s)} were hit.
+     * The breakpoint suspends execution by making a {@link SuspendedCallback callback} to this
+     * session, together with an event description that includes
+     * {@linkplain SuspendedEvent#getBreakpoints() which breakpoint(s)} were hit.
      *
      * @param breakpoint a new breakpoint
      * @return the installed breakpoint
@@ -620,13 +616,13 @@ public final class DebuggerSession implements Closeable {
     }
 
     /**
-     * Set a {@link DebugContextsListener listener} to be notified about changes in contexts in guest
-     * language application. One listener can be set at a time, call with <code>null</code> to remove
-     * the current listener.
+     * Set a {@link DebugContextsListener listener} to be notified about changes in contexts in
+     * guest language application. One listener can be set at a time, call with <code>null</code> to
+     * remove the current listener.
      *
      * @param listener a listener to receive the context events, or <code>null</code> to reset it
-     * @param includeActiveContexts whether or not this listener should be notified for present active
-     *            contexts
+     * @param includeActiveContexts whether or not this listener should be notified for present
+     *            active contexts
      * @since 0.30
      */
     public void setContextsListener(DebugContextsListener listener, boolean includeActiveContexts) {
@@ -635,8 +631,8 @@ public final class DebuggerSession implements Closeable {
 
     /**
      * Set a {@link DebugThreadsListener listener} to be notified about changes in threads in guest
-     * language application. One listener can be set at a time, call with <code>null</code> to remove
-     * the current listener.
+     * language application. One listener can be set at a time, call with <code>null</code> to
+     * remove the current listener.
      *
      * @param listener a listener to receive the context events
      * @param includeInitializedThreads whether or not this listener should be notified for present
@@ -726,7 +722,7 @@ public final class DebuggerSession implements Closeable {
             }
             if (hit) {
                 if (breaks == null) {
-                    breaks = SpecifiedArrayList.createNew();
+                    breaks = new ArrayList<>();
                 }
                 breaks.add(breakpoint.isGlobal() ? breakpoint.getROWrapper() : breakpoint);
             }
@@ -854,7 +850,7 @@ public final class DebuggerSession implements Closeable {
     }
 
     private List<DebuggerNode> collectDebuggerNodes(DebuggerNode source) {
-        List<DebuggerNode> nodes = SpecifiedArrayList.createNew();
+        List<DebuggerNode> nodes = new ArrayList<>();
         SuspendAnchor suspendAnchor = (source.getSteppingLocation() == SteppingLocation.BEFORE_STATEMENT) ? SuspendAnchor.BEFORE : SuspendAnchor.AFTER;
         EventContext context = source.getContext();
         synchronized (breakpoints) {
@@ -927,8 +923,8 @@ public final class DebuggerSession implements Closeable {
     }
 
     /**
-     * Evaluates a snippet of code in a halted execution context. Assumes frame is part of the current
-     * execution stack, behavior is undefined if not.
+     * Evaluates a snippet of code in a halted execution context. Assumes frame is part of the
+     * current execution stack, behavior is undefined if not.
      *
      * @param ev event notification where execution is halted
      * @param code text of the code to be executed

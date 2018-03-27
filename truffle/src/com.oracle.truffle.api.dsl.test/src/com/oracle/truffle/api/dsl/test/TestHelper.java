@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.RootCallTarget;
 import com.oracle.truffle.api.Truffle;
@@ -72,7 +70,7 @@ class TestHelper {
     static <E extends ValueNode> E createNode(NodeFactory<E> factory, boolean prefixConstants, Object... constants) {
         ArgumentNode[] argumentNodes = arguments(factory.getExecutionSignature().size());
 
-        List<Object> argumentList = SpecifiedArrayList.createNew();
+        List<Object> argumentList = new ArrayList<>();
         if (prefixConstants) {
             argumentList.addAll(Arrays.asList(constants));
         }
@@ -132,8 +130,7 @@ class TestHelper {
     }
 
     static <E> List<List<E>> permutations(List<E> list) {
-        // TODO LIST_OF_LIST
-        return permutations(SpecifiedArrayList.createNew(), list, SpecifiedArrayList.createNew());
+        return permutations(new ArrayList<E>(), list, new ArrayList<List<E>>());
     }
 
     static Object[][] permutations(Object... list) {
@@ -151,16 +148,16 @@ class TestHelper {
 
     static <E> List<List<E>> permutations(List<E> prefix, List<E> suffix, List<List<E>> output) {
         if (suffix.size() == 1) {
-            SpecifiedArrayList<E> newElement = SpecifiedArrayList.createNew(prefix);
+            ArrayList<E> newElement = new ArrayList<>(prefix);
             newElement.addAll(suffix);
             output.add(newElement);
             return output;
         }
 
         for (int i = 0; i < suffix.size(); i++) {
-            List<E> newPrefix = SpecifiedArrayList.createNew(prefix);
+            List<E> newPrefix = new ArrayList<>(prefix);
             newPrefix.add(suffix.get(i));
-            List<E> newSuffix = SpecifiedArrayList.createNew(suffix);
+            List<E> newSuffix = new ArrayList<>(suffix);
             newSuffix.remove(i);
             permutations(newPrefix, newSuffix, output);
         }

@@ -40,7 +40,6 @@ import com.oracle.truffle.api.instrumentation.SourceSectionFilter.IndexRange;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument.Registration;
 import com.oracle.truffle.api.source.SourceSection;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Instrument;
 import org.graalvm.polyglot.Source;
 
@@ -116,8 +115,8 @@ public class SourceListenerTest extends AbstractInstrumentationTest {
 
     @Registration(id = "testLoadSource1", services = SourceListenerTest.TestLoadSource1.class)
     public static class TestLoadSource1 extends TruffleInstrument {
-        List<com.oracle.truffle.api.source.Source> onlyNewEvents = SpecifiedArrayList.createNew();
-        List<com.oracle.truffle.api.source.Source> allEvents = SpecifiedArrayList.createNew();
+        List<com.oracle.truffle.api.source.Source> onlyNewEvents = new ArrayList<>();
+        List<com.oracle.truffle.api.source.Source> allEvents = new ArrayList<>();
 
         @Override
         protected void onCreate(Env env) {

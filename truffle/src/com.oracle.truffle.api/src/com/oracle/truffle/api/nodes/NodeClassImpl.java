@@ -33,8 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.nodes.Node.Child;
 import com.oracle.truffle.api.nodes.Node.Children;
 
@@ -58,7 +56,7 @@ final class NodeClassImpl extends NodeClass {
             throw new IllegalArgumentException();
         }
 
-        List<NodeFieldAccessor> fieldsList = SpecifiedArrayList.createNew();
+        List<NodeFieldAccessor> fieldsList = new ArrayList<>();
         NodeFieldAccessor parentFieldTmp = null;
 
         try {
@@ -249,7 +247,7 @@ final class NodeClassImpl extends NodeClass {
     }
 
     private static NodeFieldAccessor[] iterableToArray(Iterable<NodeFieldAccessor> fields) {
-        SpecifiedArrayList<NodeFieldAccessor> fieldList = SpecifiedArrayList.createNew();
+        ArrayList<NodeFieldAccessor> fieldList = new ArrayList<>();
         for (NodeFieldAccessor field : fields) {
             fieldList.add(field);
         }
