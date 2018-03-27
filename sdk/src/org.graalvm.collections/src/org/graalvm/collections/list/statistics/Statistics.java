@@ -93,7 +93,7 @@ public class Statistics {
         return dataArr;
     }
 
-    public static String[] getAllocSiteLines(final char dataSeparator) {
+    public static synchronized String[] getAllocSiteLines(final char dataSeparator) {
         final String[] allocSites = new String[trackers.size()];
         StringBuilder sb = new StringBuilder(50);
 

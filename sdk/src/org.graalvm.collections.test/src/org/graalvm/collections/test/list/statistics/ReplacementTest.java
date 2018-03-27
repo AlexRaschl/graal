@@ -77,10 +77,10 @@ public class ReplacementTest {
 
         Statistics.printOverallSummary();
 
-        CSVGenerator.createFileOfGlobalInfo("");
-        CSVGenerator.createFileOfOperationDistributions("");
-        CSVGenerator.createFileOfTypeOperationDistributions("");
-        CSVGenerator.createFileOfAllocationSites("");
+        CSVGenerator.createFileOfGlobalInfo(ReplacementTest.class.getSimpleName());
+        CSVGenerator.createFileOfOperationDistributions(ReplacementTest.class.getSimpleName());
+        CSVGenerator.createFileOfTypeOperationDistributions(ReplacementTest.class.getSimpleName());
+        CSVGenerator.createFileOfAllocationSites(ReplacementTest.class.getSimpleName());
     }
 
     @Test

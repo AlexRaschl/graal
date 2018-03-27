@@ -95,17 +95,17 @@ public class StatisticsSimpleTest {
             System.out.println(s);
         System.out.println();
 
-        CSVGenerator.createFileOfGlobalInfo("");
+        // CSVGenerator.createFileOfGlobalInfo(StatisticsSimpleTest.class.getSimpleName());
 
-        CSVGenerator.createFileOfTracker(1, "");
+        // CSVGenerator.createFileOfTracker(1, "");
 
-        CSVGenerator.createFileOfEverything("");
+        // CSVGenerator.createFileOfEverything("");
 
-        CSVGenerator.createFileOfOperationDistributions("");
+        CSVGenerator.createFileOfOperationDistributions(StatisticsSimpleTest.class.getSimpleName());
 
-        CSVGenerator.createFileOfTypeOperationDistributions("");
+        CSVGenerator.createFileOfTypeOperationDistributions(StatisticsSimpleTest.class.getSimpleName());
 
-        CSVGenerator.createFileOfAllocationSites("");
+        CSVGenerator.createFileOfAllocationSites(StatisticsSimpleTest.class.getSimpleName());
 
     }
 }
