@@ -29,12 +29,12 @@ import static org.graalvm.compiler.core.common.GraalOptions.MatchExpressions;
 import static org.graalvm.compiler.debug.DebugOptions.LogVerbose;
 import static org.graalvm.compiler.lir.LIR.verifyBlock;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.UnmodifiableMapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.calc.Condition;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
@@ -154,9 +154,9 @@ public abstract class NodeLIRBuilder implements NodeLIRBuilderTool, LIRGeneratio
     }
 
     /**
-     * Returns the operand that has been previously initialized by
-     * {@link #setResult(ValueNode, Value)} with the result of an instruction. It's a code
-     * generation error to ask for the operand of ValueNode that doesn't have one yet.
+     * Returns the operand that has been previously initialized by {@link #setResult(ValueNode, Value)}
+     * with the result of an instruction. It's a code generation error to ask for the operand of
+     * ValueNode that doesn't have one yet.
      *
      * @param node A node that produces a result value.
      */
@@ -207,8 +207,7 @@ public abstract class NodeLIRBuilder implements NodeLIRBuilderTool, LIRGeneratio
     }
 
     /**
-     * Used by the {@link MatchStatement} machinery to override the generation LIR for some
-     * ValueNodes.
+     * Used by the {@link MatchStatement} machinery to override the generation LIR for some ValueNodes.
      */
     public void setMatchResult(Node x, Value operand) {
         assert operand.equals(ComplexMatchValue.INTERIOR_MATCH) || operand instanceof ComplexMatchValue;
@@ -272,7 +271,7 @@ public abstract class NodeLIRBuilder implements NodeLIRBuilderTool, LIRGeneratio
     }
 
     private Value[] createPhiIn(AbstractMergeNode merge) {
-        List<Value> values = new ArrayList<>();
+        List<Value> values = SpecifiedArrayList.createNew();
         for (ValuePhiNode phi : merge.valuePhis()) {
             assert getOperand(phi) == null;
             Variable value = gen.newVariable(getExactPhiKind(phi));
@@ -290,22 +289,20 @@ public abstract class NodeLIRBuilder implements NodeLIRBuilderTool, LIRGeneratio
     }
 
     private Value[] createPhiOut(AbstractMergeNode merge, AbstractEndNode pred) {
-        List<Value> values = new ArrayList<>();
+        List<Value> values = SpecifiedArrayList.createNew();
         for (PhiNode phi : merge.valuePhis()) {
             ValueNode node = phi.valueAt(pred);
             Value value = operand(node);
             assert value != null;
             if (isRegister(value)) {
                 /*
-                 * Fixed register intervals are not allowed at block boundaries so we introduce a
-                 * new Variable.
+                 * Fixed register intervals are not allowed at block boundaries so we introduce a new Variable.
                  */
                 value = gen.emitMove(value);
             } else if (!allowObjectConstantToStackMove() && node instanceof ConstantNode && !LIRKind.isValue(value)) {
                 /*
-                 * Some constants are not allowed as inputs for PHIs in certain backends. Explicitly
-                 * create a copy of this value to force it into a register. The new variable is only
-                 * used in the PHI.
+                 * Some constants are not allowed as inputs for PHIs in certain backends. Explicitly create a copy
+                 * of this value to force it into a register. The new variable is only used in the PHI.
                  */
                 Variable result = gen.newVariable(value.getValueKind());
                 gen.emitMove(result, value);
@@ -390,8 +387,8 @@ public abstract class NodeLIRBuilder implements NodeLIRBuilderTool, LIRGeneratio
                 assert successors.count() == block.getSuccessorCount();
                 if (block.getSuccessorCount() != 1) {
                     /*
-                     * If we have more than one successor, we cannot just use the first one. Since
-                     * successors are unordered, this would be a random choice.
+                     * If we have more than one successor, we cannot just use the first one. Since successors are
+                     * unordered, this would be a random choice.
                      */
                     throw new GraalError("Block without BlockEndOp: " + block.getEndNode());
                 }
@@ -635,12 +632,10 @@ public abstract class NodeLIRBuilder implements NodeLIRBuilderTool, LIRGeneratio
     }
 
     /**
-     * This method tries to create a switch implementation that is optimal for the given switch. It
-     * will either generate a sequential if/then/else cascade, a set of range tests or a table
-     * switch.
+     * This method tries to create a switch implementation that is optimal for the given switch. It will
+     * either generate a sequential if/then/else cascade, a set of range tests or a table switch.
      *
-     * If the given switch does not contain int keys, it will always create a sequential
-     * implementation.
+     * If the given switch does not contain int keys, it will always create a sequential implementation.
      */
     @Override
     public void emitSwitch(SwitchNode x) {

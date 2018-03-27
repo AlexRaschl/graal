@@ -25,13 +25,13 @@ package org.graalvm.compiler.code;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.code.CompilationResult.CodeAnnotation;
 import org.graalvm.compiler.code.CompilationResult.CodeComment;
 import org.graalvm.compiler.code.CompilationResult.JumpTable;
@@ -127,7 +127,7 @@ public class HexCodeFile {
 
     public final byte[] code;
 
-    public final ArrayList<JumpTable> jumpTables = new ArrayList<>();
+    public final SpecifiedArrayList<JumpTable> jumpTables = SpecifiedArrayList.createNew();
 
     public final String isa;
 
@@ -143,8 +143,8 @@ public class HexCodeFile {
     }
 
     /**
-     * Parses a string in the format produced by {@link #toString()} to produce a
-     * {@link HexCodeFile} object.
+     * Parses a string in the format produced by {@link #toString()} to produce a {@link HexCodeFile}
+     * object.
      */
     public static HexCodeFile parse(String input, int sourceOffset, String source, String sourceName) {
         return new Parser(input, sourceOffset, source, sourceName).hcf;
@@ -214,7 +214,7 @@ public class HexCodeFile {
     public void addComment(int pos, String comment) {
         List<String> list = comments.get(pos);
         if (list == null) {
-            list = new ArrayList<>();
+            list = SpecifiedArrayList.createNew();
             comments.put(pos, list);
         }
         list.add(encodeString(comment));
@@ -226,7 +226,7 @@ public class HexCodeFile {
     public void addOperandComment(int pos, String comment) {
         List<String> list = comments.get(pos);
         if (list == null) {
-            list = new ArrayList<>(1);
+            list = SpecifiedArrayList.createNew(1);
             comments.put(pos, list);
         }
         list.add(encodeString(comment));

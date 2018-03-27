@@ -3,6 +3,8 @@ package org.graalvm.collections.list;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -156,8 +158,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      */
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        if (index < 0 || index > size)
-            throw new IndexOutOfBoundsException();
+        checkBoundsForAdd(index);
 
         if (c.size() == 0)
             return false;
@@ -213,8 +214,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public void add(int index, E element) {
-        if (index < 0 || index > size)
-            throw new IndexOutOfBoundsException();
+        checkBoundsForAdd(index);
         growIfNeeded();
         System.arraycopy(elems, index, elems, index + 1, size - index);
         elems[index] = element;
@@ -276,7 +276,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     @Override
     public ListIterator<E> listIterator(int index) {
         if (index < 0 || index > size)
-            throw new IndexOutOfBoundsException("Index: " + index);
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
         return new ListItr(index);
     }
 
@@ -325,7 +325,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
         ListItr(int startIndex) {
             super();
-            checkBoundaries(startIndex);
+            // checkBoundaries(startIndex);
             cursor = startIndex;
         }
 
@@ -428,6 +428,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             elems = Arrays.copyOf(elems, size);
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public void sort(Comparator<? super E> c) {
+        Arrays.sort((E[]) elems, 0, size, c);
+    }
+
     //
     //
     // -------------------POTECTED METHODS------------------------
@@ -450,8 +456,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     private void checkBoundaries(int index) {
         if (index < 0 || index >= size)
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
+    }
 
+    private void checkBoundsForAdd(int index) {
+        if (index < 0 || index > this.size)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
     }
 
     private void trimIfUseful() {

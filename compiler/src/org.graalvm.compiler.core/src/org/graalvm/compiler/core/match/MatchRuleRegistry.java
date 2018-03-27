@@ -24,12 +24,12 @@ package org.graalvm.compiler.core.match;
 
 import static org.graalvm.compiler.debug.DebugOptions.LogVerbose;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.MapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.gen.NodeMatchRules;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.GraalError;
@@ -43,9 +43,9 @@ import org.graalvm.compiler.serviceprovider.GraalServices;
 public class MatchRuleRegistry {
 
     /**
-     * Convert a list of field names into {@link org.graalvm.compiler.graph.Position} objects that
-     * can be used to read them during a match. The names should already have been confirmed to
-     * exist in the type.
+     * Convert a list of field names into {@link org.graalvm.compiler.graph.Position} objects that can
+     * be used to read them during a match. The names should already have been confirmed to exist in the
+     * type.
      *
      * @param nodeClass
      * @param names
@@ -107,8 +107,8 @@ public class MatchRuleRegistry {
     }
 
     /*
-     * This is a separate, public method so that external clients can create rules with a custom
-     * lookup and without the default caching behavior.
+     * This is a separate, public method so that external clients can create rules with a custom lookup
+     * and without the default caching behavior.
      */
     @SuppressWarnings("unchecked")
     public static EconomicMap<Class<? extends Node>, List<MatchStatement>> createRules(Class<? extends NodeMatchRules> theClass) {
@@ -130,7 +130,7 @@ public class MatchRuleRegistry {
                     Class<? extends Node> nodeClass = statement.getPattern().nodeClass();
                     List<MatchStatement> current = rules.get(nodeClass);
                     if (current == null) {
-                        current = new ArrayList<>();
+                        current = SpecifiedArrayList.createNew();
                         rules.put(nodeClass, current);
                     }
                     current.add(statement);

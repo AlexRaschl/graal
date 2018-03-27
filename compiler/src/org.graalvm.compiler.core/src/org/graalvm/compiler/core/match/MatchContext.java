@@ -24,12 +24,12 @@ package org.graalvm.compiler.core.match;
 
 import static org.graalvm.compiler.debug.DebugOptions.LogVerbose;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.gen.NodeLIRBuilder;
 import org.graalvm.compiler.core.match.MatchPattern.Result;
 import org.graalvm.compiler.debug.DebugContext;
@@ -51,7 +51,7 @@ public class MatchContext {
 
     private EconomicMap<String, NamedNode> namedNodes;
 
-    private ArrayList<Node> consumed;
+    private SpecifiedArrayList<Node> consumed;
 
     private int startIndex;
 
@@ -167,7 +167,7 @@ public class MatchContext {
 
         startIndex = Math.min(startIndex, index);
         if (consumed == null) {
-            consumed = new ArrayList<>(2);
+            consumed = SpecifiedArrayList.createNew(2);
         }
         consumed.add(node);
         return Result.OK;

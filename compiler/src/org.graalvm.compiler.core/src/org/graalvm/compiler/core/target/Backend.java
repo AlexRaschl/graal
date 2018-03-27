@@ -22,9 +22,8 @@
  */
 package org.graalvm.compiler.core.target;
 
-import java.util.ArrayList;
-
 import org.graalvm.collections.EconomicSet;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.asm.Assembler;
 import org.graalvm.compiler.code.CompilationResult;
 import org.graalvm.compiler.core.common.CompilationIdentifier;
@@ -67,14 +66,14 @@ import jdk.vm.ci.meta.SpeculationLog;
 public abstract class Backend implements TargetProvider, ValueKindFactory<LIRKind> {
 
     private final Providers providers;
-    private final ArrayList<CodeInstallationTaskFactory> codeInstallationTaskFactories;
+    private final SpecifiedArrayList<CodeInstallationTaskFactory> codeInstallationTaskFactories;
 
     public static final ForeignCallDescriptor ARITHMETIC_FREM = new ForeignCallDescriptor("arithmeticFrem", float.class, float.class, float.class);
     public static final ForeignCallDescriptor ARITHMETIC_DREM = new ForeignCallDescriptor("arithmeticDrem", double.class, double.class, double.class);
 
     protected Backend(Providers providers) {
         this.providers = providers;
-        this.codeInstallationTaskFactories = new ArrayList<>();
+        this.codeInstallationTaskFactories = SpecifiedArrayList.createNew();
     }
 
     public synchronized void addCodeInstallationTask(CodeInstallationTaskFactory factory) {
@@ -114,8 +113,8 @@ public abstract class Backend implements TargetProvider, ValueKindFactory<LIRKin
     }
 
     /**
-     * The given registerConfig is optional, in case null is passed the default RegisterConfig from
-     * the CodeCacheProvider will be used.
+     * The given registerConfig is optional, in case null is passed the default RegisterConfig from the
+     * CodeCacheProvider will be used.
      */
     public abstract FrameMapBuilder newFrameMapBuilder(RegisterConfig registerConfig);
 
@@ -148,8 +147,8 @@ public abstract class Backend implements TargetProvider, ValueKindFactory<LIRKin
                     CompilationResultBuilderFactory factory);
 
     /**
-     * Turns a Graal {@link CompilationResult} into a {@link CompiledCode} object that can be passed
-     * to the VM for code installation.
+     * Turns a Graal {@link CompilationResult} into a {@link CompiledCode} object that can be passed to
+     * the VM for code installation.
      */
     protected abstract CompiledCode createCompiledCode(ResolvedJavaMethod method, CompilationRequest compilationRequest, CompilationResult compilationResult);
 
@@ -175,17 +174,17 @@ public abstract class Backend implements TargetProvider, ValueKindFactory<LIRKin
     /**
      * Installs code based on a given compilation result.
      *
-     * @param method the method compiled to produce {@code compiledCode} or {@code null} if the
-     *            input to {@code compResult} was not a {@link ResolvedJavaMethod}
+     * @param method the method compiled to produce {@code compiledCode} or {@code null} if the input to
+     *            {@code compResult} was not a {@link ResolvedJavaMethod}
      * @param compilationRequest the compilation request or {@code null}
      * @param compilationResult the code to be compiled
-     * @param predefinedInstalledCode a pre-allocated {@link InstalledCode} object to use as a
-     *            reference to the installed code. If {@code null}, a new {@link InstalledCode}
-     *            object will be created.
+     * @param predefinedInstalledCode a pre-allocated {@link InstalledCode} object to use as a reference
+     *            to the installed code. If {@code null}, a new {@link InstalledCode} object will be
+     *            created.
      * @param speculationLog the speculation log to be used
      * @param isDefault specifies if the installed code should be made the default implementation of
-     *            {@code compRequest.getMethod()}. The default implementation for a method is the
-     *            code executed for standard calls to the method. This argument is ignored if
+     *            {@code compRequest.getMethod()}. The default implementation for a method is the code
+     *            executed for standard calls to the method. This argument is ignored if
      *            {@code compRequest == null}.
      * @param context a custom debug context to use for the code installation
      * @return a reference to the compiled and ready-to-run installed code
@@ -249,8 +248,8 @@ public abstract class Backend implements TargetProvider, ValueKindFactory<LIRKin
     /**
      * Installs code based on a given compilation result.
      *
-     * @param method the method compiled to produce {@code compiledCode} or {@code null} if the
-     *            input to {@code compResult} was not a {@link ResolvedJavaMethod}
+     * @param method the method compiled to produce {@code compiledCode} or {@code null} if the input to
+     *            {@code compResult} was not a {@link ResolvedJavaMethod}
      * @param compilationRequest the request or {@code null}
      * @param compilationResult the code to be compiled
      * @return a reference to the compiled and ready-to-run installed code
@@ -261,11 +260,11 @@ public abstract class Backend implements TargetProvider, ValueKindFactory<LIRKin
     }
 
     /**
-     * Installs code based on a given compilation result and sets it as the default code to be used
-     * when {@code method} is invoked.
+     * Installs code based on a given compilation result and sets it as the default code to be used when
+     * {@code method} is invoked.
      *
-     * @param method the method compiled to produce {@code compiledCode} or {@code null} if the
-     *            input to {@code compResult} was not a {@link ResolvedJavaMethod}
+     * @param method the method compiled to produce {@code compiledCode} or {@code null} if the input to
+     *            {@code compResult} was not a {@link ResolvedJavaMethod}
      * @param compilationResult the code to be compiled
      * @return a reference to the compiled and ready-to-run installed code
      * @throws BailoutException if the code installation failed
@@ -277,15 +276,15 @@ public abstract class Backend implements TargetProvider, ValueKindFactory<LIRKin
     /**
      * Emits the code for a given graph.
      *
-     * @param installedCodeOwner the method the compiled code will be associated with once
-     *            installed. This argument can be null.
+     * @param installedCodeOwner the method the compiled code will be associated with once installed.
+     *            This argument can be null.
      */
     public abstract void emitCode(CompilationResultBuilder crb, LIR lir, ResolvedJavaMethod installedCodeOwner);
 
     /**
-     * Translates a set of registers from the callee's perspective to the caller's perspective. This
-     * is needed for architectures where input/output registers are renamed during a call (e.g.
-     * register windows on SPARC). Registers which are not visible by the caller are removed.
+     * Translates a set of registers from the callee's perspective to the caller's perspective. This is
+     * needed for architectures where input/output registers are renamed during a call (e.g. register
+     * windows on SPARC). Registers which are not visible by the caller are removed.
      */
     public abstract EconomicSet<Register> translateToCallerRegisters(EconomicSet<Register> calleeRegisters);
 
