@@ -89,10 +89,10 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         return Arrays.copyOf(elems, size);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T[] toArray(T[] a) {
         if (a.length < size)
-            // Make a new array of a's runtime type, but my contents:
             return (T[]) Arrays.copyOf(elems, size, a.getClass());
         System.arraycopy(elems, 0, a, 0, size);
         if (a.length > size)
@@ -103,7 +103,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public boolean add(E e) {
-        growIfNeeded();
+        // growIfNeeded();
+        ensureCapacity(size + 1);
         elems[size++] = e;
         return true;
     }
@@ -402,7 +403,20 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public String toString() {
-        return "SpecifiedArrayListImpl [size=" + size + ", elems=" + Arrays.toString(elems) + "]";
+        Iterator<E> it = iterator();
+        if (!it.hasNext())
+            return "[]";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        for (;;) {
+            E e = it.next();
+            sb.append(e == this ? "(this Collection)" : e);
+            if (!it.hasNext())
+                return sb.append(']').toString();
+            sb.append(',').append(' ');
+        }
+        // return "SpecifiedArrayListImpl [size=" + size + ", elems=" + Arrays.toString(elems) + "]";
     }
 
     @Override
@@ -416,7 +430,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             if (capacity <= CAPACITY_GROWING_THRESHOLD) {
                 newLength = capacity;
             } else {
-                newLength = capacity + INITIAL_CAPACITY;
+                // newLength = capacity + INITIAL_CAPACITY;
+                newLength = curCapacity + (curCapacity >> 1);
             }
             elems = Arrays.copyOf(elems, newLength);
         }

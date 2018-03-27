@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
 import com.oracle.truffle.api.source.Source;
@@ -66,9 +68,9 @@ public final class SourceSectionFilter {
 
     /**
      * Creates a new {@link SourceSectionFilter} expression using a {@link Builder builder} pattern.
-     * Individual builder statements are interpreted as conjunctions (AND) while multiple parameters
-     * for individual filter expressions are treated as disjunctions (OR). To create the final
-     * filter finalize the expression using {@link Builder#build()}.
+     * Individual builder statements are interpreted as conjunctions (AND) while multiple parameters for
+     * individual filter expressions are treated as disjunctions (OR). To create the final filter
+     * finalize the expression using {@link Builder#build()}.
      *
      * @see Builder#sourceIs(Source...)
      * @see Builder#mimeTypeIs(String...)
@@ -164,7 +166,7 @@ public final class SourceSectionFilter {
      * @since 0.12
      */
     public final class Builder {
-        private List<EventFilterExpression> expressions = new ArrayList<>();
+        private List<EventFilterExpression> expressions = SpecifiedArrayList.createNew();
         private boolean includeInternal = true;
 
         private Builder() {
@@ -182,9 +184,9 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Adds custom predicate to filter inclusion of {@link Source sources}. The predicate must
-         * always return the same result for a source instance otherwise the behavior is undefined.
-         * The predicate should be able run on multiple threads at the same time.
+         * Adds custom predicate to filter inclusion of {@link Source sources}. The predicate must always
+         * return the same result for a source instance otherwise the behavior is undefined. The predicate
+         * should be able run on multiple threads at the same time.
          *
          * @param predicate a test for inclusion
          * @since 0.17
@@ -198,12 +200,11 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Adds custom predicate to filter inclusion for {@link RootNode#getName() root names}. The
-         * root name might be <code>null</code> if not provided by the guest language. If the
-         * language returns a changing value it is unspecified which root name is going to be
-         * matched. The predicate must always return the same result for a {@link String} instance
-         * otherwise the behavior is undefined. The predicate should be able run on multiple threads
-         * at the same time.
+         * Adds custom predicate to filter inclusion for {@link RootNode#getName() root names}. The root
+         * name might be <code>null</code> if not provided by the guest language. If the language returns a
+         * changing value it is unspecified which root name is going to be matched. The predicate must
+         * always return the same result for a {@link String} instance otherwise the behavior is undefined.
+         * The predicate should be able run on multiple threads at the same time.
          *
          * @param predicate a test for inclusion
          * @since 0.27
@@ -217,9 +218,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all source sections that declare one of the given mime-types. Mime-types
-         * which are compared must match exactly one of the mime-types specified by the target guest
-         * language.
+         * Add a filter for all source sections that declare one of the given mime-types. Mime-types which
+         * are compared must match exactly one of the mime-types specified by the target guest language.
          *
          * @param mimeTypes matches one of the given mime types
          * @return the builder to chain calls
@@ -271,11 +271,11 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all root sources sections that equal one of the given source sections.
-         * All descendant source sections of a matching root source section are included in the
-         * filter. This can mean in the dynamic language domain that all nodes of a function for
-         * which the root source section matches the given source section is instrumented but its
-         * inner functions and its nodes are not instrumented.
+         * Add a filter for all root sources sections that equal one of the given source sections. All
+         * descendant source sections of a matching root source section are included in the filter. This can
+         * mean in the dynamic language domain that all nodes of a function for which the root source
+         * section matches the given source section is instrumented but its inner functions and its nodes
+         * are not instrumented.
          *
          * @param section matches one of the given root source sections
          * @return the builder to chain calls
@@ -288,8 +288,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all sources sections which indices are not contained in one of the given
-         * index ranges.
+         * Add a filter for all sources sections which indices are not contained in one of the given index
+         * ranges.
          *
          * @param ranges matches indices that are not contained one of the given index ranges
          * @return the builder to chain calls
@@ -302,8 +302,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all sources sections which indices are contained in one of the given
-         * index ranges.
+         * Add a filter for all sources sections which indices are contained in one of the given index
+         * ranges.
          *
          * @param ranges matches indices that are contained one of the given index ranges
          * @return the builder to chain calls
@@ -316,8 +316,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all sources sections where the index is inside a startIndex (inclusive)
-         * plus a given length (exclusive).
+         * Add a filter for all sources sections where the index is inside a startIndex (inclusive) plus a
+         * given length (exclusive).
          *
          * @param startIndex the start index (inclusive)
          * @param length the number of matched characters
@@ -329,8 +329,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all sources sections which lines are contained in one of the given index
-         * ranges. Line indices must be greater or equal to <code>1</code>.
+         * Add a filter for all sources sections which lines are contained in one of the given index ranges.
+         * Line indices must be greater or equal to <code>1</code>.
          *
          * @param ranges matches lines that are contained one of the given index ranges
          * @return the builder to chain calls
@@ -343,8 +343,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all sources sections which lines are not contained in one of the given
-         * index ranges. Line indices must be greater or equal to <code>1</code>.
+         * Add a filter for all sources sections which lines are not contained in one of the given index
+         * ranges. Line indices must be greater or equal to <code>1</code>.
          *
          * @param ranges matches lines that are not contained one of the given index ranges
          * @return the builder to chain calls
@@ -370,8 +370,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all sources sections start in one of the given index ranges. Line
-         * indices must be greater or equal to <code>1</code>.
+         * Add a filter for all sources sections start in one of the given index ranges. Line indices must
+         * be greater or equal to <code>1</code>.
          *
          * @param ranges matches lines that start in one of the given index ranges
          * @return the builder to chain calls
@@ -384,8 +384,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all sources sections end in one of the given index ranges. Line indices
-         * must be greater or equal to <code>1</code>.
+         * Add a filter for all sources sections end in one of the given index ranges. Line indices must be
+         * greater or equal to <code>1</code>.
          *
          * @param ranges matches lines that end in one of the given index ranges
          * @return the builder to chain calls
@@ -407,8 +407,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter for all sources sections where the line is exactly the given line. Line
-         * indices must be greater or equal to <code>1</code>. *
+         * Add a filter for all sources sections where the line is exactly the given line. Line indices must
+         * be greater or equal to <code>1</code>. *
          *
          * @param line the line to be matched
          * @return the builder to chain calls
@@ -419,9 +419,9 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Add a filter that includes or excludes {@link RootNode#isInternal() internal root nodes}.
-         * By default, internal roots are included, call with <code>false</code> to exclude internal
-         * code from instrumentation.
+         * Add a filter that includes or excludes {@link RootNode#isInternal() internal root nodes}. By
+         * default, internal roots are included, call with <code>false</code> to exclude internal code from
+         * instrumentation.
          *
          * @return the builder to chain calls
          * @since 0.29
@@ -480,8 +480,8 @@ public final class SourceSectionFilter {
     public interface SourcePredicate extends Predicate<Source> {
 
         /**
-         * Returns <code>true</code> if the given source should be tested positive and
-         * <code>false</code> if the sources should be filtered.
+         * Returns <code>true</code> if the given source should be tested positive and <code>false</code> if
+         * the sources should be filtered.
          *
          * @param source the source object to filter
          * @since 0.17
@@ -509,9 +509,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Constructs a new index range between one a first index inclusive and a second index
-         * exclusive. Parameters must comply <code>startIndex >= 0</code> and
-         * <code>startIndex <= endIndex</code>.
+         * Constructs a new index range between one a first index inclusive and a second index exclusive.
+         * Parameters must comply <code>startIndex >= 0</code> and <code>startIndex <= endIndex</code>.
          *
          * @param startIndex the start index (inclusive)
          * @param endIndex the end index (inclusive)
@@ -529,8 +528,8 @@ public final class SourceSectionFilter {
         }
 
         /**
-         * Constructs a new index range with a given first index inclusive and a given length.
-         * Parameters must comply <code>startIndex >= 0</code> and <code>length >= 0</code>.
+         * Constructs a new index range with a given first index inclusive and a given length. Parameters
+         * must comply <code>startIndex >= 0</code> and <code>length >= 0</code>.
          *
          * @param startIndex the start index (inclusive)
          * @param length the length of the range
@@ -883,9 +882,8 @@ public final class SourceSectionFilter {
                         }
                     }
                     /*
-                     * If the source section is not contained within the root and the source
-                     * sections are hierarchical the source section cannot be contained in this root
-                     * node.
+                     * If the source section is not contained within the root and the source sections are hierarchical
+                     * the source section cannot be contained in this root node.
                      */
                     return false;
                 }
