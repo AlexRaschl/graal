@@ -36,6 +36,8 @@ import com.oracle.truffle.api.nodes.LanguageInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Source;
@@ -242,7 +244,7 @@ public class DebuggerContextsTest extends AbstractDebugTest {
 
     private static class TestContextsListener implements DebugContextsListener {
 
-        final List<ContextEvent> events = Collections.synchronizedList(new ArrayList<>());
+        final List<ContextEvent> events = Collections.synchronizedList(SpecifiedArrayList.createNew());
 
         @Override
         public void contextCreated(DebugContext context) {

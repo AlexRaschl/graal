@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.TruffleLanguage;
 import com.oracle.truffle.api.debug.impl.DebuggerInstrument;
@@ -87,7 +89,7 @@ public final class Debugger {
     final List<Object> propSupport = new CopyOnWriteArrayList<>();
     final ObjectStructures.MessageNodes msgNodes;
     private final Set<DebuggerSession> sessions = new HashSet<>();
-    private final List<Breakpoint> breakpoints = new ArrayList<>();
+    private final List<Breakpoint> breakpoints = SpecifiedArrayList.createNew();
     final Breakpoint alwaysHaltBreakpoint;
 
     Debugger(Env env) {
@@ -99,8 +101,8 @@ public final class Debugger {
     }
 
     /**
-     * Starts a new {@link DebuggerSession session} provided with a callback that gets notified
-     * whenever the execution is suspended.
+     * Starts a new {@link DebuggerSession session} provided with a callback that gets notified whenever
+     * the execution is suspended.
      *
      * @param callback the callback to notify
      * @see DebuggerSession
@@ -134,9 +136,9 @@ public final class Debugger {
      * Adds a new breakpoint to this Debugger instance and makes it available in all its sessions.
      * <p>
      * The breakpoint suspends execution in all active {@link DebuggerSession sessions} by making a
-     * callback to the appropriate session {@link SuspendedCallback callback handler}, together with
-     * an event description that includes {@linkplain SuspendedEvent#getBreakpoints() which
-     * breakpoint(s)} were hit.
+     * callback to the appropriate session {@link SuspendedCallback callback handler}, together with an
+     * event description that includes {@linkplain SuspendedEvent#getBreakpoints() which breakpoint(s)}
+     * were hit.
      *
      * @param breakpoint a new breakpoint
      * @return the installed breakpoint
@@ -165,16 +167,15 @@ public final class Debugger {
     }
 
     /**
-     * Returns all breakpoints {@link #install(com.oracle.truffle.api.debug.Breakpoint) installed}
-     * in this debugger instance, in the install order. The returned list contains a current
-     * snapshot of breakpoints, those that were {@link Breakpoint#dispose() disposed} are not
-     * included.
+     * Returns all breakpoints {@link #install(com.oracle.truffle.api.debug.Breakpoint) installed} in
+     * this debugger instance, in the install order. The returned list contains a current snapshot of
+     * breakpoints, those that were {@link Breakpoint#dispose() disposed} are not included.
      * <p>
-     * It's not possible to modify state of breakpoints returned from this list, or from the
-     * associated property change events, they are not {@link Breakpoint#isModifiable() modifiable}.
-     * An attempt to modify breakpoints state using any of their set method, or an attempt to
-     * dispose such breakpoints, fails with an {@link IllegalStateException}. Use the original
-     * installed breakpoint instance to change breakpoint state or dispose the breakpoint.
+     * It's not possible to modify state of breakpoints returned from this list, or from the associated
+     * property change events, they are not {@link Breakpoint#isModifiable() modifiable}. An attempt to
+     * modify breakpoints state using any of their set method, or an attempt to dispose such
+     * breakpoints, fails with an {@link IllegalStateException}. Use the original installed breakpoint
+     * instance to change breakpoint state or dispose the breakpoint.
      *
      * @since 0.27
      * @see DebuggerSession#getBreakpoints()
@@ -182,7 +183,7 @@ public final class Debugger {
     public List<Breakpoint> getBreakpoints() {
         List<Breakpoint> bpts;
         synchronized (this) {
-            bpts = new ArrayList<>(this.breakpoints.size());
+            bpts = SpecifiedArrayList.createNew(this.breakpoints.size());
             for (Breakpoint b : this.breakpoints) {
                 bpts.add(b.getROWrapper());
             }
@@ -218,7 +219,7 @@ public final class Debugger {
      * @since 0.17
      */
     public List<Source> getLoadedSources() {
-        final List<Source> sources = new ArrayList<>();
+        final List<Source> sources = SpecifiedArrayList.createNew();
         EventBinding<?> binding = env.getInstrumenter().attachLoadSourceListener(SourceSectionFilter.ANY, new LoadSourceListener() {
             public void onLoad(LoadSourceEvent event) {
                 sources.add(event.getSource());
@@ -270,8 +271,8 @@ public final class Debugger {
     }
 
     /**
-     * Finds debugger associated with given engine. There is at most one debugger associated with
-     * any {@link PolyglotEngine}.
+     * Finds debugger associated with given engine. There is at most one debugger associated with any
+     * {@link PolyglotEngine}.
      *
      * @param engine the engine to find debugger for
      * @return an instance of associated debugger, never <code>null</code>
@@ -282,10 +283,9 @@ public final class Debugger {
     }
 
     /**
-     * Finds the debugger associated with a given language environment. There is at most one
-     * debugger associated with any {@link PolyglotEngine}. Please note that a debugger instance
-     * looked up with a language also has access to all other languages and sources that were loaded
-     * by them.
+     * Finds the debugger associated with a given language environment. There is at most one debugger
+     * associated with any {@link PolyglotEngine}. Please note that a debugger instance looked up with a
+     * language also has access to all other languages and sources that were loaded by them.
      *
      * @param env the language environment to find debugger for
      * @return an instance of associated debugger, never <code>null</code>
@@ -303,9 +303,9 @@ public final class Debugger {
         }
 
         /*
-         * TODO get rid of this access and replace it with an API in {@link TruffleInstrument.Env}.
-         * I don't think {@link CallTarget} is the right return type here as we want to make it
-         * embeddable into the current AST.
+         * TODO get rid of this access and replace it with an API in {@link TruffleInstrument.Env}. I don't
+         * think {@link CallTarget} is the right return type here as we want to make it embeddable into the
+         * current AST.
          */
         protected CallTarget parse(Source code, Node context, String... argumentNames) {
             RootNode rootNode = context.getRootNode();
@@ -313,8 +313,8 @@ public final class Debugger {
         }
 
         /*
-         * TODO I initially moved this to TruffleInstrument.Env but decided against as a new API for
-         * inline parsing might replace it.
+         * TODO I initially moved this to TruffleInstrument.Env but decided against as a new API for inline
+         * parsing might replace it.
          */
         protected Object evalInContext(Node node, MaterializedFrame frame, String code) {
             return languageSupport().evalInContext(code, node, frame);
