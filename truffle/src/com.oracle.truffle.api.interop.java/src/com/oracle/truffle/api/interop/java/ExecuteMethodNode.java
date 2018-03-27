@@ -27,13 +27,14 @@ package com.oracle.truffle.api.interop.java;
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
@@ -222,7 +223,7 @@ abstract class ExecuteMethodNode extends Node {
             } else if (multiple && ToJavaNode.isAssignableFromTrufflePrimitiveType(targetType)) {
                 Class<?> currentTargetType = targetType;
 
-                ArrayList<Class<?>> otherPossibleTypes = new ArrayList<>();
+                SpecifiedArrayList<Class<?>> otherPossibleTypes = SpecifiedArrayList.createNew();
                 for (SingleMethodDesc other : applicable) {
                     if (other == selected) {
                         continue;
@@ -354,7 +355,7 @@ abstract class ExecuteMethodNode extends Node {
     @TruffleBoundary
     static SingleMethodDesc selectOverload(OverloadedMethodDesc method, Object[] args, Object languageContext, ToJavaNode toJavaNode, Type[] cachedArgTypes) {
         SingleMethodDesc[] overloads = method.getOverloads();
-        List<SingleMethodDesc> applicableByArity = new ArrayList<>();
+        List<SingleMethodDesc> applicableByArity = SpecifiedArrayList.createNew();
         int minOverallArity = Integer.MAX_VALUE;
         int maxOverallArity = 0;
         boolean anyVarArgs = false;
@@ -406,7 +407,7 @@ abstract class ExecuteMethodNode extends Node {
 
     private static SingleMethodDesc findBestCandidate(List<SingleMethodDesc> applicableByArity, Object[] args, Object languageContext, ToJavaNode toJavaNode, boolean varArgs, boolean strict,
                     Type[] cachedArgTypes) {
-        List<SingleMethodDesc> candidates = new ArrayList<>();
+        List<SingleMethodDesc> candidates = SpecifiedArrayList.createNew();
 
         if (!varArgs) {
             for (SingleMethodDesc candidate : applicableByArity) {

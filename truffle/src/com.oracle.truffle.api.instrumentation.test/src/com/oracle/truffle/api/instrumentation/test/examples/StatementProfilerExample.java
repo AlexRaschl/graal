@@ -24,11 +24,12 @@
  */
 package com.oracle.truffle.api.instrumentation.test.examples;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.frame.VirtualFrame;
@@ -104,7 +105,7 @@ public class StatementProfilerExample extends TruffleInstrument {
 
     // in a production debugger this should be implemented using a proper service provider interface
 
-    private static final List<Class<? extends ProfilerFrontEnd>> installedFrontEnds = new ArrayList<>();
+    private static final List<Class<? extends ProfilerFrontEnd>> installedFrontEnds = SpecifiedArrayList.createNew();
 
     public static void installFrontEnd(Class<? extends ProfilerFrontEnd> frontEndClass) {
         installedFrontEnds.add(frontEndClass);
