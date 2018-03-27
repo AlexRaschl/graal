@@ -24,13 +24,14 @@
  */
 package com.oracle.truffle.api.metadata;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.frame.Frame;
@@ -80,7 +81,7 @@ final class DefaultScopeVariables extends com.oracle.truffle.api.metadata.ScopeP
             for (int i = 0; i < slots.size(); i++) {
                 if (frame.getValue(slots.get(i)) == null) {
                     if (nonNulls == null) {
-                        nonNulls = new ArrayList<>(slots.size());
+                        nonNulls = SpecifiedArrayList.createNew(slots.size());
                     }
                     nonNulls.addAll(slots.subList(lastI, i));
                     lastI = i + 1;
@@ -206,7 +207,7 @@ final class DefaultScopeVariables extends com.oracle.truffle.api.metadata.ScopeP
         final List<String> names;
 
         private VariableNamesObject(Set<String> names) {
-            this.names = new ArrayList<>(names);
+            this.names = SpecifiedArrayList.createNew(names);
         }
 
         @Override

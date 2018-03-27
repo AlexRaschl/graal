@@ -24,6 +24,7 @@ package org.graalvm.compiler.lir.alloc.trace;
 
 import java.util.ArrayList;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.Trace;
 import org.graalvm.compiler.core.common.alloc.TraceBuilderResult;
@@ -314,13 +315,13 @@ public final class DefaultTraceRegisterAllocationPolicy {
         public BottomUpFrequencyBudgetStrategy(TraceRegisterAllocationPolicy plan) {
             // explicitly specify the enclosing instance for the superclass constructor call
             super(plan);
-            ArrayList<Trace> traces = getTraceBuilderResult().getTraces();
+            SpecifiedArrayList<Trace> traces = getTraceBuilderResult().getTraces();
             this.cumulativeTraceProbability = new double[traces.size()];
             double sumMethodProbability = init(traces, this.cumulativeTraceProbability);
             this.budget = sumMethodProbability * Options.TraceRAsumBudget.getValue(plan.getOptions());
         }
 
-        private static double init(ArrayList<Trace> traces, double[] sumTraces) {
+        private static double init(SpecifiedArrayList<Trace> traces, double[] sumTraces) {
             double sumMethod = 0;
             for (Trace trace : traces) {
                 double traceSum = 0;

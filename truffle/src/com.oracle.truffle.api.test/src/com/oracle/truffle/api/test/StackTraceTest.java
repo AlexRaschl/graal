@@ -32,6 +32,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -226,7 +227,7 @@ public class StackTraceTest {
     public void testAsynchronousFrameAccess() throws InterruptedException, ExecutionException, TimeoutException {
         final ExecutorService exec = Executors.newFixedThreadPool(50);
         try {
-            List<Callable<Void>> callables = new ArrayList<>();
+            List<Callable<Void>> callables = SpecifiedArrayList.createNew();
             for (int i = 0; i < 1000; i++) {
                 callables.add(new Callable<Void>() {
                     @Override
@@ -384,7 +385,7 @@ public class StackTraceTest {
         final FrameInstance callerFrame;
 
         StackTrace() {
-            frames = new ArrayList<>();
+            frames = SpecifiedArrayList.createNew();
             Truffle.getRuntime().iterateFrames(new FrameInstanceVisitor<Void>() {
                 public Void visitFrame(FrameInstance frameInstance) {
                     frames.add(frameInstance);

@@ -34,11 +34,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.Test;
 
 import com.oracle.truffle.api.interop.ForeignAccess;
@@ -365,14 +365,14 @@ public class TestMemberAccess {
 
     @Test
     public void testIterate() throws InteropException {
-        List<Object> l = new ArrayList<>();
+        List<Object> l = SpecifiedArrayList.createNew();
         l.add("one");
         l.add("two");
         TruffleObject listObject = JavaInterop.asTruffleObject(l);
         TruffleObject itFunction = (TruffleObject) ForeignAccess.sendRead(readNode, listObject, "iterator");
         TruffleObject it = (TruffleObject) ForeignAccess.sendExecute(executeNode, itFunction);
         TruffleObject hasNextFunction = (TruffleObject) ForeignAccess.sendRead(readNode, it, "hasNext");
-        List<Object> returned = new ArrayList<>();
+        List<Object> returned = SpecifiedArrayList.createNew();
         while ((boolean) ForeignAccess.sendExecute(executeNode, hasNextFunction)) {
             TruffleObject nextFunction = (TruffleObject) ForeignAccess.sendRead(readNode, it, "next");
             Object element = ForeignAccess.sendExecute(executeNode, nextFunction);

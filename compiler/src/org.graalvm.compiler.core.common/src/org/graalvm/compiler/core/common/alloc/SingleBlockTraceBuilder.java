@@ -22,8 +22,7 @@
  */
 package org.graalvm.compiler.core.common.alloc;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.TraceBuilderResult.TrivialTracePredicate;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
@@ -39,7 +38,7 @@ public final class SingleBlockTraceBuilder {
 
     private static TraceBuilderResult build(DebugContext debug, AbstractBlockBase<?> startBlock, AbstractBlockBase<?>[] blocks, TrivialTracePredicate pred) {
         Trace[] blockToTrace = new Trace[blocks.length];
-        ArrayList<Trace> traces = new ArrayList<>(blocks.length);
+        SpecifiedArrayList<Trace> traces = SpecifiedArrayList.createNew(blocks.length);
 
         for (AbstractBlockBase<?> block : blocks) {
             Trace trace = new Trace(new AbstractBlockBase<?>[]{block});

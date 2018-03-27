@@ -24,8 +24,7 @@ package org.graalvm.compiler.graph;
 
 import static org.graalvm.compiler.graph.Edges.Type.Inputs;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.graph.NodeClass.InputInfo;
 import org.graalvm.compiler.nodeinfo.InputType;
 
@@ -34,7 +33,7 @@ public final class InputEdges extends Edges {
     private final InputType[] inputTypes;
     private final boolean[] isOptional;
 
-    public InputEdges(int directCount, ArrayList<InputInfo> edges) {
+    public InputEdges(int directCount, SpecifiedArrayList<InputInfo> edges) {
         super(Inputs, directCount, edges);
 
         this.inputTypes = new InputType[edges.size()];
@@ -45,7 +44,7 @@ public final class InputEdges extends Edges {
         }
     }
 
-    public static void translateInto(InputEdges inputs, ArrayList<InputInfo> infos) {
+    public static void translateInto(InputEdges inputs, SpecifiedArrayList<InputInfo> infos) {
         for (int index = 0; index < inputs.getCount(); index++) {
             infos.add(new InputInfo(inputs.offsets[index], inputs.getName(index), inputs.getType(index), inputs.getDeclaringClass(index), inputs.inputTypes[index], inputs.isOptional(index)));
         }

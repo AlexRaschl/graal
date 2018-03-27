@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.core.common.alloc;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.TraceBuilderResult.TrivialTracePredicate;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
@@ -73,13 +73,13 @@ public final class UniDirectionalTraceBuilder {
     @SuppressWarnings("try")
     private TraceBuilderResult build(DebugContext debug, AbstractBlockBase<?> startBlock, AbstractBlockBase<?>[] blocks, TrivialTracePredicate pred) {
         try (Indent indent = debug.logAndIndent("UniDirectionalTraceBuilder: start trace building: %s", startBlock)) {
-            ArrayList<Trace> traces = buildTraces(debug, startBlock);
+            SpecifiedArrayList<Trace> traces = buildTraces(debug, startBlock);
             return TraceBuilderResult.create(debug, blocks, traces, blockToTrace, pred);
         }
     }
 
-    protected ArrayList<Trace> buildTraces(DebugContext debug, AbstractBlockBase<?> startBlock) {
-        ArrayList<Trace> traces = new ArrayList<>();
+    protected SpecifiedArrayList<Trace> buildTraces(DebugContext debug, AbstractBlockBase<?> startBlock) {
+        SpecifiedArrayList<Trace> traces = SpecifiedArrayList.createNew();
         // add start block
         worklist.add(startBlock);
         // process worklist
@@ -104,7 +104,7 @@ public final class UniDirectionalTraceBuilder {
     @SuppressWarnings("try")
     private List<AbstractBlockBase<?>> startTrace(DebugContext debug, AbstractBlockBase<?> block) {
         assert checkPredecessorsProcessed(block);
-        ArrayList<AbstractBlockBase<?>> trace = new ArrayList<>();
+        SpecifiedArrayList<AbstractBlockBase<?>> trace = SpecifiedArrayList.createNew();
         int blockNumber = 0;
         try (Indent i = debug.logAndIndent("StartTrace: %s", block)) {
             for (AbstractBlockBase<?> currentBlock = block; currentBlock != null; currentBlock = selectNext(currentBlock)) {
@@ -130,8 +130,8 @@ public final class UniDirectionalTraceBuilder {
     }
 
     /**
-     * Decrease the {@link #blocked} count for all predecessors and add them to the worklist once
-     * the count reaches 0.
+     * Decrease the {@link #blocked} count for all predecessors and add them to the worklist once the
+     * count reaches 0.
      */
     private void unblock(AbstractBlockBase<?> currentBlock) {
         for (AbstractBlockBase<?> successor : currentBlock.getSuccessors()) {

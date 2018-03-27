@@ -24,13 +24,12 @@ package org.graalvm.compiler.graph;
 
 import static org.graalvm.compiler.graph.Edges.Type.Successors;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.graph.NodeClass.EdgeInfo;
 
 public final class SuccessorEdges extends Edges {
 
-    public SuccessorEdges(int directCount, ArrayList<EdgeInfo> edges) {
+    public SuccessorEdges(int directCount, SpecifiedArrayList<EdgeInfo> edges) {
         super(Successors, directCount, edges);
     }
 

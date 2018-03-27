@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.FieldIntrospection;
 import org.graalvm.compiler.core.common.Fields;
 import org.graalvm.compiler.core.common.FieldsScanner;
@@ -247,14 +248,13 @@ public final class NodeClass<T> extends FieldIntrospection<T> {
 
         try (DebugContext.Scope scope = debug.scope("NodeCosts")) {
             /*
-             * Note: We do not check for the existence of the node cost annotations during
-             * construction as not every node needs to have them set. However if costs are queried,
-             * after the construction of the node class, they must be properly set. This is
-             * important as we can not trust our cost model if there are unspecified nodes. Nodes
-             * that do not need cost annotations are e.g. abstractions like FixedNode or
-             * FloatingNode or ValueNode. Sub classes where costs are not specified will ask the
-             * superclass for their costs during node class initialization. Therefore getters for
-             * cycles and size can omit verification during creation.
+             * Note: We do not check for the existence of the node cost annotations during construction as not
+             * every node needs to have them set. However if costs are queried, after the construction of the
+             * node class, they must be properly set. This is important as we can not trust our cost model if
+             * there are unspecified nodes. Nodes that do not need cost annotations are e.g. abstractions like
+             * FixedNode or FloatingNode or ValueNode. Sub classes where costs are not specified will ask the
+             * superclass for their costs during node class initialization. Therefore getters for cycles and
+             * size can omit verification during creation.
              */
             NodeCycles c = info.cycles();
             if (c == NodeCycles.CYCLES_UNSET) {
@@ -444,8 +444,8 @@ public final class NodeClass<T> extends FieldIntrospection<T> {
 
     protected static class NodeFieldsScanner extends FieldsScanner {
 
-        public final ArrayList<InputInfo> inputs = new ArrayList<>();
-        public final ArrayList<EdgeInfo> successors = new ArrayList<>();
+        public final SpecifiedArrayList<InputInfo> inputs = SpecifiedArrayList.createNew();
+        public final SpecifiedArrayList<EdgeInfo> successors = SpecifiedArrayList.createNew();
         int directInputs;
         int directSuccessors;
         final DebugContext debug;
@@ -813,10 +813,10 @@ public final class NodeClass<T> extends FieldIntrospection<T> {
     }
 
     /**
-     * The template used to build the {@link Verbosity#Name} version. Variable parts are specified
-     * using &#123;i#inputName&#125; or &#123;p#propertyName&#125;. If no
-     * {@link NodeInfo#nameTemplate() template} is specified, it uses {@link NodeInfo#shortName()}.
-     * If none of the two is specified, it returns an empty string.
+     * The template used to build the {@link Verbosity#Name} version. Variable parts are specified using
+     * &#123;i#inputName&#125; or &#123;p#propertyName&#125;. If no {@link NodeInfo#nameTemplate()
+     * template} is specified, it uses {@link NodeInfo#shortName()}. If none of the two is specified, it
+     * returns an empty string.
      */
     public String getNameTemplate() {
         return nameTemplate;

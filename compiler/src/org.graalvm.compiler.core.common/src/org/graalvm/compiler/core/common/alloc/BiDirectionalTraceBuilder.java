@@ -23,12 +23,12 @@
 package org.graalvm.compiler.core.common.alloc;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Deque;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.TraceBuilderResult.TrivialTracePredicate;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
@@ -55,7 +55,7 @@ public final class BiDirectionalTraceBuilder {
     }
 
     private static Deque<AbstractBlockBase<?>> createQueue(AbstractBlockBase<?>[] blocks) {
-        ArrayList<AbstractBlockBase<?>> queue = new ArrayList<>(Arrays.asList(blocks));
+        SpecifiedArrayList<AbstractBlockBase<?>> queue = SpecifiedArrayList.createNew(Arrays.asList(blocks));
         queue.sort(BiDirectionalTraceBuilder::compare);
         return new ArrayDeque<>(queue);
     }
@@ -71,14 +71,14 @@ public final class BiDirectionalTraceBuilder {
     @SuppressWarnings("try")
     private TraceBuilderResult build(DebugContext debug, AbstractBlockBase<?> startBlock, AbstractBlockBase<?>[] blocks, TrivialTracePredicate pred) {
         try (Indent indent = debug.logAndIndent("BiDirectionalTraceBuilder: start trace building")) {
-            ArrayList<Trace> traces = buildTraces(debug);
+            SpecifiedArrayList<Trace> traces = buildTraces(debug);
             assert traces.get(0).getBlocks()[0].equals(startBlock) : "The first traces always contains the start block";
             return TraceBuilderResult.create(debug, blocks, traces, blockToTrace, pred);
         }
     }
 
-    protected ArrayList<Trace> buildTraces(DebugContext debug) {
-        ArrayList<Trace> traces = new ArrayList<>();
+    protected SpecifiedArrayList<Trace> buildTraces(DebugContext debug) {
+        SpecifiedArrayList<Trace> traces = SpecifiedArrayList.createNew();
         // process worklist
         while (!worklist.isEmpty()) {
             AbstractBlockBase<?> block = worklist.pollFirst();

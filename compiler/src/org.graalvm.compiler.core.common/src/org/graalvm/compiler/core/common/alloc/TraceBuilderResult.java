@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.core.common.alloc;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.Indent;
@@ -36,19 +36,19 @@ public final class TraceBuilderResult {
         public abstract boolean isTrivialTrace(Trace trace);
     }
 
-    private final ArrayList<Trace> traces;
+    private final SpecifiedArrayList<Trace> traces;
     private final Trace[] blockToTrace;
 
-    static TraceBuilderResult create(DebugContext debug, AbstractBlockBase<?>[] blocks, ArrayList<Trace> traces, Trace[] blockToTrace, TrivialTracePredicate pred) {
+    static TraceBuilderResult create(DebugContext debug, AbstractBlockBase<?>[] blocks, SpecifiedArrayList<Trace> traces, Trace[] blockToTrace, TrivialTracePredicate pred) {
         connect(traces, blockToTrace);
-        ArrayList<Trace> newTraces = reorderTraces(debug, traces, pred);
+        SpecifiedArrayList<Trace> newTraces = reorderTraces(debug, traces, pred);
         TraceBuilderResult traceBuilderResult = new TraceBuilderResult(newTraces, blockToTrace);
         traceBuilderResult.numberTraces();
         assert verify(traceBuilderResult, blocks.length);
         return traceBuilderResult;
     }
 
-    private TraceBuilderResult(ArrayList<Trace> traces, Trace[] blockToTrace) {
+    private TraceBuilderResult(SpecifiedArrayList<Trace> traces, Trace[] blockToTrace) {
         this.traces = traces;
         this.blockToTrace = blockToTrace;
     }
@@ -57,7 +57,7 @@ public final class TraceBuilderResult {
         return blockToTrace[block.getId()];
     }
 
-    public ArrayList<Trace> getTraces() {
+    public SpecifiedArrayList<Trace> getTraces() {
         return traces;
     }
 
@@ -87,7 +87,7 @@ public final class TraceBuilderResult {
     }
 
     public static boolean verify(TraceBuilderResult traceBuilderResult, int expectedLength) {
-        ArrayList<Trace> traces = traceBuilderResult.getTraces();
+        SpecifiedArrayList<Trace> traces = traceBuilderResult.getTraces();
         assert verifyAllBlocksScheduled(traceBuilderResult, expectedLength) : "Not all blocks assigned to traces!";
         for (int i = 0; i < traces.size(); i++) {
             Trace trace = traces.get(i);
@@ -118,7 +118,7 @@ public final class TraceBuilderResult {
     }
 
     private static boolean verifyAllBlocksScheduled(TraceBuilderResult traceBuilderResult, int expectedLength) {
-        ArrayList<Trace> traces = traceBuilderResult.getTraces();
+        SpecifiedArrayList<Trace> traces = traceBuilderResult.getTraces();
         BitSet handled = new BitSet(expectedLength);
         for (Trace trace : traces) {
             for (AbstractBlockBase<?> block : trace.getBlocks()) {
@@ -136,11 +136,11 @@ public final class TraceBuilderResult {
         }
     }
 
-    private static void connect(ArrayList<Trace> traces, Trace[] blockToTrace) {
+    private static void connect(SpecifiedArrayList<Trace> traces, Trace[] blockToTrace) {
         int numTraces = traces.size();
         for (Trace trace : traces) {
             BitSet added = new BitSet(numTraces);
-            ArrayList<Trace> successors = trace.getSuccessors();
+            SpecifiedArrayList<Trace> successors = trace.getSuccessors();
             assert successors.size() == 0 : "Can only connect traces once!";
 
             for (AbstractBlockBase<?> block : trace.getBlocks()) {
@@ -157,12 +157,12 @@ public final class TraceBuilderResult {
     }
 
     @SuppressWarnings("try")
-    private static ArrayList<Trace> reorderTraces(DebugContext debug, ArrayList<Trace> oldTraces, TrivialTracePredicate pred) {
+    private static SpecifiedArrayList<Trace> reorderTraces(DebugContext debug, SpecifiedArrayList<Trace> oldTraces, TrivialTracePredicate pred) {
         if (pred == null) {
             return oldTraces;
         }
         try (Indent indent = debug.logAndIndent("ReorderTrace")) {
-            ArrayList<Trace> newTraces = new ArrayList<>(oldTraces.size());
+            SpecifiedArrayList<Trace> newTraces = SpecifiedArrayList.createNew(oldTraces.size());
             for (int oldTraceIdx = 0; oldTraceIdx < oldTraces.size(); oldTraceIdx++) {
                 Trace currentTrace = oldTraces.get(oldTraceIdx);
                 if (!alreadyProcessed(newTraces, currentTrace)) {
@@ -183,12 +183,12 @@ public final class TraceBuilderResult {
         }
     }
 
-    private static boolean alreadyProcessed(ArrayList<Trace> newTraces, Trace currentTrace) {
+    private static boolean alreadyProcessed(SpecifiedArrayList<Trace> newTraces, Trace currentTrace) {
         int currentTraceId = currentTrace.getId();
         return currentTraceId < newTraces.size() && currentTrace == newTraces.get(currentTraceId);
     }
 
-    private static void addTrace(ArrayList<Trace> newTraces, Trace currentTrace) {
+    private static void addTrace(SpecifiedArrayList<Trace> newTraces, Trace currentTrace) {
         currentTrace.setId(newTraces.size());
         newTraces.add(currentTrace);
     }

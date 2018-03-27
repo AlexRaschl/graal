@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.core.common.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * Creates an array of T objects order by the occurrence frequency of each object. The most
@@ -88,8 +88,8 @@ public class FrequencyEncoder<T> {
     }
 
     /**
-     * Returns the index of an object in the array. The object must have been
-     * {@link #addObject(Object) added} before.
+     * Returns the index of an object in the array. The object must have been {@link #addObject(Object)
+     * added} before.
      */
     public int getIndex(T object) {
         if (object == null) {
@@ -114,7 +114,7 @@ public class FrequencyEncoder<T> {
      */
     public T[] encodeAll(T[] allObjects) {
         assert allObjects.length == getLength();
-        List<Entry<T>> sortedEntries = new ArrayList<>(allObjects.length);
+        List<Entry<T>> sortedEntries = SpecifiedArrayList.createNew(allObjects.length);
         for (Entry<T> value : map.getValues()) {
             sortedEntries.add(value);
         }
