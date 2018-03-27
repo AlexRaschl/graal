@@ -1,6 +1,7 @@
 package org.graalvm.collections.test.list;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
@@ -344,7 +345,7 @@ public class SpecifiedArrayListSimpleTest {
     }
 
     @Test
-    public void TestListIteratorRemove() {
+    public void testListIteratorRemove() {
         Iterator<Integer> testIt = testList.listIterator();
         Iterator<Integer> referenceIt = referenceList.listIterator();
 
@@ -363,11 +364,21 @@ public class SpecifiedArrayListSimpleTest {
     }
 
     @Test
-    public void TestAddNull() {
+    public void testAddNull() {
         testList = SpecifiedArrayListImpl.createNew();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(null);
         }
+    }
+
+    @Test
+    public void testSortWithListItr() {
+        testList = SpecifiedArrayListImpl.createNew();
+        for (int i = 0; i < TEST_SIZE; i++) {
+            testList.add(r.nextInt(TEST_SIZE / 10));
+        }
+        Collections.sort(testList);
+        Collections.sort(testList, (k, j) -> k - j);
     }
 
 }
