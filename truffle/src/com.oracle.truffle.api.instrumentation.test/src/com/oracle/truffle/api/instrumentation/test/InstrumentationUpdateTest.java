@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.junit.After;
 import org.junit.Assert;
@@ -57,8 +58,8 @@ public class InstrumentationUpdateTest {
     private static Function<InstrumentationUpdateLanguage, RootNode> run;
 
     private Context context;
-    private final List<EventContext> executionEvents = new ArrayList<>();
-    private final List<LoadSourceSectionEvent> loadEvents = new ArrayList<>();
+    private final List<EventContext> executionEvents = SpecifiedArrayList.createNew();
+    private final List<LoadSourceSectionEvent> loadEvents = SpecifiedArrayList.createNew();
     private InstrumentationUpdateLanguage language;
     private TruffleInstrument.Env instrumentEnv;
     private EventBinding<?> eventBinding;
@@ -80,8 +81,8 @@ public class InstrumentationUpdateTest {
     }
 
     /*
-     * Test that if indexed based filters were applied we are notified if the an instrumentable node
-     * was not contained within a root node's source section. (that was not the case at some point).
+     * Test that if indexed based filters were applied we are notified if the an instrumentable node was
+     * not contained within a root node's source section. (that was not the case at some point).
      */
     @Test
     public void testNotWithinRootSourceSection() {
@@ -131,8 +132,7 @@ public class InstrumentationUpdateTest {
     }
 
     /*
-     * Test that we can change instrumentable nodes after the first execute by notifying the
-     * framework.
+     * Test that we can change instrumentable nodes after the first execute by notifying the framework.
      */
     @Test
     public void testInsertInstrumentableNodes() {

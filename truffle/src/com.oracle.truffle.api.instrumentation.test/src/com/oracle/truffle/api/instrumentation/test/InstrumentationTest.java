@@ -73,6 +73,7 @@ import com.oracle.truffle.api.nodes.LanguageInfo;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Instrument;
 import org.graalvm.polyglot.PolyglotException;
@@ -366,8 +367,8 @@ public class InstrumentationTest extends AbstractInstrumentationTest {
     }
 
     /*
-     * We test that instrumentation exceptions are wrapped, onReturnExceptional is invoked properly
-     * and not onReturnValue,
+     * We test that instrumentation exceptions are wrapped, onReturnExceptional is invoked properly and
+     * not onReturnValue,
      */
     @Test
     public void testInstrumentException2() throws IOException {
@@ -1565,7 +1566,7 @@ public class InstrumentationTest extends AbstractInstrumentationTest {
     public static class TestLangInitialized extends TruffleInstrument implements ExecutionEventListener {
 
         static boolean initializationEvents;
-        private final List<String> enteredNodes = new ArrayList<>();
+        private final List<String> enteredNodes = SpecifiedArrayList.createNew();
 
         @Override
         protected void onCreate(Env env) {
@@ -1611,7 +1612,7 @@ public class InstrumentationTest extends AbstractInstrumentationTest {
     @Registration(id = "testAllocation", services = {TestAllocation.class, Object.class})
     public static class TestAllocation extends TruffleInstrument implements AllocationListener {
 
-        private final List<String> allocations = new ArrayList<>();
+        private final List<String> allocations = SpecifiedArrayList.createNew();
 
         @Override
         protected void onCreate(Env env) {

@@ -46,6 +46,8 @@ import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
 import com.oracle.truffle.api.nodes.UnexpectedResultException;
 import com.oracle.truffle.api.source.SourceSection;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Value;
 
 public class InstrumentableTest {
@@ -301,7 +303,7 @@ public class InstrumentableTest {
     @TruffleInstrument.Registration(id = "testExecInterceptor", services = TestExecInterceptor.class)
     public static class TestExecInterceptor extends TruffleInstrument implements ExecutionEventListener {
 
-        List<String> calls = new ArrayList<>();
+        List<String> calls = SpecifiedArrayList.createNew();
 
         @Override
         protected void onCreate(Env env) {

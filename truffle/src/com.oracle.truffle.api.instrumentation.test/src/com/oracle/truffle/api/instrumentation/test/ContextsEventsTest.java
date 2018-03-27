@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Instrument;
@@ -255,7 +255,7 @@ public class ContextsEventsTest {
     public static class TestContextsInstrument extends TruffleInstrument implements ContextsListener {
 
         static boolean includeActiveContexts = false;
-        final List<ContextEvent> events = Collections.synchronizedList(new ArrayList<>());
+        final List<ContextEvent> events = Collections.synchronizedList(SpecifiedArrayList.createNew());
 
         @Override
         protected void onCreate(Env env) {

@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 /**
  * Information about a {@link Node} class. A single instance of this class is allocated for every
  * subclass of {@link Node} that is used.
@@ -106,7 +108,7 @@ public abstract class NodeClass {
 
     /** @since 0.8 or earlier */
     public Iterator<Node> makeIterator(Node node) {
-        List<Object> arr = new ArrayList<>();
+        List<Object> arr = SpecifiedArrayList.createNew();
         for (Object field : getNodeFields()) {
             arr.add(field);
         }
@@ -114,8 +116,8 @@ public abstract class NodeClass {
     }
 
     /**
-     * The {@link Class} this <code>NodeClass</code> has been {@link #NodeClass(java.lang.Class)
-     * created for}.
+     * The {@link Class} this <code>NodeClass</code> has been {@link #NodeClass(java.lang.Class) created
+     * for}.
      *
      * @return the clazz of node this <code>NodeClass</code> describes
      * @since 0.8 or earlier

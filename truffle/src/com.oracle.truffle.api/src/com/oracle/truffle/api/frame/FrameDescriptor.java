@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 import com.oracle.truffle.api.Assumption;
 import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.Truffle;
@@ -46,15 +48,15 @@ import com.oracle.truffle.api.impl.TVMCI;
 public final class FrameDescriptor implements Cloneable {
 
     private final Object defaultValue;
-    private final ArrayList<FrameSlot> slots;
+    private final SpecifiedArrayList<FrameSlot> slots;
     private final HashMap<Object, FrameSlot> identifierToSlotMap;
     private Assumption version;
     private HashMap<Object, Assumption> identifierToNotInFrameAssumptionMap;
 
     /**
-     * Flag that can be used by the runtime to track that {@link Frame#materialize()} was called on
-     * a frame that has this descriptor. Since the flag is not public API, access is encapsulated
-     * via {@link TVMCI}.
+     * Flag that can be used by the runtime to track that {@link Frame#materialize()} was called on a
+     * frame that has this descriptor. Since the flag is not public API, access is encapsulated via
+     * {@link TVMCI}.
      *
      * @since 0.14
      */
@@ -80,7 +82,7 @@ public final class FrameDescriptor implements Cloneable {
     public FrameDescriptor(Object defaultValue) {
         CompilerAsserts.neverPartOfCompilation("do not create a FrameDescriptor from compiled code");
         this.defaultValue = defaultValue;
-        slots = new ArrayList<>();
+        slots = SpecifiedArrayList.createNew();
         identifierToSlotMap = new HashMap<>();
         version = createVersion();
     }
@@ -212,8 +214,8 @@ public final class FrameDescriptor implements Cloneable {
     }
 
     /**
-     * Removes a slot. If the identifier is found, its slot is removed from this descriptor. This is
-     * a slow operation.
+     * Removes a slot. If the identifier is found, its slot is removed from this descriptor. This is a
+     * slow operation.
      *
      * @param identifier identifies the slot to remove
      * @throws IllegalArgumentException if no such frame slot exists
@@ -262,8 +264,8 @@ public final class FrameDescriptor implements Cloneable {
 
     /**
      * Deeper copy of the descriptor. Copies all slots in the descriptor, but only their
-     * {@linkplain FrameSlot#getIdentifier() identifier} and {@linkplain FrameSlot#getInfo() info}
-     * but not their {@linkplain FrameSlot#getKind() kind}!
+     * {@linkplain FrameSlot#getIdentifier() identifier} and {@linkplain FrameSlot#getInfo() info} but
+     * not their {@linkplain FrameSlot#getKind() kind}!
      *
      * @return new instance of a descriptor with copies of values from this one
      * @since 0.8 or earlier
@@ -278,9 +280,9 @@ public final class FrameDescriptor implements Cloneable {
     }
 
     /**
-     * Shallow copy of the descriptor. Re-uses the existing slots in new descriptor. As a result, if
-     * you {@link FrameSlot#setKind(FrameSlotKind) change kind} of one of the slots it is changed in
-     * the original as well as in the shallow copy.
+     * Shallow copy of the descriptor. Re-uses the existing slots in new descriptor. As a result, if you
+     * {@link FrameSlot#setKind(FrameSlotKind) change kind} of one of the slots it is changed in the
+     * original as well as in the shallow copy.
      *
      * @return new instance of a descriptor with copies of values from this one
      * @since 0.8 or earlier
@@ -301,9 +303,9 @@ public final class FrameDescriptor implements Cloneable {
     }
 
     /**
-     * Returns an assumption reflecting the frame's current version, which is updated every time a
-     * slot is added or removed, or an existing slot's kind is changed. This assumption is
-     * associated with compiled code that depends on the internal frame layout.
+     * Returns an assumption reflecting the frame's current version, which is updated every time a slot
+     * is added or removed, or an existing slot's kind is changed. This assumption is associated with
+     * compiled code that depends on the internal frame layout.
      *
      * @return an assumption invalidated when a slot is added or removed, or a slot kind changed.
      * @since 0.8 or earlier
