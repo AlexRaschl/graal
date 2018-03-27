@@ -275,6 +275,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public ListIterator<E> listIterator(int index) {
+        if (index < 0 || index > size)
+            throw new IndexOutOfBoundsException("Index: " + index);
         return new ListItr(index);
     }
 
@@ -364,6 +366,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     // TODO ATTENTION VERY UNOPTIMIZED AND ALSO TYPE POLLUTED
+    @SuppressWarnings("unchecked")
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         ArrayList<E> list = new ArrayList<>();
