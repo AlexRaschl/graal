@@ -30,6 +30,8 @@ import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Opera
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.GROW;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -55,6 +57,14 @@ import org.graalvm.collections.list.SpecifiedArrayListImpl;
  */
 
 public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalCollection {
+
+    private final static boolean tracksAll = true;
+    private final static HashSet<String> trackedSites = new HashSet<>();
+
+    /** Static block to set up Tracked Classes */
+    static {
+        trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
+    }
 
     /**
      * Factory methods
@@ -335,6 +345,20 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
                 tracker.setAllocSiteElem(elems[3]);
             }
 
+        }
+    }
+
+    private void getAllocationSiteName() {
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            // e.printStackTrace();
+            StackTraceElement[] elems = e.getStackTrace();
+            if (elems.length > 2 && !elems[2].getMethodName().equals("createNew")) {
+                elems[2].getClassName();
+            } else {
+                elems[3].getClassName();
+            }
         }
     }
 

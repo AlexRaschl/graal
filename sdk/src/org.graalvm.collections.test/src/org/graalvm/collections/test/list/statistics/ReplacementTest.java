@@ -75,7 +75,7 @@ public class ReplacementTest {
             System.out.println(s);
         System.out.println();
 
-        Statistics.printOverallSummary();
+        // Statistics.printOverallSummary();
 
         CSVGenerator.createFileOfGlobalInfo(ReplacementTest.class.getSimpleName());
         CSVGenerator.createFileOfOperationDistributions(ReplacementTest.class.getSimpleName());
@@ -275,8 +275,8 @@ public class ReplacementTest {
                 Assert.fail("Reference Iterator has already reached end!");
             }
         }
-        System.out.println("Remaining size of testList is:" + testList.size());
-        System.out.println("Remaining size of referenceList is: " + referenceList.size());
+        // System.out.println("Remaining size of testList is:" + testList.size());
+        // System.out.println("Remaining size of referenceList is: " + referenceList.size());
         Assert.assertEquals(testList.size(), referenceList.size());
         Assert.assertTrue(testList.isEmpty());
     }

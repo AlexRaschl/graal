@@ -247,8 +247,8 @@ public class SpecifiedArrayListSimpleTest {
                 Assert.fail("Reference Iterator has already reached end!");
             }
         }
-        System.out.println("Remaining size of testList is:" + testList.size());
-        System.out.println("Remaining size of referenceList is: " + referenceList.size());
+        // System.out.println("Remaining size of testList is:" + testList.size());
+        // System.out.println("Remaining size of referenceList is: " + referenceList.size());
         Assert.assertEquals(testList.size(), referenceList.size());
         Assert.assertTrue(testList.isEmpty());
     }

@@ -177,6 +177,9 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     private static String[] getFlatStringArray(String[][] dataArr) {
+        if (dataArr == null)
+            return null;
+
         int dim1 = dataArr.length;
         if (dim1 == 0)
             return new String[0];
@@ -212,6 +215,9 @@ public class StatisticTrackerImpl implements StatisticTracker {
         sb.append('\n');
         sb.append("Current load factor: ");
         sb.append(list.getCurrentLoadFactor());
+        sb.append('\n');
+        sb.append("Allocation Site: ");
+        sb.append(allocSiteElem.getClassName());
         sb.append('\n');
         sb.append("Modifications made so far: ");
         sb.append(modifications);

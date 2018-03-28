@@ -101,11 +101,11 @@ public class StatisticsSimpleTest {
 
         // CSVGenerator.createFileOfEverything("");
 
-        CSVGenerator.createFileOfOperationDistributions(StatisticsSimpleTest.class.getSimpleName());
+        // CSVGenerator.createFileOfOperationDistributions(StatisticsSimpleTest.class.getSimpleName());
 
-        CSVGenerator.createFileOfTypeOperationDistributions(StatisticsSimpleTest.class.getSimpleName());
+        // CSVGenerator.createFileOfTypeOperationDistributions(StatisticsSimpleTest.class.getSimpleName());
 
-        CSVGenerator.createFileOfAllocationSites(StatisticsSimpleTest.class.getSimpleName());
+        // CSVGenerator.createFileOfAllocationSites(StatisticsSimpleTest.class.getSimpleName());
 
     }
 }

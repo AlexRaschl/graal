@@ -38,6 +38,7 @@ import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.statistics.CSVGenerator;
+import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.api.runtime.GraalRuntime;
 import org.graalvm.compiler.core.CompilationWrapper.ExceptionAction;
@@ -290,6 +291,8 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
         /*
          * TODO Remember CSVGenerator
          */
+
+        Statistics.printGlobalInformation();
         // CSVGenerator.createFileOfOperationDistributions(this.getClass().getSimpleName());
         // CSVGenerator.createFileOfTypeOperationDistributions(this.getClass().getSimpleName());
         // CSVGenerator.createFileOfAllocationSites(this.getClass().getSimpleName());
