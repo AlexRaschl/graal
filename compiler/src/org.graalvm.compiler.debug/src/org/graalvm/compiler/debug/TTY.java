@@ -24,7 +24,6 @@ package org.graalvm.compiler.debug;
 
 import java.io.PrintStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
