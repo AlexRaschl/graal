@@ -32,15 +32,15 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
 
     // TODO If only one occurrence is replaced with SSAR only these instances will be tracked
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayListImpl<>();
+        return new StatisticalSpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayListImpl<>(initalCapacity);
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayListImpl<>(c);
+        return new StatisticalSpecifiedArrayListImpl<>(c);
     }
 
     /**

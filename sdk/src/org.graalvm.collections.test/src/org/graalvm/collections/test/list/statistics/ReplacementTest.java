@@ -75,7 +75,7 @@ public class ReplacementTest {
             System.out.println(s);
         System.out.println();
 
-        // Statistics.printOverallSummary();
+        Statistics.printOverallSummary();
 
         CSVGenerator.createFileOfGlobalInfo(ReplacementTest.class.getSimpleName());
         CSVGenerator.createFileOfOperationDistributions(ReplacementTest.class.getSimpleName());
