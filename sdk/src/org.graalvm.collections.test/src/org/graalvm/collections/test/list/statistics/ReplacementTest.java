@@ -9,6 +9,7 @@ import java.util.Random;
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.CSVGenerator;
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayList;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.collections.test.list.TestUtilities;
@@ -75,7 +76,7 @@ public class ReplacementTest {
             System.out.println(s);
         System.out.println();
 
-        Statistics.printOverallSummary();
+        Statistics.printGlobalInformation();
 
         CSVGenerator.createFileOfGlobalInfo(ReplacementTest.class.getSimpleName());
         CSVGenerator.createFileOfOperationDistributions(ReplacementTest.class.getSimpleName());

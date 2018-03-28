@@ -78,7 +78,7 @@ public class StatisticsSimpleTest {
         testList8.add(null);
         testList8.add(null);
 
-        Statistics.printOverallSummary();
+        Statistics.printGlobalInformation();
 
         String[] data = Statistics.getOpDataLines(DATA_SEPARATOR);
         for (String s : data)

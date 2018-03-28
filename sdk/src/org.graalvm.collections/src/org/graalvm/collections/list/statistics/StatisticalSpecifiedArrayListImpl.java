@@ -371,13 +371,13 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
         } catch (Exception e) {
             StackTraceElement[] elems = e.getStackTrace();
 
-            if (elems.length > 2 && !elems[2].getMethodName().equals("<init>")) {
-                tracker.setAllocSiteElem(elems[2]);
+            if (elems.length >= 2 && !elems[1].getMethodName().equals("<init>")) {
+                tracker.setAllocSiteElem(elems[1]);
             } else {
-                if (!elems[3].getMethodName().equals("createNew")) {
-                    tracker.setAllocSiteElem(elems[3]);
+                if (!elems[2].getMethodName().equals("createNew")) {
+                    tracker.setAllocSiteElem(elems[2]);
                 } else {
-                    tracker.setAllocSiteElem(elems[4]);
+                    tracker.setAllocSiteElem(elems[3]);
                 }
             }
 
