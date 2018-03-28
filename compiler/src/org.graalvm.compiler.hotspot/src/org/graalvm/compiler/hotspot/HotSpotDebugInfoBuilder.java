@@ -24,9 +24,9 @@ package org.graalvm.compiler.hotspot;
 
 import static jdk.vm.ci.code.BytecodeFrame.isPlaceholderBci;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.MethodSubstitution;
 import org.graalvm.compiler.api.replacements.Snippet;
 import org.graalvm.compiler.core.gen.DebugInfoBuilder;
@@ -97,7 +97,7 @@ public class HotSpotDebugInfoBuilder extends DebugInfoBuilder {
     protected void raiseInvalidFrameStateError(FrameState state) throws GraalGraphError {
         // This is a hard error since an incorrect state could crash hotspot
         NodeSourcePosition sourcePosition = state.getNodeSourcePosition();
-        List<String> context = new ArrayList<>();
+        List<String> context = SpecifiedArrayList.createNew();
         ResolvedJavaMethod replacementMethodWithProblematicSideEffect = null;
         if (sourcePosition != null) {
             NodeSourcePosition pos = sourcePosition;

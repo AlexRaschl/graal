@@ -26,8 +26,8 @@ package com.oracle.truffle.api.vm;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -38,10 +38,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 import com.oracle.truffle.api.TruffleLanguage;
 import com.oracle.truffle.api.TruffleOptions;
 import com.oracle.truffle.api.vm.PolyglotEngine.LegacyEngineImpl;
-import java.io.PrintStream;
 
 /**
  * Ahead-of-time initialization. If the JVM is started with {@link TruffleOptions#AOT}, it populates
@@ -154,7 +155,7 @@ final class LanguageCache implements Comparable<LanguageCache> {
     }
 
     private static Map<String, LanguageCache> createLanguages(ClassLoader additionalLoader) {
-        List<LanguageCache> caches = new ArrayList<>();
+        List<LanguageCache> caches = SpecifiedArrayList.createNew();
         for (ClassLoader loader : VMAccessor.SPI.allLoaders()) {
             collectLanguages(loader, caches);
         }
@@ -362,7 +363,7 @@ final class LanguageCache implements Comparable<LanguageCache> {
     @SuppressWarnings("unused")
     private static Collection<Class<?>> getLanguageClasses() {
         assert TruffleOptions.AOT : "Only supported during image generation";
-        ArrayList<Class<?>> list = new ArrayList<>();
+        SpecifiedArrayList<Class<?>> list = SpecifiedArrayList.createNew();
         for (LanguageCache cache : nativeImageCache.values()) {
             list.add(cache.languageClass);
         }

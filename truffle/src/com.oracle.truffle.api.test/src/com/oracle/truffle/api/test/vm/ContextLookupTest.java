@@ -23,12 +23,13 @@
 package com.oracle.truffle.api.test.vm;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.Test;
 
 import com.oracle.truffle.api.CallTarget;
@@ -47,7 +48,6 @@ import com.oracle.truffle.api.source.SourceSection;
 import com.oracle.truffle.api.vm.PolyglotEngine;
 import com.oracle.truffle.api.vm.PolyglotEngine.Value;
 import com.oracle.truffle.api.vm.PolyglotRuntime;
-import static org.junit.Assert.assertNull;
 
 public class ContextLookupTest {
 
@@ -207,7 +207,7 @@ public class ContextLookupTest {
         LanguageLookup language;
 
         final LanguageLookupContext parent;
-        final List<LanguageLookupContext> forks = new ArrayList<>();
+        final List<LanguageLookupContext> forks = SpecifiedArrayList.createNew();
         LanguageLookupContext toFork;
 
         LanguageLookupContext(LanguageLookupContext parent) {

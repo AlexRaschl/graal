@@ -31,13 +31,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.options.OptionValues;
 
 /**
@@ -60,8 +60,8 @@ public class DiagnosticsOutputDirectory {
     private String path;
 
     /**
-     * Gets the path to the output directory managed by this object, creating if it doesn't exist
-     * and has not been deleted.
+     * Gets the path to the output directory managed by this object, creating if it doesn't exist and
+     * has not been deleted.
      *
      * @returns the directory or {@code null} if the could not be created or has been deleted
      */
@@ -144,7 +144,7 @@ public class DiagnosticsOutputDirectory {
             Path dir = Paths.get(outDir);
             if (dir.toFile().exists()) {
                 File zip = new File(outDir + ".zip").getAbsoluteFile();
-                List<Path> toDelete = new ArrayList<>();
+                List<Path> toDelete = SpecifiedArrayList.createNew();
                 try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zip))) {
                     zos.setLevel(Deflater.BEST_COMPRESSION);
                     Files.walkFileTree(dir, Collections.emptySet(), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {

@@ -22,18 +22,15 @@
  */
 package com.oracle.truffle.api.test.polyglot;
 
-import com.oracle.truffle.api.CallTarget;
-import com.oracle.truffle.api.CompilerDirectives;
-import com.oracle.truffle.api.Option;
-import com.oracle.truffle.api.Truffle;
-import com.oracle.truffle.api.TruffleLanguage;
-import com.oracle.truffle.api.frame.VirtualFrame;
-import com.oracle.truffle.api.nodes.RootNode;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.options.OptionCategory;
 import org.graalvm.options.OptionDescriptors;
 import org.graalvm.options.OptionKey;
@@ -55,10 +54,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import com.oracle.truffle.api.CallTarget;
+import com.oracle.truffle.api.CompilerDirectives;
+import com.oracle.truffle.api.Option;
+import com.oracle.truffle.api.Truffle;
+import com.oracle.truffle.api.TruffleLanguage;
+import com.oracle.truffle.api.frame.VirtualFrame;
+import com.oracle.truffle.api.nodes.RootNode;
 
 public class ContextPreInitializationTest {
 
@@ -68,7 +70,7 @@ public class ContextPreInitializationTest {
     private static final AtomicInteger NEXT_ORDER_INDEX = new AtomicInteger();
     private static final String SYS_OPTION1_KEY = "polyglot." + FIRST + ".Option1";
     private static final String SYS_OPTION2_KEY = "polyglot." + FIRST + ".Option2";
-    private static final List<CountingContext> emittedContexts = new ArrayList<>();
+    private static final List<CountingContext> emittedContexts = SpecifiedArrayList.createNew();
     private static final Set<String> patchableLanguages = new HashSet<>();
 
     @Before
@@ -97,7 +99,7 @@ public class ContextPreInitializationTest {
         BaseLanguage.parseStdOutOutput.put(FIRST, stdOutContent);
         BaseLanguage.parseStdErrOutput.put(FIRST, stdErrContent);
         doContextPreinitialize();
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(0, contexts.size());
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final ByteArrayOutputStream err = new ByteArrayOutputStream();
@@ -121,14 +123,14 @@ public class ContextPreInitializationTest {
         BaseLanguage.parseStdOutOutput.put(SECOND, secondStdOutContent);
         BaseLanguage.parseStdErrOutput.put(SECOND, secondStdErrContent);
         doContextPreinitialize(FIRST);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final ByteArrayOutputStream err = new ByteArrayOutputStream();
         try (Context ctx = Context.newBuilder().out(out).err(err).build()) {
             Value res = ctx.eval(Source.create(FIRST, "test"));
             assertEquals("test", res.asString());
-            contexts = new ArrayList<>(emittedContexts);
+            contexts = SpecifiedArrayList.createNew(emittedContexts);
             assertEquals(1, contexts.size());
             assertEquals(firstStdOutContent, new String(out.toByteArray(), "UTF-8"));
             assertEquals(firstStdErrContent, new String(err.toByteArray(), "UTF-8"));
@@ -136,7 +138,7 @@ public class ContextPreInitializationTest {
             err.reset();
             res = ctx.eval(Source.create(SECOND, "test"));
             assertEquals("test", res.asString());
-            contexts = new ArrayList<>(emittedContexts);
+            contexts = SpecifiedArrayList.createNew(emittedContexts);
             assertEquals(2, contexts.size());
             assertEquals(secondStdOutContent, new String(out.toByteArray(), "UTF-8"));
             assertEquals(secondStdErrContent, new String(err.toByteArray(), "UTF-8"));
@@ -147,12 +149,12 @@ public class ContextPreInitializationTest {
     public void testArgumentsSingleLanguagePreInitialization() throws Exception {
         setPatchable();
         doContextPreinitialize();
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(0, contexts.size());
         try (Context ctx = Context.newBuilder().arguments(FIRST, new String[]{"a", "b"}).build()) {
             final Value res = ctx.eval(Source.create(FIRST, "test"));
             assertEquals("test", res.asString());
-            contexts = new ArrayList<>(emittedContexts);
+            contexts = SpecifiedArrayList.createNew(emittedContexts);
             assertEquals(1, contexts.size());
             final CountingContext context = findContext(FIRST, contexts);
             assertNotNull(context);
@@ -164,19 +166,19 @@ public class ContextPreInitializationTest {
     public void testArgumentsSingleLanguPreInitialization() throws Exception {
         setPatchable(FIRST);
         doContextPreinitialize(FIRST);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         try (Context ctx = Context.newBuilder().arguments(FIRST, new String[]{"a", "b"}).arguments(SECOND, new String[]{"c", "d"}).build()) {
             Value res = ctx.eval(Source.create(FIRST, "test"));
             assertEquals("test", res.asString());
-            contexts = new ArrayList<>(emittedContexts);
+            contexts = SpecifiedArrayList.createNew(emittedContexts);
             assertEquals(1, contexts.size());
             CountingContext context = findContext(FIRST, contexts);
             assertNotNull(context);
             assertEquals(Arrays.asList("a", "b"), context.arguments);
             res = ctx.eval(Source.create(SECOND, "test"));
             assertEquals("test", res.asString());
-            contexts = new ArrayList<>(emittedContexts);
+            contexts = SpecifiedArrayList.createNew(emittedContexts);
             assertEquals(2, contexts.size());
             context = findContext(SECOND, contexts);
             assertNotNull(context);
@@ -188,12 +190,12 @@ public class ContextPreInitializationTest {
     public void testNoLanguagePreInitialization() throws Exception {
         setPatchable();
         doContextPreinitialize();
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(0, contexts.size());
         final Context ctx = Context.create();
         final Value res = ctx.eval(Source.create(FIRST, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         CountingContext context = findContext(FIRST, contexts);
         assertNotNull(context);
@@ -204,7 +206,7 @@ public class ContextPreInitializationTest {
         assertEquals(1, context.initializeThreadCount);
         assertEquals(0, context.disposeThreadCount);
         ctx.close();
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         assertEquals(1, context.createContextCount);
         assertEquals(1, context.initializeContextCount);
@@ -218,7 +220,7 @@ public class ContextPreInitializationTest {
     public void testSingleLanguagePreInitialization() throws Exception {
         setPatchable(FIRST);
         doContextPreinitialize(FIRST);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         final CountingContext firstLangCtx = findContext(FIRST, contexts);
         assertNotNull(firstLangCtx);
@@ -231,7 +233,7 @@ public class ContextPreInitializationTest {
         final Context ctx = Context.create();
         Value res = ctx.eval(Source.create(FIRST, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         assertEquals(1, firstLangCtx.createContextCount);
         assertEquals(1, firstLangCtx.initializeContextCount);
@@ -241,7 +243,7 @@ public class ContextPreInitializationTest {
         assertEquals(0, firstLangCtx.disposeThreadCount);
         res = ctx.eval(Source.create(SECOND, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         final CountingContext secondLangCtx = findContext(SECOND, contexts);
         assertNotNull(secondLangCtx);
@@ -258,7 +260,7 @@ public class ContextPreInitializationTest {
         assertEquals(1, secondLangCtx.initializeThreadCount);
         assertEquals(0, secondLangCtx.disposeThreadCount);
         ctx.close();
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         assertEquals(1, firstLangCtx.createContextCount);
         assertEquals(1, firstLangCtx.initializeContextCount);
@@ -278,7 +280,7 @@ public class ContextPreInitializationTest {
     public void testMoreLanguagesPreInitialization() throws Exception {
         setPatchable(FIRST, SECOND);
         doContextPreinitialize(FIRST, SECOND);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         final CountingContext firstLangCtx = findContext(FIRST, contexts);
         assertNotNull(firstLangCtx);
@@ -299,7 +301,7 @@ public class ContextPreInitializationTest {
         final Context ctx = Context.create();
         Value res = ctx.eval(Source.create(FIRST, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         assertEquals(1, firstLangCtx.createContextCount);
         assertEquals(1, firstLangCtx.initializeContextCount);
@@ -315,7 +317,7 @@ public class ContextPreInitializationTest {
         assertEquals(0, secondLangCtx.disposeThreadCount);
         res = ctx.eval(Source.create(SECOND, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         assertEquals(1, firstLangCtx.createContextCount);
         assertEquals(1, firstLangCtx.initializeContextCount);
@@ -330,7 +332,7 @@ public class ContextPreInitializationTest {
         assertEquals(1, secondLangCtx.initializeThreadCount);
         assertEquals(0, secondLangCtx.disposeThreadCount);
         ctx.close();
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         assertEquals(1, firstLangCtx.createContextCount);
         assertEquals(1, firstLangCtx.initializeContextCount);
@@ -350,7 +352,7 @@ public class ContextPreInitializationTest {
     public void testMoreLanguagesPreInitializationFailedPatch() throws Exception {
         setPatchable(FIRST);
         doContextPreinitialize(FIRST, SECOND);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         final CountingContext firstLangCtx = findContext(FIRST, contexts);
         assertNotNull(firstLangCtx);
@@ -371,7 +373,7 @@ public class ContextPreInitializationTest {
         final Context ctx = Context.create();
         Value res = ctx.eval(Source.create(FIRST, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(3, contexts.size());
         Collection<? extends CountingContext> firstLangCtxs = findContexts(FIRST, contexts);
         firstLangCtxs.remove(firstLangCtx);
@@ -422,7 +424,7 @@ public class ContextPreInitializationTest {
         System.setProperty(SYS_OPTION1_KEY, "true");
         setPatchable(FIRST);
         doContextPreinitialize(FIRST);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         final CountingContext firstLangCtx = findContext(FIRST, contexts);
         assertNotNull(firstLangCtx);
         assertFalse(firstLangCtx.optionValues.get(ContextPreInitializationTestFirstLanguage.Option1));
@@ -449,7 +451,7 @@ public class ContextPreInitializationTest {
         System.setProperty(SYS_OPTION1_KEY, "true");
         setPatchable();
         doContextPreinitialize(FIRST);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         final CountingContext firstLangCtx = findContext(FIRST, contexts);
         assertNotNull(firstLangCtx);
         assertFalse(firstLangCtx.optionValues.get(ContextPreInitializationTestFirstLanguage.Option1));
@@ -460,7 +462,7 @@ public class ContextPreInitializationTest {
         final Context ctx = Context.create();
         Value res = ctx.eval(Source.create(FIRST, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         contexts.remove(firstLangCtx);
         final CountingContext firstLangCtx2 = findContext(FIRST, contexts);
         assertNotNull(firstLangCtx2);
@@ -474,12 +476,12 @@ public class ContextPreInitializationTest {
     public void testContextOptionsNoLanguagePreInitialization() throws Exception {
         setPatchable();
         doContextPreinitialize();
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(0, contexts.size());
         final Context ctx = Context.newBuilder().option(FIRST + ".Option1", "true").build();
         final Value res = ctx.eval(Source.create(FIRST, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         CountingContext context = findContext(FIRST, contexts);
         assertNotNull(context);
@@ -492,14 +494,14 @@ public class ContextPreInitializationTest {
     public void testContextOptionsSingleLanguagePreInitialization() throws Exception {
         setPatchable(FIRST);
         doContextPreinitialize(FIRST);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         final CountingContext context = findContext(FIRST, contexts);
         assertNotNull(context);
         final Context ctx = Context.newBuilder().option(FIRST + ".Option1", "true").build();
         final Value res = ctx.eval(Source.create(FIRST, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         assertTrue(context.optionValues.get(ContextPreInitializationTestFirstLanguage.Option1));
         assertFalse(context.optionValues.get(ContextPreInitializationTestFirstLanguage.Option2));
@@ -512,7 +514,7 @@ public class ContextPreInitializationTest {
         ContextPreInitializationTestSecondLanguage.callDependentLanguage = true;
         ContextPreInitializationTestFirstLanguage.callDependentLanguage = true;
         doContextPreinitialize(SECOND);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(3, contexts.size());
         final CountingContext secondLangCtx = findContext(SECOND, contexts);
         assertNotNull(secondLangCtx);
@@ -541,7 +543,7 @@ public class ContextPreInitializationTest {
         final Context ctx = Context.create();
         Value res = ctx.eval(Source.create(SECOND, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(3, contexts.size());
         assertEquals(1, secondLangCtx.createContextCount);
         assertEquals(1, secondLangCtx.initializeContextCount);
@@ -564,7 +566,7 @@ public class ContextPreInitializationTest {
         assertTrue(internalLangCtx.patchContextOrder < firstLangCtx.patchContextOrder);
         assertTrue(firstLangCtx.patchContextOrder < secondLangCtx.patchContextOrder);
         ctx.close();
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(3, contexts.size());
         assertEquals(1, secondLangCtx.createContextCount);
         assertEquals(1, secondLangCtx.initializeContextCount);
@@ -592,7 +594,7 @@ public class ContextPreInitializationTest {
         ContextPreInitializationTestSecondLanguage.callDependentLanguage = true;
         ContextPreInitializationTestFirstLanguage.callDependentLanguage = true;
         doContextPreinitialize(SECOND);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(3, contexts.size());
         final CountingContext secondLangCtx = findContext(SECOND, contexts);
         assertNotNull(secondLangCtx);
@@ -621,7 +623,7 @@ public class ContextPreInitializationTest {
         final Context ctx = Context.create();
         Value res = ctx.eval(Source.create(SECOND, "test"));
         assertEquals("test", res.asString());
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(6, contexts.size());
         Collection<? extends CountingContext> ctxs = findContexts(SECOND, contexts);
         ctxs.remove(secondLangCtx);
@@ -672,7 +674,7 @@ public class ContextPreInitializationTest {
         assertEquals(1, internalLangCtx2.initializeThreadCount);
         assertEquals(0, internalLangCtx2.disposeThreadCount);
         ctx.close();
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(6, contexts.size());
         assertEquals(1, secondLangCtx.createContextCount);
         assertEquals(1, secondLangCtx.initializeContextCount);
@@ -717,7 +719,7 @@ public class ContextPreInitializationTest {
         setPatchable(FIRST);
         ContextPreInitializationTestFirstLanguage.patchException = true;
         doContextPreinitialize(FIRST);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         final CountingContext firstLangCtx = findContext(FIRST, contexts);
         assertNotNull(firstLangCtx);
@@ -733,7 +735,7 @@ public class ContextPreInitializationTest {
         } catch (PolyglotException pe) {
             // Expected exception
         }
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(1, contexts.size());
         assertEquals(1, firstLangCtx.createContextCount);
         assertEquals(1, firstLangCtx.initializeContextCount);
@@ -748,7 +750,7 @@ public class ContextPreInitializationTest {
         setPatchable(FIRST, SECOND);
         ContextPreInitializationTestFirstLanguage.patchException = true;
         doContextPreinitialize(FIRST, SECOND);
-        List<CountingContext> contexts = new ArrayList<>(emittedContexts);
+        List<CountingContext> contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         final CountingContext firstLangCtx = findContext(FIRST, contexts);
         assertNotNull(firstLangCtx);
@@ -772,7 +774,7 @@ public class ContextPreInitializationTest {
         } catch (PolyglotException pe) {
             // Expected exception
         }
-        contexts = new ArrayList<>(emittedContexts);
+        contexts = SpecifiedArrayList.createNew(emittedContexts);
         assertEquals(2, contexts.size());
         assertEquals(1, firstLangCtx.createContextCount);
         assertEquals(1, firstLangCtx.initializeContextCount);
@@ -863,7 +865,7 @@ public class ContextPreInitializationTest {
             this.id = id;
             this.env = env;
             this.optionValues = new HashMap<>();
-            this.arguments = new ArrayList<>();
+            this.arguments = SpecifiedArrayList.createNew();
         }
 
         String getLanguageId() {

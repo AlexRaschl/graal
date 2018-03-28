@@ -28,6 +28,8 @@ import static org.graalvm.compiler.truffle.common.TruffleCompilerOptions.getValu
 import java.lang.invoke.MethodHandle;
 import java.util.ArrayList;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 import jdk.vm.ci.meta.MetaAccessProvider;
 import jdk.vm.ci.meta.ResolvedJavaField;
 import jdk.vm.ci.meta.ResolvedJavaType;
@@ -48,7 +50,8 @@ public class KnownTruffleTypes extends AbstractKnownTruffleTypes {
     public final ResolvedJavaField fieldFrameDescriptorMaterializeCalled = findField(classFrameDescriptor, "materializeCalled");
     public final ResolvedJavaField fieldFrameDescriptorSlots = findField(classFrameDescriptor, "slots");
 
-    public final ResolvedJavaField fieldArrayListElementData = findField(lookupType(ArrayList.class), "elementData");
+    // TODO CHECK REPLACE
+    public final ResolvedJavaField fieldArrayListElementData = findField(lookupType(SpecifiedArrayList.class), "elementData");
 
     public final ResolvedJavaField fieldFrameSlotKind = findField(classFrameSlot, "kind");
     public final ResolvedJavaField fieldFrameSlotIndex = findField(classFrameSlot, "index");

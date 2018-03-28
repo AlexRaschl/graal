@@ -30,7 +30,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +52,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.PolyglotException;
@@ -265,7 +265,7 @@ public class MultiThreadedLanguageTest {
             assertEquals(0, initializeCount.get());
             assertNull(lastInitializeRequest.get());
 
-            List<Completable<Value>> results = new ArrayList<>();
+            List<Completable<Value>> results = SpecifiedArrayList.createNew();
             for (int iteration = 0; iteration < innerLoop; iteration++) {
                 CountDownLatch latch = iteration == 0 ? new CountDownLatch(threadCount) : null;
 
@@ -347,7 +347,7 @@ public class MultiThreadedLanguageTest {
         Context context = Context.newBuilder().allowCreateThread(true).engine(engine).build();
         eval(context, new Function<Env, Object>() {
             public Object apply(Env env) {
-                List<Thread> createdThreads = new ArrayList<>();
+                List<Thread> createdThreads = SpecifiedArrayList.createNew();
                 ExecutorService service = Executors.newFixedThreadPool(10, (r) -> {
                     Thread t = env.createThread(r);
                     t.setUncaughtExceptionHandler((thread, e) -> seenError.set(e));
@@ -356,8 +356,8 @@ public class MultiThreadedLanguageTest {
                 });
                 TruffleContext innerContext = env.newContextBuilder().build();
 
-                List<Future<LanguageContext>> futures = new ArrayList<>();
-                List<Future<LanguageContext>> innerContextFutures = new ArrayList<>();
+                List<Future<LanguageContext>> futures = SpecifiedArrayList.createNew();
+                List<Future<LanguageContext>> innerContextFutures = SpecifiedArrayList.createNew();
                 for (int i = 0; i < 100; i++) {
                     innerContextFutures.add(service.submit(() -> {
                         Object prev = innerContext.enter();
@@ -394,8 +394,8 @@ public class MultiThreadedLanguageTest {
                 }
                 service.shutdown();
                 /*
-                 * We need to join all threads as unfortunately the executor service does not
-                 * guarantee that all threads are immediately shutdown.
+                 * We need to join all threads as unfortunately the executor service does not guarantee that all
+                 * threads are immediately shutdown.
                  */
                 try {
                     for (Thread t : createdThreads) {
@@ -431,14 +431,14 @@ public class MultiThreadedLanguageTest {
         eval(polyglotContext, new Function<Env, Object>() {
             @SuppressWarnings("hiding")
             public Object apply(Env env) {
-                List<Thread> threads = new ArrayList<>();
-                List<TruffleContext> contexts = new ArrayList<>();
+                List<Thread> threads = SpecifiedArrayList.createNew();
+                List<TruffleContext> contexts = SpecifiedArrayList.createNew();
                 for (int i = 0; i < iterations; i++) {
                     TruffleContext context = env.newContextBuilder().build();
                     Thread thread = env.createThread(() -> {
                         assertUniqueContext();
-                        List<Thread> innerThreads = new ArrayList<>();
-                        List<TruffleContext> innerContexts = new ArrayList<>();
+                        List<Thread> innerThreads = SpecifiedArrayList.createNew();
+                        List<TruffleContext> innerContexts = SpecifiedArrayList.createNew();
                         for (int j = 0; j < innerIterations; j++) {
                             TruffleContext innerContext = env.newContextBuilder().build();
                             Thread innerThread = env.createThread(() -> {
@@ -496,14 +496,14 @@ public class MultiThreadedLanguageTest {
         eval(polyglotContext, new Function<Env, Object>() {
             @SuppressWarnings("hiding")
             public Object apply(Env env) {
-                List<Thread> threads = new ArrayList<>();
+                List<Thread> threads = SpecifiedArrayList.createNew();
                 LanguageContext languageContext = MultiThreadedLanguage.getContext();
                 for (int i = 0; i < iterations; i++) {
                     Thread thread = env.createThread(() -> {
                         LanguageContext threadContext = MultiThreadedLanguage.getContext();
                         assertSame(languageContext, threadContext);
-                        List<Thread> innerThreads = new ArrayList<>();
-                        List<TruffleContext> innerContexts = new ArrayList<>();
+                        List<Thread> innerThreads = SpecifiedArrayList.createNew();
+                        List<TruffleContext> innerContexts = SpecifiedArrayList.createNew();
                         for (int j = 0; j < innerIterations; j++) {
                             Thread innerThread = env.createThread(() -> {
                                 LanguageContext innerThreadContext = MultiThreadedLanguage.getContext();
@@ -626,8 +626,8 @@ public class MultiThreadedLanguageTest {
     /*
      * Test infrastructure code.
      */
-    private final List<Thread> threads = new ArrayList<>();
-    private final List<ExecutorService> executors = new ArrayList<>();
+    private final List<Thread> threads = SpecifiedArrayList.createNew();
+    private final List<ExecutorService> executors = SpecifiedArrayList.createNew();
 
     volatile AtomicInteger initializeCount;
     volatile AtomicInteger disposeCount;

@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.CSVUtil;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.graph.Node;
@@ -106,14 +107,14 @@ public class NodeCostDumpUtil {
             GraalError.shouldNotReachHere();
         }
         System.err.printf("Loaded %d classes...\n", classes.size());
-        List<Class<?>> nodeClasses = new ArrayList<>();
+        List<Class<?>> nodeClasses = SpecifiedArrayList.createNew();
         for (Class<?> loaded : classes) {
             if (Node.class.isAssignableFrom(loaded) && !loaded.isArray()) {
                 nodeClasses.add(loaded);
             }
         }
         System.err.printf("Loaded %s node classes...\n", nodeClasses.size());
-        List<NodeClass<?>> nc = new ArrayList<>();
+        List<NodeClass<?>> nc = SpecifiedArrayList.createNew();
         for (Class<?> nodeClass : nodeClasses) {
             Field f;
             try {

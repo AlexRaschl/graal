@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
+
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     // DONE CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
@@ -20,7 +22,6 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     private final static int CAPACITY_GROWING_THRESHOLD = 32;
 
     private int size;
-    private Object elems[];
 
     /**
      * Factory methods
@@ -45,7 +46,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     public SpecifiedArrayListImpl(int initialCapacity) {
         if (initialCapacity >= 0) {
             this.size = 0;
-            this.elems = new Object[initialCapacity];
+            this.elementData = new Object[initialCapacity];
         } else {
             throw new IllegalArgumentException();
         }
@@ -64,9 +65,9 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      *
      * @param collection
      */
-    public SpecifiedArrayListImpl(Collection<E> collection) {
+    public SpecifiedArrayListImpl(Collection<? extends E> collection) {
         this.size = collection.size();
-        this.elems = Arrays.copyOf(collection.toArray(), collection.size());
+        this.elementData = Arrays.copyOf(collection.toArray(), collection.size());
     }
 
     @Override
@@ -86,15 +87,15 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public Object[] toArray() {
-        return Arrays.copyOf(elems, size);
+        return Arrays.copyOf(elementData, size);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T[] toArray(T[] a) {
         if (a.length < size)
-            return (T[]) Arrays.copyOf(elems, size, a.getClass());
-        System.arraycopy(elems, 0, a, 0, size);
+            return (T[]) Arrays.copyOf(elementData, size, a.getClass());
+        System.arraycopy(elementData, 0, a, 0, size);
         if (a.length > size)
             a[size] = null;
         return a;
@@ -105,7 +106,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     public boolean add(E e) {
         // growIfNeeded();
         ensureCapacity(size + 1);
-        elems[size++] = e;
+        elementData[size++] = e;
         return true;
     }
 
@@ -113,14 +114,14 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     public boolean remove(Object o) {
         if (o == null) {
             for (int i = 0; i < size; i++) {
-                if (elems[i] == null) {
+                if (elementData[i] == null) {
                     fastRemove(i);
                     return true;
                 }
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (o.equals(elems[i])) {
+                if (o.equals(elementData[i])) {
                     fastRemove(i);
                     return true;
                 }
@@ -147,7 +148,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
         ensureCapacity(size + cSize);// Useful if c is large
 
-        System.arraycopy(c.toArray(), 0, elems, size, cSize);
+        System.arraycopy(c.toArray(), 0, elementData, size, cSize);
         size = size + cSize;
         return true;
     }
@@ -168,8 +169,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         int nElems = arr.length;
 
         ensureCapacity(size + nElems);
-        System.arraycopy(elems, index, elems, index + nElems, size - index);
-        System.arraycopy(arr, 0, elems, index, nElems);
+        System.arraycopy(elementData, index, elementData, index + nElems, size - index);
+        System.arraycopy(arr, 0, elementData, index, nElems);
 
         size += nElems;
 
@@ -191,7 +192,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     @Override
     public void clear() {
         for (int i = 0; i < size; i++) {
-            elems[i] = null;
+            elementData[i] = null;
         }
 
         // elems = new Object[INITIAL_CAPACITY];
@@ -202,14 +203,14 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     @Override
     public E get(int index) {
         checkBoundaries(index);
-        return castUnchecked(elems[index]);
+        return castUnchecked(elementData[index]);
     }
 
     @Override
     public E set(int index, E element) {
         checkBoundaries(index);
-        Object oldElem = elems[index];
-        elems[index] = element;
+        Object oldElem = elementData[index];
+        elementData[index] = element;
         return castUnchecked(oldElem);
     }
 
@@ -217,16 +218,16 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     public void add(int index, E element) {
         checkBoundsForAdd(index);
         growIfNeeded();
-        System.arraycopy(elems, index, elems, index + 1, size - index);
-        elems[index] = element;
+        System.arraycopy(elementData, index, elementData, index + 1, size - index);
+        elementData[index] = element;
         size++;
     }
 
     @Override
     public E remove(int index) {
         checkBoundaries(index);
-        Object oldElem = elems[index];
-        System.arraycopy(elems, index + 1, elems, index, size - index - 1);
+        Object oldElem = elementData[index];
+        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
         size--;
         return castUnchecked(oldElem);
     }
@@ -236,12 +237,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
         if (o == null) {
             for (int i = 0; i < size; i++) {
-                if (elems[i] == null)
+                if (elementData[i] == null)
                     return i;
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (o.equals(elems[i]))
+                if (o.equals(elementData[i]))
                     return i;
             }
         }
@@ -252,12 +253,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     public int lastIndexOf(Object o) {
         if (o == null) {
             for (int i = size - 1; i >= 0; i--) {
-                if (elems[i] == null)
+                if (elementData[i] == null)
                     return i;
             }
         } else {
             for (int i = size - 1; i >= 0; i--) {
-                if (o.equals(elems[i]))
+                if (o.equals(elementData[i]))
                     return i;
             }
         }
@@ -299,7 +300,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
             if (cursor >= size)
                 throw new NoSuchElementException();
-            Object elem = elems[cursor];
+            Object elem = elementData[cursor];
             lastRet = cursor++;
             return castUnchecked(elem);
         }
@@ -337,7 +338,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         public E previous() {
             if (cursor < 0)
                 throw new NoSuchElementException();
-            Object[] elemsLocal = SpecifiedArrayListImpl.this.elems;
+            Object[] elemsLocal = SpecifiedArrayListImpl.this.elementData;
             lastRet = --cursor;
             return castUnchecked(elemsLocal[cursor]);
         }
@@ -371,7 +372,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         ArrayList<E> list = new ArrayList<>();
-        list.addAll((Collection<? extends E>) Arrays.asList(elems));
+        list.addAll((Collection<? extends E>) Arrays.asList(elementData));
         return list.subList(fromIndex, toIndex);
     }
 
@@ -379,7 +380,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Arrays.hashCode(elems);
+        result = prime * result + Arrays.hashCode(elementData);
         result = prime * result + size;
         return result;
     }
@@ -394,7 +395,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         if (getClass() != obj.getClass())
             return false;
         SpecifiedArrayListImpl<E> other = (SpecifiedArrayListImpl<E>) obj;
-        if (!Arrays.equals(elems, other.elems))
+        if (!Arrays.equals(elementData, other.elementData))
             return false;
         if (size != other.size)
             return false;
@@ -421,7 +422,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public void ensureCapacity(int capacity) {
-        int curCapacity = elems.length;
+        int curCapacity = elementData.length;
         if (curCapacity < capacity) {
             // If we ensure that there is enough capacity it will be most likely that not much more elements
             // than this capacity will be added in the near future.
@@ -433,20 +434,20 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
                 // newLength = capacity + INITIAL_CAPACITY;
                 newLength = curCapacity + (curCapacity >> 1);
             }
-            elems = Arrays.copyOf(elems, newLength);
+            elementData = Arrays.copyOf(elementData, newLength);
         }
     }
 
     @Override
     public void trimToSize() {
-        if (elems.length >= size)
-            elems = Arrays.copyOf(elems, size);
+        if (elementData.length >= size)
+            elementData = Arrays.copyOf(elementData, size);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void sort(Comparator<? super E> c) {
-        Arrays.sort((E[]) elems, 0, size, c);
+        Arrays.sort((E[]) elementData, 0, size, c);
     }
 
     //
@@ -456,11 +457,11 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     //
 
     protected double getLoadFactor() {
-        return ((double) size / elems.length);
+        return ((double) size / elementData.length);
     }
 
     protected int getCapacity() {
-        return elems.length;
+        return elementData.length;
     }
 
     //
@@ -480,8 +481,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     private void trimIfUseful() {
-        int threshold = (elems.length / GROW_FACTOR) + 1; // TODO Find more efficient strategy
-        if (threshold > size && threshold < elems.length) {
+        int threshold = (elementData.length / GROW_FACTOR) + 1; // TODO Find more efficient strategy
+        if (threshold > size && threshold < elementData.length) {
             trim(threshold);
         }
     }
@@ -492,20 +493,20 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param index index of object to be removed
      */
     private void fastRemove(int index) {
-        System.arraycopy(elems, index + 1, elems, index, size - index - 1);
-        elems[--size] = null;
+        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+        elementData[--size] = null;
     }
 
     /**
      * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
      */
     protected void grow() {
-        int newLength = elems.length * GROW_FACTOR; // TODO remove Protected
-        elems = Arrays.copyOf(elems, newLength);
+        int newLength = elementData.length * GROW_FACTOR; // TODO remove Protected
+        elementData = Arrays.copyOf(elementData, newLength);
     }
 
     private void growIfNeeded() {
-        if (size == elems.length)
+        if (size == elementData.length)
             grow();
     }
 
@@ -513,7 +514,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     private void trim(int capacity) {
         if (capacity < 0)
             throw new IllegalArgumentException();
-        System.arraycopy(elems, 0, elems, 0, capacity);
+        System.arraycopy(elementData, 0, elementData, 0, capacity);
     }
 
     private boolean removeCollection(Collection<?> c, boolean isRetained) {
@@ -521,20 +522,20 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         int w = 0, i = 0;
 
         for (; i < size; i++) {
-            if (c.contains(elems[i]) == isRetained) {
-                elems[w] = elems[i];
+            if (c.contains(elementData[i]) == isRetained) {
+                elementData[w] = elementData[i];
                 w++;
             } else {
                 removed++;
             }
         }
         if (i != size) {
-            System.arraycopy(elems, i, elems, w, size - i);
+            System.arraycopy(elementData, i, elementData, w, size - i);
             w += size - i;
         }
         if (w != size) {
             for (int j = w; j < size; j++)
-                elems[j] = null;
+                elementData[j] = null;
             size = w;
         }
         trimIfUseful();

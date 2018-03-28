@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,6 +46,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Value;
@@ -78,8 +78,8 @@ final class PolyglotContextImpl extends AbstractContextImpl implements VMObject 
     @CompilationFinal private volatile PolyglotThreadInfo constantCurrentThreadInfo = PolyglotThreadInfo.NULL;
 
     /*
-     * While canceling the context can no longer be entered. The context goes from canceling into
-     * closed state.
+     * While canceling the context can no longer be entered. The context goes from canceling into closed
+     * state.
      */
     volatile boolean cancelling;
     private volatile Thread closingThread;
@@ -436,7 +436,7 @@ final class PolyglotContextImpl extends AbstractContextImpl implements VMObject 
             }
             if (!accessAllowed) {
                 if (deniedLanguages == null) {
-                    deniedLanguages = new ArrayList<>();
+                    deniedLanguages = SpecifiedArrayList.createNew();
                 }
                 deniedLanguages.add(context.language);
             }
@@ -496,7 +496,7 @@ final class PolyglotContextImpl extends AbstractContextImpl implements VMObject 
             if (context.isInitialized()) {
                 if (!VMAccessor.LANGUAGE.isThreadAccessAllowed(context.language.info, current, singleThread)) {
                     if (deniedLanguages == null) {
-                        deniedLanguages = new ArrayList<>();
+                        deniedLanguages = SpecifiedArrayList.createNew();
                     }
                     deniedLanguages.add(context.language);
                 }
@@ -945,7 +945,7 @@ final class PolyglotContextImpl extends AbstractContextImpl implements VMObject 
                     // finalization performed commit close -> no actions allowed on dispose
                     closed = true;
 
-                    List<PolyglotLanguageContext> disposedContexts = new ArrayList<>(contexts.length);
+                    List<PolyglotLanguageContext> disposedContexts = SpecifiedArrayList.createNew(contexts.length);
                     try {
                         synchronized (this) {
                             for (int i = contexts.length - 1; i >= 0; i--) {
@@ -1005,9 +1005,8 @@ final class PolyglotContextImpl extends AbstractContextImpl implements VMObject 
         for (PolyglotThreadInfo threadInfo : threads.values()) {
             if (!threadInfo.isCurrent() && threadInfo.isActive()) {
                 /*
-                 * We send an interrupt to the thread to wake up and to run some guest language code
-                 * in case they are waiting in some async primitive. The interrupt is then cleared
-                 * when the closed is performed.
+                 * We send an interrupt to the thread to wake up and to run some guest language code in case they
+                 * are waiting in some async primitive. The interrupt is then cleared when the closed is performed.
                  */
                 threadInfo.thread.interrupt();
             }

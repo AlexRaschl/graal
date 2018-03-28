@@ -34,13 +34,12 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Deque;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.CSVUtil;
 import org.graalvm.compiler.debug.Management;
 import org.graalvm.compiler.options.Option;
@@ -218,7 +217,7 @@ public final class CompilationStatistics {
             // output the list of all compilations
 
             Field[] declaredFields = CompilationStatistics.class.getDeclaredFields();
-            ArrayList<Field> fields = new ArrayList<>();
+            SpecifiedArrayList<Field> fields = SpecifiedArrayList.createNew();
             for (Field field : declaredFields) {
                 if (!Modifier.isStatic(field.getModifiers()) && !field.isAnnotationPresent(NotReported.class)) {
                     fields.add(field);

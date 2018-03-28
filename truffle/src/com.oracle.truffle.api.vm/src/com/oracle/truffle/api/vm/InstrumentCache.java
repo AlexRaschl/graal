@@ -26,8 +26,8 @@ package com.oracle.truffle.api.vm;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,16 +38,17 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 import com.oracle.truffle.api.TruffleOptions;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument;
-import java.io.PrintStream;
 
 //TODO (chumer): maybe this class should share some code with LanguageCache?
 final class InstrumentCache {
 
     private static final boolean JDK8OrEarlier = System.getProperty("java.specification.version").compareTo("1.9") < 0;
 
-    private static final List<InstrumentCache> nativeImageCache = TruffleOptions.AOT ? new ArrayList<>() : null;
+    private static final List<InstrumentCache> nativeImageCache = TruffleOptions.AOT ? SpecifiedArrayList.createNew() : null;
     private static List<InstrumentCache> runtimeCache;
 
     private Class<? extends TruffleInstrument> instrumentClass;
@@ -129,7 +130,7 @@ final class InstrumentCache {
     }
 
     private static List<InstrumentCache> doLoad(Collection<ClassLoader> loaders) {
-        List<InstrumentCache> list = new ArrayList<>();
+        List<InstrumentCache> list = SpecifiedArrayList.createNew();
         Set<String> classNamesUsed = new HashSet<>();
         for (ClassLoader loader : loaders) {
             loadForOne(loader, list, classNamesUsed);

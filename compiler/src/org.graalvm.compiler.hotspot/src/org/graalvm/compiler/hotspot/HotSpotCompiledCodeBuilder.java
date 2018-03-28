@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 import java.util.stream.Stream.Builder;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.code.CompilationResult;
 import org.graalvm.compiler.code.CompilationResult.CodeAnnotation;
 import org.graalvm.compiler.code.CompilationResult.CodeComment;
@@ -133,10 +134,10 @@ public class HotSpotCompiledCodeBuilder {
     static class SiteComparator implements Comparator<Site> {
 
         /**
-         * Defines an order for sorting {@link Infopoint}s based on their
-         * {@linkplain Infopoint#reason reasons}. This is used to choose which infopoint to preserve
-         * when multiple infopoints collide on the same PC offset. A negative order value implies a
-         * non-optional infopoint (i.e., must be preserved).
+         * Defines an order for sorting {@link Infopoint}s based on their {@linkplain Infopoint#reason
+         * reasons}. This is used to choose which infopoint to preserve when multiple infopoints collide on
+         * the same PC offset. A negative order value implies a non-optional infopoint (i.e., must be
+         * preserved).
          */
         static final Map<InfopointReason, Integer> HOTSPOT_INFOPOINT_SORT_ORDER = new EnumMap<>(InfopointReason.class);
 
@@ -198,11 +199,11 @@ public class HotSpotCompiledCodeBuilder {
 
     /**
      * HotSpot expects sites to be presented in ascending order of PC (see
-     * {@code DebugInformationRecorder::add_new_pc_offset}). In addition, it expects
-     * {@link Infopoint} PCs to be unique.
+     * {@code DebugInformationRecorder::add_new_pc_offset}). In addition, it expects {@link Infopoint}
+     * PCs to be unique.
      */
     private static Site[] getSortedSites(CodeCacheProvider codeCache, CompilationResult target) {
-        List<Site> sites = new ArrayList<>(
+        List<Site> sites = SpecifiedArrayList.createNew(
                         target.getExceptionHandlers().size() + target.getInfopoints().size() + target.getDataPatches().size() + target.getMarks().size() + target.getSourceMappings().size());
         sites.addAll(target.getExceptionHandlers());
         sites.addAll(target.getInfopoints());
@@ -211,10 +212,10 @@ public class HotSpotCompiledCodeBuilder {
 
         if (codeCache.shouldDebugNonSafepoints()) {
             /*
-             * Translate the source mapping into appropriate info points. In HotSpot only one
-             * position can really be represented and recording the end PC seems to give the best
-             * results and corresponds with what C1 and C2 do. HotSpot doesn't like to see these
-             * unless -XX:+DebugNonSafepoints is enabled, so don't emit them in that case.
+             * Translate the source mapping into appropriate info points. In HotSpot only one position can
+             * really be represented and recording the end PC seems to give the best results and corresponds
+             * with what C1 and C2 do. HotSpot doesn't like to see these unless -XX:+DebugNonSafepoints is
+             * enabled, so don't emit them in that case.
              */
             for (SourceMapping source : target.getSourceMappings()) {
                 NodeSourcePosition sourcePosition = source.getSourcePosition();

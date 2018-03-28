@@ -117,15 +117,14 @@ public final class TruffleContext implements AutoCloseable {
     }
 
     /**
-     * Enters this context and returns an object representing the previous context. Calls to enter
-     * must be followed by a call to {@link #leave(Object)} in a finally block and the previous
-     * context must be passed as an argument. It is allowed to enter a context multiple times from
-     * the same thread. If the context is currently not entered by any thread then it is allowed be
-     * entered by an arbitrary thread. Entering the context from two or more different threads at
-     * the same time is possible, unless one of the loaded languages denies access to the thread, in
-     * which case an {@link IllegalStateException} is thrown. The result of the enter function is
-     * unspecified and must only be passed to {@link #leave(Object)}. The result value must not be
-     * stored permanently.
+     * Enters this context and returns an object representing the previous context. Calls to enter must
+     * be followed by a call to {@link #leave(Object)} in a finally block and the previous context must
+     * be passed as an argument. It is allowed to enter a context multiple times from the same thread.
+     * If the context is currently not entered by any thread then it is allowed be entered by an
+     * arbitrary thread. Entering the context from two or more different threads at the same time is
+     * possible, unless one of the loaded languages denies access to the thread, in which case an
+     * {@link IllegalStateException} is thrown. The result of the enter function is unspecified and must
+     * only be passed to {@link #leave(Object)}. The result value must not be stored permanently.
      * <p>
      * Entering a language context is designed for compilation and is most efficient if the
      * {@link TruffleContext context} instance is compilation final.
@@ -161,11 +160,11 @@ public final class TruffleContext implements AutoCloseable {
      * Closes this context and disposes its resources. A context cannot be closed if it is currently
      * {@link #enter() entered} by any thread. If a closed context is attempted to be accessed or
      * entered, then an {@link IllegalStateException} is thrown. If the context is not closed
-     * explicitly, then it is automatically closed together with the parent context. If an attempt
-     * to close a context was successful then consecutive calls to close have no effect.
+     * explicitly, then it is automatically closed together with the parent context. If an attempt to
+     * close a context was successful then consecutive calls to close have no effect.
      * <p>
-     * Only contexts created by {@link Builder#build()} can be explicitly closed. Other instances
-     * throw {@link UnsupportedOperationException} on close attempts.
+     * Only contexts created by {@link Builder#build()} can be explicitly closed. Other instances throw
+     * {@link UnsupportedOperationException} on close attempts.
      *
      * @throws UnsupportedOperationException when not created by {@link Builder#build()}.
      * @since 0.27

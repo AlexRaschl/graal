@@ -25,7 +25,6 @@ package org.graalvm.compiler.core.match.processor;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -61,6 +60,7 @@ import javax.tools.StandardLocation;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.gen.NodeMatchRules;
 import org.graalvm.compiler.core.match.ComplexMatchResult;
 import org.graalvm.compiler.core.match.MatchRule;
@@ -112,9 +112,9 @@ public class MatchProcessor extends AbstractProcessor {
     private static final Pattern tokenizer = Pattern.compile("\\s*([()=]|[A-Za-z][A-Za-z0-9]*)\\s*");
 
     private class RuleParser {
-        private ArrayList<TypeDescriptor> capturedTypes = new ArrayList<>();
+        private SpecifiedArrayList<TypeDescriptor> capturedTypes = SpecifiedArrayList.createNew();
 
-        private ArrayList<String> capturedNames = new ArrayList<>();
+        private SpecifiedArrayList<String> capturedNames = SpecifiedArrayList.createNew();
 
         private final String[] tokens;
 
@@ -128,7 +128,7 @@ public class MatchProcessor extends AbstractProcessor {
 
         RuleParser(String rule) {
             Matcher m = tokenizer.matcher(rule);
-            List<String> list = new ArrayList<>();
+            List<String> list = SpecifiedArrayList.createNew();
             int end = 0;
             while (m.lookingAt()) {
                 list.add(m.group(1));
@@ -241,19 +241,18 @@ public class MatchProcessor extends AbstractProcessor {
          *
          * @return the list of node types which are captured by name
          */
-        public ArrayList<TypeDescriptor> capturedTypes() {
+        public SpecifiedArrayList<TypeDescriptor> capturedTypes() {
             return capturedTypes;
         }
 
-        public ArrayList<String> capturedNames() {
+        public SpecifiedArrayList<String> capturedNames() {
             return capturedNames;
         }
     }
 
     /**
      * Set to true to enable logging to a local file during annotation processing. There's no normal
-     * channel for any debug messages and debugging annotation processors requires some special
-     * setup.
+     * channel for any debug messages and debugging annotation processors requires some special setup.
      */
     private static final boolean DEBUG = false;
 
@@ -301,8 +300,8 @@ public class MatchProcessor extends AbstractProcessor {
     }
 
     /**
-     * Bugs in an annotation processor can cause silent failure so try to report any exception
-     * throws as errors.
+     * Bugs in an annotation processor can cause silent failure so try to report any exception throws as
+     * errors.
      */
     private void reportExceptionThrow(Element element, Throwable t) {
         if (element != null) {
@@ -343,8 +342,8 @@ public class MatchProcessor extends AbstractProcessor {
         final boolean commutative;
 
         /**
-         * Can multiple users of this node subsume it. Constants can be swallowed into a match even
-         * if there are multiple users.
+         * Can multiple users of this node subsume it. Constants can be swallowed into a match even if there
+         * are multiple users.
          */
         final boolean shareable;
 
@@ -418,14 +417,14 @@ public class MatchProcessor extends AbstractProcessor {
 
         List<String> recurseVariants(int index) {
             if (inputs.length == 0) {
-                return new ArrayList<>();
+                return SpecifiedArrayList.createNew();
             }
             List<String> currentVariants = inputs[index].generateVariants();
             if (index == inputs.length - 1) {
                 return currentVariants;
             }
             List<String> subVariants = recurseVariants(index + 1);
-            List<String> result = new ArrayList<>();
+            List<String> result = SpecifiedArrayList.createNew();
             for (String current : currentVariants) {
                 for (String sub : subVariants) {
                     result.add(current + ", " + sub);
@@ -438,15 +437,15 @@ public class MatchProcessor extends AbstractProcessor {
         }
 
         /**
-         * Recursively generate all the variants of this rule pattern. Currently that just means to
-         * swap the inputs for commutative rules, producing all possible permutations.
+         * Recursively generate all the variants of this rule pattern. Currently that just means to swap the
+         * inputs for commutative rules, producing all possible permutations.
          *
          * @return a list of Strings which will construct pattern matchers for this rule.
          */
         List<String> generateVariants() {
             String prefix = formatPrefix();
             String suffix = formatSuffix();
-            ArrayList<String> variants = new ArrayList<>();
+            SpecifiedArrayList<String> variants = SpecifiedArrayList.createNew();
             if (inputs.length > 0) {
                 for (String var : recurseVariants(0)) {
                     variants.add(prefix + ", " + var + suffix);
@@ -661,7 +660,7 @@ public class MatchProcessor extends AbstractProcessor {
     static class MatchRuleDescriptor {
 
         final TypeElement topDeclaringType;
-        final List<MatchRuleItem> matchRules = new ArrayList<>();
+        final List<MatchRuleItem> matchRules = SpecifiedArrayList.createNew();
         private final EconomicSet<Element> originatingElements = EconomicSet.create(Equivalence.DEFAULT);
         public EconomicSet<String> positionDeclarations = EconomicSet.create(Equivalence.DEFAULT);
 
@@ -919,8 +918,8 @@ public class MatchProcessor extends AbstractProcessor {
 
             String rule = matchRule.value();
             RuleParser parser = new RuleParser(rule);
-            ArrayList<TypeDescriptor> expectedTypes = parser.capturedTypes();
-            ArrayList<String> expectedNames = parser.capturedNames();
+            SpecifiedArrayList<TypeDescriptor> expectedTypes = parser.capturedTypes();
+            SpecifiedArrayList<String> expectedNames = parser.capturedNames();
             List<? extends VariableElement> actualParameters = method.getParameters();
             if (expectedTypes.size() + 1 < actualParameters.size()) {
                 errorMessage(method, "Too many arguments for match method %s != %s", expectedTypes.size() + 1, actualParameters.size());
@@ -1004,7 +1003,7 @@ public class MatchProcessor extends AbstractProcessor {
     @SuppressWarnings("unchecked")
     private static <T> List<T> getAnnotationValueList(Class<T> expectedListType, AnnotationMirror mirror, String name) {
         List<? extends AnnotationValue> values = getAnnotationValue(List.class, mirror, name);
-        List<T> result = new ArrayList<>();
+        List<T> result = SpecifiedArrayList.createNew();
 
         if (values != null) {
             for (AnnotationValue value : values) {

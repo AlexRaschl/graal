@@ -24,7 +24,6 @@
  */
 package com.oracle.truffle.api.vm;
 
-import com.oracle.truffle.api.CompilerAsserts;
 import static com.oracle.truffle.api.vm.VMAccessor.INSTRUMENT;
 import static com.oracle.truffle.api.vm.VMAccessor.LANGUAGE;
 import static com.oracle.truffle.api.vm.VMAccessor.NODES;
@@ -33,7 +32,6 @@ import static com.oracle.truffle.api.vm.VMAccessor.SPI;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,12 +48,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.options.OptionDescriptors;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Instrument;
 import org.graalvm.polyglot.Language;
 
+import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.InstrumentInfo;
 import com.oracle.truffle.api.TruffleException;
@@ -369,7 +369,7 @@ class PolyglotEngineImpl extends org.graalvm.polyglot.impl.AbstractPolyglotImpl.
     private Map<String, PolyglotLanguage> initializeLanguages(Map<String, LanguageInfo> infos) {
         Map<String, PolyglotLanguage> polyglotLanguages = new LinkedHashMap<>();
         Map<String, LanguageCache> cachedLanguages = new HashMap<>();
-        List<LanguageCache> sortedLanguages = new ArrayList<>();
+        List<LanguageCache> sortedLanguages = SpecifiedArrayList.createNew();
         for (LanguageCache lang : LanguageCache.languages().values()) {
             String id = lang.getId();
             if (!cachedLanguages.containsKey(id)) {
@@ -588,8 +588,7 @@ class PolyglotEngineImpl extends org.graalvm.polyglot.impl.AbstractPolyglotImpl.
         if (!closed) {
             PolyglotContextImpl[] localContexts = contexts.toArray(new PolyglotContextImpl[0]);
             /*
-             * Check ahead of time for open contexts to fail early and avoid closing only some
-             * contexts.
+             * Check ahead of time for open contexts to fail early and avoid closing only some contexts.
              */
             if (!cancelIfExecuting && !ignoreCloseFailure) {
                 for (PolyglotContextImpl context : localContexts) {
@@ -676,7 +675,7 @@ class PolyglotEngineImpl extends org.graalvm.polyglot.impl.AbstractPolyglotImpl.
         if (allOptions == null) {
             synchronized (this) {
                 if (allOptions == null) {
-                    List<OptionDescriptors> allDescriptors = new ArrayList<>();
+                    List<OptionDescriptors> allDescriptors = SpecifiedArrayList.createNew();
                     allDescriptors.add(engineOptions);
                     allDescriptors.add(compilerOptions);
                     for (PolyglotLanguage language : idToLanguage.values()) {
@@ -694,7 +693,7 @@ class PolyglotEngineImpl extends org.graalvm.polyglot.impl.AbstractPolyglotImpl.
 
     Collection<Thread> getAllThreads(PolyglotContextImpl context) {
         synchronized (context) {
-            return new ArrayList<>(context.getSeenThreads().keySet());
+            return SpecifiedArrayList.createNew(context.getSeenThreads().keySet());
         }
     }
 

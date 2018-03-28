@@ -24,11 +24,11 @@ package com.oracle.truffle.api.test.vm;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -47,7 +47,7 @@ public class AsyncExecutorTest {
     public void testSynchronousLanguageAccess() {
         PolyglotEngine engine = PolyglotEngine.newBuilder().build();
         Source s = Source.newBuilder("").mimeType("application/x-test-async").name("").build();
-        List<Value> values = new ArrayList<>();
+        List<Value> values = SpecifiedArrayList.createNew();
         for (int i = 0; i < 100; i++) {
             values.add(engine.eval(s));
         }
@@ -61,7 +61,7 @@ public class AsyncExecutorTest {
         ExecutorService service = Executors.newFixedThreadPool(10);
         PolyglotEngine engine = PolyglotEngine.newBuilder().executor(service).build();
         Source s = Source.newBuilder("").mimeType("application/x-test-async").name("").build();
-        List<Value> values = new ArrayList<>();
+        List<Value> values = SpecifiedArrayList.createNew();
         for (int i = 0; i < 100; i++) {
             values.add(engine.eval(s));
         }

@@ -24,12 +24,12 @@ package org.graalvm.compiler.hotspot;
 
 import static jdk.vm.ci.common.InitTimer.timer;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.graalvm.collections.EconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.options.Option;
 import org.graalvm.compiler.options.OptionKey;
@@ -64,8 +64,8 @@ public abstract class CompilerConfigurationFactory implements Comparable<Compile
     private final String name;
 
     /**
-     * The priority of this factory. This must be unique across all factory instances and is used
-     * when selecting a factory when {@link Options#CompilerConfiguration} is omitted
+     * The priority of this factory. This must be unique across all factory instances and is used when
+     * selecting a factory when {@link Options#CompilerConfiguration} is omitted
      */
     private final int autoSelectionPriority;
 
@@ -144,7 +144,7 @@ public abstract class CompilerConfigurationFactory implements Comparable<Compile
      * @return sorted list of {@link CompilerConfigurationFactory}s
      */
     private static List<CompilerConfigurationFactory> getAllCandidates() {
-        List<CompilerConfigurationFactory> candidates = new ArrayList<>();
+        List<CompilerConfigurationFactory> candidates = SpecifiedArrayList.createNew();
         for (CompilerConfigurationFactory candidate : GraalServices.load(CompilerConfigurationFactory.class)) {
             assert checkUnique(candidate, candidates);
             candidates.add(candidate);
@@ -154,11 +154,10 @@ public abstract class CompilerConfigurationFactory implements Comparable<Compile
     }
 
     /**
-     * Selects and instantiates a {@link CompilerConfigurationFactory}. The selection algorithm is
-     * as follows: if {@code name} is non-null, then select the factory with the same name else if
-     * {@code Options.CompilerConfiguration.getValue()} is non-null then select the factory whose
-     * name matches the value else select the factory with the highest
-     * {@link #autoSelectionPriority} value.
+     * Selects and instantiates a {@link CompilerConfigurationFactory}. The selection algorithm is as
+     * follows: if {@code name} is non-null, then select the factory with the same name else if
+     * {@code Options.CompilerConfiguration.getValue()} is non-null then select the factory whose name
+     * matches the value else select the factory with the highest {@link #autoSelectionPriority} value.
      *
      * @param name the name of the compiler configuration to select (optional)
      */

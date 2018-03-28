@@ -30,7 +30,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -45,6 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.options.OptionDescriptor;
 import org.graalvm.options.OptionDescriptors;
 import org.graalvm.options.OptionKey;
@@ -685,7 +685,7 @@ public class LanguageSPITest {
             final OptionKey<String> option = new OptionKey<>("");
             final List<OptionDescriptor> descriptors;
             {
-                descriptors = new ArrayList<>();
+                descriptors = SpecifiedArrayList.createNew();
                 descriptors.add(OptionDescriptor.newBuilder(option, ProxyLanguage.ID + ".option").build());
             }
 

@@ -25,10 +25,22 @@ package org.graalvm.compiler.hotspot;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+
+import org.graalvm.collections.EconomicMap;
+import org.graalvm.collections.EconomicSet;
+import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.UnmodifiableEconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.compiler.debug.DebugOptions;
+import org.graalvm.compiler.options.OptionDescriptor;
+import org.graalvm.compiler.options.OptionDescriptors;
+import org.graalvm.compiler.options.OptionKey;
+import org.graalvm.compiler.options.OptionValues;
+import org.graalvm.compiler.options.OptionsParser;
+
 import jdk.vm.ci.hotspot.HotSpotCompilationRequest;
 import jdk.vm.ci.hotspot.HotSpotResolvedJavaMethod;
 import jdk.vm.ci.hotspot.HotSpotResolvedJavaType;
@@ -37,17 +49,6 @@ import jdk.vm.ci.meta.MetaUtil;
 import jdk.vm.ci.meta.ResolvedJavaMethod;
 import jdk.vm.ci.meta.ResolvedJavaType;
 import jdk.vm.ci.runtime.JVMCI;
-
-import org.graalvm.compiler.debug.DebugOptions;
-import org.graalvm.compiler.options.OptionDescriptor;
-import org.graalvm.compiler.options.OptionDescriptors;
-import org.graalvm.compiler.options.OptionKey;
-import org.graalvm.compiler.options.OptionValues;
-import org.graalvm.compiler.options.OptionsParser;
-import org.graalvm.collections.EconomicMap;
-import org.graalvm.collections.EconomicSet;
-import org.graalvm.collections.Equivalence;
-import org.graalvm.collections.UnmodifiableEconomicMap;
 
 public final class HotSpotGraalMBean implements javax.management.DynamicMBean {
     private static Object mBeanServerField;
@@ -282,7 +283,7 @@ public final class HotSpotGraalMBean implements javax.management.DynamicMBean {
 
     @Override
     public javax.management.MBeanInfo getMBeanInfo() {
-        List<javax.management.MBeanAttributeInfo> attrs = new ArrayList<>();
+        List<javax.management.MBeanAttributeInfo> attrs = SpecifiedArrayList.createNew();
         for (OptionDescriptor descr : allOptionDescriptors()) {
             attrs.add(new javax.management.MBeanAttributeInfo(descr.getName(), descr.getType().getName(), descr.getHelp(), true, true, false));
         }
@@ -313,7 +314,7 @@ public final class HotSpotGraalMBean implements javax.management.DynamicMBean {
     }
 
     private static Iterable<OptionDescriptor> allOptionDescriptors() {
-        List<OptionDescriptor> arr = new ArrayList<>();
+        List<OptionDescriptor> arr = SpecifiedArrayList.createNew();
         for (OptionDescriptors set : OptionsParser.getOptionsLoader()) {
             for (OptionDescriptor descr : set) {
                 arr.add(descr);

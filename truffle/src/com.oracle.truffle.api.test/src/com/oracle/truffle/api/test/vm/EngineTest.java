@@ -34,7 +34,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +43,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.After;
 import org.junit.Test;
 
@@ -455,8 +455,8 @@ public class EngineTest {
 
     private static class CachingLanguageChannel {
 
-        final List<CallTarget> parseTargets = new ArrayList<>();
-        final List<CallTarget> interopTargets = new ArrayList<>();
+        final List<CallTarget> parseTargets = SpecifiedArrayList.createNew();
+        final List<CallTarget> interopTargets = SpecifiedArrayList.createNew();
 
         boolean frozen;
     }
@@ -602,7 +602,7 @@ public class EngineTest {
         assertEquals(0, channel.language.forkContextCount);
         assertEquals(0, channel.language.disposeContextCount);
 
-        List<PolyglotEngine> forks = new ArrayList<>();
+        List<PolyglotEngine> forks = SpecifiedArrayList.createNew();
         for (int i = 0; i < 5; i++) {
             forks.add(channel.fork());
             assertEquals(channel.forks.size(), forks.size());
@@ -780,9 +780,9 @@ public class EngineTest {
         final String globalObject = "global" + globalIndex++;
         final ForkingLanguageChannel parent;
         final Map<String, Object> symbols = new HashMap<>();
-        final List<ForkingLanguageChannel> forks = new ArrayList<>();
-        final List<ForkingLanguageChannel> languageForks = new ArrayList<>();
-        final List<PolyglotEngine> dispose = new ArrayList<>();
+        final List<ForkingLanguageChannel> forks = SpecifiedArrayList.createNew();
+        final List<ForkingLanguageChannel> languageForks = SpecifiedArrayList.createNew();
+        final List<PolyglotEngine> dispose = SpecifiedArrayList.createNew();
 
         LanguageInfo info;
 

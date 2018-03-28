@@ -22,12 +22,13 @@
  */
 package org.graalvm.compiler.debug;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * A node in a tree of values.
@@ -37,7 +38,7 @@ public class DebugValueMap {
     /**
      * The top level maps for all threads.
      */
-    private static final List<DebugValueMap> topLevelMaps = new ArrayList<>();
+    private static final List<DebugValueMap> topLevelMaps = SpecifiedArrayList.createNew();
 
     private long[] values;
     private List<DebugValueMap> children;
@@ -89,7 +90,7 @@ public class DebugValueMap {
 
     public void addChild(DebugValueMap map) {
         if (children == null) {
-            children = new ArrayList<>(4);
+            children = SpecifiedArrayList.createNew(4);
         }
         children.add(map);
     }
@@ -184,7 +185,7 @@ public class DebugValueMap {
 
     public void group() {
         if (this.hasChildren()) {
-            List<DebugValueMap> oldChildren = new ArrayList<>(this.children);
+            List<DebugValueMap> oldChildren = SpecifiedArrayList.createNew(this.children);
             this.children.clear();
             for (DebugValueMap map : oldChildren) {
                 mergeWith(map);
