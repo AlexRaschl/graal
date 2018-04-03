@@ -9,18 +9,30 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
-
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
+
+    private static final boolean USE_AL_STRATEGY = false;
 
     // DONE CHECK if NULL Insertion and NULL removal is needed. //Most likely Yes
 
-    private final static int INITIAL_CAPACITY = 16;
+    private final static int INITIAL_CAPACITY = 1;
+
+    private int size;
+
     private final static int GROW_FACTOR = 2;
 
     private final static int CAPACITY_GROWING_THRESHOLD = 32;
 
-    private int size;
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
+    // ARRAYLIST IMMITATION Stuff
+
+    private static final Object[] EMPTY_ELEMENTDATA = {};
+
+    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+
+    // AL Capacity
+    private final static int DEFAULT_CAPACITY = 10;
 
     /**
      * Factory methods
@@ -43,12 +55,26 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param initialCapacity Capacity the list will have from beginning
      */
     public SpecifiedArrayListImpl(int initialCapacity) {
-        if (initialCapacity >= 0) {
-            this.size = 0;
-            this.elementData = new Object[initialCapacity];
+        if (USE_AL_STRATEGY) {
+
+            if (initialCapacity > 0) {
+                // this.size = 0;
+                this.elementData = new Object[initialCapacity];
+            } else if (initialCapacity == 0) {
+                this.elementData = EMPTY_ELEMENTDATA;
+            } else {
+                throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
+            }
+
         } else {
-            throw new IllegalArgumentException();
+            if (initialCapacity >= 0) {
+                this.size = 0;
+                this.elementData = new Object[initialCapacity];
+            } else {
+                throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
+            }
         }
+
     }
 
     /**
@@ -56,7 +82,14 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      *
      */
     public SpecifiedArrayListImpl() {
-        this(INITIAL_CAPACITY);
+        if (USE_AL_STRATEGY) {
+            this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+        } else {
+            // this(INITIAL_CAPACITY);
+            this.size = 0;
+            this.elementData = new Object[INITIAL_CAPACITY];
+        }
+
     }
 
     /**
@@ -65,8 +98,20 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param collection
      */
     public SpecifiedArrayListImpl(Collection<? extends E> collection) {
-        this.size = collection.size();
-        this.elementData = Arrays.copyOf(collection.toArray(), collection.size());
+        if (USE_AL_STRATEGY) {
+            elementData = collection.toArray();
+            if ((size = elementData.length) != 0) {
+                // c.toArray might (incorrectly) not return Object[] (see 6260652)
+                if (elementData.getClass() != Object[].class)
+                    elementData = Arrays.copyOf(elementData, size, Object[].class);
+            } else {
+                // replace with empty array.
+                this.elementData = EMPTY_ELEMENTDATA;
+            }
+        } else {
+            this.size = collection.size();
+            this.elementData = Arrays.copyOf(collection.toArray(), collection.size());
+        }
     }
 
     @Override
@@ -103,8 +148,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public boolean add(E e) {
-        // growIfNeeded();
-        ensureCapacity(size + 1);
+        if (USE_AL_STRATEGY) {
+            ensureCapacityInternalAL(size + 1);
+        } else {
+            ensureCapacity(size + 1);
+            // growIfNeeded();
+        }
         elementData[size++] = e;
         return true;
     }
@@ -145,7 +194,11 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         if (cSize == 0)
             return false;
 
-        ensureCapacity(size + cSize);// Useful if c is large
+        if (USE_AL_STRATEGY) {
+            ensureCapacityInternalAL(size + cSize);// Useful if c is large
+        } else {
+            ensureCapacity(size + cSize);// Useful if c is large
+        }
 
         System.arraycopy(c.toArray(), 0, elementData, size, cSize);
         size = size + cSize;
@@ -167,7 +220,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         final Object[] arr = c.toArray();
         int nElems = arr.length;
 
-        ensureCapacity(size + nElems);
+        if (USE_AL_STRATEGY) {
+            ensureCapacityInternalAL(size + nElems);
+        } else {
+            ensureCapacity(size = nElems);
+        }
+
         System.arraycopy(elementData, index, elementData, index + nElems, size - index);
         System.arraycopy(arr, 0, elementData, index, nElems);
 
@@ -190,12 +248,18 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     // TODO Could only set size to 0 for fast clear
     @Override
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            elementData[i] = null;
+
+        if (USE_AL_STRATEGY) {
+            for (int i = 0; i < size; i++) {
+                elementData[i] = null;
+            }
+            size = 0;
+        } else {
+            elementData = new Object[INITIAL_CAPACITY];
+            size = 0;
         }
 
         // elems = new Object[INITIAL_CAPACITY];
-        size = 0;
         // System.gc();
     }
 
@@ -216,7 +280,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     @Override
     public void add(int index, E element) {
         checkBoundsForAdd(index);
-        growIfNeeded();
+        if (USE_AL_STRATEGY) {
+            ensureCapacityInternalAL(size + 1);
+        } else {
+            growIfNeeded();
+        }
+
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
         size++;
@@ -224,11 +293,26 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public E remove(int index) {
-        checkBoundaries(index);
-        Object oldElem = elementData[index];
-        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
-        size--;
-        return castUnchecked(oldElem);
+        if (USE_AL_STRATEGY) {
+            checkBoundaries(index);
+
+            E oldValue = castUnchecked(elementData[index]);
+
+            int numMoved = size - index - 1;
+            if (numMoved > 0)
+                System.arraycopy(elementData, index + 1, elementData, index,
+                                numMoved);
+            elementData[--size] = null; // clear to let GC do its work
+
+            return oldValue;
+        } else {
+            checkBoundaries(index);
+            Object oldElem = elementData[index];
+            System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+            size--;
+            return castUnchecked(oldElem);
+        }
+
     }
 
     @Override
@@ -439,8 +523,16 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public void trimToSize() {
-        if (elementData.length >= size)
-            elementData = Arrays.copyOf(elementData, size);
+        if (USE_AL_STRATEGY) {
+            if (size < elementData.length) {
+                elementData = (size == 0)
+                                ? EMPTY_ELEMENTDATA
+                                : Arrays.copyOf(elementData, size);
+            }
+        } else {
+            if (elementData.length >= size)
+                elementData = Arrays.copyOf(elementData, size);
+        }
     }
 
     @Override
@@ -537,13 +629,77 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
                 elementData[j] = null;
             size = w;
         }
-        trimIfUseful();
+        if (!USE_AL_STRATEGY)
+            trimIfUseful();
         return removed != 0;
     }
 
     @SuppressWarnings("unchecked")
     private E castUnchecked(Object obj) {
         return (E) obj;
+    }
+
+    // METHODS NEEDED FOR IMITATION OF ARRAYLIST
+
+    /**
+     * Increases the capacity to ensure that it can hold at least the number of elements specified by
+     * the minimum capacity argument.
+     *
+     * @param minCapacity the desired minimum capacity
+     */
+    protected void growAL(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = elementData.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        if (newCapacity - minCapacity < 0)
+            newCapacity = minCapacity;
+        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = hugeCapacityAL(minCapacity);
+        // minCapacity is usually close to size, so this is a win:
+        elementData = Arrays.copyOf(elementData, newCapacity);
+    }
+
+    private static int hugeCapacityAL(int minCapacity) {
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
+    }
+
+    /**
+     * Increases the capacity of this <tt>ArrayList</tt> instance, if necessary, to ensure that it can
+     * hold at least the number of elements specified by the minimum capacity argument.
+     *
+     * @param minCapacity the desired minimum capacity
+     */
+    public void ensureCapacityAL(int minCapacity) {
+        int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
+                        // any size if not default element table
+                        ? 0
+                        // larger than default for default empty table. It's already
+                        // supposed to be at default size.
+                        : DEFAULT_CAPACITY;
+
+        if (minCapacity > minExpand) {
+            ensureExplicitCapacityAL(minCapacity);
+        }
+    }
+
+    private static int calculateCapacityAL(Object[] elementData, int minCapacity) {
+        if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+            return Math.max(DEFAULT_CAPACITY, minCapacity);
+        }
+        return minCapacity;
+    }
+
+    private void ensureCapacityInternalAL(int minCapacity) {
+        ensureExplicitCapacityAL(calculateCapacityAL(elementData, minCapacity));
+    }
+
+    private void ensureExplicitCapacityAL(int minCapacity) {
+
+        // overflow-conscious code
+        if (minCapacity - elementData.length > 0)
+            growAL(minCapacity);
     }
 
 }

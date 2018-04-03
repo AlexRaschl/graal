@@ -25,6 +25,7 @@ import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl
 public abstract class SpecifiedArrayList<E> implements List<E> {
 
     Object elementData[]; // RENAMED due to compatibility issues
+    // TODO restore old name and location replacing known TruffleTypes
 
     /**
      * Factory methods

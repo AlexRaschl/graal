@@ -137,14 +137,16 @@ public class Statistics {
     /*
      * Data Lines for CSV Generator
      */
+
+    // TODO ADD 0 LF recognition
     public static synchronized String[] getLoadFactorDataLines(final char dataSeparator) {
-        int[] intervalOccurrences = new int[INTERVAL_SIZE];
-        String[] dataArr = new String[INTERVAL_SIZE];
+        int[] intervalOccurrences = new int[INTERVAL_SIZE + 1];
+        String[] dataArr = new String[INTERVAL_SIZE + 1];
         double stepSize = 100 / INTERVAL_SIZE;
         for (StatisticTracker t : trackers) {
             double lf = t.getCurrentLoadFactor() * 100.0;
             int i = 1;
-            while (i <= INTERVAL_SIZE) {
+            while (i <= INTERVAL_SIZE + 1) {
                 if (lf < i * stepSize) {
                     intervalOccurrences[i - 1]++;
                     break;
@@ -168,6 +170,13 @@ public class Statistics {
             dataArr[i] = sb.toString();
             sb = new StringBuilder(25);
         }
+        sb.append(0);
+        sb.append(dataSeparator);
+        sb.append("[100%, 100%]");
+        sb.append(dataSeparator);
+        sb.append(' ');
+        sb.append(intervalOccurrences[INTERVAL_SIZE]);
+        dataArr[INTERVAL_SIZE] = sb.toString();
         return dataArr;
     }
 
@@ -188,7 +197,11 @@ public class Statistics {
         return sb.toString();
     }
 
-    static String getPrettyTypeMapContentString() {
+    public void printPrettyGlobalOpMapContentString() {
+        System.out.println(getPrettyOpMapContentString(globalOpMap));
+    }
+
+    public static String getPrettyTypeMapContentString() {
         StringBuilder sb = new StringBuilder();
         Iterator<Entry<Type, AtomicInteger>> itr = Statistics.globalTypeMap.entrySet().iterator();
 

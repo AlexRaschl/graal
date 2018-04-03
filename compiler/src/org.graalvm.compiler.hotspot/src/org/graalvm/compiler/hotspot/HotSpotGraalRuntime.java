@@ -29,7 +29,6 @@ import static org.graalvm.compiler.core.common.GraalOptions.GeneratePIC;
 import static org.graalvm.compiler.core.common.GraalOptions.HotSpotPrintInlining;
 import static org.graalvm.compiler.debug.DebugContext.DEFAULT_LOG_STREAM;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,6 @@ import java.util.Map;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.statistics.CSVGenerator;
 import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.api.runtime.GraalRuntime;
@@ -293,6 +291,32 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
          */
 
         Statistics.printGlobalInformation();
+
+// System.out.println("SPECIAL INFO");
+// System.out.println("OP data lines");
+// String[] data = Statistics.getOpDataLines(';');
+// for (String s : data)
+// System.out.println(s);
+// System.out.println();
+
+// System.out.println("Type Data lines");
+// data = Statistics.getTypeDataLines(';');
+// for (String s : data)
+// System.out.println(s);
+// System.out.println();
+//
+        System.out.println("Load Factor lines");
+        String data[] = Statistics.getLoadFactorDataLines(';');
+        for (String s : data)
+            System.out.println(s);
+        System.out.println();
+//
+// System.out.println("Allocation Site lines");
+// data = Statistics.getAllocSiteLines(';');
+// for (String s : data)
+// System.out.println(s);
+// System.out.println();
+
         // CSVGenerator.createFileOfOperationDistributions(this.getClass().getSimpleName());
         // CSVGenerator.createFileOfTypeOperationDistributions(this.getClass().getSimpleName());
         // CSVGenerator.createFileOfAllocationSites(this.getClass().getSimpleName());
