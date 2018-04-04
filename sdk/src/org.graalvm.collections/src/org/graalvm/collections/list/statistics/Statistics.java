@@ -140,26 +140,43 @@ public class Statistics {
 
     // TODO ADD 0 LF recognition
     public static synchronized String[] getLoadFactorDataLines(final char dataSeparator) {
-        int[] intervalOccurrences = new int[INTERVAL_SIZE + 1];
-        String[] dataArr = new String[INTERVAL_SIZE + 1];
+        int[] intervalOccurrences = new int[INTERVAL_SIZE + 2];
+        String[] dataArr = new String[INTERVAL_SIZE + 2];
         double stepSize = 100 / INTERVAL_SIZE;
         for (StatisticTracker t : trackers) {
             double lf = t.getCurrentLoadFactor() * 100.0;
-            int i = 1;
-            while (i <= INTERVAL_SIZE + 1) {
-                if (lf < i * stepSize) {
-                    intervalOccurrences[i - 1]++;
-                    break;
+            if (lf == 0) {
+                intervalOccurrences[INTERVAL_SIZE + 1]++;
+            } else {
+                int i = 1;
+                while (i <= INTERVAL_SIZE + 1) {
+                    if (lf < i * stepSize) {
+
+                        intervalOccurrences[i - 1]++;
+                        break;
+                    }
+                    i++;
                 }
-                i++;
             }
         }
 
         StringBuilder sb = new StringBuilder(25);
+        sb.append(0);
+        sb.append(dataSeparator);
+        sb.append("[0%, 0%]");
+        sb.append(dataSeparator);
+        sb.append(' ');
+        sb.append(intervalOccurrences[INTERVAL_SIZE + 1]);
+        dataArr[0] = sb.toString();
+        sb = new StringBuilder(25);
         for (int i = 0; i < INTERVAL_SIZE; i++) {
             sb.append(0);
             sb.append(dataSeparator);
-            sb.append("[");
+            if (i == 0) {
+                sb.append(']');
+            } else {
+                sb.append('[');
+            }
             sb.append((i) * stepSize);
             sb.append("%, ");
             sb.append((i + 1) * stepSize);
@@ -167,7 +184,7 @@ public class Statistics {
             sb.append(dataSeparator);
             sb.append(' ');
             sb.append(intervalOccurrences[i]);
-            dataArr[i] = sb.toString();
+            dataArr[i + 1] = sb.toString();
             sb = new StringBuilder(25);
         }
         sb.append(0);
@@ -176,7 +193,7 @@ public class Statistics {
         sb.append(dataSeparator);
         sb.append(' ');
         sb.append(intervalOccurrences[INTERVAL_SIZE]);
-        dataArr[INTERVAL_SIZE] = sb.toString();
+        dataArr[INTERVAL_SIZE + 1] = sb.toString();
         return dataArr;
     }
 

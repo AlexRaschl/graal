@@ -1,8 +1,10 @@
 package org.graalvm.collections.list.statistics;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -24,7 +26,9 @@ public class CSVGenerator {
     private final static String NAME_TYPE_OP_DISTR = "TypeOpDistr.csv";
     private final static String ALLOC_SITE = "AllocSites.csv";
 
+    // Some Constants for writing
     private final static boolean APPEND_MODE = false;
+    private final static int BUF_SIZE = 256000;
 
     private static boolean initialized = false;
 
@@ -136,7 +140,7 @@ public class CSVGenerator {
 
         int length = StatisticTrackerImpl.getNextID();
         String[] trackerInfo;
-        for (int i = 1; i < length; i++) {
+        for (int i = 1; i < length; i++) { // TODO Bottleneck
             trackerInfo = Statistics.getTrackerByID(i).getOpDataLines(DATA_SEPARATOR);
             writeToFile(file, "TRACKER_" + i + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, true);
             writeToFile(file, trackerInfo, true);
@@ -161,13 +165,17 @@ public class CSVGenerator {
     private static synchronized void writeToFile(File file, String[] lines, boolean append) {
 
         try {
-            FileOutputStream w = new FileOutputStream(file, append);
+            final BufferedWriter out = new BufferedWriter(new FileWriter(file, append), BUF_SIZE);
+            // FileOutputStream w = new FileOutputStream(file, append);
 
             for (String s : lines) {
-                w.write(s.getBytes());
-                w.write(LINE_SEPARATOR);
+                out.write(s);
+                out.write(LINE_SEPARATOR);
+                // w.write(s.getBytes());
+                // w.write(LINE_SEPARATOR);
             }
-            w.close();
+            out.close();
+            // w.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -177,9 +185,12 @@ public class CSVGenerator {
 
     private static synchronized void writeToFile(File file, String string, boolean append) {
         try {
-            FileOutputStream w = new FileOutputStream(file, append);
-            w.write(string.getBytes());
-            w.close();
+            final BufferedWriter out = new BufferedWriter(new FileWriter(file, append));
+            out.write(string);
+            out.close();
+            // FileOutputStream w = new FileOutputStream(file, append);
+            // w.write(string.getBytes());
+            // w.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
