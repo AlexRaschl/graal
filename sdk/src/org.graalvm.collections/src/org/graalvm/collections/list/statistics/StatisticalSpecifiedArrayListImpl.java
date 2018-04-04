@@ -64,11 +64,12 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl
 
     /** Static block to set up Tracked Classes */
     static {
-        // trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
-        // trackedSites.add("org.graalvm.collections.test.list.statistics.ReplacementTest");
-        trackedSites.add("org.graalvm.compiler.asm.Label");
-        trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
-        trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
+        trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
+        trackedSites.add("org.graalvm.collections.test.list.statistics.ReplacementTest");
+        //
+        // trackedSites.add("org.graalvm.compiler.asm.Label");
+        // trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
+        // trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
     }
 
     /**

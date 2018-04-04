@@ -82,6 +82,7 @@ public class ReplacementTest {
         CSVGenerator.createFileOfOperationDistributions(ReplacementTest.class.getSimpleName());
         CSVGenerator.createFileOfTypeOperationDistributions(ReplacementTest.class.getSimpleName());
         CSVGenerator.createFileOfAllocationSites(ReplacementTest.class.getSimpleName());
+
     }
 
     @Test

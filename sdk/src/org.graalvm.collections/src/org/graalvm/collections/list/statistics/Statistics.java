@@ -139,7 +139,7 @@ public class Statistics {
      */
 
     // TODO ADD 0 LF recognition
-    public static synchronized String[] getLoadFactorDataLines(final char dataSeparator) {
+    public static synchronized String[] getLoadFactorDataLinesOld(final char dataSeparator) {
         int[] intervalOccurrences = new int[INTERVAL_SIZE + 2];
         String[] dataArr = new String[INTERVAL_SIZE + 2];
         double stepSize = 100 / INTERVAL_SIZE;
@@ -194,6 +194,43 @@ public class Statistics {
         sb.append(' ');
         sb.append(intervalOccurrences[INTERVAL_SIZE]);
         dataArr[INTERVAL_SIZE + 1] = sb.toString();
+        return dataArr;
+    }
+
+    public static synchronized String[] getLoadFactorDataLines(final char dataSeparator) {
+        final int[] intervalOccurrences = new int[INTERVAL_SIZE + 3];
+        final String[] dataArr = new String[INTERVAL_SIZE + 3];
+        final double stepSize = 100 / INTERVAL_SIZE;
+
+        for (StatisticTracker t : trackers) {
+            final double lf = t.getCurrentLoadFactor() * 100.0;
+            if (lf == 0) {
+                intervalOccurrences[0]++;
+            } else if (lf >= 100) {
+                if (lf == 100) {
+                    intervalOccurrences[INTERVAL_SIZE + 1]++;
+                } else {
+                    intervalOccurrences[INTERVAL_SIZE + 2]++;
+                }
+
+            } else {
+                int i = 1;
+                while (i <= INTERVAL_SIZE) {
+                    if (lf < i * stepSize) {
+                        intervalOccurrences[i]++;
+                        break;
+                    }
+                    i++;
+                }
+            }
+        }
+
+        dataArr[0] = "[0%, 0%]" + dataSeparator + " " + intervalOccurrences[0];
+        for (int i = 1; i <= INTERVAL_SIZE; i++) {
+            dataArr[i] = ((i == 0) ? "]" : "[") + (i - 1) * stepSize + "%, " + i * stepSize + "%[" + dataSeparator + " " + intervalOccurrences[i];
+        }
+        dataArr[INTERVAL_SIZE + 1] = "[100%, 100%]" + dataSeparator + " " + intervalOccurrences[INTERVAL_SIZE + 1];
+        dataArr[INTERVAL_SIZE + 2] = "[ZERO, SIZE]" + dataSeparator + " " + intervalOccurrences[INTERVAL_SIZE + 2];
         return dataArr;
     }
 
