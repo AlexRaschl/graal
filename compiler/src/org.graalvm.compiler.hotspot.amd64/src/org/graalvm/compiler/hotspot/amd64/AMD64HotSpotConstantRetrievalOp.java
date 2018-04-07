@@ -24,14 +24,9 @@ package org.graalvm.compiler.hotspot.amd64;
 
 import static jdk.vm.ci.code.ValueUtil.asRegister;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
-import jdk.vm.ci.code.CallingConvention;
-import jdk.vm.ci.meta.AllocatableValue;
-import jdk.vm.ci.meta.Constant;
-import jdk.vm.ci.meta.Value;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.asm.amd64.AMD64MacroAssembler;
 import org.graalvm.compiler.core.common.spi.ForeignCallLinkage;
 import org.graalvm.compiler.lir.LIRFrameState;
@@ -40,6 +35,11 @@ import org.graalvm.compiler.lir.LIRValueUtil;
 import org.graalvm.compiler.lir.ValueProcedure;
 import org.graalvm.compiler.lir.amd64.AMD64LIRInstruction;
 import org.graalvm.compiler.lir.asm.CompilationResultBuilder;
+
+import jdk.vm.ci.code.CallingConvention;
+import jdk.vm.ci.meta.AllocatableValue;
+import jdk.vm.ci.meta.Constant;
+import jdk.vm.ci.meta.Value;
 
 public final class AMD64HotSpotConstantRetrievalOp extends AMD64LIRInstruction {
     public static final LIRInstructionClass<AMD64HotSpotConstantRetrievalOp> TYPE = LIRInstructionClass.create(AMD64HotSpotConstantRetrievalOp.class);
@@ -55,7 +55,7 @@ public final class AMD64HotSpotConstantRetrievalOp extends AMD64LIRInstruction {
     private final Object[] notes;
 
     private class CollectTemporaries implements ValueProcedure {
-        ArrayList<Value> values = new ArrayList<>();
+        SpecifiedArrayList<Value> values = SpecifiedArrayList.createNew();
 
         CollectTemporaries() {
             forEachTemp(this);

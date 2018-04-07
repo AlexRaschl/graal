@@ -23,8 +23,8 @@
 package org.graalvm.compiler.hotspot.test;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.directives.GraalDirectives;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class ArrayNewInstanceTest extends GraalCompilerTest {
 
     @Parameters(name = "{index}: class {0} length {1}")
     public static Iterable<Object[]> data() {
-        ArrayList<Object[]> parameters = new ArrayList<>();
+        SpecifiedArrayList<Object[]> parameters = SpecifiedArrayList.createNew();
         Class<?>[] classesToTest = new Class<?>[]{
                         byte.class,
                         boolean.class,

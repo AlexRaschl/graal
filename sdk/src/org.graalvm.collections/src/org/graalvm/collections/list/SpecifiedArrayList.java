@@ -24,24 +24,21 @@ import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl
 // TODO Implements List<E>
 public abstract class SpecifiedArrayList<E> implements List<E> {
 
-    Object elementData[]; // RENAMED due to compatibility issues
-    // TODO restore old name and location replacing known TruffleTypes
-
     /**
      * Factory methods
      */
 
     // TODO If only one occurrence is replaced with SSAR only these instances will be tracked
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new StatisticalSpecifiedArrayListImpl<>();
+        return new SpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
+        return new SpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new StatisticalSpecifiedArrayListImpl<>(c);
+        return new SpecifiedArrayListImpl<>(c);
     }
 
     /**

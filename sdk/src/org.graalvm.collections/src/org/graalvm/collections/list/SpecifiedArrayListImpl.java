@@ -21,6 +21,9 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     private int size;
 
+    // RENAMED due to compatibility issues
+    Object elementData[];
+
     // ARRAYLIST IMMITATION Stuff
     private static final Object[] EMPTY_ELEMENTDATA = {};
     private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};

@@ -28,7 +28,6 @@ import static org.graalvm.compiler.graph.Graph.SourcePositionTracking.UpdateOnly
 import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_IGNORED;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_IGNORED;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Consumer;
@@ -111,8 +110,8 @@ public class Graph {
 
     // these two arrays contain one entry for each NodeClass, indexed by NodeClass.iterableId.
     // they contain the first and last pointer to a linked list of all nodes with this type.
-    private final ArrayList<Node> iterableNodesFirst;
-    private final ArrayList<Node> iterableNodesLast;
+    private final SpecifiedArrayList<Node> iterableNodesFirst;
+    private final SpecifiedArrayList<Node> iterableNodesLast;
 
     private int nodesDeletedSinceLastCompression;
     private int nodesDeletedBeforeLastCompression;
@@ -273,8 +272,8 @@ public class Graph {
      */
     public Graph(String name, OptionValues options, DebugContext debug) {
         nodes = new Node[INITIAL_NODES_SIZE];
-        iterableNodesFirst = new ArrayList<>(NodeClass.allocatedNodeIterabledIds());
-        iterableNodesLast = new ArrayList<>(NodeClass.allocatedNodeIterabledIds());
+        iterableNodesFirst = SpecifiedArrayList.createNew(NodeClass.allocatedNodeIterabledIds());
+        iterableNodesLast = SpecifiedArrayList.createNew(NodeClass.allocatedNodeIterabledIds());
         this.name = name;
         this.options = options;
         this.trackNodeSourcePosition = trackNodeSourcePositionDefault(options, debug);

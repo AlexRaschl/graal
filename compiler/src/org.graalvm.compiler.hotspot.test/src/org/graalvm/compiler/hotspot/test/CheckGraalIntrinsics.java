@@ -23,7 +23,6 @@
 package org.graalvm.compiler.hotspot.test;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,6 +33,7 @@ import java.util.stream.Collectors;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.MapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.test.Graal;
 import org.graalvm.compiler.hotspot.GraalHotSpotVMConfig;
 import org.graalvm.compiler.hotspot.HotSpotGraalRuntimeProvider;
@@ -119,8 +119,8 @@ public class CheckGraalIntrinsics extends GraalTest {
 
     /**
      * The HotSpot intrinsics implemented without {@link InvocationPlugin}s or whose
-     * {@link InvocationPlugin} registration is guarded by a condition that is false in the current
-     * VM context.
+     * {@link InvocationPlugin} registration is guarded by a condition that is false in the current VM
+     * context.
      */
     private static final Set<String> IGNORE = new TreeSet<>();
 
@@ -318,10 +318,9 @@ public class CheckGraalIntrinsics extends GraalTest {
                             // Runtime call and some complex compiler logic
                             "sun/security/provider/DigestBase.implCompressMultiBlock0([BII)I");
             /*
-             * Per default, all these operations are mapped to some generic method for which we
-             * already have compiler intrinsics. Performance-wise it would be better to support them
-             * explicitly as the more generic method might be more restrictive and therefore slower
-             * than necessary.
+             * Per default, all these operations are mapped to some generic method for which we already have
+             * compiler intrinsics. Performance-wise it would be better to support them explicitly as the more
+             * generic method might be more restrictive and therefore slower than necessary.
              */
             add(TO_BE_INVESTIGATED,
                             // Mapped to compareAndExchange*
@@ -453,9 +452,9 @@ public class CheckGraalIntrinsics extends GraalTest {
         GraalHotSpotVMConfig config = rt.getVMConfig();
 
         /*
-         * The intrinsics down here are known to be implemented but they are not always enabled on
-         * the HotSpot side (e.g., because they require certain CPU features). So, we are ignoring
-         * them if the HotSpot config tells us that they can't be used.
+         * The intrinsics down here are known to be implemented but they are not always enabled on the
+         * HotSpot side (e.g., because they require certain CPU features). So, we are ignoring them if the
+         * HotSpot config tells us that they can't be used.
          */
 
         // CRC32 intrinsics
@@ -570,7 +569,7 @@ public class CheckGraalIntrinsics extends GraalTest {
         HotSpotVMConfigStore store = rt.getVMConfig().getStore();
         List<VMIntrinsicMethod> intrinsics = store.getIntrinsics();
 
-        List<String> missing = new ArrayList<>();
+        List<String> missing = SpecifiedArrayList.createNew();
         EconomicMap<String, List<Binding>> bindings = invocationPlugins.getBindings(true);
         for (VMIntrinsicMethod intrinsic : intrinsics) {
             InvocationPlugin plugin = findPlugin(bindings, intrinsic);

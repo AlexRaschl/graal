@@ -24,7 +24,6 @@ package org.graalvm.compiler.hotspot;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -229,7 +228,7 @@ public class HotSpotCompiledCodeBuilder {
         Collections.sort(sites, c);
         if (c.sawCollidingInfopoints) {
             Infopoint lastInfopoint = null;
-            List<Site> copy = new ArrayList<>(sites.size());
+            List<Site> copy = SpecifiedArrayList.createNew(sites.size());
             for (Site site : sites) {
                 if (site instanceof Infopoint) {
                     Infopoint info = (Infopoint) site;

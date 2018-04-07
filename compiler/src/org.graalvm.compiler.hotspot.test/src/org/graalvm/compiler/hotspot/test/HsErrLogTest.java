@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.directives.GraalDirectives;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
 import org.graalvm.compiler.test.SubprocessUtil;
@@ -51,7 +52,7 @@ public class HsErrLogTest extends GraalCompilerTest {
 
     @Test
     public void test1() throws IOException, InterruptedException {
-        List<String> args = new ArrayList<>();
+        List<String> args = SpecifiedArrayList.createNew();
         if (Java8OrEarlier) {
             args.add("-XX:-UseJVMCIClassLoader");
         }
@@ -94,7 +95,7 @@ public class HsErrLogTest extends GraalCompilerTest {
         try (BufferedReader br = new BufferedReader(new FileReader(hsErrPath))) {
             String line = br.readLine();
             String sig = Crasher.class.getName() + ".tryCrash(JI)I";
-            List<String> lines = new ArrayList<>();
+            List<String> lines = SpecifiedArrayList.createNew();
             while (line != null) {
                 if (line.contains(sig)) {
                     if (!VERBOSE) {

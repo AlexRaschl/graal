@@ -23,9 +23,9 @@
 package org.graalvm.compiler.hotspot.test;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.hotspot.replacements.arraycopy.ArrayCopySnippets;
@@ -155,7 +155,7 @@ public class ArrayCopyIntrinsificationTest extends GraalCompilerTest {
 
     @Test
     public void testObject() {
-        Object[] src = {"one", "two", "three", new ArrayList<>(), new HashMap<>()};
+        Object[] src = {"one", "two", "three", SpecifiedArrayList.createNew(), new HashMap<>()};
         testHelper("objectArraycopy", src);
     }
 
@@ -164,7 +164,7 @@ public class ArrayCopyIntrinsificationTest extends GraalCompilerTest {
      */
     @Test
     public void testArrayStoreException() {
-        Object[] src = {"one", "two", "three", new ArrayList<>(), new HashMap<>()};
+        Object[] src = {"one", "two", "three", SpecifiedArrayList.createNew(), new HashMap<>()};
         Object[] dst = new CharSequence[src.length];
         // Will throw ArrayStoreException for 4th element
         test("objectArraycopy", src, 0, dst, 0, src.length);

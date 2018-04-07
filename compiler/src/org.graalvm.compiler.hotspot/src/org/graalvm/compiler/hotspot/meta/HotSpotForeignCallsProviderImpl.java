@@ -27,10 +27,10 @@ import static jdk.vm.ci.hotspot.HotSpotCallingConventionType.JavaCallee;
 import static org.graalvm.compiler.hotspot.HotSpotForeignCallLinkage.RegisterEffect.PRESERVES_REGISTERS;
 import static org.graalvm.compiler.hotspot.HotSpotForeignCallLinkage.Transition.SAFEPOINT;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.spi.ForeignCallDescriptor;
 import org.graalvm.compiler.hotspot.HotSpotForeignCallLinkage;
@@ -101,8 +101,8 @@ public abstract class HotSpotForeignCallsProviderImpl implements HotSpotForeignC
      *
      * @param descriptor the signature of the call to the stub
      * @param reexecutable specifies if the stub call can be re-executed without (meaningful) side
-     *            effects. Deoptimization will not return to a point before a stub call that cannot
-     *            be re-executed.
+     *            effects. Deoptimization will not return to a point before a stub call that cannot be
+     *            re-executed.
      * @param transition specifies if this is a {@linkplain Transition#LEAF leaf} call
      * @param killedLocations the memory locations killed by the stub call
      */
@@ -117,12 +117,12 @@ public abstract class HotSpotForeignCallsProviderImpl implements HotSpotForeignC
      * @param descriptor the signature of the foreign call
      * @param address the address of the code to call
      * @param outgoingCcType outgoing (caller) calling convention type
-     * @param effect specifies if the call destroys or preserves all registers (apart from
-     *            temporaries which are always destroyed)
+     * @param effect specifies if the call destroys or preserves all registers (apart from temporaries
+     *            which are always destroyed)
      * @param transition specifies if this is a {@linkplain Transition#LEAF leaf} call
-     * @param reexecutable specifies if the foreign call can be re-executed without (meaningful)
-     *            side effects. Deoptimization will not return to a point before a foreign call that
-     *            cannot be re-executed.
+     * @param reexecutable specifies if the foreign call can be re-executed without (meaningful) side
+     *            effects. Deoptimization will not return to a point before a foreign call that cannot
+     *            be re-executed.
      * @param killedLocations the memory locations killed by the foreign call
      */
     public HotSpotForeignCallLinkage registerForeignCall(ForeignCallDescriptor descriptor, long address, CallingConvention.Type outgoingCcType, RegisterEffect effect, Transition transition,
@@ -138,12 +138,12 @@ public abstract class HotSpotForeignCallsProviderImpl implements HotSpotForeignC
      *
      * @param descriptor the signature of the call to the stub
      * @param address the address of the foreign code to call
-     * @param prependThread true if the JavaThread value for the current thread is to be prepended
-     *            to the arguments for the call to {@code address}
+     * @param prependThread true if the JavaThread value for the current thread is to be prepended to
+     *            the arguments for the call to {@code address}
      * @param transition specifies if this is a {@linkplain Transition#LEAF leaf} call
-     * @param reexecutable specifies if the foreign call can be re-executed without (meaningful)
-     *            side effects. Deoptimization will not return to a point before a foreign call that
-     *            cannot be re-executed.
+     * @param reexecutable specifies if the foreign call can be re-executed without (meaningful) side
+     *            effects. Deoptimization will not return to a point before a foreign call that cannot
+     *            be re-executed.
      * @param killedLocations the memory locations killed by the foreign call
      */
     public void linkForeignCall(OptionValues options, HotSpotProviders providers, ForeignCallDescriptor descriptor, long address, boolean prependThread, Transition transition, boolean reexecutable,
@@ -203,7 +203,8 @@ public abstract class HotSpotForeignCallsProviderImpl implements HotSpotForeignC
 
     @Override
     public List<Stub> getStubs() {
-        List<Stub> stubs = new ArrayList<>();
+        List<Stub> stubs = SpecifiedArrayList.createNew();
+        ;
         for (HotSpotForeignCallLinkage linkage : foreignCalls.getValues()) {
             if (linkage.isCompiledStub()) {
                 Stub stub = linkage.getStub();

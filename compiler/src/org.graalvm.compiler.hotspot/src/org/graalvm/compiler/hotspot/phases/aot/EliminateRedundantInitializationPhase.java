@@ -24,15 +24,11 @@ package org.graalvm.compiler.hotspot.phases.aot;
 
 import static org.graalvm.util.CollectionsUtil.anyMatch;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import jdk.vm.ci.hotspot.HotSpotMetaspaceConstant;
-import jdk.vm.ci.meta.Constant;
-import jdk.vm.ci.meta.ResolvedJavaType;
-
 import org.graalvm.collections.EconomicSet;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.hotspot.nodes.aot.InitializeKlassNode;
 import org.graalvm.compiler.hotspot.nodes.aot.ResolveConstantNode;
@@ -45,6 +41,10 @@ import org.graalvm.compiler.phases.BasePhase;
 import org.graalvm.compiler.phases.graph.MergeableState;
 import org.graalvm.compiler.phases.graph.PostOrderNodeIterator;
 import org.graalvm.compiler.phases.tiers.PhaseContext;
+
+import jdk.vm.ci.hotspot.HotSpotMetaspaceConstant;
+import jdk.vm.ci.meta.Constant;
+import jdk.vm.ci.meta.ResolvedJavaType;
 
 public class EliminateRedundantInitializationPhase extends BasePhase<PhaseContext> {
     /**
@@ -63,8 +63,8 @@ public class EliminateRedundantInitializationPhase extends BasePhase<PhaseContex
     }
 
     /**
-     * Remove redundant {@link InitializeKlassNode} or {@link ResolveConstantNode} instances from
-     * the graph.
+     * Remove redundant {@link InitializeKlassNode} or {@link ResolveConstantNode} instances from the
+     * graph.
      *
      * @param graph the program graph
      */
@@ -77,8 +77,8 @@ public class EliminateRedundantInitializationPhase extends BasePhase<PhaseContex
     }
 
     /**
-     * Find {@link InitializeKlassNode} and {@link ResolveConstantNode} instances that can be
-     * removed because there is an existing dominating node.
+     * Find {@link InitializeKlassNode} and {@link ResolveConstantNode} instances that can be removed
+     * because there is an existing dominating node.
      *
      * @param graph the program graph
      */
@@ -121,13 +121,13 @@ public class EliminateRedundantInitializationPhase extends BasePhase<PhaseContex
         }
 
         /**
-         * Merge two given types. Interfaces and arrays have to be the same to merge successfully.
-         * For other types the answer is the LCA.
+         * Merge two given types. Interfaces and arrays have to be the same to merge successfully. For other
+         * types the answer is the LCA.
          *
          * @param a initialized type
          * @param b initialized type
-         * @return lowest common type that is initialized if either a or b are initialized, null if
-         *         no such type exists.
+         * @return lowest common type that is initialized if either a or b are initialized, null if no such
+         *         type exists.
          */
         private static ResolvedJavaType merge(ResolvedJavaType a, ResolvedJavaType b) {
             // We want exact match for interfaces or arrays
@@ -149,13 +149,12 @@ public class EliminateRedundantInitializationPhase extends BasePhase<PhaseContex
         }
 
         /**
-         * Merge two sets of types. Essentially a computation of the LCA for each element of the
-         * cartesian product of the input sets. Interfaces have to match exactly.
+         * Merge two sets of types. Essentially a computation of the LCA for each element of the cartesian
+         * product of the input sets. Interfaces have to match exactly.
          *
          * @param a set of initialized types
          * @param b set of initialized types
-         * @return set of common types that would be initialized if types in either a or b are
-         *         initialized
+         * @return set of common types that would be initialized if types in either a or b are initialized
          */
         private static EconomicSet<ResolvedJavaType> merge(EconomicSet<ResolvedJavaType> a, EconomicSet<ResolvedJavaType> b) {
             EconomicSet<ResolvedJavaType> c = EconomicSet.create();
@@ -205,11 +204,10 @@ public class EliminateRedundantInitializationPhase extends BasePhase<PhaseContex
     }
 
     /**
-     * Do data flow analysis of class initializations and array resolutions. Collect redundant
-     * nodes.
+     * Do data flow analysis of class initializations and array resolutions. Collect redundant nodes.
      */
     private static class EliminateRedundantInitializationIterator extends PostOrderNodeIterator<InitializedTypes> {
-        private List<FixedWithNextNode> redundantNodes = new ArrayList<>();
+        private List<FixedWithNextNode> redundantNodes = SpecifiedArrayList.createNew();
 
         public List<FixedWithNextNode> getRedundantNodes() {
             return redundantNodes;

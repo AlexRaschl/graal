@@ -27,6 +27,7 @@ import static org.graalvm.compiler.core.common.GraalOptions.ImmutableCode;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.graph.NodeClass;
 import org.graalvm.compiler.hotspot.GraalHotSpotVMConfig;
@@ -55,8 +56,8 @@ public class HotSpotGraalConstantFieldProvider extends HotSpotConstantFieldProvi
     }
 
     /**
-     * The set of fields whose values cannot be constant folded in ImmutableCode mode. This is
-     * volatile to support double-checked locking lazy initialization.
+     * The set of fields whose values cannot be constant folded in ImmutableCode mode. This is volatile
+     * to support double-checked locking lazy initialization.
      */
     private volatile List<ResolvedJavaField> nonEmbeddableFields;
 
@@ -64,7 +65,7 @@ public class HotSpotGraalConstantFieldProvider extends HotSpotConstantFieldProvi
         if (nonEmbeddableFields == null) {
             synchronized (this) {
                 if (nonEmbeddableFields == null) {
-                    List<ResolvedJavaField> fields = new ArrayList<>();
+                    List<ResolvedJavaField> fields = SpecifiedArrayList.createNew();
                     try {
                         fields.add(metaAccess.lookupJavaField(Boolean.class.getDeclaredField("TRUE")));
                         fields.add(metaAccess.lookupJavaField(Boolean.class.getDeclaredField("FALSE")));

@@ -78,7 +78,6 @@ import static org.graalvm.compiler.bytecode.Bytecodes.SASTORE;
 import static org.graalvm.compiler.bytecode.Bytecodes.TABLESWITCH;
 import static org.graalvm.compiler.core.common.GraalOptions.SupportJsrBytecodes;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -88,6 +87,7 @@ import java.util.TreeSet;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.BytecodeLookupSwitch;
 import org.graalvm.compiler.bytecode.BytecodeStream;
@@ -175,7 +175,7 @@ public final class BciBlockMapping {
         }
 
         public BciBlock() {
-            this.successors = new ArrayList<>(4);
+            this.successors = SpecifiedArrayList.createNew(4);
         }
 
         public BciBlock exceptionDispatchBlock() {
@@ -206,7 +206,7 @@ public final class BciBlockMapping {
                 if (block.jsrData != null) {
                     block.jsrData = block.jsrData.copy();
                 }
-                block.successors = new ArrayList<>(successors);
+                block.successors = SpecifiedArrayList.createNew(successors);
                 return block;
             } catch (CloneNotSupportedException e) {
                 throw new RuntimeException(e);
@@ -691,7 +691,7 @@ public final class BciBlockMapping {
         predecessor.addSuccessor(sux);
     }
 
-    private final ArrayList<BciBlock> jsrVisited = new ArrayList<>();
+    private final SpecifiedArrayList<BciBlock> jsrVisited = SpecifiedArrayList.createNew();
 
     private void createJsrAlternatives(BciBlock[] blockMap, BciBlock block) {
         jsrVisited.add(block);
@@ -947,9 +947,9 @@ public final class BciBlockMapping {
     }
 
     /**
-     * Depth-first traversal of the control flow graph. The flag {@linkplain BciBlock#visited} is
-     * used to visit every block only once. The flag {@linkplain BciBlock#active} is used to detect
-     * cycles (backward edges).
+     * Depth-first traversal of the control flow graph. The flag {@linkplain BciBlock#visited} is used
+     * to visit every block only once. The flag {@linkplain BciBlock#active} is used to detect cycles
+     * (backward edges).
      */
     private long computeBlockOrder(BciBlock block) {
         if (block.visited) {
