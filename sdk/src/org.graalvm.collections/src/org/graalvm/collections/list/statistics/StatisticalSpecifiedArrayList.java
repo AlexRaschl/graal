@@ -31,6 +31,9 @@ public interface StatisticalSpecifiedArrayList<E> extends StatisticalCollection 
      *
      *
      *
+     * TODO package org.graalvm.compiler.lir.alloc.trace.lsra.TraceLinearScanWalker inefficient empty
+     * list strategy.
+     *
      */
 
 }
