@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
-    private static final boolean USE_AL_STRATEGY = true;
+    private static final boolean USE_AL_STRATEGY = false;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
     private final static int NEXT_CAPACITY = 10; // Capacity after first grow
