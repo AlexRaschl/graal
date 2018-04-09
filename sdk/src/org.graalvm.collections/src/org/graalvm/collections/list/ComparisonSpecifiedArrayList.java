@@ -23,6 +23,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
     public ComparisonSpecifiedArrayList(Collection<? extends E> collection) {
         super(collection);
         referenceList = new ArrayList<>(collection);
+        assert compareLists();
     }
 
     @Override
@@ -49,14 +50,14 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
         T[] superRes = super.toArray(a);
         T[] refRes = referenceList.toArray(a);
         assert compareArrays(superRes, refRes, super.size());
-        return superRes;
+        return super.toArray(a);
     }
 
     @Override
     public boolean add(E e) {
         boolean res = super.add(e);
         assert res == referenceList.add(e);
-        assert compareLists() == true;
+        assert compareLists();
         return res;
     }
 
@@ -64,7 +65,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
     public boolean remove(Object o) {
         boolean res = super.remove(o);
         assert res == referenceList.remove(o);
-        compareLists();
+        assert compareLists();
         return res;
     }
 
@@ -78,7 +79,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
     @Override
     public boolean addAll(Collection<? extends E> c) {
         boolean res = super.addAll(c);
-        assert res == referenceList.containsAll(c);
+        assert res == referenceList.addAll(c);
         assert compareLists();
         return res;
     }
@@ -118,6 +119,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
     public E get(int index) {
         E res = super.get(index);
         assert res == referenceList.get(index);
+        assert compareLists(); // TODO Who knows
         return res;
     }
 
@@ -140,7 +142,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
     public E remove(int index) {
         E res = super.remove(index);
         assert res == referenceList.remove(index);
-        compareLists();
+        assert compareLists();
         return res;
     }
 
@@ -160,24 +162,28 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
 
     @Override
     public Iterator<E> iterator() {
+        assert compareLists();
         assert compareItrs(super.iterator(), referenceList.iterator());
         return super.iterator();
     }
 
     @Override
     public ListIterator<E> listIterator() {
+        assert compareLists();
         assert compareListItrs(super.listIterator(), referenceList.listIterator());
         return super.listIterator();
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
+        assert compareLists();
         assert compareListItrs(super.listIterator(index), referenceList.listIterator(index));
         return super.listIterator(index);
     }
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
+        assert compareLists();
         List<E> res = super.subList(fromIndex, toIndex);
         assert res.equals(referenceList.subList(fromIndex, toIndex));
         return res;
@@ -215,7 +221,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
     private boolean compareItrs(Iterator<E> itr1, Iterator<E> itr2) {
         while (itr1.hasNext()) {
             if (!itr2.hasNext())
-                return true;
+                return false;
             if (itr1.next() != itr2.next())
                 return false;
         }
@@ -225,7 +231,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
     private boolean compareListItrs(ListIterator<E> itr1, ListIterator<E> itr2) {
         while (itr1.hasNext()) {
             if (!itr2.hasNext())
-                return true;
+                return false;
             if (itr1.next() != itr2.next())
                 return false;
         }

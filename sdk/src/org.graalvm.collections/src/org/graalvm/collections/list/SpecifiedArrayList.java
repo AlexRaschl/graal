@@ -1,12 +1,9 @@
 package org.graalvm.collections.list;
 
-import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 
 /**
  * The SpecifiedArrayList is a specified version of the Java.Util.ArrayList that has been made for

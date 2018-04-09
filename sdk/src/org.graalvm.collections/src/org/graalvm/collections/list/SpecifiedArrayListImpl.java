@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
@@ -379,26 +382,48 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         }
 
         public boolean hasNext() {
-            return cursor < size;
+            return cursor != size;
         }
 
         public E next() {
 
             if (cursor >= size)
                 throw new NoSuchElementException();
-            Object elem = elementData[cursor];
+            Object elem = SpecifiedArrayListImpl.this.elementData[cursor];
             lastRet = cursor++;
             return castUnchecked(elem);
         }
 
         /** Moved this here because also supported by Iterator in ArrayList */
         public void remove() {
-            if (lastRet == -1)
+            if (lastRet < 0)
                 throw new IllegalStateException("Set or add Operation has been already excecuted!");
 
             SpecifiedArrayListImpl.this.remove(lastRet);
             cursor = lastRet;
             lastRet = -1;
+        }
+
+        // DONE insert forEachRemaining
+        @Override
+        @SuppressWarnings("unchecked")
+        public void forEachRemaining(Consumer<? super E> consumer) {
+            Objects.requireNonNull(consumer);
+            final int size = SpecifiedArrayListImpl.this.size;
+            int i = cursor;
+            if (i >= size) {
+                return;
+            }
+            final Object[] elementData = SpecifiedArrayListImpl.this.elementData;
+            if (i >= elementData.length) {
+                throw new ConcurrentModificationException();
+            }
+            while (i != size) {
+                consumer.accept((E) elementData[i++]);
+            }
+            // update once at end of iteration to reduce heap write traffic
+            cursor = i;
+            lastRet = i - 1;
         }
 
     }
@@ -542,7 +567,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     public int calculateCapacity(int proposedCap, int minCap) {
-        return Math.max(proposedCap, minCap);
+        return Math.max(proposedCap, minCap); // TODO optimize (this is only a safe solution)
     }
 
     @Override
