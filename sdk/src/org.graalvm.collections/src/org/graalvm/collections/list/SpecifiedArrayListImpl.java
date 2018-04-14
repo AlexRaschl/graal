@@ -109,9 +109,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
                 this.elementData = EMPTY_ELEMENTDATA;
             }
         } else {
-            this.size = collection.size();
+            size = collection.size();
+            elementData = collection.toArray();
             if (size != 0) {
-                this.elementData = Arrays.copyOf(collection.toArray(), collection.size());
+                // c.toArray might (incorrectly) not return Object[] (see 6260652)
+                if (elementData.getClass() != Object[].class)
+                    elementData = Arrays.copyOf(elementData, size, Object[].class);
             } else {
                 this.elementData = EMPTY_ELEMENTDATA;
             }
@@ -195,9 +198,10 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
+        Object[] a = c.toArray();
         int cSize = c.size();
-        if (cSize == 0)
-            return false;
+
+        // if(cSize == 0)return false;
 
         if (USE_AL_STRATEGY) {
             ensureCapacityInternalAL(size + cSize);// Useful if c is large
@@ -205,9 +209,9 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             newEnsureCapacity(size + cSize);// Useful if c is large
         }
 
-        System.arraycopy(c.toArray(), 0, elementData, size, cSize);
+        System.arraycopy(a, 0, elementData, size, cSize);
         size = size + cSize;
-        return true;
+        return cSize != 0;
     }
 
     /*
@@ -219,25 +223,56 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     public boolean addAll(int index, Collection<? extends E> c) {
         checkBoundsForAdd(index);
 
-        if (c.size() == 0)
-            return false;
+// if (c.size() == 0)
+// return false;
 
-        final Object[] arr = c.toArray();
-        int nElems = arr.length;
+        Object[] arr = c.toArray();
+        int cSize = arr.length;
 
         if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + nElems);
+            ensureCapacityInternalAL(size + cSize);
+            int numMoved = size - index;
+            if (numMoved > 0)
+                System.arraycopy(elementData, index, elementData, index + cSize,
+                                numMoved);
         } else {
-            newEnsureCapacity(size + nElems);
+            newEnsureCapacity(size + cSize);
+            System.arraycopy(elementData, index, elementData, index + cSize, size - index);
+
         }
 
-        System.arraycopy(elementData, index, elementData, index + nElems, size - index);
-        System.arraycopy(arr, 0, elementData, index, nElems);
+        System.arraycopy(arr, 0, elementData, index, cSize);
+        size += cSize;
+        return cSize != 0;
 
-        size += nElems;
+    }
 
-        return true;
+    /**
+     * Copied 1:1 from ArrayList
+     *
+     * Removes from this list all of the elements whose index is between {@code fromIndex}, inclusive,
+     * and {@code toIndex}, exclusive. Shifts any succeeding elements to the left (reduces their index).
+     * This call shortens the list by {@code (toIndex - fromIndex)} elements. (If
+     * {@code toIndex==fromIndex}, this operation has no effect.)
+     *
+     * @throws IndexOutOfBoundsException if {@code fromIndex} or {@code toIndex} is out of range
+     *             ({@code fromIndex < 0 ||
+     *          fromIndex >= size() ||
+     *          toIndex > size() ||
+     *          toIndex < fromIndex})
+     */
+    @Override
+    protected void removeRange(int fromIndex, int toIndex) {
+        int numMoved = size - toIndex;
+        System.arraycopy(elementData, toIndex, elementData, fromIndex,
+                        numMoved);
 
+        // clear to let GC do its work
+        int newSize = size - (toIndex - fromIndex);
+        for (int i = newSize; i < size; i++) {
+            elementData[i] = null;
+        }
+        size = newSize;
     }
 
     @Override

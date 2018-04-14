@@ -1,5 +1,6 @@
 package org.graalvm.collections.list;
 
+import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.ListIterator;
  */
 
 // TODO Implements List<E>
-public abstract class SpecifiedArrayList<E> implements List<E> {
+public abstract class SpecifiedArrayList<E> extends AbstractList<E> implements List<E> {
 
     /**
      * Factory methods
@@ -28,7 +29,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
 
     // TODO If only one occurrence is replaced with SSAR only these instances will be tracked
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new ComparisonSpecifiedArrayList<>();
+        return new SpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
@@ -36,7 +37,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new ComparisonSpecifiedArrayList<>(c);
+        return new SpecifiedArrayListImpl<>(c);
     }
 
     /**
@@ -45,6 +46,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @return the number of elements in this list
      *
      */
+    @Override
     public abstract int size();
 
     /**
@@ -52,6 +54,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      *
      * @return true if size is equal to 0
      */
+    @Override
     public abstract boolean isEmpty();
 
     /**
@@ -61,6 +64,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param o
      * @return true if o is not null and o is in list
      */
+    @Override
     public abstract boolean contains(Object o);
 
     /**
@@ -68,6 +72,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      *
      * @return Array of Objects stored in List
      */
+    @Override
     public abstract Object[] toArray();
 
     /**
@@ -77,6 +82,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param e
      * @return <tt>true<tt> if the element has been inserted successfully else <tt>false<tt>
      */
+    @Override
     public abstract boolean add(E e);
 
     /**
@@ -84,6 +90,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      *
      * @return <tt>true<tt> if element has been found and removed else <tt>false<tt>
      */
+    @Override
     public abstract boolean remove(Object o);
 
     /**
@@ -94,6 +101,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param c collection of elements to be checked
      * @return <tt>true<tt> iff all elements of c are located in the List else <tt>false<tt>
      */
+    @Override
     public abstract boolean containsAll(Collection<?> c);
 
     /**
@@ -102,6 +110,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param c Collection of elements to be added to the list
      * @return <tt>true<tt> if all elements have been added successfully else <tt>false<tt>
      */
+    @Override
     public abstract boolean addAll(Collection<? extends E> c); // TODO Check if EnsureCapacity is useful here
 
     /**
@@ -111,6 +120,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param c
      * @return
      */
+    @Override
     public abstract boolean addAll(int index, Collection<? extends E> c);
 
     /**
@@ -119,6 +129,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param c Collection of elements to be removed from the list
      * @return <tt>true<tt> iff the list is changed else <tt>false<tt>
      */
+    @Override
     public abstract boolean removeAll(Collection<?> c);
 
     /**
@@ -127,11 +138,13 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param c Collection of elements to be retained
      * @return <tt>true<tt> iff the list is changed else <tt>false<tt>
      */
+    @Override
     public abstract boolean retainAll(Collection<?> c);
 
     /**
      * Deletes all elements from this list.
      */
+    @Override
     public abstract void clear();
 
     /**
@@ -142,6 +155,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      *
      * @throws ArrayIndexOutOfBoundsException if Index is out of range
      */
+    @Override
     public abstract E get(int index);
 
     /**
@@ -153,14 +167,16 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      *
      * @throws ArrayIndexOutOfBoundsException if Index is out of range
      */
+    @Override
     public abstract E set(int index, E element);
 
     /**
-     * TODO CHECK IF NEEDED due to Performance
+     *
      *
      * @param index
      * @param element
      */
+    @Override
     public abstract void add(int index, E element);
 
     /**
@@ -171,6 +187,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      *
      * @throws ArrayIndexOutOfBoundsException if Index is out of range
      */
+    @Override
     public abstract E remove(int index);
 
     /**
@@ -179,6 +196,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param o Object to search for
      * @return Index of the first occurrence in List or -1 if it is not contained
      */
+    @Override
     public abstract int indexOf(Object o);
 
     /**
@@ -187,6 +205,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @param o Object to search for
      * @return Index of the last occurrence in List or -1 if it is not contained
      */
+    @Override
     public abstract int lastIndexOf(Object o);
 
     /**
@@ -194,6 +213,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      *
      * @return ListIterator over the elements in this List
      */
+    @Override
     public abstract ListIterator<E> listIterator();
 
     /**
@@ -203,6 +223,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @return
      * @throws IndexOutOfBoundsException if index is out of Range
      */
+    @Override
     public abstract ListIterator<E> listIterator(int index);
 
     /**
@@ -214,6 +235,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      * @throws IllegalArgumentException if fromIndex > toIndex
      * @throws IndexOutOfBoundsException if one of the given Indexes is out of Range
      */
+    @Override
     public abstract List<E> subList(int fromIndex, int toIndex); // DONE CHECK IF NEEDED -> Most likely Not
 
     /**
@@ -221,6 +243,7 @@ public abstract class SpecifiedArrayList<E> implements List<E> {
      *
      * @return Iterator over elements in the list
      */
+    @Override
     public abstract Iterator<E> iterator();
 
     /**
