@@ -12,6 +12,8 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import sun.misc.SharedSecrets;
+
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     private static final boolean USE_AL_STRATEGY = false;
@@ -25,7 +27,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     private int size;
 
     // RENAMED due to compatibility issues
-    Object elementData[];
+    private transient Object elementData[];
 
     // ARRAYLIST IMMITATION Stuff
     private static final Object[] EMPTY_ELEMENTDATA = {};
@@ -288,6 +290,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     // TODO Could only set size to 0 for fast clear
     @Override
     public void clear() {
+        modCount++;
 
         if (USE_AL_STRATEGY) {
             for (int i = 0; i < size; i++) {
@@ -337,6 +340,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         if (USE_AL_STRATEGY) {
             checkBoundaries(index);
 
+            modCount++;
             E oldValue = castUnchecked(elementData[index]);
 
             int numMoved = size - index - 1;
@@ -348,6 +352,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             return oldValue;
         } else {
             checkBoundaries(index);
+            modCount++;
             Object oldElem = elementData[index];
             System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
             elementData[--size] = null;
@@ -390,6 +395,19 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     @Override
+    public Object clone() {
+        try {
+            SpecifiedArrayListImpl<?> v = (SpecifiedArrayListImpl<?>) super.clone();
+            v.elementData = Arrays.copyOf(elementData, size);
+            v.modCount = 0;
+            return v;
+        } catch (CloneNotSupportedException e) {
+            // this shouldn't happen, since we are Cloneable
+            throw new InternalError(e);
+        }
+    }
+
+    @Override
     public Iterator<E> iterator() {
         return new Itr();
     }
@@ -410,6 +428,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
         protected int cursor;
         protected int lastRet;
+        protected int expectedModCount = modCount;
 
         Itr() {
             cursor = 0;
@@ -420,23 +439,33 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             return cursor != size;
         }
 
+        @SuppressWarnings("unchecked")
         public E next() {
-
-            if (cursor >= size)
+            checkForComodification();
+            int i = cursor;
+            if (i >= size)
                 throw new NoSuchElementException();
-            Object elem = SpecifiedArrayListImpl.this.elementData[cursor];
-            lastRet = cursor++;
-            return castUnchecked(elem);
+            Object[] elementData = SpecifiedArrayListImpl.this.elementData;
+            if (i >= elementData.length)
+                throw new ConcurrentModificationException();
+            cursor = i + 1;
+            return (E) elementData[lastRet = i];
         }
 
         /** Moved this here because also supported by Iterator in ArrayList */
         public void remove() {
             if (lastRet < 0)
-                throw new IllegalStateException("Set or add Operation has been already excecuted!");
+                throw new IllegalStateException();
+            checkForComodification();
 
-            SpecifiedArrayListImpl.this.remove(lastRet);
-            cursor = lastRet;
-            lastRet = -1;
+            try {
+                SpecifiedArrayListImpl.this.remove(lastRet);
+                cursor = lastRet;
+                lastRet = -1;
+                expectedModCount = modCount;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
         }
 
         // DONE insert forEachRemaining
@@ -453,12 +482,18 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             if (i >= elementData.length) {
                 throw new ConcurrentModificationException();
             }
-            while (i != size) {
+            while (i != size && modCount == expectedModCount) {
                 consumer.accept((E) elementData[i++]);
             }
             // update once at end of iteration to reduce heap write traffic
             cursor = i;
             lastRet = i - 1;
+            checkForComodification();
+        }
+
+        final void checkForComodification() {
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
         }
 
     }
@@ -478,15 +513,20 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         }
 
         public boolean hasPrevious() {
-            return cursor > 0;
+            return cursor != 0;
         }
 
+        @SuppressWarnings("unchecked")
         public E previous() {
-            if (cursor < 0)
+            checkForComodification();
+            int i = cursor - 1;
+            if (i < 0)
                 throw new NoSuchElementException();
-            Object[] elemsLocal = SpecifiedArrayListImpl.this.elementData;
-            lastRet = --cursor;
-            return castUnchecked(elemsLocal[cursor]);
+            Object[] elementData = SpecifiedArrayListImpl.this.elementData;
+            if (i >= elementData.length)
+                throw new ConcurrentModificationException();
+            cursor = i;
+            return (E) elementData[lastRet = i];
         }
 
         public int nextIndex() {
@@ -498,17 +538,37 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         }
 
         public void set(E e) {
-            if (lastRet == -1)
-                throw new IllegalStateException("Remove or add Operation has been already excecuted!");
-            SpecifiedArrayListImpl.this.set(lastRet, e);
+            if (lastRet < 0)
+                throw new IllegalStateException();
+            checkForComodification();
+
+            try {
+                SpecifiedArrayListImpl.this.set(lastRet, e);
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+// if (lastRet == -1)
+// throw new IllegalStateException("Remove or add Operation has been already excecuted!");
+// SpecifiedArrayListImpl.this.set(lastRet, e);
 
         }
 
         public void add(E e) {
-            SpecifiedArrayListImpl.this.add(cursor, e);
-            // TODO check if LastRet = -1 needed
-            lastRet = -1;
-            cursor++;
+            checkForComodification();
+
+            try {
+                int i = cursor;
+                SpecifiedArrayListImpl.this.add(i, e);
+                cursor = i + 1;
+                lastRet = -1;
+                expectedModCount = modCount;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+// SpecifiedArrayListImpl.this.add(cursor, e);
+// // TODO check if LastRet = -1 needed
+// lastRet = -1;
+// cursor++;
         }
 
     }
@@ -568,6 +628,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public void ensureCapacity(int minCapacity) {
+        modCount++;
         int curCapacity = elementData.length;
         if (curCapacity < minCapacity) {
             // If we ensure that there is enough capacity it will be most likely that not much more elements
@@ -585,6 +646,8 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     public void newEnsureCapacity(int minCapacity) {
+        modCount++;
+
         final int curCapacity = elementData.length;
 
         if (curCapacity < minCapacity) {
@@ -607,6 +670,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     @Override
     public void trimToSize() {
+        modCount++;
         if (USE_AL_STRATEGY) {
             if (size < elementData.length) {
                 elementData = (size == 0)
@@ -670,6 +734,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      * @param index index of object to be removed
      */
     private void fastRemove(int index) {
+        modCount++;
         System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
         elementData[--size] = null;
     }
@@ -713,6 +778,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         if (w != size) {
             for (int j = w; j < size; j++)
                 elementData[j] = null;
+            modCount += size - w;
             size = w;
         }
         if (!USE_AL_STRATEGY)
@@ -782,10 +848,63 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     private void ensureExplicitCapacityAL(int minCapacity) {
+        modCount++;
 
         // overflow-conscious code
         if (minCapacity - elementData.length > 0)
             growAL(minCapacity);
+    }
+
+    /**
+     * Save the state of the <tt>ArrayList</tt> instance to a stream (that is, serialize it).
+     *
+     * @serialData The length of the array backing the <tt>ArrayList</tt> instance is emitted (int),
+     *             followed by all of its elements (each an <tt>Object</tt>) in the proper order.
+     */
+    private void writeObject(java.io.ObjectOutputStream s)
+                    throws java.io.IOException {
+        // Write out element count, and any hidden stuff
+        int expectedModCount = modCount;
+        s.defaultWriteObject();
+
+        // Write out size as capacity for behavioural compatibility with clone()
+        s.writeInt(size);
+
+        // Write out all elements in the proper order.
+        for (int i = 0; i < size; i++) {
+            s.writeObject(elementData[i]);
+        }
+
+        if (modCount != expectedModCount) {
+            throw new ConcurrentModificationException();
+        }
+    }
+
+    /**
+     * Reconstitute the <tt>ArrayList</tt> instance from a stream (that is, deserialize it).
+     */
+    private void readObject(java.io.ObjectInputStream s)
+                    throws java.io.IOException, ClassNotFoundException {
+        elementData = EMPTY_ELEMENTDATA;
+
+        // Read in size, and any hidden stuff
+        s.defaultReadObject();
+
+        // Read in capacity
+        s.readInt(); // ignored
+
+        if (size > 0) {
+            // be like clone(), allocate array based upon size not capacity
+            int capacity = calculateCapacityAL(elementData, size);
+            SharedSecrets.getJavaOISAccess().checkArray(s, Object[].class, capacity);
+            ensureCapacityInternalAL(size);
+
+            Object[] a = elementData;
+            // Read in all elements in the proper order.
+            for (int i = 0; i < size; i++) {
+                a[i] = s.readObject();
+            }
+        }
     }
 
 }

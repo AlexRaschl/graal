@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.RandomAccess;
 
 /**
  * The SpecifiedArrayList is a specified version of the Java.Util.ArrayList that has been made for
@@ -21,7 +22,7 @@ import java.util.ListIterator;
  */
 
 // TODO Implements List<E>
-public abstract class SpecifiedArrayList<E> extends AbstractList<E> implements List<E> {
+public abstract class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
 
     /**
      * Factory methods
@@ -29,7 +30,7 @@ public abstract class SpecifiedArrayList<E> extends AbstractList<E> implements L
 
     // TODO If only one occurrence is replaced with SSAR only these instances will be tracked
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayListImpl<>();
+        return new ComparisonSpecifiedArrayList<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
@@ -37,7 +38,7 @@ public abstract class SpecifiedArrayList<E> extends AbstractList<E> implements L
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayListImpl<>(c);
+        return new ComparisonSpecifiedArrayList<>(c);
     }
 
     /**
