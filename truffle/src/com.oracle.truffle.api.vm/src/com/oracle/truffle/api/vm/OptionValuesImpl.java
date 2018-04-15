@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.options.OptionDescriptor;
 import org.graalvm.options.OptionDescriptors;
 import org.graalvm.options.OptionKey;
@@ -133,7 +132,7 @@ class OptionValuesImpl implements OptionValues {
      * Returns the set of options that fuzzy match a given option name.
      */
     static List<OptionDescriptor> fuzzyMatch(OptionDescriptors descriptors, String optionKey) {
-        List<OptionDescriptor> matches = SpecifiedArrayList.createNew();
+        List<OptionDescriptor> matches = new ArrayList<>();
         for (org.graalvm.options.OptionDescriptor option : descriptors) {
             float score = stringSimiliarity(option.getName(), optionKey);
             if (score >= FUZZY_MATCH_THRESHOLD) {

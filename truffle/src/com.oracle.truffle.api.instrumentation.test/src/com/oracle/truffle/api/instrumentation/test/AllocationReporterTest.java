@@ -37,6 +37,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.Instrument;
+import org.graalvm.polyglot.PolyglotException;
+import org.graalvm.polyglot.Source;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -58,12 +62,6 @@ import com.oracle.truffle.api.interop.TruffleObject;
 import com.oracle.truffle.api.nodes.LanguageInfo;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.polyglot.Engine;
-import org.graalvm.polyglot.Instrument;
-import org.graalvm.polyglot.PolyglotException;
-import org.graalvm.polyglot.Source;
 
 /**
  * A test of {@link AllocationReporter}.
@@ -746,7 +744,7 @@ public class AllocationReporterTest {
 
             void addChild(AllocNode node) {
                 if (children == null) {
-                    children = SpecifiedArrayList.createNew();
+                    children = new ArrayList<>();
                 }
                 children.add(node);
             }

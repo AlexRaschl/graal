@@ -27,9 +27,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.Test;
 
 import com.oracle.truffle.api.CallTarget;
@@ -207,7 +207,7 @@ public class ContextLookupTest {
         LanguageLookup language;
 
         final LanguageLookupContext parent;
-        final List<LanguageLookupContext> forks = SpecifiedArrayList.createNew();
+        final List<LanguageLookupContext> forks = new ArrayList<>();
         LanguageLookupContext toFork;
 
         LanguageLookupContext(LanguageLookupContext parent) {

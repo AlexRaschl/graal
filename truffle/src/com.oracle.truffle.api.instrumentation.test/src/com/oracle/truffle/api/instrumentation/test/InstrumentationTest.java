@@ -44,6 +44,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.Instrument;
+import org.graalvm.polyglot.PolyglotException;
+import org.graalvm.polyglot.Source;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -72,12 +76,6 @@ import com.oracle.truffle.api.nodes.ExecutableNode;
 import com.oracle.truffle.api.nodes.LanguageInfo;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.polyglot.Engine;
-import org.graalvm.polyglot.Instrument;
-import org.graalvm.polyglot.PolyglotException;
-import org.graalvm.polyglot.Source;
 
 public class InstrumentationTest extends AbstractInstrumentationTest {
 
@@ -1566,7 +1564,7 @@ public class InstrumentationTest extends AbstractInstrumentationTest {
     public static class TestLangInitialized extends TruffleInstrument implements ExecutionEventListener {
 
         static boolean initializationEvents;
-        private final List<String> enteredNodes = SpecifiedArrayList.createNew();
+        private final List<String> enteredNodes = new ArrayList<>();
 
         @Override
         protected void onCreate(Env env) {
@@ -1612,7 +1610,7 @@ public class InstrumentationTest extends AbstractInstrumentationTest {
     @Registration(id = "testAllocation", services = {TestAllocation.class, Object.class})
     public static class TestAllocation extends TruffleInstrument implements AllocationListener {
 
-        private final List<String> allocations = SpecifiedArrayList.createNew();
+        private final List<String> allocations = new ArrayList<>();
 
         @Override
         protected void onCreate(Env env) {

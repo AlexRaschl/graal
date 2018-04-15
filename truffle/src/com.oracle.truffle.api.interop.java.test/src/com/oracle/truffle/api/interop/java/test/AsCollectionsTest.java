@@ -33,6 +33,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -40,7 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.junit.After;
 import org.junit.Before;
@@ -355,7 +355,7 @@ public class AsCollectionsTest {
         private final List keys;
 
         private MapKeysTO(Set keys) {
-            this.keys = SpecifiedArrayList.createNew(keys);
+            this.keys = new ArrayList<>(keys);
         }
 
         @Override

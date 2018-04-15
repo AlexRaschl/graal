@@ -24,11 +24,11 @@
  */
 package com.oracle.truffle.api.instrumentation.test;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.junit.After;
 import org.junit.Assert;
@@ -57,8 +57,8 @@ public class InstrumentationUpdateTest {
     private static Function<InstrumentationUpdateLanguage, RootNode> run;
 
     private Context context;
-    private final List<EventContext> executionEvents = SpecifiedArrayList.createNew();
-    private final List<LoadSourceSectionEvent> loadEvents = SpecifiedArrayList.createNew();
+    private final List<EventContext> executionEvents = new ArrayList<>();
+    private final List<LoadSourceSectionEvent> loadEvents = new ArrayList<>();
     private InstrumentationUpdateLanguage language;
     private TruffleInstrument.Env instrumentEnv;
     private EventBinding<?> eventBinding;

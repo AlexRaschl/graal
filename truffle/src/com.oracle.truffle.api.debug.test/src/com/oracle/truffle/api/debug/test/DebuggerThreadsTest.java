@@ -24,6 +24,12 @@
  */
 package com.oracle.truffle.api.debug.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,16 +38,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Source;
+import org.junit.Test;
 
 import com.oracle.truffle.api.debug.DebugContext;
 import com.oracle.truffle.api.debug.DebugThreadsListener;
@@ -90,7 +90,7 @@ public class DebuggerThreadsTest extends AbstractDebugTest {
             expectDone();
         }
         assertEquals(1 + 2 * numThreads, events.size());
-        List<ThreadEvent> startEvents = SpecifiedArrayList.createNew(1 + numThreads);
+        List<ThreadEvent> startEvents = new ArrayList<>(1 + numThreads);
         for (ThreadEvent event : events) {
             if (event.isNew) {
                 startEvents.add(event);
@@ -135,7 +135,7 @@ public class DebuggerThreadsTest extends AbstractDebugTest {
         }
 
         assertEquals(2 * numThreads, events.size());
-        List<ThreadEvent> startEvents = SpecifiedArrayList.createNew(numThreads);
+        List<ThreadEvent> startEvents = new ArrayList<>(numThreads);
         for (ThreadEvent event : events) {
             if (event.isNew) {
                 startEvents.add(event);
@@ -197,7 +197,7 @@ public class DebuggerThreadsTest extends AbstractDebugTest {
 
     private static class TestThreadsListener implements DebugThreadsListener {
 
-        final List<ThreadEvent> events = Collections.synchronizedList(SpecifiedArrayList.createNew());
+        final List<ThreadEvent> events = Collections.synchronizedList(new ArrayList<>());
 
         @Override
         public void threadInitialized(DebugContext context, Thread thread) {

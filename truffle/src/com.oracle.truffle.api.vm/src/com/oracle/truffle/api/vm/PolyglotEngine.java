@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,7 +51,6 @@ import java.util.concurrent.Executor;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.options.OptionValues;
 import org.graalvm.polyglot.PolyglotException;
 
@@ -443,7 +443,7 @@ public class PolyglotEngine {
          */
         public Builder config(String mimeType, String key, Object value) {
             if (this.arguments == null) {
-                this.arguments = SpecifiedArrayList.createNew();
+                this.arguments = new ArrayList<>();
             }
             this.arguments.add(new Object[]{mimeType, key, value});
             return this;

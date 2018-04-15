@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -36,8 +37,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.WeakHashMap;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.CompilerDirectives;
@@ -299,7 +298,7 @@ public class InstrumentationTestLanguage extends TruffleLanguage<Context>
                 numberOfIdents = 2;
             }
             String[] idents = new String[numberOfIdents];
-            List<BaseNode> children = SpecifiedArrayList.createNew();
+            List<BaseNode> children = new ArrayList<>();
 
             if (follows() == '(') {
 
@@ -716,7 +715,7 @@ public class InstrumentationTestLanguage extends TruffleLanguage<Context>
             Context context = getRootNode().getLanguage(InstrumentationTestLanguage.class).getContextReference().get();
             List<Thread> threads;
             do {
-                threads = SpecifiedArrayList.createNew();
+                threads = new ArrayList<>();
                 synchronized (context.spawnedThreads) {
                     for (Thread t : context.spawnedThreads) {
                         if (t.isAlive()) {

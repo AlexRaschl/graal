@@ -42,6 +42,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,7 +53,6 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.TypeLiteral;
 import org.graalvm.polyglot.Value;
@@ -386,7 +386,7 @@ public class ValueAssert {
     private static void assertValueArrayElements(Context context, Value value) {
         assertTrue(value.hasArrayElements());
 
-        List<Object> receivedObjects = SpecifiedArrayList.createNew();
+        List<Object> receivedObjects = new ArrayList<>();
         Map<Long, Object> receivedObjectsLongMap = new HashMap<>();
         Map<Integer, Object> receivedObjectsIntMap = new HashMap<>();
         for (long i = 0L; i < value.getArraySize(); i++) {
@@ -574,7 +574,7 @@ public class ValueAssert {
     }
 
     private static Trait[] detectSupportedTypes(Value value) {
-        List<Trait> valueTypes = SpecifiedArrayList.createNew();
+        List<Trait> valueTypes = new ArrayList<>();
         if (value.isBoolean()) {
             valueTypes.add(BOOLEAN);
         }

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -37,8 +38,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.TruffleLanguage;
 import com.oracle.truffle.api.TruffleOptions;
@@ -155,7 +154,7 @@ final class LanguageCache implements Comparable<LanguageCache> {
     }
 
     private static Map<String, LanguageCache> createLanguages(ClassLoader additionalLoader) {
-        List<LanguageCache> caches = SpecifiedArrayList.createNew();
+        List<LanguageCache> caches = new ArrayList<>();
         for (ClassLoader loader : VMAccessor.SPI.allLoaders()) {
             collectLanguages(loader, caches);
         }
@@ -363,7 +362,7 @@ final class LanguageCache implements Comparable<LanguageCache> {
     @SuppressWarnings("unused")
     private static Collection<Class<?>> getLanguageClasses() {
         assert TruffleOptions.AOT : "Only supported during image generation";
-        SpecifiedArrayList<Class<?>> list = SpecifiedArrayList.createNew();
+        ArrayList<Class<?>> list = new ArrayList<>();
         for (LanguageCache cache : nativeImageCache.values()) {
             list.add(cache.languageClass);
         }

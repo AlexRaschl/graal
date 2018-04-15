@@ -30,15 +30,15 @@ public abstract class SpecifiedArrayList<E> extends AbstractList<E> implements L
 
     // TODO If only one occurrence is replaced with SSAR only these instances will be tracked
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayListImpl<>();
+        return new ComparisonSpecifiedArrayList<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayListImpl<>(initalCapacity);
+        return new ComparisonSpecifiedArrayList<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayListImpl<>(c);
+        return new ComparisonSpecifiedArrayList<>(c);
     }
 
     /**

@@ -34,6 +34,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Source;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -49,10 +51,6 @@ import com.oracle.truffle.api.instrumentation.LoadSourceSectionListener;
 import com.oracle.truffle.api.instrumentation.SourceSectionFilter;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument.Registration;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Source;
-
 public class InstrumentationMultiThreadingTest {
 
     @Test
@@ -63,7 +61,7 @@ public class InstrumentationMultiThreadingTest {
 
         for (int j = 0; j < 5; j++) {
             ExecutorService executorService = Executors.newFixedThreadPool(nEvals + nInstruments);
-            List<Future<?>> futures = SpecifiedArrayList.createNew();
+            List<Future<?>> futures = new ArrayList<>();
             final AtomicBoolean terminated = new AtomicBoolean(false);
             final AtomicReference<Context> engineRef = new AtomicReference<>();
             for (int i = 0; i < nEvals; i++) {

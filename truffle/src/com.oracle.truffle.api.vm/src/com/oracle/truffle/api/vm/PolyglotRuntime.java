@@ -32,6 +32,7 @@ import static com.oracle.truffle.api.vm.VMAccessor.SPI;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -39,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.options.OptionDescriptors;
 import org.graalvm.options.OptionValues;
 
@@ -100,9 +100,9 @@ public final class PolyglotRuntime {
          * deprecated API is removed and EngineImpl#findVM() can be removed as well, we can allocate this
          * context store profile for each shared vm.
          */
-        List<LanguageShared> languageList = SpecifiedArrayList.createNew();
+        List<LanguageShared> languageList = new ArrayList<>();
         /* We want to create a language instance but per LanguageCache and not per mime type. */
-        List<LanguageCache> convertedLanguages = SpecifiedArrayList.createNew(new HashSet<>(LanguageCache.languages().values()));
+        List<LanguageCache> convertedLanguages = new ArrayList<>(new HashSet<>(LanguageCache.languages().values()));
         Collections.sort(convertedLanguages);
 
         Map<String, LanguageInfo> langInfos = new LinkedHashMap<>();

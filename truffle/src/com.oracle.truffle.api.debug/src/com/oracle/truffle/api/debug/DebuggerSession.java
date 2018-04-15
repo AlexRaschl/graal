@@ -39,15 +39,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.Assumption;
 import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
-import com.oracle.truffle.api.Truffle;
 import com.oracle.truffle.api.Scope;
+import com.oracle.truffle.api.Truffle;
 import com.oracle.truffle.api.debug.Breakpoint.BreakpointConditionFailure;
 import com.oracle.truffle.api.frame.FrameDescriptor;
 import com.oracle.truffle.api.frame.FrameInstance;
@@ -171,7 +169,7 @@ public final class DebuggerSession implements Closeable {
 
     private final Debugger debugger;
     private final SuspendedCallback callback;
-    private final List<Breakpoint> breakpoints = Collections.synchronizedList(SpecifiedArrayList.createNew());
+    private final List<Breakpoint> breakpoints = Collections.synchronizedList(new ArrayList<>());
 
     private EventBinding<? extends ExecutionEventNodeFactory> callBinding;
     private EventBinding<? extends ExecutionEventNodeFactory> statementBinding;
@@ -545,7 +543,7 @@ public final class DebuggerSession implements Closeable {
         synchronized (this.breakpoints) {
             // need to synchronize manually breakpoints are iterated which is not
             // synchronized by default.
-            b = SpecifiedArrayList.createNew(this.breakpoints);
+            b = new ArrayList<>(this.breakpoints);
         }
         return Collections.unmodifiableList(b);
     }
@@ -724,7 +722,7 @@ public final class DebuggerSession implements Closeable {
             }
             if (hit) {
                 if (breaks == null) {
-                    breaks = SpecifiedArrayList.createNew();
+                    breaks = new ArrayList<>();
                 }
                 breaks.add(breakpoint.isGlobal() ? breakpoint.getROWrapper() : breakpoint);
             }
@@ -852,7 +850,7 @@ public final class DebuggerSession implements Closeable {
     }
 
     private List<DebuggerNode> collectDebuggerNodes(DebuggerNode source) {
-        List<DebuggerNode> nodes = SpecifiedArrayList.createNew();
+        List<DebuggerNode> nodes = new ArrayList<>();
         SuspendAnchor suspendAnchor = (source.getSteppingLocation() == SteppingLocation.BEFORE_STATEMENT) ? SuspendAnchor.BEFORE : SuspendAnchor.AFTER;
         EventContext context = source.getContext();
         synchronized (breakpoints) {

@@ -25,13 +25,11 @@
 package com.oracle.truffle.api.dsl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.nodes.Node;
-import java.util.Arrays;
 
 /**
  * Contains introspection utilities for Truffle DSL. The contained utilities are only usable if the
@@ -229,7 +227,7 @@ public final class Introspection {
 
     List<SpecializationInfo> getSpecializations() {
         checkVersion();
-        List<SpecializationInfo> specializations = SpecifiedArrayList.createNew();
+        List<SpecializationInfo> specializations = new ArrayList<>();
         for (int i = 1; i < data.length; i++) {
             specializations.add(createSpecialization(getIntrospectionData(data[i])));
         }

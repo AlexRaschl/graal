@@ -26,6 +26,7 @@ package com.oracle.truffle.api.vm;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -33,7 +34,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.PolyglotException;
 import org.graalvm.polyglot.PolyglotException.StackFrame;
@@ -221,7 +221,7 @@ final class PolyglotExceptionImpl extends AbstractExceptionImpl implements VMObj
 
     private void materialize() {
         if (this.materializedFrames == null) {
-            List<StackFrame> frames = SpecifiedArrayList.createNew();
+            List<StackFrame> frames = new ArrayList<>();
             for (StackFrame frame : getPolyglotStackTrace()) {
                 frames.add(frame);
             }

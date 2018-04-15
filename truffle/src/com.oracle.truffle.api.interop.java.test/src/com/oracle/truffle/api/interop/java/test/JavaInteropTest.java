@@ -52,7 +52,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -229,7 +228,7 @@ public class JavaInteropTest {
             callable.call();
             fail("Expected " + exception.getSimpleName() + " but no exception was thrown");
         } catch (Exception e) {
-            List<Class<? extends Throwable>> causes = SpecifiedArrayList.createNew();
+            List<Class<? extends Throwable>> causes = new ArrayList<>();
             for (Throwable cause = e; cause != null; cause = cause.getCause()) {
                 if (cause.getClass() == exception) {
                     return;
@@ -949,7 +948,7 @@ public class JavaInteropTest {
     @Test
     public void testRemoveMessage() {
         data.arr = new String[]{"Hello", "World", "!"};
-        TruffleObject truffleList = JavaInterop.asTruffleObject(SpecifiedArrayList.createNew(Arrays.asList(data.arr)));
+        TruffleObject truffleList = JavaInterop.asTruffleObject(new ArrayList<>(Arrays.asList(data.arr)));
         assertEquals(3, message(Message.GET_SIZE, truffleList));
         assertEquals(true, message(Message.REMOVE, truffleList, 1));
         assertEquals(2, message(Message.GET_SIZE, truffleList));
@@ -1529,7 +1528,7 @@ public class JavaInteropTest {
                     if (includeInternal) {
                         return JavaInterop.asTruffleObject(new String[]{"p1", "p2", "p3", "p4", "p5", "p6"});
                     } else {
-                        List<String> propertyNames = SpecifiedArrayList.createNew();
+                        List<String> propertyNames = new ArrayList<>();
                         for (int i = 1; i <= 6; i++) {
                             if ((receiver.nBits & (1 << i)) == 0) {
                                 propertyNames.add("p" + i);

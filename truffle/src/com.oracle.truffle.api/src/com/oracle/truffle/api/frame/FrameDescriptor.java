@@ -24,13 +24,12 @@
  */
 package com.oracle.truffle.api.frame;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.Assumption;
 import com.oracle.truffle.api.CompilerAsserts;
@@ -47,7 +46,7 @@ import com.oracle.truffle.api.impl.TVMCI;
 public final class FrameDescriptor implements Cloneable {
 
     private final Object defaultValue;
-    private final SpecifiedArrayList<FrameSlot> slots;
+    private final ArrayList<FrameSlot> slots;
     private final HashMap<Object, FrameSlot> identifierToSlotMap;
     private Assumption version;
     private HashMap<Object, Assumption> identifierToNotInFrameAssumptionMap;
@@ -81,7 +80,7 @@ public final class FrameDescriptor implements Cloneable {
     public FrameDescriptor(Object defaultValue) {
         CompilerAsserts.neverPartOfCompilation("do not create a FrameDescriptor from compiled code");
         this.defaultValue = defaultValue;
-        slots = SpecifiedArrayList.createNew();
+        slots = new ArrayList<>();
         identifierToSlotMap = new HashMap<>();
         version = createVersion();
     }

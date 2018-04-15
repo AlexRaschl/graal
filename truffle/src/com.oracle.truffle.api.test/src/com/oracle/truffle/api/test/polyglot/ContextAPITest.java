@@ -37,7 +37,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Value;
@@ -214,7 +213,7 @@ public class ContextAPITest {
         Context context = Context.create();
         ExecutorService service = Executors.newFixedThreadPool(20);
 
-        List<Future<?>> futures = SpecifiedArrayList.createNew();
+        List<Future<?>> futures = new ArrayList<>();
 
         for (int i = 0; i < 200; i++) {
             futures.add(service.submit(() -> testEnterLeave(context, 0)));

@@ -30,8 +30,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.TruffleLanguage;
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
@@ -173,7 +171,7 @@ public abstract class Instrumenter {
      * @since 0.18
      */
     public final List<SourceSection> querySourceSections(SourceSectionFilter filter) {
-        final List<SourceSection> sourceSectionList = SpecifiedArrayList.createNew();
+        final List<SourceSection> sourceSectionList = new ArrayList<>();
         EventBinding<?> binding = attachLoadSourceSectionListener(filter, new LoadSourceSectionListener() {
             public void onLoad(LoadSourceSectionEvent event) {
                 sourceSectionList.add(event.getSourceSection());

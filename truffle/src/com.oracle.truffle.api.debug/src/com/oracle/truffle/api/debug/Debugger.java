@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.TruffleLanguage;
 import com.oracle.truffle.api.debug.impl.DebuggerInstrument;
@@ -89,7 +87,7 @@ public final class Debugger {
     final List<Object> propSupport = new CopyOnWriteArrayList<>();
     final ObjectStructures.MessageNodes msgNodes;
     private final Set<DebuggerSession> sessions = new HashSet<>();
-    private final List<Breakpoint> breakpoints = SpecifiedArrayList.createNew();
+    private final List<Breakpoint> breakpoints = new ArrayList<>();
     final Breakpoint alwaysHaltBreakpoint;
 
     Debugger(Env env) {
@@ -183,7 +181,7 @@ public final class Debugger {
     public List<Breakpoint> getBreakpoints() {
         List<Breakpoint> bpts;
         synchronized (this) {
-            bpts = SpecifiedArrayList.createNew(this.breakpoints.size());
+            bpts = new ArrayList<>(this.breakpoints.size());
             for (Breakpoint b : this.breakpoints) {
                 bpts.add(b.getROWrapper());
             }
@@ -219,7 +217,7 @@ public final class Debugger {
      * @since 0.17
      */
     public List<Source> getLoadedSources() {
-        final List<Source> sources = SpecifiedArrayList.createNew();
+        final List<Source> sources = new ArrayList<>();
         EventBinding<?> binding = env.getInstrumenter().attachLoadSourceListener(SourceSectionFilter.ANY, new LoadSourceListener() {
             public void onLoad(LoadSourceEvent event) {
                 sources.add(event.getSource());

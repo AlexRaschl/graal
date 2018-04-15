@@ -28,9 +28,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.List;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * Utility for creating a {@link ClassLoader} to access resources in JDK9.
@@ -56,7 +55,7 @@ final class ModuleResourceLocator {
      * Creates a class loader than can access all resources in all modules on the module path.
      */
     static ClassLoader createLoader() {
-        List<URL> urls = SpecifiedArrayList.createNew();
+        List<URL> urls = new ArrayList<>();
         for (String name : new String[]{"java.class.path", "jdk.module.path"}) {
             String value = System.getProperty(name);
             if (value != null) {

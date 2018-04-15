@@ -24,6 +24,27 @@
  */
 package com.oracle.truffle.api.instrumentation.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.Instrument;
+import org.graalvm.polyglot.Source;
+import org.junit.Test;
+
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.TruffleContext;
 import com.oracle.truffle.api.frame.VirtualFrame;
@@ -34,25 +55,6 @@ import com.oracle.truffle.api.instrumentation.StandardTags.StatementTag;
 import com.oracle.truffle.api.instrumentation.ThreadsListener;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument.Registration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
-import org.junit.Test;
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Engine;
-import org.graalvm.polyglot.Instrument;
-import org.graalvm.polyglot.Source;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class ThreadsEventsTest {
 
@@ -119,7 +121,7 @@ public class ThreadsEventsTest {
             context.eval(Source.create(InstrumentationTestLanguage.ID, "ROOT(DEFINE(foo, STATEMENT), LOOP(" + numThreads + ", SPAWN(foo)), JOIN())"));
         }
         assertEquals(2 + 2 * numThreads, events.size());
-        List<ThreadEvent> startEvents = SpecifiedArrayList.createNew(1 + numThreads);
+        List<ThreadEvent> startEvents = new ArrayList<>(1 + numThreads);
         for (ThreadEvent event : events) {
             if (event.isNew) {
                 startEvents.add(event);
@@ -161,7 +163,7 @@ public class ThreadsEventsTest {
         }
 
         assertEquals(2 * numThreads, events.size());
-        List<ThreadEvent> startEvents = SpecifiedArrayList.createNew(numThreads);
+        List<ThreadEvent> startEvents = new ArrayList<>(numThreads);
         for (ThreadEvent event : events) {
             if (event.isNew) {
                 startEvents.add(event);
@@ -231,7 +233,7 @@ public class ThreadsEventsTest {
     public static class TestThreadsInstrument extends TruffleInstrument implements ThreadsListener {
 
         static boolean includeStartedThreads = false;
-        final List<ThreadEvent> events = Collections.synchronizedList(SpecifiedArrayList.createNew());
+        final List<ThreadEvent> events = Collections.synchronizedList(new ArrayList<>());
 
         @Override
         protected void onCreate(Env env) {

@@ -24,6 +24,11 @@
  */
 package com.oracle.truffle.api.instrumentation.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,11 +40,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.graalvm.polyglot.PolyglotException;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,9 +59,6 @@ import com.oracle.truffle.api.instrumentation.TruffleInstrument;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument.Registration;
 import com.oracle.truffle.api.instrumentation.test.UnwindReenterReturnTest.TestControlFlow.CodeAction;
 import com.oracle.truffle.api.nodes.ExplodeLoop;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.polyglot.PolyglotException;
 
 /**
  * Test of {@link EventBinding#throwUnwind()}, followed by reenter or return.
@@ -125,8 +124,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testReenterSimpleOnEnter() throws Exception {
-        List<CodeAction> actionsEnter = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsEnter = new ArrayList<>();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
 
         // Throw unwind from enter and do reenter:
         actionsEnter.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.UNWIND));
@@ -145,8 +144,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testReenterSimpleOnReturn() throws Exception {
-        List<CodeAction> actionsReturn = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsReturn = new ArrayList<>();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
 
         // Throw unwind from return value and do reenter:
         actionsReturn.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.UNWIND, "CA"));
@@ -166,8 +165,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testReenterSimpleOnException() throws Exception {
-        List<CodeAction> actionsExc = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsExc = new ArrayList<>();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
 
         // Throw unwind from return exception and do reenter:
         actionsExc.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.UNWIND));
@@ -194,8 +193,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testReturnSimpleOnEnter() throws Exception {
-        List<CodeAction> actionsEnter = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsEnter = new ArrayList<>();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
 
         // Throw unwind from enter and do early return:
         actionsEnter.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.UNWIND));
@@ -216,8 +215,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testReturnSimpleOnReturn() throws Exception {
-        List<CodeAction> actionsReturn = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsReturn = new ArrayList<>();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
 
         // Throw unwind from return value and do early return:
         actionsReturn.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.UNWIND, "CA"));
@@ -237,8 +236,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testReturnSimpleOnException() throws Exception {
-        List<CodeAction> actionsExc = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsExc = new ArrayList<>();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
 
         // Throw unwind from return exception and do early return:
         actionsExc.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.UNWIND));
@@ -259,8 +258,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testUnwindReenterOnEnter() throws Exception {
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsReenter = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
+        List<CodeAction> actionsReenter = new ArrayList<>();
         // Unwind at STATEMENT() and Reenter after pop from CALL(a):
         actionsUnwind.add(new CodeAction("STATEMENT()", TestControlFlow.ACTION.UNWIND, "3uw"));
         actionsReenter.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.REENTER));
@@ -280,8 +279,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testUnwindReenterOnReturn() throws Exception {
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsReenter = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
+        List<CodeAction> actionsReenter = new ArrayList<>();
         // Unwind at STATEMENT() and Reenter after pop from CALL(a):
         actionsUnwind.add(new CodeAction("STATEMENT()", TestControlFlow.ACTION.UNWIND, "3uw"));
         actionsReenter.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.REENTER));
@@ -301,8 +300,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testUnwindReenterOnException() throws Exception {
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsReenter = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
+        List<CodeAction> actionsReenter = new ArrayList<>();
         // Unwind at DEFINE() and Reenter after pop from CALL(a):
         actionsUnwind.add(new CodeAction("STATEMENT(DEFINE(a, ROOT()))", TestControlFlow.ACTION.UNWIND, "3uw"));
         actionsReenter.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.REENTER));
@@ -329,8 +328,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testUnwindReturnOnEnter() throws Exception {
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsReenter = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
+        List<CodeAction> actionsReenter = new ArrayList<>();
         // Unwind at STATEMENT() and Return after pop from CALL(a):
         actionsUnwind.add(new CodeAction("STATEMENT()", TestControlFlow.ACTION.UNWIND, "3uw"));
         actionsReenter.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.RETURN, 42));
@@ -351,8 +350,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testUnwindReturnOnReturn() throws Exception {
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsReenter = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
+        List<CodeAction> actionsReenter = new ArrayList<>();
         // Unwind at STATEMENT() and Return after pop from CALL(a):
         actionsUnwind.add(new CodeAction("STATEMENT()", TestControlFlow.ACTION.UNWIND, "3uw"));
         actionsReenter.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.RETURN, 42));
@@ -373,8 +372,8 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
 
     @Test
     public void testUnwindReturnOnException() throws Exception {
-        List<CodeAction> actionsUnwind = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsReenter = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsUnwind = new ArrayList<>();
+        List<CodeAction> actionsReenter = new ArrayList<>();
         // Unwind at DEFINE() and Return after pop from CALL(a):
         actionsUnwind.add(new CodeAction("STATEMENT(DEFINE(a, ROOT()))", TestControlFlow.ACTION.UNWIND, "3uw"));
         actionsReenter.add(new CodeAction("CALL(a)", TestControlFlow.ACTION.RETURN, 42));
@@ -426,9 +425,9 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
         // e -> c (runs in parralel with e -> d (up to b)) above
         // k -> i (runs right after early return from k below
         unwindMultiple.submit(false, "CALL(g)", "CALL(c)", "CALL(e)", "CALL(c)", "CALL(k)", "CALL(i)");
-        List<CodeAction> actionsUnwindE = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsUnwindR = SpecifiedArrayList.createNew();
-        List<CodeAction> actionsOnUnwind = SpecifiedArrayList.createNew();
+        List<CodeAction> actionsUnwindE = new ArrayList<>();
+        List<CodeAction> actionsUnwindR = new ArrayList<>();
+        List<CodeAction> actionsOnUnwind = new ArrayList<>();
         actionsUnwindE.add(new CodeAction("CALL(e)", TestControlFlow.ACTION.UNWIND, "e->b"));
         actionsOnUnwind.add(new CodeAction("CALL(b)", TestControlFlow.ACTION.REENTER));
         actionsUnwindR.add(new CodeAction("CALL(k)", TestControlFlow.ACTION.UNWIND, "k->j"));
@@ -601,11 +600,11 @@ public class UnwindReenterReturnTest extends AbstractInstrumentationTest {
         }
 
         final Map<WHERE, List<CodeAction>> actions = Collections.synchronizedMap(new HashMap<>());
-        final List<String> nodesEntered = Collections.synchronizedList(SpecifiedArrayList.createNew());
-        final List<String> nodesReturned = Collections.synchronizedList(SpecifiedArrayList.createNew());
-        final List<String> nodesUnwound = Collections.synchronizedList(SpecifiedArrayList.createNew());
-        final List<String> unwoundInfos = Collections.synchronizedList(SpecifiedArrayList.createNew());
-        final List<Object> returnValuesExceptions = Collections.synchronizedList(SpecifiedArrayList.createNew());
+        final List<String> nodesEntered = Collections.synchronizedList(new ArrayList<>());
+        final List<String> nodesReturned = Collections.synchronizedList(new ArrayList<>());
+        final List<String> nodesUnwound = Collections.synchronizedList(new ArrayList<>());
+        final List<String> unwoundInfos = Collections.synchronizedList(new ArrayList<>());
+        final List<Object> returnValuesExceptions = Collections.synchronizedList(new ArrayList<>());
         private Env env;
         private EventBinding<? extends ExecutionEventListener> bindingExec;
 

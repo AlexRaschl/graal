@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
 import com.oracle.truffle.api.source.Source;
@@ -166,7 +164,7 @@ public final class SourceSectionFilter {
      * @since 0.12
      */
     public final class Builder {
-        private List<EventFilterExpression> expressions = SpecifiedArrayList.createNew();
+        private List<EventFilterExpression> expressions = new ArrayList<>();
         private boolean includeInternal = true;
 
         private Builder() {

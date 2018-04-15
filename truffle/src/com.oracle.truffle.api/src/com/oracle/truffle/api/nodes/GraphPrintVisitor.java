@@ -38,12 +38,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.TruffleOptions;
 
@@ -286,7 +285,7 @@ public class GraphPrintVisitor implements Closeable {
         // forget old nodes
         prevNodeMap = null;
         nodeMap = new IdentityHashMap<>();
-        edgeList = SpecifiedArrayList.createNew();
+        edgeList = new ArrayList<>();
 
         return this;
     }
@@ -319,7 +318,7 @@ public class GraphPrintVisitor implements Closeable {
         // save old nodes
         prevNodeMap = nodeMap;
         nodeMap = new IdentityHashMap<>();
-        edgeList = SpecifiedArrayList.createNew();
+        edgeList = new ArrayList<>();
 
         return this;
     }

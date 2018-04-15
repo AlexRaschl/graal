@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,7 +47,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Value;
@@ -436,7 +436,7 @@ final class PolyglotContextImpl extends AbstractContextImpl implements VMObject 
             }
             if (!accessAllowed) {
                 if (deniedLanguages == null) {
-                    deniedLanguages = SpecifiedArrayList.createNew();
+                    deniedLanguages = new ArrayList<>();
                 }
                 deniedLanguages.add(context.language);
             }
@@ -496,7 +496,7 @@ final class PolyglotContextImpl extends AbstractContextImpl implements VMObject 
             if (context.isInitialized()) {
                 if (!VMAccessor.LANGUAGE.isThreadAccessAllowed(context.language.info, current, singleThread)) {
                     if (deniedLanguages == null) {
-                        deniedLanguages = SpecifiedArrayList.createNew();
+                        deniedLanguages = new ArrayList<>();
                     }
                     deniedLanguages.add(context.language);
                 }
@@ -945,7 +945,7 @@ final class PolyglotContextImpl extends AbstractContextImpl implements VMObject 
                     // finalization performed commit close -> no actions allowed on dispose
                     closed = true;
 
-                    List<PolyglotLanguageContext> disposedContexts = SpecifiedArrayList.createNew(contexts.length);
+                    List<PolyglotLanguageContext> disposedContexts = new ArrayList<>(contexts.length);
                     try {
                         synchronized (this) {
                             for (int i = contexts.length - 1; i >= 0; i--) {

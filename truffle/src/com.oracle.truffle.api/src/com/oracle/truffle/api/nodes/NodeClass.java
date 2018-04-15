@@ -26,10 +26,9 @@ package com.oracle.truffle.api.nodes;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * Information about a {@link Node} class. A single instance of this class is allocated for every
@@ -107,7 +106,7 @@ public abstract class NodeClass {
 
     /** @since 0.8 or earlier */
     public Iterator<Node> makeIterator(Node node) {
-        List<Object> arr = SpecifiedArrayList.createNew();
+        List<Object> arr = new ArrayList<>();
         for (Object field : getNodeFields()) {
             arr.add(field);
         }

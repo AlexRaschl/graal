@@ -24,25 +24,24 @@
  */
 package com.oracle.truffle.api.instrumentation.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import org.graalvm.polyglot.Instrument;
+import org.graalvm.polyglot.Source;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.oracle.truffle.api.instrumentation.LoadSourceEvent;
 import com.oracle.truffle.api.instrumentation.LoadSourceListener;
 import com.oracle.truffle.api.instrumentation.SourceSectionFilter;
-import com.oracle.truffle.api.instrumentation.TruffleInstrument;
 import com.oracle.truffle.api.instrumentation.SourceSectionFilter.IndexRange;
+import com.oracle.truffle.api.instrumentation.TruffleInstrument;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument.Registration;
 import com.oracle.truffle.api.source.SourceSection;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.polyglot.Instrument;
-import org.graalvm.polyglot.Source;
 
 public class SourceListenerTest extends AbstractInstrumentationTest {
 
@@ -116,8 +115,8 @@ public class SourceListenerTest extends AbstractInstrumentationTest {
 
     @Registration(id = "testLoadSource1", services = SourceListenerTest.TestLoadSource1.class)
     public static class TestLoadSource1 extends TruffleInstrument {
-        List<com.oracle.truffle.api.source.Source> onlyNewEvents = SpecifiedArrayList.createNew();
-        List<com.oracle.truffle.api.source.Source> allEvents = SpecifiedArrayList.createNew();
+        List<com.oracle.truffle.api.source.Source> onlyNewEvents = new ArrayList<>();
+        List<com.oracle.truffle.api.source.Source> allEvents = new ArrayList<>();
 
         @Override
         protected void onCreate(Env env) {

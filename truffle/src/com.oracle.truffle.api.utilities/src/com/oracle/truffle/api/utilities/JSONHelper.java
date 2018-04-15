@@ -24,11 +24,10 @@
  */
 package com.oracle.truffle.api.utilities;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.TruffleLanguage;
 import com.oracle.truffle.api.impl.Accessor;
@@ -237,7 +236,7 @@ public class JSONHelper {
 
     /** @since 0.8 or earlier */
     public static final class JSONArrayBuilder extends JSONStringBuilder {
-        private final List<Object> contents = SpecifiedArrayList.createNew();
+        private final List<Object> contents = new ArrayList<>();
 
         private JSONArrayBuilder() {
         }

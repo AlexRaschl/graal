@@ -29,6 +29,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,8 +38,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.oracle.truffle.api.CompilerDirectives;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
@@ -372,7 +371,7 @@ final class JavaClassDesc {
         if (includeInternal || onlyStatic) {
             return Collections.unmodifiableCollection(methods.keySet());
         } else {
-            Collection<String> methodNames = SpecifiedArrayList.createNew(methods.size());
+            Collection<String> methodNames = new ArrayList<>(methods.size());
             for (Map.Entry<String, JavaMethodDesc> entry : methods.entrySet()) {
                 if (!entry.getValue().isInternal()) {
                     methodNames.add(entry.getKey());

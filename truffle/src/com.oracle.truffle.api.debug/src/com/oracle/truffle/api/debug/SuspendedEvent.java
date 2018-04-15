@@ -30,8 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-
 import com.oracle.truffle.api.CallTarget;
 import com.oracle.truffle.api.RootCallTarget;
 import com.oracle.truffle.api.Truffle;
@@ -608,7 +606,7 @@ public final class SuspendedEvent {
 
         private List<DebugStackFrame> getOtherFrames() {
             if (otherFrames == null) {
-                final List<DebugStackFrame> frameInstances = SpecifiedArrayList.createNew();
+                final List<DebugStackFrame> frameInstances = new ArrayList<>();
                 Truffle.getRuntime().iterateFrames(new FrameInstanceVisitor<FrameInstance>() {
                     private int depth = -context.getStackDepth() - 1;
 

@@ -22,13 +22,13 @@
  */
 package com.oracle.truffle.api.test.polyglot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.Proxy;
@@ -203,7 +203,7 @@ public class ProxySPITest {
     public void testArrayElementRemove() throws Throwable {
         Context context = Context.create();
         final int size = 42;
-        SpecifiedArrayList<Object> list = SpecifiedArrayList.createNew();
+        ArrayList<Object> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             list.add(i);
         }

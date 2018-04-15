@@ -32,6 +32,7 @@ import static com.oracle.truffle.api.vm.VMAccessor.SPI;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,7 +49,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.options.OptionDescriptors;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Engine;
@@ -369,7 +369,7 @@ class PolyglotEngineImpl extends org.graalvm.polyglot.impl.AbstractPolyglotImpl.
     private Map<String, PolyglotLanguage> initializeLanguages(Map<String, LanguageInfo> infos) {
         Map<String, PolyglotLanguage> polyglotLanguages = new LinkedHashMap<>();
         Map<String, LanguageCache> cachedLanguages = new HashMap<>();
-        List<LanguageCache> sortedLanguages = SpecifiedArrayList.createNew();
+        List<LanguageCache> sortedLanguages = new ArrayList<>();
         for (LanguageCache lang : LanguageCache.languages().values()) {
             String id = lang.getId();
             if (!cachedLanguages.containsKey(id)) {
@@ -675,7 +675,7 @@ class PolyglotEngineImpl extends org.graalvm.polyglot.impl.AbstractPolyglotImpl.
         if (allOptions == null) {
             synchronized (this) {
                 if (allOptions == null) {
-                    List<OptionDescriptors> allDescriptors = SpecifiedArrayList.createNew();
+                    List<OptionDescriptors> allDescriptors = new ArrayList<>();
                     allDescriptors.add(engineOptions);
                     allDescriptors.add(compilerOptions);
                     for (PolyglotLanguage language : idToLanguage.values()) {
@@ -693,7 +693,7 @@ class PolyglotEngineImpl extends org.graalvm.polyglot.impl.AbstractPolyglotImpl.
 
     Collection<Thread> getAllThreads(PolyglotContextImpl context) {
         synchronized (context) {
-            return SpecifiedArrayList.createNew(context.getSeenThreads().keySet());
+            return new ArrayList<>(context.getSeenThreads().keySet());
         }
     }
 

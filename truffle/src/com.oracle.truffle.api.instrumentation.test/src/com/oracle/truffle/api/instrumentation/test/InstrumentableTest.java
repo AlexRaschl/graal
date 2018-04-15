@@ -24,11 +24,13 @@
  */
 package com.oracle.truffle.api.instrumentation.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import org.graalvm.polyglot.Value;
 import org.junit.Test;
 
 import com.oracle.truffle.api.CallTarget;
@@ -46,9 +48,6 @@ import com.oracle.truffle.api.nodes.Node;
 import com.oracle.truffle.api.nodes.RootNode;
 import com.oracle.truffle.api.nodes.UnexpectedResultException;
 import com.oracle.truffle.api.source.SourceSection;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.polyglot.Value;
 
 public class InstrumentableTest {
 
@@ -303,7 +302,7 @@ public class InstrumentableTest {
     @TruffleInstrument.Registration(id = "testExecInterceptor", services = TestExecInterceptor.class)
     public static class TestExecInterceptor extends TruffleInstrument implements ExecutionEventListener {
 
-        List<String> calls = SpecifiedArrayList.createNew();
+        List<String> calls = new ArrayList<>();
 
         @Override
         protected void onCreate(Env env) {

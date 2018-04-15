@@ -24,6 +24,22 @@
  */
 package com.oracle.truffle.api.debug.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.Source;
+import org.junit.Test;
+
 import com.oracle.truffle.api.debug.DebugContext;
 import com.oracle.truffle.api.debug.DebugContextsListener;
 import com.oracle.truffle.api.debug.DebugValue;
@@ -33,21 +49,6 @@ import com.oracle.truffle.api.debug.SuspendedCallback;
 import com.oracle.truffle.api.debug.SuspendedEvent;
 import com.oracle.truffle.api.instrumentation.test.InstrumentationTestLanguage;
 import com.oracle.truffle.api.nodes.LanguageInfo;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Engine;
-import org.graalvm.polyglot.Source;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
 public class DebuggerContextsTest extends AbstractDebugTest {
 
@@ -244,7 +245,7 @@ public class DebuggerContextsTest extends AbstractDebugTest {
 
     private static class TestContextsListener implements DebugContextsListener {
 
-        final List<ContextEvent> events = Collections.synchronizedList(SpecifiedArrayList.createNew());
+        final List<ContextEvent> events = Collections.synchronizedList(new ArrayList<>());
 
         @Override
         public void contextCreated(DebugContext context) {
