@@ -18,6 +18,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
+
 import sun.misc.SharedSecrets;
 
 /**
@@ -44,20 +46,20 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     // TODO If only one occurrence is replaced with SSAR only these instances will be tracked
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayList<>();
+        return new StatisticalSpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayList<>(initalCapacity);
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayList<>(c);
+        return new StatisticalSpecifiedArrayListImpl<>(c);
     }
 
     // -------------------------FIELDS-------------------------------------------------
 
-    private static final boolean USE_AL_STRATEGY = false;
+    private static final boolean USE_AL_STRATEGY = true;
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
