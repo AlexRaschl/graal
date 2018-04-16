@@ -28,6 +28,14 @@ public abstract class SpecifiedArrayList<E> extends AbstractList<E> implements L
      * Factory methods
      */
 
+    // For temporary Sublist support
+    protected int modCount = super.modCount;
+
+    @Override
+    protected void removeRange(int fromIndex, int toIndex) {
+        super.removeRange(fromIndex, toIndex);
+    }
+
     // TODO If only one occurrence is replaced with SSAR only these instances will be tracked
     public static <E> SpecifiedArrayList<E> createNew() {
         return new ComparisonSpecifiedArrayList<>();

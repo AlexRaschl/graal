@@ -12,6 +12,8 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import com.sun.xml.internal.ws.wsdl.parser.InaccessibleWSDLException;
+
 public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
 
     private final ArrayList<E> referenceList;
@@ -183,8 +185,20 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
     @Override
     public void add(int index, E element) {
         assert compareLists();
+        assert super.size() == referenceList.size();
         super.add(index, element);
-        referenceList.add(index, element);
+        try {
+            referenceList.add(index, element);
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println(e.getMessage());
+            System.err.println("Comparison List: " + super.toString());
+            System.err.println("ArrayList: " + referenceList.toString());
+            System.err.println("Itrs Used: " + itrsUsed + " Sublists used: " +
+                            subLists +
+                            " AddAlls used: " + addAlls + " Remove Alls: " + removeAlls + " Retain Alls: " + retainAlls);
+            throw new IndexOutOfBoundsException(e.getMessage());
+        }
+
         assert compareLists();
     }
 
@@ -264,6 +278,8 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
             cursor = i + 1;
+            assert compareLists();
+            assert elementData[i] == referenceList.get(i);
             return (E) elementData[lastRet = i];
         }
 
@@ -275,6 +291,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
 
             try {
                 ComparisonSpecifiedArrayList.this.remove(lastRet);
+                assert compareLists();
                 cursor = lastRet;
                 lastRet = -1;
                 expectedModCount = modCount;
@@ -298,6 +315,8 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
                 throw new ConcurrentModificationException();
             }
             while (i != size && modCount == expectedModCount) {
+                assert compareLists();
+                System.err.println("Consumer used!");
                 consumer.accept((E) elementData[i++]);
             }
             // update once at end of iteration to reduce heap write traffic
@@ -307,6 +326,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
         }
 
         final void checkForComodification() {
+            assert compareLists();
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
         }
@@ -341,6 +361,8 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
             cursor = i;
+            assert compareLists();
+            assert elementData[i] == referenceList.get(i);
             return (E) elementData[lastRet = i];
         }
 
@@ -358,6 +380,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
             checkForComodification();
 
             try {
+                assert compareLists();
                 ComparisonSpecifiedArrayList.this.set(lastRet, e);
             } catch (IndexOutOfBoundsException ex) {
                 throw new ConcurrentModificationException();
@@ -373,7 +396,9 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
 
             try {
                 int i = cursor;
+                assert compareLists();
                 ComparisonSpecifiedArrayList.this.add(i, e);
+                assert compareLists();
                 cursor = i + 1;
                 lastRet = -1;
                 expectedModCount = modCount;
@@ -394,7 +419,7 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
         subLists++;
 
         List<E> res = super.subList(fromIndex, toIndex);
-        assert res.equals(referenceList.subList(fromIndex, toIndex));
+        // assert res.equals(referenceList.subList(fromIndex, toIndex));
         assert compareLists();
         return res;
     }
@@ -440,13 +465,13 @@ public class ComparisonSpecifiedArrayList<E> extends SpecifiedArrayListImpl<E> {
             return false;
         }
 
-        Object[] superElems = super.toArray();
-        Object[] refElems = referenceList.toArray();
-
-        for (int i = 0; i < super.size(); i++) {
-            if (superElems[i] != refElems[i]) {
+        int length = super.size();
+        assert length == referenceList.size();
+        for (int i = 0; i < length; i++) {
+            if (super.get(i) != referenceList.get(i)) {
                 System.err.println(
-                                "CompareLists: " + superElems[i].toString() + " is not equal to " + refElems[i].toString() + "Index: " + i + "Itrs Used: " + itrsUsed + " Sublists used: " + subLists +
+                                "CompareLists: " + super.get(i).toString() + " is not equal to " + referenceList.get(i).toString() + "Index: " + i + "Itrs Used: " + itrsUsed + " Sublists used: " +
+                                                subLists +
                                                 " AddAlls used: " + addAlls + " Remove Alls: " + removeAlls + " Retain Alls: " + retainAlls);
                 return false;
             }

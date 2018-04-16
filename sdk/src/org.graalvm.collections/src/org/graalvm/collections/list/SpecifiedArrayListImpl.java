@@ -1,6 +1,6 @@
 package org.graalvm.collections.list;
 
-import java.util.ArrayList;
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.RandomAccess;
 import java.util.function.Consumer;
 
 import sun.misc.SharedSecrets;
 
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
+
+    private static final long serialVersionUID = 9130616599645229594L;
 
     private static final boolean USE_AL_STRATEGY = false;
 
@@ -27,7 +30,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     private int size;
 
     // RENAMED due to compatibility issues
-    private transient Object elementData[];
+    transient Object elementData[];
 
     // ARRAYLIST IMMITATION Stuff
     private static final Object[] EMPTY_ELEMENTDATA = {};
@@ -435,10 +438,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             lastRet = -1;
         }
 
+        @Override
         public boolean hasNext() {
             return cursor != size;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public E next() {
             checkForComodification();
@@ -453,6 +458,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         }
 
         /** Moved this here because also supported by Iterator in ArrayList */
+        @Override
         public void remove() {
             if (lastRet < 0)
                 throw new IllegalStateException();
@@ -512,10 +518,12 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             cursor = startIndex;
         }
 
+        @Override
         public boolean hasPrevious() {
             return cursor != 0;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public E previous() {
             checkForComodification();
@@ -529,14 +537,17 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             return (E) elementData[lastRet = i];
         }
 
+        @Override
         public int nextIndex() {
             return cursor;
         }
 
+        @Override
         public int previousIndex() {
             return cursor - 1;
         }
 
+        @Override
         public void set(E e) {
             if (lastRet < 0)
                 throw new IllegalStateException();
@@ -553,6 +564,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
         }
 
+        @Override
         public void add(E e) {
             checkForComodification();
 
@@ -573,14 +585,14 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     }
 
-    // TODO ATTENTION VERY UNOPTIMIZED AND ALSO TYPE POLLUTED
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<E> subList(int fromIndex, int toIndex) {
-        ArrayList<E> list = new ArrayList<>();
-        list.addAll((Collection<? extends E>) Arrays.asList(elementData));
-        return list.subList(fromIndex, toIndex);
-    }
+// // TODO ATTENTION VERY UNOPTIMIZED AND ALSO TYPE POLLUTED
+// @SuppressWarnings("unchecked")
+// @Override
+// public List<E> subList(int fromIndex, int toIndex) {
+// ArrayList<E> list = new ArrayList<>();
+// list.addAll((Collection<? extends E>) Arrays.asList(elemsData));
+// return list.subList(fromIndex, toIndex);
+// }
 
     @Override
     public int hashCode() {
@@ -717,7 +729,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     }
 
     private void checkBoundsForAdd(int index) {
-        if (index < 0 || index > this.size)
+        if (index > size || index < 0)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
     }
 
@@ -907,4 +919,212 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         }
     }
 
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+
+    @SuppressWarnings("cast")
+    @Override
+    public List<E> subList(int fromIndex, int toIndex) {
+        return (this instanceof RandomAccess ? new RandomAccessSubList<>(this, fromIndex, toIndex) : new SubList<>(this, fromIndex, toIndex));
+    }
+}
+
+// SUBLIST SECTION
+class SubList<E> extends SpecifiedArrayListImpl<E> {
+    private final SpecifiedArrayList<E> l;
+    private final int offset;
+    private int size;
+
+    SubList(SpecifiedArrayList<E> list, int fromIndex, int toIndex) {
+        if (fromIndex < 0)
+            throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
+        if (toIndex > list.size())
+            throw new IndexOutOfBoundsException("toIndex = " + toIndex);
+        if (fromIndex > toIndex)
+            throw new IllegalArgumentException("fromIndex(" + fromIndex +
+                            ") > toIndex(" + toIndex + ")");
+        l = list;
+        offset = fromIndex;
+        size = toIndex - fromIndex;
+        this.modCount = l.modCount;
+    }
+
+    @Override
+    public E set(int index, E element) {
+        rangeCheck(index);
+        checkForComodification();
+        return l.set(index + offset, element);
+    }
+
+    @Override
+    public E get(int index) {
+        rangeCheck(index);
+        checkForComodification();
+        return l.get(index + offset);
+    }
+
+    @Override
+    public int size() {
+        checkForComodification();
+        return size;
+    }
+
+    @Override
+    public void add(int index, E element) {
+        rangeCheckForAdd(index);
+        checkForComodification();
+        l.add(index + offset, element);
+        this.modCount = l.modCount;
+        size++;
+    }
+
+    @Override
+    public E remove(int index) {
+        rangeCheck(index);
+        checkForComodification();
+        E result = l.remove(index + offset);
+        this.modCount = l.modCount;
+        size--;
+        return result;
+    }
+
+    @Override
+    protected void removeRange(int fromIndex, int toIndex) {
+        checkForComodification();
+        l.removeRange(fromIndex + offset, toIndex + offset);
+        this.modCount = l.modCount;
+        size -= (toIndex - fromIndex);
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        return addAll(size, c);
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends E> c) {
+        rangeCheckForAdd(index);
+        int cSize = c.size();
+        if (cSize == 0)
+            return false;
+
+        checkForComodification();
+        l.addAll(offset + index, c);
+        this.modCount = l.modCount;
+        size += cSize;
+        return true;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return listIterator();
+    }
+
+    @Override
+    public ListIterator<E> listIterator(final int index) {
+        checkForComodification();
+        rangeCheckForAdd(index);
+
+        return new ListIterator<E>() {
+            private final ListIterator<E> i = l.listIterator(index + offset);
+
+            @Override
+            public boolean hasNext() {
+                return nextIndex() < size;
+            }
+
+            @Override
+            public E next() {
+                if (hasNext())
+                    return i.next();
+                else
+                    throw new NoSuchElementException();
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return previousIndex() >= 0;
+            }
+
+            @Override
+            public E previous() {
+                if (hasPrevious())
+                    return i.previous();
+                else
+                    throw new NoSuchElementException();
+            }
+
+            @Override
+            public int nextIndex() {
+                return i.nextIndex() - offset;
+            }
+
+            @Override
+            public int previousIndex() {
+                return i.previousIndex() - offset;
+            }
+
+            @Override
+            public void remove() {
+                i.remove();
+                SubList.this.modCount = l.modCount;
+                size--;
+            }
+
+            @Override
+            public void set(E e) {
+                i.set(e);
+            }
+
+            @Override
+            public void add(E e) {
+                i.add(e);
+                SubList.this.modCount = l.modCount;
+                size++;
+            }
+        };
+    }
+
+    @Override
+    public List<E> subList(int fromIndex, int toIndex) {
+        return new SubList<E>(this, fromIndex, toIndex);
+    }
+
+    private void rangeCheck(int index) {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private void rangeCheckForAdd(int index) {
+        if (index < 0 || index > size)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private String outOfBoundsMsg(int index) {
+        return "Index: " + index + ", Size: " + size;
+    }
+
+    private void checkForComodification() {
+        if (this.modCount != l.modCount)
+            throw new ConcurrentModificationException();
+    }
+}
+
+class RandomAccessSubList<E> extends SubList<E> implements RandomAccess {
+    RandomAccessSubList(SpecifiedArrayList<E> list, int fromIndex, int toIndex) {
+        super(list, fromIndex, toIndex);
+    }
+
+    @Override
+    public List<E> subList(int fromIndex, int toIndex) {
+        return new RandomAccessSubList<>(this, fromIndex, toIndex);
+    }
 }
