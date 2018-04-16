@@ -28,13 +28,13 @@ import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_0;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_0;
 import static org.graalvm.word.LocationIdentity.any;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.MapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.graph.NodeClass;
 import org.graalvm.compiler.graph.NodeInputList;
@@ -65,7 +65,7 @@ public final class MemoryMapNode extends FloatingNode implements MemoryMap, Memo
     public MemoryMapNode(EconomicMap<LocationIdentity, MemoryNode> mmap) {
         super(TYPE, StampFactory.forVoid());
         int size = mmap.size();
-        locationIdentities = new ArrayList<>(size);
+        locationIdentities = SpecifiedArrayList.createNew(size);
         nodes = new NodeInputList<>(this, size);
         int index = 0;
         MapCursor<LocationIdentity, MemoryNode> cursor = mmap.getEntries();

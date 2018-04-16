@@ -24,11 +24,11 @@ package org.graalvm.compiler.lir.framemap;
 
 import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
@@ -65,8 +65,8 @@ public class FrameMapBuilderImpl extends FrameMapBuilderTool {
         this.registerConfig = registerConfig == null ? codeCache.getRegisterConfig() : registerConfig;
         this.codeCache = codeCache;
         this.frameMap = frameMap;
-        this.stackSlots = new ArrayList<>();
-        this.calls = new ArrayList<>();
+        this.stackSlots = SpecifiedArrayList.createNew();
+        this.calls = SpecifiedArrayList.createNew();
         this.numStackSlots = 0;
     }
 

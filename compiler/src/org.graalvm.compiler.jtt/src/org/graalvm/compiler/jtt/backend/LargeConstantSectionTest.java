@@ -30,10 +30,10 @@ import static org.objectweb.asm.Opcodes.ILOAD;
 import static org.objectweb.asm.Opcodes.LRETURN;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.jtt.JTTTest;
 import org.graalvm.compiler.test.ExportingClassLoader;
@@ -85,7 +85,7 @@ public class LargeConstantSectionTest extends JTTTest {
 
     @Parameters(name = "{0}")
     public static Collection<Object[]> data() {
-        List<Object[]> parameters = new ArrayList<>();
+        List<Object[]> parameters = SpecifiedArrayList.createNew();
         for (int i = 4; i < 13; i += 2) {
             parameters.add(new Object[]{1 << i});
         }

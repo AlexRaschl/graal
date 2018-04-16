@@ -33,7 +33,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.IntegerStamp;
 import org.graalvm.compiler.core.common.type.StampFactory;
 
@@ -176,7 +176,7 @@ public class IntegerStampMulFoldTest extends GraalCompilerTest {
 
         @Parameters(name = "a[{0} - {1}] b[{2} - {3}] bits=32")
         public static Collection<Object[]> data() {
-            ArrayList<Object[]> tests = new ArrayList<>();
+            SpecifiedArrayList<Object[]> tests = SpecifiedArrayList.createNew();
 
             // zero related
             addTest(tests, -2, 2, 3, 3, 8);
@@ -238,7 +238,7 @@ public class IntegerStampMulFoldTest extends GraalCompilerTest {
             return tests;
         }
 
-        private static void addTest(ArrayList<Object[]> tests, long lowerBound1, long upperBound1, long lowerBound2, long upperBound2, int bits) {
+        private static void addTest(SpecifiedArrayList<Object[]> tests, long lowerBound1, long upperBound1, long lowerBound2, long upperBound2, int bits) {
             tests.add(new Object[]{lowerBound1, upperBound1, lowerBound2, upperBound2, bits});
         }
 

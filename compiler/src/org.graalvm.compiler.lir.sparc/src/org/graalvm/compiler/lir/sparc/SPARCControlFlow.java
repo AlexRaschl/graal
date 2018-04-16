@@ -74,12 +74,12 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isJavaConstant;
 import static org.graalvm.compiler.lir.sparc.SPARCMove.const2reg;
 import static org.graalvm.compiler.lir.sparc.SPARCOP3Op.emitOp3;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.asm.Assembler;
 import org.graalvm.compiler.asm.Assembler.LabelHint;
 import org.graalvm.compiler.asm.Label;
@@ -231,18 +231,17 @@ public class SPARCControlFlow {
          * <p>
          * We get from outside
          * <ul>
-         * <li>at least one of trueDestination falseDestination is within reach of +-512
-         * instructions
+         * <li>at least one of trueDestination falseDestination is within reach of +-512 instructions
          * <li>two registers OR one register and a constant which fits simm13
          *
          * <p>
          * We do:
          * <ul>
          * <li>find out which target needs to be branched conditionally
-         * <li>find out if fall-through is possible, if not, a unconditional branch is needed after
-         * cbcond (needJump=true)
-         * <li>if no fall through: we need to put the closer jump into the cbcond branch and the
-         * farther into the jmp (unconditional branch)
+         * <li>find out if fall-through is possible, if not, a unconditional branch is needed after cbcond
+         * (needJump=true)
+         * <li>if no fall through: we need to put the closer jump into the cbcond branch and the farther
+         * into the jmp (unconditional branch)
          * <li>if constant on the left side, mirror to be on the right
          * <li>if constant on right does not fit into simm5, put it into a scratch register
          *
@@ -437,7 +436,7 @@ public class SPARCControlFlow {
         @Temp({REG}) protected Value scratch;
         protected final SwitchStrategy strategy;
         private final EconomicMap<Label, LabelHint> labelHints;
-        private final List<Label> conditionalLabels = new ArrayList<>();
+        private final List<Label> conditionalLabels = SpecifiedArrayList.createNew();
 
         public StrategySwitchOp(Value constantTableBase, SwitchStrategy strategy, LabelRef[] keyTargets, LabelRef defaultTarget, AllocatableValue key, Variable scratch) {
             this(TYPE, constantTableBase, strategy, keyTargets, defaultTarget, key, scratch);
@@ -483,8 +482,8 @@ public class SPARCControlFlow {
             }
 
             /**
-             * This method caches the generated labels over two assembly passes to get information
-             * about branch lengths.
+             * This method caches the generated labels over two assembly passes to get information about branch
+             * lengths.
              */
             @Override
             public Label conditionalJump(int index, Condition condition) {

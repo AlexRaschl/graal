@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.jtt.JTTTest;
 
 import jdk.vm.ci.meta.ResolvedJavaMethod;
@@ -108,12 +108,12 @@ public final class Math_log10 extends JTTTest {
             assertTrue("differs by more than 3 ulps: " + result.doubleValue() + "," + actualValue, checkFor3ulps(result.doubleValue(), actualValue));
             if (computedResult != null && actualValue != computedResult) {
                 /*
-                 * This test detects difference in the actual result between the built in
-                 * implementation and what Graal does. If it reaches this test then the value was
-                 * within 3 ulps but differs in the exact amount.
+                 * This test detects difference in the actual result between the built in implementation and what
+                 * Graal does. If it reaches this test then the value was within 3 ulps but differs in the exact
+                 * amount.
                  *
-                 * System.err.println("value for " + input + " is within 3 ulps but differs from
-                 * computed value: " + computedResult + " " + actualValue);
+                 * System.err.println("value for " + input + " is within 3 ulps but differs from computed value:
+                 * " + computedResult + " " + actualValue);
                  */
             }
         } else {
@@ -145,7 +145,7 @@ public final class Math_log10 extends JTTTest {
 
     @Parameters(name = "{index}")
     public static Collection<Object[]> data() {
-        List<Object[]> tests = new ArrayList<>();
+        List<Object[]> tests = SpecifiedArrayList.createNew();
 
         addEqualityTest(tests, Double.NaN, Double.NaN);
         addEqualityTest(tests, Double.longBitsToDouble(0x7FF0000000000001L), Double.NaN);

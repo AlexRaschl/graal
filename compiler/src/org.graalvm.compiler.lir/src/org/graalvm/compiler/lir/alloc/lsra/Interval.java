@@ -22,19 +22,19 @@
  */
 package org.graalvm.compiler.lir.alloc.lsra;
 
-import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
-import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
-import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 import static jdk.vm.ci.code.ValueUtil.asRegister;
 import static jdk.vm.ci.code.ValueUtil.isIllegal;
 import static jdk.vm.ci.code.ValueUtil.isRegister;
 import static jdk.vm.ci.code.ValueUtil.isStackSlot;
+import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
+import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
+import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.util.IntList;
 import org.graalvm.compiler.core.common.util.Util;
@@ -42,6 +42,7 @@ import org.graalvm.compiler.debug.Assertions;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.lir.LIRInstruction;
 import org.graalvm.compiler.lir.Variable;
+
 import jdk.vm.ci.code.RegisterValue;
 import jdk.vm.ci.code.StackSlot;
 import jdk.vm.ci.meta.AllocatableValue;
@@ -120,8 +121,7 @@ public final class Interval {
         }
 
         /**
-         * Adds an interval to a list sorted by {@linkplain Interval#currentFrom() current from}
-         * positions.
+         * Adds an interval to a list sorted by {@linkplain Interval#currentFrom() current from} positions.
          *
          * @param binding specifies the list to be updated
          * @param interval the interval to add
@@ -297,9 +297,9 @@ public final class Interval {
         NoDefinitionFound,
 
         /**
-         * One definition has already been found. Two consecutive definitions are treated as one
-         * (e.g. a consecutive move and add because of two-operand LIR form). The position of this
-         * definition is given by {@link Interval#spillDefinitionPos()}.
+         * One definition has already been found. Two consecutive definitions are treated as one (e.g. a
+         * consecutive move and add because of two-operand LIR form). The position of this definition is
+         * given by {@link Interval#spillDefinitionPos()}.
          */
         NoSpillStore,
 
@@ -309,14 +309,14 @@ public final class Interval {
         OneSpillStore,
 
         /**
-         * The interval is spilled multiple times or is spilled in a loop. Place the store somewhere
-         * on the dominator path between the definition and the usages.
+         * The interval is spilled multiple times or is spilled in a loop. Place the store somewhere on the
+         * dominator path between the definition and the usages.
          */
         SpillInDominator,
 
         /**
-         * The interval should be stored immediately after its definition to prevent multiple
-         * redundant stores.
+         * The interval should be stored immediately after its definition to prevent multiple redundant
+         * stores.
          */
         StoreAtDefinition,
 
@@ -326,8 +326,8 @@ public final class Interval {
         StartInMemory,
 
         /**
-         * The interval has more than one definition (e.g. resulting from phi moves), so stores to
-         * memory are not optimized.
+         * The interval has more than one definition (e.g. resulting from phi moves), so stores to memory
+         * are not optimized.
          */
         NoOptimization;
 
@@ -358,9 +358,8 @@ public final class Interval {
         }
 
         /**
-         * Splits this list around a given position. All entries in this list with a use position
-         * greater or equal than {@code splitPos} are removed from this list and added to the
-         * returned list.
+         * Splits this list around a given position. All entries in this list with a use position greater or
+         * equal than {@code splitPos} are removed from this list and added to the returned list.
          *
          * @param splitPos the position for the split
          * @return a use position list containing all entries removed from this list that have a use
@@ -436,8 +435,8 @@ public final class Interval {
     protected static final int END_MARKER_OPERAND_NUMBER = Integer.MIN_VALUE;
 
     /**
-     * The {@linkplain RegisterValue register} or {@linkplain Variable variable} for this interval
-     * prior to register allocation.
+     * The {@linkplain RegisterValue register} or {@linkplain Variable variable} for this interval prior
+     * to register allocation.
      */
     public final AllocatableValue operand;
 
@@ -448,8 +447,7 @@ public final class Interval {
 
     /**
      * The {@linkplain RegisterValue register} or {@linkplain StackSlot spill slot} assigned to this
-     * interval. In case of a spilled interval which is re-materialized this is
-     * {@link Value#ILLEGAL}.
+     * interval. In case of a spilled interval which is re-materialized this is {@link Value#ILLEGAL}.
      */
     private AllocatableValue location;
 
@@ -480,8 +478,7 @@ public final class Interval {
     private Range current;
 
     /**
-     * Link to next interval in a sorted list of intervals that ends with
-     * LinearScan.intervalEndMarker.
+     * Link to next interval in a sorted list of intervals that ends with LinearScan.intervalEndMarker.
      */
     Interval next;
 
@@ -531,8 +528,8 @@ public final class Interval {
     private Interval locationHint;
 
     /**
-     * The value with which a spilled child interval can be re-materialized. Currently this must be
-     * a Constant.
+     * The value with which a spilled child interval can be re-materialized. Currently this must be a
+     * Constant.
      */
     private Constant materializedValue;
 
@@ -753,8 +750,8 @@ public final class Interval {
     }
 
     /**
-     * Returns true if this interval can be re-materialized when spilled. This means that no
-     * spill-moves are needed. Instead of restore-moves the {@link #materializedValue} is restored.
+     * Returns true if this interval can be re-materialized when spilled. This means that no spill-moves
+     * are needed. Instead of restore-moves the {@link #materializedValue} is restored.
      */
     public boolean canMaterialize() {
         return getMaterializedValue() != null;
@@ -885,8 +882,7 @@ public final class Interval {
             for (Interval interval : splitChildren) {
                 if (interval != result && interval.from() <= opId && opId < interval.to() + toOffset) {
                     /*
-                     * Should not happen: Try another compilation as it is very unlikely to happen
-                     * again.
+                     * Should not happen: Try another compilation as it is very unlikely to happen again.
                      */
                     throw new GraalError("two valid result intervals found for opId %d: %d and %d\n%s\n", opId, result.operandNumber, interval.operandNumber,
                                     result.logString(allocator), interval.logString(allocator));
@@ -968,9 +964,9 @@ public final class Interval {
 
     private RegisterPriority adaptPriority(RegisterPriority priority) {
         /*
-         * In case of re-materialized values we require that use-operands are registers, because we
-         * don't have the value in a stack location. (Note that ShouldHaveRegister means that the
-         * operand can also be a StackSlot).
+         * In case of re-materialized values we require that use-operands are registers, because we don't
+         * have the value in a stack location. (Note that ShouldHaveRegister means that the operand can also
+         * be a StackSlot).
          */
         if (priority == RegisterPriority.ShouldHaveRegister && canMaterialize()) {
             return RegisterPriority.MustHaveRegister;
@@ -1087,7 +1083,7 @@ public final class Interval {
             assert isSplitParent() : "list must be initialized at first split";
 
             // Create new non-shared list
-            parent.splitChildren = new ArrayList<>(4);
+            parent.splitChildren = SpecifiedArrayList.createNew(4);
             parent.splitChildren.add(this);
         }
         parent.splitChildren.add(result);
@@ -1100,10 +1096,10 @@ public final class Interval {
      * interval of this interval's {@linkplain #splitParent() parent} interval.
      * <p>
      * When an interval is split, a bi-directional link is established between the original
-     * <i>parent</i> interval and the <i>children</i> intervals that are split off this interval.
-     * When a split child is split again, the new created interval is a direct child of the original
-     * parent. That is, there is no tree of split children stored, just a flat list. All split
-     * children are spilled to the same {@linkplain #spillSlot spill slot}.
+     * <i>parent</i> interval and the <i>children</i> intervals that are split off this interval. When a
+     * split child is split again, the new created interval is a direct child of the original parent.
+     * That is, there is no tree of split children stored, just a flat list. All split children are
+     * spilled to the same {@linkplain #spillSlot spill slot}.
      *
      * @param splitPos the position at which to split this interval
      * @param allocator the register allocator context
@@ -1155,8 +1151,7 @@ public final class Interval {
      * Splits this interval at a specified position and returns the head as a new interval (this
      * interval is the tail).
      *
-     * Currently, only the first range can be split, and the new interval must not have split
-     * positions
+     * Currently, only the first range can be split, and the new interval must not have split positions
      */
     Interval splitFromStart(int splitPos, LinearScan allocator) {
         assert isVariable(operand) : "cannot split fixed intervals";

@@ -24,8 +24,7 @@ package org.graalvm.compiler.hotspot.lir;
 
 import static jdk.vm.ci.code.ValueUtil.isStackSlot;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.Indent;
@@ -84,7 +83,7 @@ public final class HotSpotZapRegistersPhase extends PostAllocationOptimizationPh
                     boolean zapRegisters, boolean zapStack) {
         DebugContext debug = lir.getDebug();
         try (Indent indent = debug.logAndIndent("Process block %s", block)) {
-            ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
             buffer.init(instructions);
             for (int index = 0; index < instructions.size(); index++) {
                 LIRInstruction inst = instructions.get(index);

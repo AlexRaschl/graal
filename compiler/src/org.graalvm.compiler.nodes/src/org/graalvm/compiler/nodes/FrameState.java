@@ -31,12 +31,12 @@ import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_IGNORED;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_1;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_IGNORED;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.MethodSubstitution;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.Bytecodes;
@@ -123,9 +123,9 @@ public final class FrameState extends VirtualState implements IterableNodeType {
         super(TYPE);
         if (code != null) {
             /*
-             * Make sure the bci is within range of the bytecodes. If the code size is 0 then allow
-             * any value, otherwise the bci must be less than the code size. Any negative value is
-             * also allowed to represent special bytecode states.
+             * Make sure the bci is within range of the bytecodes. If the code size is 0 then allow any value,
+             * otherwise the bci must be less than the code size. Any negative value is also allowed to
+             * represent special bytecode states.
              */
             int codeSize = code.getCodeSize();
             if (codeSize != 0 && bci >= codeSize) {
@@ -179,10 +179,9 @@ public final class FrameState extends VirtualState implements IterableNodeType {
     }
 
     /**
-     * Creates a placeholder frame state with a single element on the stack representing a return
-     * value or thrown exception. This allows the parsing of an intrinsic to communicate the
-     * returned or thrown value in a {@link StateSplit#stateAfter() stateAfter} to the inlining call
-     * site.
+     * Creates a placeholder frame state with a single element on the stack representing a return value
+     * or thrown exception. This allows the parsing of an intrinsic to communicate the returned or
+     * thrown value in a {@link StateSplit#stateAfter() stateAfter} to the inlining call site.
      *
      * @param bci this must be {@link BytecodeFrame#AFTER_BCI}
      */
@@ -269,8 +268,8 @@ public final class FrameState extends VirtualState implements IterableNodeType {
     /**
      * Determines if this frame state can be converted to a {@link BytecodeFrame}.
      *
-     * Since a {@link BytecodeFrame} encodes {@link #getMethod()} and {@link #bci}, it does not
-     * preserve {@link #getCode()}. {@link #bci} is only guaranteed to be valid in terms of
+     * Since a {@link BytecodeFrame} encodes {@link #getMethod()} and {@link #bci}, it does not preserve
+     * {@link #getCode()}. {@link #bci} is only guaranteed to be valid in terms of
      * {@code getCode().getCode()} which may be different from {@code getMethod().getCode()} if the
      * latter has been subject to instrumentation.
      */
@@ -315,8 +314,8 @@ public final class FrameState extends VirtualState implements IterableNodeType {
     }
 
     /**
-     * Duplicates a FrameState, along with a deep copy of all connected VirtualState (outer
-     * FrameStates, VirtualObjectStates, ...).
+     * Duplicates a FrameState, along with a deep copy of all connected VirtualState (outer FrameStates,
+     * VirtualObjectStates, ...).
      */
     @Override
     public FrameState duplicateWithVirtualState() {
@@ -324,9 +323,9 @@ public final class FrameState extends VirtualState implements IterableNodeType {
         if (newOuterFrameState != null) {
             newOuterFrameState = newOuterFrameState.duplicateWithVirtualState();
         }
-        ArrayList<EscapeObjectState> newVirtualMappings = null;
+        SpecifiedArrayList<EscapeObjectState> newVirtualMappings = null;
         if (virtualObjectMappings != null) {
-            newVirtualMappings = new ArrayList<>(virtualObjectMappings.size());
+            newVirtualMappings = SpecifiedArrayList.createNew(virtualObjectMappings.size());
             for (EscapeObjectState state : virtualObjectMappings) {
                 newVirtualMappings.add(state.duplicateWithVirtualState());
             }
@@ -335,8 +334,8 @@ public final class FrameState extends VirtualState implements IterableNodeType {
     }
 
     /**
-     * Creates a copy of this frame state with one stack element of type {@code popKind} popped from
-     * the stack.
+     * Creates a copy of this frame state with one stack element of type {@code popKind} popped from the
+     * stack.
      */
     public FrameState duplicateModifiedDuringCall(int newBci, JavaKind popKind) {
         return duplicateModified(graph(), newBci, rethrowException, true, popKind, null, null);
@@ -347,10 +346,9 @@ public final class FrameState extends VirtualState implements IterableNodeType {
     }
 
     /**
-     * Creates a copy of this frame state with one stack element of type {@code popKind} popped from
-     * the stack and the values in {@code pushedValues} pushed on the stack. The
-     * {@code pushedValues} will be formatted correctly in slot encoding: a long or double will be
-     * followed by a null slot.
+     * Creates a copy of this frame state with one stack element of type {@code popKind} popped from the
+     * stack and the values in {@code pushedValues} pushed on the stack. The {@code pushedValues} will
+     * be formatted correctly in slot encoding: a long or double will be followed by a null slot.
      */
     public FrameState duplicateModified(int newBci, boolean newRethrowException, JavaKind popKind, JavaKind[] pushedSlotKinds, ValueNode[] pushedValues) {
         return duplicateModified(graph(), newBci, newRethrowException, duringCall, popKind, pushedSlotKinds, pushedValues);
@@ -361,8 +359,8 @@ public final class FrameState extends VirtualState implements IterableNodeType {
     }
 
     /**
-     * Creates a copy of this frame state with the top of stack replaced with with
-     * {@code pushedValue} which must be of type {@code popKind}.
+     * Creates a copy of this frame state with the top of stack replaced with with {@code pushedValue}
+     * which must be of type {@code popKind}.
      */
     public FrameState duplicateModified(JavaKind popKind, JavaKind pushedSlotKind, ValueNode pushedValue) {
         assert pushedValue != null && pushedValue.getStackKind() == popKind;
@@ -370,18 +368,18 @@ public final class FrameState extends VirtualState implements IterableNodeType {
     }
 
     /**
-     * Creates a copy of this frame state with one stack element of type popKind popped from the
-     * stack and the values in pushedValues pushed on the stack. The pushedValues will be formatted
-     * correctly in slot encoding: a long or double will be followed by a null slot. The bci will be
-     * changed to newBci.
+     * Creates a copy of this frame state with one stack element of type popKind popped from the stack
+     * and the values in pushedValues pushed on the stack. The pushedValues will be formatted correctly
+     * in slot encoding: a long or double will be followed by a null slot. The bci will be changed to
+     * newBci.
      */
     public FrameState duplicateModified(StructuredGraph graph, int newBci, boolean newRethrowException, boolean newDuringCall, JavaKind popKind, JavaKind[] pushedSlotKinds, ValueNode[] pushedValues) {
-        ArrayList<ValueNode> copy;
+        SpecifiedArrayList<ValueNode> copy;
         if (newRethrowException && !rethrowException && popKind == JavaKind.Void) {
             assert popKind == JavaKind.Void;
-            copy = new ArrayList<>(values.subList(0, localsSize));
+            copy = SpecifiedArrayList.createNew(values.subList(0, localsSize));
         } else {
-            copy = new ArrayList<>(values.subList(0, localsSize + stackSize));
+            copy = SpecifiedArrayList.createNew(values.subList(0, localsSize + stackSize));
             if (popKind != JavaKind.Void) {
                 if (stackAt(stackSize() - 1) == null) {
                     copy.remove(copy.size() - 1);
@@ -408,8 +406,8 @@ public final class FrameState extends VirtualState implements IterableNodeType {
     }
 
     /**
-     * Perform a few sanity checks on the transformation of the stack state. The current expectation
-     * is that a stateAfter is being transformed into a stateDuring, so the stack depth may change.
+     * Perform a few sanity checks on the transformation of the stack state. The current expectation is
+     * that a stateAfter is being transformed into a stateDuring, so the stack depth may change.
      */
     private boolean checkStackDepth(int oldBci, int oldStackSize, boolean oldDuringCall, boolean oldRethrowException, int newBci, int newStackSize, boolean newDuringCall,
                     boolean newRethrowException) {
@@ -417,9 +415,8 @@ public final class FrameState extends VirtualState implements IterableNodeType {
             return true;
         }
         /*
-         * It would be nice to have a complete check of the shape of the FrameState based on a
-         * dataflow of the bytecodes but for now just check for obvious expression stack depth
-         * mistakes.
+         * It would be nice to have a complete check of the shape of the FrameState based on a dataflow of
+         * the bytecodes but for now just check for obvious expression stack depth mistakes.
          */
         byte[] codes = code.getCode();
         if (codes == null) {
@@ -591,8 +588,8 @@ public final class FrameState extends VirtualState implements IterableNodeType {
             }
         }
         /*
-         * The outermost FrameState should have a method that matches StructuredGraph.method except
-         * when it's a substitution or it's null.
+         * The outermost FrameState should have a method that matches StructuredGraph.method except when
+         * it's a substitution or it's null.
          */
         assertTrue(outerFrameState != null || graph() == null || graph().method() == null || code == null || Objects.equals(graph().method(), code.getMethod()) ||
                         graph().method().getAnnotation(MethodSubstitution.class) != null, "wrong outerFrameState %s != %s", code == null ? "null" : code.getMethod(), graph().method());

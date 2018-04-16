@@ -23,11 +23,11 @@
 package org.graalvm.compiler.lir.constopt;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Deque;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.Indent;
@@ -60,8 +60,8 @@ public final class ConstantTreeAnalyzer {
     /**
      * Queues all relevant blocks for {@linkplain #process processing}.
      *
-     * This is a worklist-style algorithm because a (more elegant) recursive implementation may
-     * cause {@linkplain StackOverflowError stack overflows} on larger graphs.
+     * This is a worklist-style algorithm because a (more elegant) recursive implementation may cause
+     * {@linkplain StackOverflowError stack overflows} on larger graphs.
      *
      * @param startBlock The start block of the dominator subtree.
      */
@@ -101,13 +101,13 @@ public final class ConstantTreeAnalyzer {
     }
 
     /**
-     * Calculates the cost of a {@code block}. It is assumed that all {@code children} have already
-     * been {@linkplain #process processed}
+     * Calculates the cost of a {@code block}. It is assumed that all {@code children} have already been
+     * {@linkplain #process processed}
      *
      * @param block The block to be processed.
      */
     private void process(AbstractBlockBase<?> block) {
-        List<UseEntry> usages = new ArrayList<>();
+        List<UseEntry> usages = SpecifiedArrayList.createNew();
         double bestCost = 0;
         int numMat = 0;
 
@@ -147,13 +147,13 @@ public final class ConstantTreeAnalyzer {
      * This is the cost function that decides whether a materialization should be inserted in the
      * current block.
      * <p>
-     * Note that this function does not take into account if a materialization is required despite
-     * the probabilities (e.g. there are usages in the current block).
+     * Note that this function does not take into account if a materialization is required despite the
+     * probabilities (e.g. there are usages in the current block).
      *
      * @param probabilityBlock Probability of the current block.
      * @param probabilityChildren Accumulated probability of the children.
-     * @param numMat Number of materializations along the subtrees. We use {@code numMat - 1} to
-     *            insert materializations as late as possible if the probabilities are the same.
+     * @param numMat Number of materializations along the subtrees. We use {@code numMat - 1} to insert
+     *            materializations as late as possible if the probabilities are the same.
      */
     private static boolean shouldMaterializerInCurrentBlock(double probabilityBlock, double probabilityChildren, int numMat) {
         return probabilityBlock * Math.pow(0.9, numMat - 1) < probabilityChildren;

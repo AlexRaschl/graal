@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.nodes.cfg;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractControlFlowGraph;
 import org.graalvm.compiler.core.common.cfg.CFGVerifier;
 import org.graalvm.compiler.core.common.cfg.Loop;
@@ -52,10 +52,9 @@ import org.graalvm.compiler.nodes.StructuredGraph.GuardsStage;
 public final class ControlFlowGraph implements AbstractControlFlowGraph<Block> {
     /**
      * Don't allow probability values to be become too small or too high as this makes frequency
-     * calculations over- or underflow the range of a double. This commonly happens with infinite
-     * loops within infinite loops. The value is chosen a bit lower than half the maximum exponent
-     * supported by double. That way we can never overflow to infinity when multiplying two
-     * probability values.
+     * calculations over- or underflow the range of a double. This commonly happens with infinite loops
+     * within infinite loops. The value is chosen a bit lower than half the maximum exponent supported
+     * by double. That way we can never overflow to infinity when multiplying two probability values.
      */
     public static final double MIN_PROBABILITY = 0x1.0p-500;
     public static final double MAX_PROBABILITY = 1 / MIN_PROBABILITY;
@@ -440,8 +439,8 @@ public final class ControlFlowGraph implements AbstractControlFlowGraph<Block> {
     }
 
     /**
-     * Identify and connect blocks (including loop backward edges). Predecessors need to be in the
-     * order expected when iterating phi inputs.
+     * Identify and connect blocks (including loop backward edges). Predecessors need to be in the order
+     * expected when iterating phi inputs.
      */
     private void identifyBlocks() {
         // Find all block headers.
@@ -586,7 +585,7 @@ public final class ControlFlowGraph implements AbstractControlFlowGraph<Block> {
     }
 
     private void computeLoopInformation() {
-        loops = new ArrayList<>();
+        loops = SpecifiedArrayList.createNew();
         if (graph.hasLoops()) {
             Block[] stack = new Block[this.reversePostOrder.length];
             for (Block block : reversePostOrder) {
@@ -656,13 +655,11 @@ public final class ControlFlowGraph implements AbstractControlFlowGraph<Block> {
                                 /*
                                  * succ also has a loop, might be a child loop
                                  *
-                                 * if it is a child loop we do not exit a loop. if it is a loop
-                                 * different than b.loop and not a child loop it must be a parent
-                                 * loop, thus we exit all loops between b.loop and succ.loop
+                                 * if it is a child loop we do not exit a loop. if it is a loop different than b.loop and not a
+                                 * child loop it must be a parent loop, thus we exit all loops between b.loop and succ.loop
                                  *
-                                 * if we exit multiple loops immediately after each other the
-                                 * bytecode parser might generate loop exit nodes after another and
-                                 * the CFG will identify them as separate blocks, we just take the
+                                 * if we exit multiple loops immediately after each other the bytecode parser might generate loop
+                                 * exit nodes after another and the CFG will identify them as separate blocks, we just take the
                                  * first one and exit all loops at this one
                                  */
                                 if (succ.getLoop().getParent() != b.getLoop()) {

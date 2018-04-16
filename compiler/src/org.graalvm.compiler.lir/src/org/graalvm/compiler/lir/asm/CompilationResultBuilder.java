@@ -27,13 +27,13 @@ import static jdk.vm.ci.code.ValueUtil.isStackSlot;
 import static org.graalvm.compiler.lir.LIRValueUtil.asJavaConstant;
 import static org.graalvm.compiler.lir.LIRValueUtil.isJavaConstant;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.asm.AbstractAddress;
 import org.graalvm.compiler.asm.Assembler;
 import org.graalvm.compiler.code.CompilationResult;
@@ -173,8 +173,8 @@ public class CompilationResultBuilder {
 
         if (dataBuilder.needDetailedPatchingInformation() || Assertions.assertionsEnabled()) {
             /*
-             * Always enabled in debug mode, even when the VM does not request detailed information,
-             * to increase test coverage.
+             * Always enabled in debug mode, even when the VM does not request detailed information, to increase
+             * test coverage.
              */
             asm.setCodePatchingAnnotationConsumer(assemblerCodeAnnotation -> compilationResult.addAnnotation(new AssemblerAnnotation(assemblerCodeAnnotation)));
         }
@@ -198,8 +198,8 @@ public class CompilationResultBuilder {
 
     /**
      * Sets the {@linkplain CompilationResult#setTargetCode(byte[], int) code} and
-     * {@linkplain CompilationResult#recordExceptionHandler(int, int) exception handler} fields of
-     * the compilation result and then {@linkplain #closeCompilationResult() closes} it.
+     * {@linkplain CompilationResult#recordExceptionHandler(int, int) exception handler} fields of the
+     * compilation result and then {@linkplain #closeCompilationResult() closes} it.
      */
     public void finish() {
         int position = asm.position();
@@ -226,7 +226,7 @@ public class CompilationResultBuilder {
         if (info != null) {
             if (info.exceptionEdge != null) {
                 if (exceptionInfoList == null) {
-                    exceptionInfoList = new ArrayList<>(4);
+                    exceptionInfoList = SpecifiedArrayList.createNew(4);
                 }
                 exceptionInfoList.add(new ExceptionInfo(pcOffset, info.exceptionEdge));
             }
@@ -333,8 +333,8 @@ public class CompilationResultBuilder {
     }
 
     /**
-     * Notifies this object of a call instruction belonging to an INVOKEVIRTUAL or INVOKEINTERFACE
-     * at offset {@code pcOffset} in the code.
+     * Notifies this object of a call instruction belonging to an INVOKEVIRTUAL or INVOKEINTERFACE at
+     * offset {@code pcOffset} in the code.
      *
      * @param nodeSourcePosition source position of the corresponding invoke.
      */
@@ -470,8 +470,7 @@ public class CompilationResultBuilder {
     }
 
     /**
-     * Determines if a given edge from the block currently being emitted goes to its lexical
-     * successor.
+     * Determines if a given edge from the block currently being emitted goes to its lexical successor.
      */
     public boolean isSuccessorEdge(LabelRef edge) {
         assert lir != null;

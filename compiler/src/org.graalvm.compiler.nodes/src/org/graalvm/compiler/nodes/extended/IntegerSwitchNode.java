@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.spi.ConstantFieldProvider;
 import org.graalvm.compiler.core.common.type.IntegerStamp;
 import org.graalvm.compiler.core.common.type.PrimitiveStamp;
@@ -162,8 +163,8 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
     }
 
     /**
-     * Remove unreachable keys from the switch based on the stamp of the value, i.e., based on the
-     * known range of the switch value.
+     * Remove unreachable keys from the switch based on the stamp of the value, i.e., based on the known
+     * range of the switch value.
      */
     public boolean tryRemoveUnreachableKeys(SimplifierTool tool, Stamp valueStamp) {
         if (!(valueStamp instanceof IntegerStamp)) {
@@ -174,8 +175,8 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
             return false;
         }
 
-        List<KeyData> newKeyDatas = new ArrayList<>(keys.length);
-        ArrayList<AbstractBeginNode> newSuccessors = new ArrayList<>(blockSuccessorCount());
+        List<KeyData> newKeyDatas = SpecifiedArrayList.createNew(keys.length);
+        SpecifiedArrayList<AbstractBeginNode> newSuccessors = SpecifiedArrayList.createNew(blockSuccessorCount());
         for (int i = 0; i < keys.length; i++) {
             if (integerStamp.contains(keys[i]) && keySuccessor(i) != defaultSuccessor()) {
                 newKeyDatas.add(new KeyData(keys[i], keyProbabilities[i], addNewSuccessor(keySuccessor(i), newSuccessors)));
@@ -202,15 +203,15 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
     }
 
     /**
-     * For switch statements on enum values, the Java compiler has to generate complicated code:
-     * because {@link Enum#ordinal()} can change when recompiling an enum, it cannot be used
-     * directly as the value that is switched on. An intermediate int[] array, which is initialized
-     * once at run time based on the actual {@link Enum#ordinal()} values, is used.
+     * For switch statements on enum values, the Java compiler has to generate complicated code: because
+     * {@link Enum#ordinal()} can change when recompiling an enum, it cannot be used directly as the
+     * value that is switched on. An intermediate int[] array, which is initialized once at run time
+     * based on the actual {@link Enum#ordinal()} values, is used.
      *
      * The {@link ConstantFieldProvider} of Graal already detects the int[] arrays and marks them as
-     * {@link ConstantNode#isDefaultStable() stable}, i.e., the array elements are constant. The
-     * code in this method detects array loads from such a stable array and re-wires the switch to
-     * use the keys from the array elements, so that the array load is unnecessary.
+     * {@link ConstantNode#isDefaultStable() stable}, i.e., the array elements are constant. The code in
+     * this method detects array loads from such a stable array and re-wires the switch to use the keys
+     * from the array elements, so that the array load is unnecessary.
      */
     private boolean tryOptimizeEnumSwitch(SimplifierTool tool) {
         if (!(value() instanceof LoadIndexedNode)) {
@@ -220,8 +221,7 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
         LoadIndexedNode loadIndexed = (LoadIndexedNode) value();
         if (loadIndexed.usages().count() > 1) {
             /*
-             * The array load is necessary for other reasons too, so there is no benefit optimizing
-             * the switch.
+             * The array load is necessary for other reasons too, so there is no benefit optimizing the switch.
              */
             return false;
         }
@@ -231,8 +231,8 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
         JavaConstant arrayConstant = loadIndexed.array().asJavaConstant();
         if (arrayConstant == null || ((ConstantNode) loadIndexed.array()).getStableDimension() != 1 || !((ConstantNode) loadIndexed.array()).isDefaultStable()) {
             /*
-             * The array is a constant that we can optimize. We require the array elements to be
-             * constant too, since we put them as literal constants into the switch keys.
+             * The array is a constant that we can optimize. We require the array elements to be constant too,
+             * since we put them as literal constants into the switch keys.
              */
             return false;
         }
@@ -254,15 +254,15 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
             int element = elementConstant.asInt();
 
             /*
-             * The value loaded from the array is the old switch key, the index into the array is
-             * the new switch key. We build a mapping from the old switch key to new keys.
+             * The value loaded from the array is the old switch key, the index into the array is the new switch
+             * key. We build a mapping from the old switch key to new keys.
              */
             reverseArrayMapping.computeIfAbsent(element, e -> new ArrayList<>()).add(i);
         }
 
         /* Build high-level representation of new switch keys. */
-        List<KeyData> newKeyDatas = new ArrayList<>(arrayLength);
-        ArrayList<AbstractBeginNode> newSuccessors = new ArrayList<>(blockSuccessorCount());
+        List<KeyData> newKeyDatas = SpecifiedArrayList.createNew(arrayLength);
+        SpecifiedArrayList<AbstractBeginNode> newSuccessors = SpecifiedArrayList.createNew(blockSuccessorCount());
         for (int i = 0; i < keys.length; i++) {
             List<Integer> newKeys = reverseArrayMapping.get(keys[i]);
             if (newKeys == null || newKeys.size() == 0) {
@@ -271,8 +271,8 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
             }
 
             /*
-             * We do not have detailed profiling information about the individual new keys, so we
-             * have to assume they split the probability of the old key.
+             * We do not have detailed profiling information about the individual new keys, so we have to assume
+             * they split the probability of the old key.
              */
             double newKeyProbability = keyProbabilities[i] / newKeys.size();
             int newKeySuccessor = addNewSuccessor(keySuccessor(i), newSuccessors);
@@ -286,15 +286,14 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
         double newDefaultProbability = keyProbabilities[keyProbabilities.length - 1];
 
         /*
-         * We remove the array load, but we still need to preserve exception semantics by keeping
-         * the bounds check. Fortunately the array length is a constant.
+         * We remove the array load, but we still need to preserve exception semantics by keeping the bounds
+         * check. Fortunately the array length is a constant.
          */
         LogicNode boundsCheck = graph().unique(new IntegerBelowNode(newValue, ConstantNode.forInt(arrayLength, graph())));
         graph().addBeforeFixed(this, graph().add(new FixedGuardNode(boundsCheck, DeoptimizationReason.BoundsCheckException, DeoptimizationAction.InvalidateReprofile)));
 
         /*
-         * Build the low-level representation of the new switch keys and replace ourself with a new
-         * node.
+         * Build the low-level representation of the new switch keys and replace ourself with a new node.
          */
         doReplace(newValue, newKeyDatas, newSuccessors, newDefaultSuccessor, newDefaultProbability);
 
@@ -305,7 +304,7 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
         return true;
     }
 
-    private static int addNewSuccessor(AbstractBeginNode newSuccessor, ArrayList<AbstractBeginNode> newSuccessors) {
+    private static int addNewSuccessor(AbstractBeginNode newSuccessor, SpecifiedArrayList<AbstractBeginNode> newSuccessors) {
         int index = newSuccessors.indexOf(newSuccessor);
         if (index == -1) {
             index = newSuccessors.size();
@@ -314,7 +313,7 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
         return index;
     }
 
-    private void doReplace(ValueNode newValue, List<KeyData> newKeyDatas, ArrayList<AbstractBeginNode> newSuccessors, int newDefaultSuccessor, double newDefaultProbability) {
+    private void doReplace(ValueNode newValue, List<KeyData> newKeyDatas, SpecifiedArrayList<AbstractBeginNode> newSuccessors, int newDefaultSuccessor, double newDefaultProbability) {
         /* Sort the new keys (invariant of the IntegerSwitchNode). */
         newKeyDatas.sort((k1, k2) -> k1.key - k2.key);
 

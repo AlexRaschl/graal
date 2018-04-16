@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -69,7 +70,7 @@ public class StackMoveOptimizationPhase extends PostAllocationOptimizationPhase 
         LIR lir = lirGenRes.getLIR();
         DebugContext debug = lir.getDebug();
         for (AbstractBlockBase<?> block : lir.getControlFlowGraph().getBlocks()) {
-            ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
             new Closure().process(debug, instructions);
         }
     }
@@ -99,8 +100,8 @@ public class StackMoveOptimizationPhase extends PostAllocationOptimizationPhase 
                     // lazy initialize
                     if (dst == null) {
                         assert src == null;
-                        dst = new ArrayList<>();
-                        src = new ArrayList<>();
+                        dst = SpecifiedArrayList.createNew();
+                        src = SpecifiedArrayList.createNew();
                     }
 
                     dst.add(move.getResult());

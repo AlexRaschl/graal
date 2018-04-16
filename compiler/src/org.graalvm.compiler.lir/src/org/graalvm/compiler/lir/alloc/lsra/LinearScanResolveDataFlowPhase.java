@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.lir.alloc.lsra;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.Indent;
@@ -87,7 +87,7 @@ public class LinearScanResolveDataFlowPhase extends LinearScanAllocationPhase {
                 debug.log("inserting moves at end of fromBlock B%d", fromBlock.getId());
             }
 
-            ArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(fromBlock);
+            SpecifiedArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(fromBlock);
             LIRInstruction instr = instructions.get(instructions.size() - 1);
             if (instr instanceof StandardOp.JumpOp) {
                 // insert moves before branch
@@ -105,9 +105,9 @@ public class LinearScanResolveDataFlowPhase extends LinearScanAllocationPhase {
                 assert allocator.getLIR().getLIRforBlock(fromBlock).get(0) instanceof StandardOp.LabelOp : "block does not start with a label";
 
                 /*
-                 * Because the number of predecessor edges matches the number of successor edges,
-                 * blocks which are reached by switch statements may have be more than one
-                 * predecessor but it will be guaranteed that all predecessors will be the same.
+                 * Because the number of predecessor edges matches the number of successor edges, blocks which are
+                 * reached by switch statements may have be more than one predecessor but it will be guaranteed that
+                 * all predecessors will be the same.
                  */
                 for (AbstractBlockBase<?> predecessor : toBlock.getPredecessors()) {
                     assert fromBlock == predecessor : "all critical edges must be broken";
@@ -119,8 +119,8 @@ public class LinearScanResolveDataFlowPhase extends LinearScanAllocationPhase {
     }
 
     /**
-     * Inserts necessary moves (spilling or reloading) at edges between blocks for intervals that
-     * have been split.
+     * Inserts necessary moves (spilling or reloading) at edges between blocks for intervals that have
+     * been split.
      */
     @SuppressWarnings("try")
     protected void resolveDataFlow() {
@@ -141,7 +141,7 @@ public class LinearScanResolveDataFlowPhase extends LinearScanAllocationPhase {
 
             // check if block has only one predecessor and only one successor
             if (block.getPredecessorCount() == 1 && block.getSuccessorCount() == 1) {
-                ArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(block);
+                SpecifiedArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(block);
                 assert instructions.get(0) instanceof StandardOp.LabelOp : "block must start with label";
                 assert instructions.get(instructions.size() - 1) instanceof StandardOp.JumpOp : "block with successor must end with unconditional jump";
 
@@ -160,8 +160,7 @@ public class LinearScanResolveDataFlowPhase extends LinearScanAllocationPhase {
                         blockCompleted.set(block.getLinearScanNumber());
 
                         /*
-                         * Directly resolve between pred and sux (without looking at the empty block
-                         * between).
+                         * Directly resolve between pred and sux (without looking at the empty block between).
                          */
                         resolveCollectMappings(pred, sux, block, moveResolver);
                         if (moveResolver.hasMappings()) {
@@ -184,8 +183,7 @@ public class LinearScanResolveDataFlowPhase extends LinearScanAllocationPhase {
                 for (AbstractBlockBase<?> toBlock : fromBlock.getSuccessors()) {
 
                     /*
-                     * Check for duplicate edges between the same blocks (can happen with switch
-                     * blocks).
+                     * Check for duplicate edges between the same blocks (can happen with switch blocks).
                      */
                     if (!alreadyResolved.get(toBlock.getLinearScanNumber())) {
                         DebugContext debug = allocator.getDebug();

@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.lir.constopt;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.lir.Variable;
 
 /**
@@ -35,10 +35,10 @@ import org.graalvm.compiler.lir.Variable;
  */
 class VariableMap<T> {
 
-    private final ArrayList<T> content;
+    private final SpecifiedArrayList<T> content;
 
     VariableMap() {
-        content = new ArrayList<>();
+        content = SpecifiedArrayList.createNew();
     }
 
     public T get(Variable key) {

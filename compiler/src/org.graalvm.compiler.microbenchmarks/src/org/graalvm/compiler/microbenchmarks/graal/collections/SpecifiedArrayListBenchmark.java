@@ -3,6 +3,7 @@ package org.graalvm.compiler.microbenchmarks.graal.collections;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.compiler.microbenchmarks.graal.GraalBenchmark;
@@ -20,7 +21,7 @@ public class SpecifiedArrayListBenchmark extends GraalBenchmark {
 
     @State(Scope.Benchmark)
     public static class ThreadState {
-        final SpecifiedArrayListImpl<Integer> list = new SpecifiedArrayListImpl<>(N);
+        final SpecifiedArrayList<Integer> list = new SpecifiedArrayList<>(N);
 
         @TearDown(Level.Trial)
         public void teardown() {

@@ -27,8 +27,7 @@ import static org.graalvm.compiler.lir.LIRValueUtil.asVariable;
 import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.Trace;
 import org.graalvm.compiler.core.common.alloc.TraceBuilderResult;
@@ -80,8 +79,8 @@ final class TraceLinearScanEliminateSpillMovePhase extends TraceLinearScanAlloca
             allocator.sortIntervalsBySpillPos();
 
             /*
-             * collect all intervals that must be stored after their definition. The list is sorted
-             * by Interval.spillDefinitionPos.
+             * collect all intervals that must be stored after their definition. The list is sorted by
+             * Interval.spillDefinitionPos.
              */
             TraceInterval interval = allocator.createUnhandledListBySpillPos(spilledIntervals);
             if (Assertions.detailedAssertionsEnabled(allocator.getOptions())) {
@@ -98,7 +97,7 @@ final class TraceLinearScanEliminateSpillMovePhase extends TraceLinearScanAlloca
             LIRInsertionBuffer insertionBuffer = new LIRInsertionBuffer();
             for (AbstractBlockBase<?> block : allocator.sortedBlocks()) {
                 try (Indent indent1 = debug.logAndIndent("Handle %s", block)) {
-                    ArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(block);
+                    SpecifiedArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(block);
                     int numInst = instructions.size();
 
                     int lastOpId = -1;
@@ -111,14 +110,12 @@ final class TraceLinearScanEliminateSpillMovePhase extends TraceLinearScanAlloca
                             if (opId == -1) {
                                 MoveOp move = MoveOp.asMoveOp(op);
                                 /*
-                                 * Remove move from register to stack if the stack slot is
-                                 * guaranteed to be correct. Only moves that have been inserted by
-                                 * LinearScan can be removed.
+                                 * Remove move from register to stack if the stack slot is guaranteed to be correct. Only moves that
+                                 * have been inserted by LinearScan can be removed.
                                  */
                                 if (shouldEliminateSpillMoves && canEliminateSpillMove(allocator, block, move, lastOpId)) {
                                     /*
-                                     * Move target is a stack slot that is always correct, so
-                                     * eliminate instruction.
+                                     * Move target is a stack slot that is always correct, so eliminate instruction.
                                      */
                                     if (debug.isLogEnabled()) {
                                         if (ValueMoveOp.isValueMoveOp(op)) {
@@ -138,8 +135,7 @@ final class TraceLinearScanEliminateSpillMovePhase extends TraceLinearScanAlloca
                             } else {
                                 lastOpId = opId;
                                 /*
-                                 * Insert move from register to stack just after the beginning of
-                                 * the interval.
+                                 * Insert move from register to stack just after the beginning of the interval.
                                  */
                                 // assert interval == TraceInterval.EndMarker ||
                                 // interval.spillDefinitionPos() >= opId : "invalid order";
@@ -155,8 +151,7 @@ final class TraceLinearScanEliminateSpillMovePhase extends TraceLinearScanAlloca
 
                                             if (!insertionBuffer.initialized()) {
                                                 /*
-                                                 * prepare insertion buffer (appended when all
-                                                 * instructions in the block are processed)
+                                                 * prepare insertion buffer (appended when all instructions in the block are processed)
                                                  */
                                                 insertionBuffer.init(instructions);
                                             }
@@ -194,8 +189,8 @@ final class TraceLinearScanEliminateSpillMovePhase extends TraceLinearScanAlloca
      * @param allocator
      * @param block The block {@code move} is located in.
      * @param move Spill move.
-     * @param lastOpId The id of last "normal" instruction before the spill move. (Spill moves have
-     *            no valid opId but -1.)
+     * @param lastOpId The id of last "normal" instruction before the spill move. (Spill moves have no
+     *            valid opId but -1.)
      */
     private static boolean canEliminateSpillMove(TraceLinearScan allocator, AbstractBlockBase<?> block, MoveOp move, int lastOpId) {
         assert ((LIRInstruction) move).id() == -1 : "Not a spill move: " + move;
@@ -218,8 +213,8 @@ final class TraceLinearScanEliminateSpillMovePhase extends TraceLinearScanAlloca
      *
      * A spill or split move connects a split parent or a split child with another split child.
      * Therefore the destination of the move is always a split child. Phi resolution moves look like
-     * spill moves (i.e. {@link LIRInstruction#id() id} is {@code 0}, but they define a new
-     * variable. As a result the destination interval is a split parent.
+     * spill moves (i.e. {@link LIRInstruction#id() id} is {@code 0}, but they define a new variable. As
+     * a result the destination interval is a split parent.
      */
     private static boolean isPhiResolutionMove(TraceLinearScan allocator, MoveOp move) {
         assert ((LIRInstruction) move).id() == -1 : "Not a spill move: " + move;

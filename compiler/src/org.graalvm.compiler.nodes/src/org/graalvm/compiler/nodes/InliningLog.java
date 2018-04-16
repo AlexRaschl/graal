@@ -22,20 +22,21 @@
  */
 package org.graalvm.compiler.nodes;
 
-import jdk.vm.ci.meta.MetaUtil;
-import jdk.vm.ci.meta.ResolvedJavaMethod;
+import java.util.List;
+import java.util.function.BiConsumer;
+
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.MapCursor;
 import org.graalvm.collections.UnmodifiableEconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.GraalOptions;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.options.OptionValues;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
+import jdk.vm.ci.meta.MetaUtil;
+import jdk.vm.ci.meta.ResolvedJavaMethod;
 
 /**
  * This class contains all inlining decisions performed on a graph during the compilation.
@@ -101,8 +102,8 @@ public class InliningLog {
 
         Callsite(Callsite parent, Invokable originalInvoke) {
             this.parent = parent;
-            this.decisions = new ArrayList<>();
-            this.children = new ArrayList<>();
+            this.decisions = SpecifiedArrayList.createNew();
+            this.children = SpecifiedArrayList.createNew();
             this.invoke = originalInvoke;
         }
 
@@ -139,8 +140,8 @@ public class InliningLog {
      * Add an inlining decision for the specified invoke.
      *
      * An inlining decision can be either positive or negative. A positive inlining decision must be
-     * logged after replacing an {@link Invoke} with a graph. In this case, the node replacement map
-     * and the {@link InliningLog} of the inlined graph must be provided.
+     * logged after replacing an {@link Invoke} with a graph. In this case, the node replacement map and
+     * the {@link InliningLog} of the inlined graph must be provided.
      */
     public void addDecision(Invokable invoke, boolean positive, String reason, String phase, EconomicMap<Node, Node> replacements, InliningLog calleeLog) {
         assert leaves.containsKey(invoke);
@@ -174,8 +175,8 @@ public class InliningLog {
     /**
      * Append the inlining decision tree from the specified log.
      *
-     * The subtrees of the specified log are appended below the root of this log. This is usually
-     * called when a node in the graph is replaced with its snippet.
+     * The subtrees of the specified log are appended below the root of this log. This is usually called
+     * when a node in the graph is replaced with its snippet.
      *
      * @see InliningLog#addDecision
      */
@@ -296,12 +297,12 @@ public class InliningLog {
     /**
      * Creates and sets a new update scope for the log.
      *
-     * The specified {@code updater} is invoked when an {@link Invokable} node is registered or
-     * cloned. If the node is newly registered, then the first argument to the {@code updater} is
-     * {@code null}. If the node is cloned, then the first argument is the node it was cloned from.
+     * The specified {@code updater} is invoked when an {@link Invokable} node is registered or cloned.
+     * If the node is newly registered, then the first argument to the {@code updater} is {@code null}.
+     * If the node is cloned, then the first argument is the node it was cloned from.
      *
-     * @param updater an operation taking a null (or the original node), and the registered (or
-     *            cloned) {@link Invokable}
+     * @param updater an operation taking a null (or the original node), and the registered (or cloned)
+     *            {@link Invokable}
      * @return a bound {@link UpdateScope} object, or a {@code null} if tracing is disabled
      */
     public UpdateScope openUpdateScope(BiConsumer<Invokable, Invokable> updater) {
@@ -317,9 +318,9 @@ public class InliningLog {
     /**
      * Creates a new update scope that does not update the log.
      *
-     * This update scope will not add a newly created {@code Invokable} to the log, nor will it
-     * amend its position if it was cloned. Instead, users need to update the inlining log with the
-     * new {@code Invokable} on their own.
+     * This update scope will not add a newly created {@code Invokable} to the log, nor will it amend
+     * its position if it was cloned. Instead, users need to update the inlining log with the new
+     * {@code Invokable} on their own.
      *
      * @see #openUpdateScope
      */

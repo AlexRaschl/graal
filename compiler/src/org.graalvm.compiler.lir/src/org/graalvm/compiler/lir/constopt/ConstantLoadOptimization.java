@@ -33,6 +33,7 @@ import java.util.Deque;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
 import org.graalvm.compiler.debug.CounterKey;
@@ -181,7 +182,7 @@ public final class ConstantLoadOptimization extends PreAllocationOptimizationPha
             AbstractBlockBase<?> block = entry.getBlock();
             List<UseEntry> list = blockMap.get(block);
             if (list == null) {
-                list = new ArrayList<>();
+                list = SpecifiedArrayList.createNew();
                 blockMap.put(block, list);
             }
             list.add(entry);
@@ -332,8 +333,8 @@ public final class ConstantLoadOptimization extends PreAllocationOptimizationPha
         }
 
         /**
-         * Inserts the constant loads created in {@link #createConstantTree} and deletes the
-         * original definition.
+         * Inserts the constant loads created in {@link #createConstantTree} and deletes the original
+         * definition.
          */
         private void rewriteBlock(AbstractBlockBase<?> block) {
             // insert moves
@@ -344,7 +345,7 @@ public final class ConstantLoadOptimization extends PreAllocationOptimizationPha
             }
 
             // delete instructions
-            ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
             boolean hasDead = false;
             for (LIRInstruction inst : instructions) {
                 if (inst == null) {
@@ -372,7 +373,7 @@ public final class ConstantLoadOptimization extends PreAllocationOptimizationPha
                 insertionBuffer = new LIRInsertionBuffer();
                 insertionBuffers.put(block, insertionBuffer);
                 assert !insertionBuffer.initialized() : "already initialized?";
-                ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+                SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
                 insertionBuffer.init(instructions);
             }
             return insertionBuffer;

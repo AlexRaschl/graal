@@ -28,10 +28,10 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.Indent;
@@ -85,9 +85,8 @@ public class LinearScanAssignLocationsPhase extends LinearScanAllocationPhase {
                 AbstractBlockBase<?> block = allocator.blockForId(opId);
                 if (block.getSuccessorCount() <= 1 && opId == allocator.getLastLirInstructionId(block)) {
                     /*
-                     * Check if spill moves could have been appended at the end of this block, but
-                     * before the branch instruction. So the split child information for this branch
-                     * would be incorrect.
+                     * Check if spill moves could have been appended at the end of this block, but before the branch
+                     * instruction. So the split child information for this branch would be incorrect.
                      */
                     LIRInstruction instr = allocator.getLIR().getLIRforBlock(block).get(allocator.getLIR().getLIRforBlock(block).size() - 1);
                     if (instr instanceof StandardOp.JumpOp) {
@@ -101,8 +100,8 @@ public class LinearScanAssignLocationsPhase extends LinearScanAllocationPhase {
             }
 
             /*
-             * Operands are not changed when an interval is split during allocation, so search the
-             * right interval here.
+             * Operands are not changed when an interval is split during allocation, so search the right
+             * interval here.
              */
             interval = allocator.splitChildAtOpId(interval, opId, mode);
         }
@@ -123,10 +122,9 @@ public class LinearScanAssignLocationsPhase extends LinearScanAllocationPhase {
         AbstractBlockBase<?> block = allocator.blockForId(tempOpId);
         if (block.getSuccessorCount() == 1 && tempOpId == allocator.getLastLirInstructionId(block)) {
             /*
-             * Generating debug information for the last instruction of a block. If this instruction
-             * is a branch, spill moves are inserted before this branch and so the wrong operand
-             * would be returned (spill moves at block boundaries are not considered in the live
-             * ranges of intervals).
+             * Generating debug information for the last instruction of a block. If this instruction is a
+             * branch, spill moves are inserted before this branch and so the wrong operand would be returned
+             * (spill moves at block boundaries are not considered in the live ranges of intervals).
              *
              * Solution: use the first opId of the branch target block instead.
              */
@@ -140,16 +138,16 @@ public class LinearScanAssignLocationsPhase extends LinearScanAllocationPhase {
         }
 
         /*
-         * Get current location of operand. The operand must be live because debug information is
-         * considered when building the intervals if the interval is not live, colorLirOperand will
-         * cause an assert on failure.
+         * Get current location of operand. The operand must be live because debug information is considered
+         * when building the intervals if the interval is not live, colorLirOperand will cause an assert on
+         * failure.
          */
         Value result = colorLirOperand(op, (Variable) operand, mode);
         assert !allocator.hasCall(tempOpId) || isStackSlotValue(result) || isJavaConstant(result) || !allocator.isCallerSave(result) : "cannot have caller-save register operands at calls";
         return result;
     }
 
-    private void assignLocations(ArrayList<LIRInstruction> instructions) {
+    private void assignLocations(SpecifiedArrayList<LIRInstruction> instructions) {
         int numInst = instructions.size();
         boolean hasDead = false;
 
@@ -202,9 +200,9 @@ public class LinearScanAssignLocationsPhase extends LinearScanAllocationPhase {
             AllocatableValue result = MoveOp.asMoveOp(op).getResult();
             if (isVariable(result) && allocator.isMaterialized(result, op.id(), OperandMode.DEF)) {
                 /*
-                 * This happens if a materializable interval is originally not spilled but then
-                 * kicked out in LinearScanWalker.splitForSpilling(). When kicking out such an
-                 * interval this move operation was already generated.
+                 * This happens if a materializable interval is originally not spilled but then kicked out in
+                 * LinearScanWalker.splitForSpilling(). When kicking out such an interval this move operation was
+                 * already generated.
                  */
                 return true;
             }

@@ -24,8 +24,9 @@ package org.graalvm.compiler.core.test;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
 import java.util.Collection;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -86,7 +87,7 @@ public class ByteBufferTest extends GraalCompilerTest {
 
     @Parameters(name = "{0}")
     public static Collection<Object[]> data() {
-        ArrayList<Object[]> ret = new ArrayList<>();
+        SpecifiedArrayList<Object[]> ret = SpecifiedArrayList.createNew();
         ret.add(new Object[]{ByteOrder.BIG_ENDIAN});
         ret.add(new Object[]{ByteOrder.LITTLE_ENDIAN});
         return ret;

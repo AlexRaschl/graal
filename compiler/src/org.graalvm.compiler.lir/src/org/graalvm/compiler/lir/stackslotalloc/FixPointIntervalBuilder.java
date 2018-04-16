@@ -26,13 +26,13 @@ import static org.graalvm.compiler.lir.LIRValueUtil.asVirtualStackSlot;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Deque;
 import java.util.EnumSet;
 
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
 import org.graalvm.compiler.debug.CounterKey;
@@ -75,8 +75,8 @@ final class FixPointIntervalBuilder {
 
     /**
      * Builds the lifetime intervals for {@link VirtualStackSlot virtual stack slots}, sets up
-     * {@link #stackSlotMap} and returns a set of use positions, i.e. instructions that contain
-     * virtual stack slots.
+     * {@link #stackSlotMap} and returns a set of use positions, i.e. instructions that contain virtual
+     * stack slots.
      */
     EconomicSet<LIRInstruction> build() {
         Deque<AbstractBlockBase<?>> worklist = new ArrayDeque<>();
@@ -116,7 +116,7 @@ final class FixPointIntervalBuilder {
         DebugContext debug = lir.getDebug();
         if (updateOutBlock(block)) {
             try (Indent indent = debug.logAndIndent("handle block %s", block)) {
-                ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+                SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
                 // get out set and mark intervals
                 BitSet outSet = liveOutMap.get(block);
                 markOutInterval(outSet, getBlockEnd(instructions));
@@ -191,8 +191,8 @@ final class FixPointIntervalBuilder {
         }
 
         /**
-         * Process all values of an instruction bottom-up, i.e. definitions before usages. Values
-         * that start or end at the current operation are not included.
+         * Process all values of an instruction bottom-up, i.e. definitions before usages. Values that start
+         * or end at the current operation are not included.
          */
         @SuppressWarnings("try")
         private void processInstructionBottomUp(LIRInstruction op) {
@@ -315,11 +315,11 @@ final class FixPointIntervalBuilder {
         return stackSlotMap[id];
     }
 
-    private static int getBlockBegin(ArrayList<LIRInstruction> instructions) {
+    private static int getBlockBegin(SpecifiedArrayList<LIRInstruction> instructions) {
         return instructions.get(0).id();
     }
 
-    private static int getBlockEnd(ArrayList<LIRInstruction> instructions) {
+    private static int getBlockEnd(SpecifiedArrayList<LIRInstruction> instructions) {
         return instructions.get(instructions.size() - 1).id() + 1;
     }
 

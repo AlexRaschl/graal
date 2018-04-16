@@ -41,7 +41,6 @@ import static org.graalvm.compiler.asm.sparc.SPARCAssembler.CC.Xcc;
 import static org.graalvm.compiler.asm.sparc.SPARCAssembler.ConditionFlag.NotEqual;
 import static org.graalvm.compiler.core.common.GraalOptions.ZapStackOnMethodEntry;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,6 +48,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.asm.Assembler;
 import org.graalvm.compiler.asm.Label;
 import org.graalvm.compiler.asm.sparc.SPARCAddress;
@@ -260,8 +260,8 @@ public class SPARCHotSpotBackend extends HotSpotHostBackend {
     }
 
     /**
-     * Registers a verifier which checks if the LIRInstructions estimate of constants size is
-     * greater or equal to the actual one.
+     * Registers a verifier which checks if the LIRInstructions estimate of constants size is greater or
+     * equal to the actual one.
      */
     private static boolean registerSizePredictionValidator(final CompilationResultBuilder crb, DebugContext debug) {
         /**
@@ -427,12 +427,11 @@ public class SPARCHotSpotBackend extends HotSpotHostBackend {
     }
 
     /**
-     * Tries to put DelayedControlTransfer instructions and DelayableLIRInstructions together. Also
-     * it tries to move the DelayedLIRInstruction to the DelayedControlTransfer instruction, if
-     * possible.
+     * Tries to put DelayedControlTransfer instructions and DelayableLIRInstructions together. Also it
+     * tries to move the DelayedLIRInstruction to the DelayedControlTransfer instruction, if possible.
      */
     private static void stuffDelayedControlTransfers(LIR l, AbstractBlockBase<?> block) {
-        ArrayList<LIRInstruction> instructions = l.getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> instructions = l.getLIRforBlock(block);
         if (instructions.size() >= 2) {
             LIRDependencyAccumulator acc = new LIRDependencyAccumulator();
             SPARCDelayedControlTransfer delayedTransfer = null;
@@ -465,8 +464,8 @@ public class SPARCHotSpotBackend extends HotSpotHostBackend {
 
     /**
      * Accumulates inputs/outputs/temp/alive in a set along we walk back the LIRInstructions and
-     * detects, if there is any overlap. In this way LIRInstructions can be detected, which can be
-     * moved nearer to the DelayedControlTransfer instruction.
+     * detects, if there is any overlap. In this way LIRInstructions can be detected, which can be moved
+     * nearer to the DelayedControlTransfer instruction.
      */
     private static class LIRDependencyAccumulator {
         private final Set<Object> inputs = new HashSet<>(10);
@@ -491,8 +490,8 @@ public class SPARCHotSpotBackend extends HotSpotHostBackend {
         }
 
         /**
-         * Adds the inputs of lir instruction to the accumulator and returns, true if there was any
-         * overlap of parameters.
+         * Adds the inputs of lir instruction to the accumulator and returns, true if there was any overlap
+         * of parameters.
          *
          * @param inst
          * @return true if an overlap was found

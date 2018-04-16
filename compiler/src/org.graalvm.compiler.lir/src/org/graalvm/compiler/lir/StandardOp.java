@@ -28,10 +28,10 @@ import static org.graalvm.compiler.lir.LIRInstruction.OperandFlag.OUTGOING;
 import static org.graalvm.compiler.lir.LIRInstruction.OperandFlag.REG;
 import static org.graalvm.compiler.lir.LIRInstruction.OperandFlag.STACK;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
 import org.graalvm.collections.EconomicSet;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.asm.Label;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.GraalError;
@@ -52,8 +52,8 @@ import jdk.vm.ci.meta.Value;
 public class StandardOp {
 
     /**
-     * A block delimiter. Every well formed block must contain exactly one such operation and it
-     * must be the last operation in the block.
+     * A block delimiter. Every well formed block must contain exactly one such operation and it must be
+     * the last operation in the block.
      */
     public interface BlockEndOp {
     }
@@ -76,12 +76,12 @@ public class StandardOp {
         public static final EnumSet<OperandFlag> incomingFlags = EnumSet.of(REG, STACK);
 
         /**
-         * In the LIR, every register and variable must be defined before it is used. For method
-         * parameters that are passed in fixed registers, exception objects passed to the exception
-         * handler in a fixed register, or any other use of a fixed register not defined in this
-         * method, an artificial definition is necessary. To avoid spill moves to be inserted
-         * between the label at the beginning of a block an an actual definition in the second
-         * instruction of a block, the registers are defined here in the label.
+         * In the LIR, every register and variable must be defined before it is used. For method parameters
+         * that are passed in fixed registers, exception objects passed to the exception handler in a fixed
+         * register, or any other use of a fixed register not defined in this method, an artificial
+         * definition is necessary. To avoid spill moves to be inserted between the label at the beginning
+         * of a block an an actual definition in the second instruction of a block, the registers are
+         * defined here in the label.
          */
         @Def({REG, STACK}) private Value[] incomingValues;
         private final Label label;
@@ -289,8 +289,8 @@ public class StandardOp {
 
     /**
      * An operation that saves registers to the stack. The set of saved registers can be
-     * {@linkplain #remove(EconomicSet) pruned} and a mapping from registers to the frame slots in
-     * which they are saved can be {@linkplain #getMap(FrameMap) retrieved}.
+     * {@linkplain #remove(EconomicSet) pruned} and a mapping from registers to the frame slots in which
+     * they are saved can be {@linkplain #getMap(FrameMap) retrieved}.
      */
     public interface SaveRegistersOp {
 
@@ -304,25 +304,24 @@ public class StandardOp {
          *
          * @param doNotSave registers that should not be saved by this operation
          * @return the number of registers pruned
-         * @throws UnsupportedOperationException if removal is not {@linkplain #supportsRemove()
-         *             supported}
+         * @throws UnsupportedOperationException if removal is not {@linkplain #supportsRemove() supported}
          */
         int remove(EconomicSet<Register> doNotSave);
 
         /**
-         * Gets a map from the saved registers saved by this operation to the frame slots in which
-         * they are saved.
+         * Gets a map from the saved registers saved by this operation to the frame slots in which they are
+         * saved.
          *
-         * @param frameMap used to {@linkplain FrameMap#offsetForStackSlot(StackSlot) convert} a
-         *            virtual slot to a frame slot index
+         * @param frameMap used to {@linkplain FrameMap#offsetForStackSlot(StackSlot) convert} a virtual
+         *            slot to a frame slot index
          */
         RegisterSaveLayout getMap(FrameMap frameMap);
 
     }
 
     /**
-     * A LIR operation that does nothing. If the operation records its position, it can be
-     * subsequently {@linkplain #replace(LIR, LIRInstruction) replaced}.
+     * A LIR operation that does nothing. If the operation records its position, it can be subsequently
+     * {@linkplain #replace(LIR, LIRInstruction) replaced}.
      */
     public static final class NoOp extends LIRInstruction {
         public static final LIRInstructionClass<NoOp> TYPE = LIRInstructionClass.create(NoOp.class);
@@ -344,13 +343,13 @@ public class StandardOp {
         }
 
         public void replace(LIR lir, LIRInstruction replacement) {
-            ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
             assert instructions.get(index).equals(this) : String.format("Replacing the wrong instruction: %s instead of %s", instructions.get(index), this);
             instructions.set(index, replacement);
         }
 
         public void remove(LIR lir) {
-            ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
             assert instructions.get(index).equals(this) : String.format("Removing the wrong instruction: %s instead of %s", instructions.get(index), this);
             instructions.remove(index);
         }

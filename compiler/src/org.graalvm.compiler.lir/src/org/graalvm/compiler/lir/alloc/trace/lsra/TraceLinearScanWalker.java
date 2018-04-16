@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig.AllocatableRegisters;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.util.Util;
@@ -85,8 +87,7 @@ final class TraceLinearScanWalker {
     }
 
     /**
-     * Adds an interval to a list sorted by {@linkplain TraceInterval#from() current from}
-     * positions.
+     * Adds an interval to a list sorted by {@linkplain TraceInterval#from() current from} positions.
      *
      * @param list the list
      * @param interval the interval to add
@@ -166,7 +167,7 @@ final class TraceLinearScanWalker {
     private final int[] blockPos;
     private final BitSet isInMemory;
 
-    private final ArrayList<TraceInterval>[] spillIntervals;
+    private final SpecifiedArrayList<TraceInterval>[] spillIntervals;
 
     private TraceLocalMoveResolver moveResolver; // for ordering spill moves
 
@@ -200,12 +201,14 @@ final class TraceLinearScanWalker {
     private int currentPosition;
 
     /**
-     * Only 10% of the lists in {@link #spillIntervals} are actually used. But when they are used,
-     * they can grow quite long. The maximum length observed was 45 (all numbers taken from a
-     * bootstrap run of Graal). Therefore, we initialize {@link #spillIntervals} with this marker
-     * value, and allocate a "real" list only on demand in {@link #setUsePos}.
+     * Only 10% of the lists in {@link #spillIntervals} are actually used. But when they are used, they
+     * can grow quite long. The maximum length observed was 45 (all numbers taken from a bootstrap run
+     * of Graal). Therefore, we initialize {@link #spillIntervals} with this marker value, and allocate
+     * a "real" list only on demand in {@link #setUsePos}.
      */
-    private static final ArrayList<TraceInterval> EMPTY_LIST = new ArrayList<>(0);
+
+    // TODO This is not useful since (Specified)ArrayLists do that internally
+    private static final SpecifiedArrayList<TraceInterval> EMPTY_LIST = SpecifiedArrayList.createNew(0);
 
     // accessors mapped to same functions in class LinearScan
     private int blockCount() {
@@ -234,7 +237,7 @@ final class TraceLinearScanWalker {
 
         moveResolver = allocator.createMoveResolver();
         int numRegs = allocator.getRegisters().size();
-        spillIntervals = Util.uncheckedCast(new ArrayList<?>[numRegs]);
+        spillIntervals = Util.uncheckedCast(new SpecifiedArrayList<?>[numRegs]);
         for (int i = 0; i < numRegs; i++) {
             spillIntervals[i] = EMPTY_LIST;
         }
@@ -285,9 +288,9 @@ final class TraceLinearScanWalker {
                     this.usePos[i] = usePos;
                 }
                 if (!onlyProcessUsePos) {
-                    ArrayList<TraceInterval> list = spillIntervals[i];
+                    SpecifiedArrayList<TraceInterval> list = spillIntervals[i];
                     if (list == EMPTY_LIST) {
-                        list = new ArrayList<>(2);
+                        list = SpecifiedArrayList.createNew(2);
                         spillIntervals[i] = list;
                     }
                     list.add(interval);
@@ -418,7 +421,7 @@ final class TraceLinearScanWalker {
         // numbering of instructions is known.
         // When the block already contains spill moves, the index must be increased until the
         // correct index is reached.
-        ArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(opBlock);
+        SpecifiedArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(opBlock);
         int index = (opId - instructions.get(0).id()) >> 1;
         assert instructions.get(index).id() <= opId : "error in calculation";
 
@@ -599,9 +602,9 @@ final class TraceLinearScanWalker {
         int previousUsage = interval.previousUsage(RegisterPriority.ShouldHaveRegister, maxSplitPos);
         if (previousUsage == currentPosition) {
             /*
-             * If there is a usage with ShouldHaveRegister priority at the current position fall
-             * back to MustHaveRegister priority. This only happens if register priority was
-             * downgraded to MustHaveRegister in #allocLockedRegister.
+             * If there is a usage with ShouldHaveRegister priority at the current position fall back to
+             * MustHaveRegister priority. This only happens if register priority was downgraded to
+             * MustHaveRegister in #allocLockedRegister.
              */
             previousUsage = interval.previousUsage(RegisterPriority.MustHaveRegister, maxSplitPos);
         }
@@ -845,9 +848,8 @@ final class TraceLinearScanWalker {
         assert fromBlockNr < toBlockNr : "must cross block boundary";
 
         /*
-         * Try to split at end of maxBlock. We use last instruction -2 because we want to insert the
-         * move before the block end op. If this would be after maxSplitPos, then use the
-         * maxSplitPos.
+         * Try to split at end of maxBlock. We use last instruction -2 because we want to insert the move
+         * before the block end op. If this would be after maxSplitPos, then use the maxSplitPos.
          */
         int optimalSplitPos = allocator.getLastLirInstructionId(maxBlock) - 2;
         if (optimalSplitPos > maxSplitPos) {
@@ -867,8 +869,7 @@ final class TraceLinearScanWalker {
                     optimalSplitPos = opIdBeforeBlockEnd;
                 } else {
                     /*
-                     * Skip blocks with only LabelOp and BlockEndOp since they cause move ordering
-                     * problems.
+                     * Skip blocks with only LabelOp and BlockEndOp since they cause move ordering problems.
                      */
                     assert allocator.isBlockBegin(opIdBeforeBlockEnd);
                 }
@@ -902,9 +903,9 @@ final class TraceLinearScanWalker {
     private void splitAndSpillInterval(TraceInterval interval) {
         int currentPos = currentPosition;
         /*
-         * Search the position where the interval must have a register and split at the optimal
-         * position before. The new created part is added to the unhandled list and will get a
-         * register when it is activated.
+         * Search the position where the interval must have a register and split at the optimal position
+         * before. The new created part is added to the unhandled list and will get a register when it is
+         * activated.
          */
         int minSplitPos = currentPos + 1;
         int maxSplitPos = interval.nextUsage(RegisterPriority.MustHaveRegister, minSplitPos);
@@ -1029,10 +1030,10 @@ final class TraceLinearScanWalker {
             Register reg;
             Register ignore;
             /*
-             * In the common case we don't spill registers that have _any_ use position that is
-             * closer than the next use of the current interval, but if we can't spill the current
-             * interval we weaken this strategy and also allow spilling of intervals that have a
-             * non-mandatory requirements (no MustHaveRegister use position).
+             * In the common case we don't spill registers that have _any_ use position that is closer than the
+             * next use of the current interval, but if we can't spill the current interval we weaken this
+             * strategy and also allow spilling of intervals that have a non-mandatory requirements (no
+             * MustHaveRegister use position).
              */
             for (RegisterPriority registerPriority = RegisterPriority.LiveAtLoopEnd; true; registerPriority = RegisterPriority.MustHaveRegister) {
                 // collect current usage of registers
@@ -1054,8 +1055,8 @@ final class TraceLinearScanWalker {
                         // this register must be ignored
                     } else if (usePos[number] > regNeededUntil) {
                         /*
-                         * If the use position is the same, prefer registers (active intervals)
-                         * where the value is already on the stack.
+                         * If the use position is the same, prefer registers (active intervals) where the value is already
+                         * on the stack.
                          */
                         if (reg == null || (usePos[number] > usePos[reg.number]) || (usePos[number] == usePos[reg.number] && (!isInMemory.get(reg.number) && isInMemory.get(number)))) {
                             reg = availableReg;
@@ -1078,9 +1079,8 @@ final class TraceLinearScanWalker {
                         if (firstUsage <= interval.from() + 1) {
                             if (registerPriority.equals(RegisterPriority.LiveAtLoopEnd)) {
                                 /*
-                                 * Tool of last resort: we can not spill the current interval so we
-                                 * try to spill an active interval that has a usage but do not
-                                 * require a register.
+                                 * Tool of last resort: we can not spill the current interval so we try to spill an active interval
+                                 * that has a usage but do not require a register.
                                  */
                                 debug.log("retry with register priority must have register");
                                 continue;
@@ -1088,8 +1088,7 @@ final class TraceLinearScanWalker {
                             String description = "cannot spill interval (" + interval + ") that is used in first instruction (possible reason: no register found) firstUsage=" + firstUsage +
                                             ", interval.from()=" + interval.from() + "; already used candidates: " + Arrays.toString(availableRegs);
                             /*
-                             * assign a reasonable register and do a bailout in product mode to
-                             * avoid errors
+                             * assign a reasonable register and do a bailout in product mode to avoid errors
                              */
                             allocator.assignSpillSlot(interval);
                             if (debug.isDumpEnabled(DebugContext.INFO_LEVEL)) {
@@ -1410,8 +1409,8 @@ final class TraceLinearScanWalker {
     /**
      * Walks up to {@code from} and updates the state of {@link TraceInterval intervals}.
      *
-     * Trace intervals can switch once from {@link State#Unhandled} to {@link State#Active} and then
-     * to {@link State#Handled} but handled intervals are not managed.
+     * Trace intervals can switch once from {@link State#Unhandled} to {@link State#Active} and then to
+     * {@link State#Handled} but handled intervals are not managed.
      */
     @SuppressWarnings("try")
     private void walkToAny(int from) {
@@ -1471,8 +1470,8 @@ final class TraceLinearScanWalker {
     /**
      * Walk up to {@code toOpId}.
      *
-     * @postcondition {@link #currentPosition} is set to {@code toOpId}, {@link #activeFixedList}
-     *                and {@link #inactiveFixedList} are populated.
+     * @postcondition {@link #currentPosition} is set to {@code toOpId}, {@link #activeFixedList} and
+     *                {@link #inactiveFixedList} are populated.
      */
     @SuppressWarnings("try")
     private void walkTo(int toOpId) {

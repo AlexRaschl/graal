@@ -31,10 +31,9 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isConstantValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import jdk.vm.ci.code.RegisterConfig;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.asm.Label;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.calc.Condition;
@@ -68,6 +67,7 @@ import jdk.vm.ci.code.CallingConvention;
 import jdk.vm.ci.code.CodeCacheProvider;
 import jdk.vm.ci.code.Register;
 import jdk.vm.ci.code.RegisterAttributes;
+import jdk.vm.ci.code.RegisterConfig;
 import jdk.vm.ci.code.StackSlot;
 import jdk.vm.ci.code.TargetDescription;
 import jdk.vm.ci.meta.AllocatableValue;
@@ -315,7 +315,7 @@ public abstract class LIRGenerator implements LIRGeneratorTool {
             TTY.println();
         }
         assert LIRVerifier.verify(op);
-        ArrayList<LIRInstruction> lirForBlock = lir.getLIRforBlock(getCurrentBlock());
+        SpecifiedArrayList<LIRInstruction> lirForBlock = lir.getLIRforBlock(getCurrentBlock());
         op.setPosition(currentPosition);
         lirForBlock.add(op);
         return op;
@@ -323,7 +323,7 @@ public abstract class LIRGenerator implements LIRGeneratorTool {
 
     @Override
     public boolean hasBlockEnd(AbstractBlockBase<?> block) {
-        ArrayList<LIRInstruction> ops = getResult().getLIR().getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> ops = getResult().getLIR().getLIRforBlock(block);
         if (ops.size() == 0) {
             return false;
         }
@@ -343,7 +343,7 @@ public abstract class LIRGenerator implements LIRGeneratorTool {
 
             // set up the list of LIR instructions
             assert res.getLIR().getLIRforBlock(currentBlock) == null : "LIR list already computed for this block";
-            res.getLIR().setLIRforBlock(currentBlock, new ArrayList<LIRInstruction>());
+            res.getLIR().setLIRforBlock(currentBlock, SpecifiedArrayList.createNew());
 
             append(new LabelOp(new Label(currentBlock.getId()), currentBlock.isAligned()));
 
@@ -452,10 +452,10 @@ public abstract class LIRGenerator implements LIRGeneratorTool {
         long valueRange = keyConstants[keyCount - 1].asLong() - keyConstants[0].asLong() + 1;
         double tableSwitchDensity = keyCount / (double) valueRange;
         /*
-         * This heuristic tries to find a compromise between the effort for the best switch strategy
-         * and the density of a tableswitch. If the effort for the strategy is at least 4, then a
-         * tableswitch is preferred if better than a certain value that starts at 0.5 and lowers
-         * gradually with additional effort.
+         * This heuristic tries to find a compromise between the effort for the best switch strategy and the
+         * density of a tableswitch. If the effort for the strategy is at least 4, then a tableswitch is
+         * preferred if better than a certain value that starts at 0.5 and lowers gradually with additional
+         * effort.
          */
         if (strategy.getAverageEffort() < 4 || tableSwitchDensity < (1 / Math.sqrt(strategy.getAverageEffort()))) {
             emitStrategySwitch(strategy, value, keyTargets, defaultTarget);
@@ -550,7 +550,7 @@ public abstract class LIRGenerator implements LIRGeneratorTool {
         for (AllocatableValue arg : res.getCallingConvention().getArguments()) {
             if (isStackSlot(arg)) {
                 if (slots == null) {
-                    slots = new ArrayList<>();
+                    slots = SpecifiedArrayList.createNew();
                 }
                 slots.add((StackSlot) arg);
             } else {

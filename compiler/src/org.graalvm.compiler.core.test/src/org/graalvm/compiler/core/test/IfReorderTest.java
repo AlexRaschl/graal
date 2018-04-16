@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.Test;
 
 public class IfReorderTest extends GraalCompilerTest {
@@ -35,13 +36,12 @@ public class IfReorderTest extends GraalCompilerTest {
 
     @Test
     public void test1() {
-        test("test1Snippet", new ArrayList<>());
+        test("test1Snippet", SpecifiedArrayList.createNew());
     }
 
     public static Object test1Snippet(Object o) {
         /*
-         * Serializable and List are not mutually exclusive, so these two IFs should never be
-         * reordered.
+         * Serializable and List are not mutually exclusive, so these two IFs should never be reordered.
          */
         if (branchProbability(0.1, o instanceof Serializable)) {
             return fieldA;

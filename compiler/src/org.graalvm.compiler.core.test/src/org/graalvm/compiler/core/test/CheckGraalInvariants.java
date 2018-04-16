@@ -29,7 +29,6 @@ import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -39,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.Snippet;
 import org.graalvm.compiler.api.replacements.Snippet.ConstantParameter;
 import org.graalvm.compiler.api.replacements.Snippet.NonNullParameter;
@@ -183,7 +183,7 @@ public class CheckGraalInvariants extends GraalCompilerTest {
         String bootclasspath = tool.getClassPath();
         Assert.assertNotNull("Cannot find boot class path", bootclasspath);
 
-        final List<String> classNames = new ArrayList<>();
+        final List<String> classNames = SpecifiedArrayList.createNew();
         for (String path : bootclasspath.split(File.pathSeparator)) {
             if (tool.shouldProcess(path)) {
                 try {
@@ -195,8 +195,7 @@ public class CheckGraalInvariants extends GraalCompilerTest {
                             String className = name.substring(0, name.length() - ".class".length()).replace('/', '.');
                             if (isInNativeImage(className)) {
                                 /*
-                                 * Native Image is an external tool and does not need to follow the
-                                 * Graal invariants.
+                                 * Native Image is an external tool and does not need to follow the Graal invariants.
                                  */
                                 continue;
                             }
@@ -219,7 +218,7 @@ public class CheckGraalInvariants extends GraalCompilerTest {
         int availableProcessors = Runtime.getRuntime().availableProcessors();
         ThreadPoolExecutor executor = new ThreadPoolExecutor(availableProcessors, availableProcessors, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), factory);
 
-        List<String> errors = Collections.synchronizedList(new ArrayList<>());
+        List<String> errors = Collections.synchronizedList(SpecifiedArrayList.createNew());
 
         for (Method m : BadUsageWithEquals.class.getDeclaredMethods()) {
             ResolvedJavaMethod method = metaAccess.lookupJavaMethod(m);
@@ -315,7 +314,7 @@ public class CheckGraalInvariants extends GraalCompilerTest {
     }
 
     private static List<Class<?>> initializeClasses(InvariantsTool tool, List<String> classNames) {
-        List<Class<?>> classes = new ArrayList<>(classNames.size());
+        List<Class<?>> classes = SpecifiedArrayList.createNew(classNames.size());
         for (String className : classNames) {
             if (!tool.shouldLoadClass(className)) {
                 continue;

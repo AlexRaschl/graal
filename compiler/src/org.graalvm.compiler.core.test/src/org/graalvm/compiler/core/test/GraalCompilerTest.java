@@ -48,7 +48,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import jdk.vm.ci.meta.JavaConstant;
 import org.graalvm.compiler.api.directives.GraalDirectives;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.api.test.Graal;
@@ -135,6 +134,7 @@ import jdk.vm.ci.code.TargetDescription;
 import jdk.vm.ci.meta.Assumptions.Assumption;
 import jdk.vm.ci.meta.ConstantReflectionProvider;
 import jdk.vm.ci.meta.DeoptimizationReason;
+import jdk.vm.ci.meta.JavaConstant;
 import jdk.vm.ci.meta.JavaKind;
 import jdk.vm.ci.meta.JavaType;
 import jdk.vm.ci.meta.MetaAccessProvider;
@@ -166,8 +166,8 @@ import jdk.vm.ci.meta.SpeculationLog;
 public abstract class GraalCompilerTest extends GraalTest {
 
     /**
-     * Gets the initial option values provided by the Graal runtime. These are option values
-     * typically parsed from the command line.
+     * Gets the initial option values provided by the Graal runtime. These are option values typically
+     * parsed from the command line.
      */
     public static OptionValues getInitialOptions() {
         return Graal.getRequiredCapability(OptionValues.class);
@@ -183,9 +183,9 @@ public abstract class GraalCompilerTest extends GraalTest {
     public static final Class<?> JAVA_BASE = Class.class;
 
     /**
-     * Exports the package named {@code packageName} declared in {@code moduleMember}'s module to
-     * this object's module. This must be called before accessing packages that are no longer public
-     * as of JDK 9.
+     * Exports the package named {@code packageName} declared in {@code moduleMember}'s module to this
+     * object's module. This must be called before accessing packages that are no longer public as of
+     * JDK 9.
      */
     protected final void exportPackage(Class<?> moduleMember, String packageName) {
         if (!Java8OrEarlier) {
@@ -208,8 +208,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     @Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
     public @interface BytecodeParserNeverInline {
         /**
-         * Specifies if the call should be implemented with {@link InvokeWithExceptionNode} instead
-         * of {@link InvokeNode}.
+         * Specifies if the call should be implemented with {@link InvokeWithExceptionNode} instead of
+         * {@link InvokeNode}.
          */
         boolean invokeWithException() default false;
     }
@@ -256,8 +256,8 @@ public abstract class GraalCompilerTest extends GraalTest {
         ListIterator<BasePhase<? super HighTierContext>> iter = ret.getHighTier().findPhase(ConvertDeoptimizeToGuardPhase.class, true);
         if (iter == null) {
             /*
-             * in the economy configuration, we don't have the ConvertDeoptimizeToGuard phase, so we
-             * just select the first CanonicalizerPhase in HighTier
+             * in the economy configuration, we don't have the ConvertDeoptimizeToGuard phase, so we just select
+             * the first CanonicalizerPhase in HighTier
              */
             iter = ret.getHighTier().findPhase(CanonicalizerPhase.class);
         }
@@ -386,9 +386,9 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Gets a {@link DebugContext} object corresponding to {@code options}, creating a new one if
-     * none currently exists. Debug contexts created by this method will have their
-     * {@link DebugDumpHandler}s closed in {@link #afterTest()}.
+     * Gets a {@link DebugContext} object corresponding to {@code options}, creating a new one if none
+     * currently exists. Debug contexts created by this method will have their {@link DebugDumpHandler}s
+     * closed in {@link #afterTest()}.
      */
     protected DebugContext getDebugContext() {
         return getDebugContext(getInitialOptions(), null, null);
@@ -794,9 +794,9 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Type denoting a lambda that supplies a fresh value each time it is called. This is useful
-     * when supplying an argument to {@link GraalCompilerTest#test(String, Object...)} where the
-     * test modifies the state of the argument (e.g., updates a field).
+     * Type denoting a lambda that supplies a fresh value each time it is called. This is useful when
+     * supplying an argument to {@link GraalCompilerTest#test(String, Object...)} where the test
+     * modifies the state of the argument (e.g., updates a field).
      */
     @FunctionalInterface
     public interface ArgSupplier extends Supplier<Object> {
@@ -822,8 +822,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Process a given set of arguments, converting any {@link ArgSupplier} argument to the argument
-     * it supplies.
+     * Process a given set of arguments, converting any {@link ArgSupplier} argument to the argument it
+     * supplies.
      */
     protected Object[] applyArgSuppliers(Object... args) {
         Object[] res = args;
@@ -913,8 +913,8 @@ public abstract class GraalCompilerTest extends GraalTest {
      * @param installedCodeOwner the method the compiled code will be associated with when installed
      * @param graph the graph to be compiled. If null, a graph will be obtained from
      *            {@code installedCodeOwner} via {@link #parseForCompile(ResolvedJavaMethod)}.
-     * @param forceCompile specifies whether to ignore any previous code cached for the (method,
-     *            key) pair
+     * @param forceCompile specifies whether to ignore any previous code cached for the (method, key)
+     *            pair
      */
     protected final InstalledCode getCode(final ResolvedJavaMethod installedCodeOwner, StructuredGraph graph, boolean forceCompile) {
         return getCode(installedCodeOwner, graph, forceCompile, false, graph == null ? getInitialOptions() : graph.getOptions());
@@ -926,8 +926,8 @@ public abstract class GraalCompilerTest extends GraalTest {
      * @param installedCodeOwner the method the compiled code will be associated with when installed
      * @param graph the graph to be compiled. If null, a graph will be obtained from
      *            {@code installedCodeOwner} via {@link #parseForCompile(ResolvedJavaMethod)}.
-     * @param forceCompile specifies whether to ignore any previous code cached for the (method,
-     *            key) pair
+     * @param forceCompile specifies whether to ignore any previous code cached for the (method, key)
+     *            pair
      * @param installAsDefault specifies whether to install as the default implementation
      * @param options the options that will be used in {@link #parseForCompile(ResolvedJavaMethod)}
      */
@@ -991,8 +991,8 @@ public abstract class GraalCompilerTest extends GraalTest {
 
     /**
      * Used to produce a graph for a method about to be compiled by
-     * {@link #compile(ResolvedJavaMethod, StructuredGraph)} if the second parameter to that method
-     * is null.
+     * {@link #compile(ResolvedJavaMethod, StructuredGraph)} if the second parameter to that method is
+     * null.
      *
      * The default implementation in {@link GraalCompilerTest} is to call {@link #parseEager}.
      */
@@ -1016,8 +1016,8 @@ public abstract class GraalCompilerTest extends GraalTest {
      * Compiles a given method.
      *
      * @param installedCodeOwner the method the compiled code will be associated with when installed
-     * @param graph the graph to be compiled for {@code installedCodeOwner}. If null, a graph will
-     *            be obtained from {@code installedCodeOwner} via
+     * @param graph the graph to be compiled for {@code installedCodeOwner}. If null, a graph will be
+     *            obtained from {@code installedCodeOwner} via
      *            {@link #parseForCompile(ResolvedJavaMethod)}.
      */
     protected final CompilationResult compile(ResolvedJavaMethod installedCodeOwner, StructuredGraph graph) {
@@ -1041,8 +1041,8 @@ public abstract class GraalCompilerTest extends GraalTest {
      * Compiles a given method.
      *
      * @param installedCodeOwner the method the compiled code will be associated with when installed
-     * @param graph the graph to be compiled for {@code installedCodeOwner}. If null, a graph will
-     *            be obtained from {@code installedCodeOwner} via
+     * @param graph the graph to be compiled for {@code installedCodeOwner}. If null, a graph will be
+     *            obtained from {@code installedCodeOwner} via
      *            {@link #parseForCompile(ResolvedJavaMethod)}.
      * @param compilationId
      */
@@ -1099,8 +1099,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Gets the reflection {@link Method} from which a given {@link ResolvedJavaMethod} was created
-     * or null if {@code javaMethod} does not correspond to a reflection method.
+     * Gets the reflection {@link Method} from which a given {@link ResolvedJavaMethod} was created or
+     * null if {@code javaMethod} does not correspond to a reflection method.
      */
     protected Executable lookupMethod(ResolvedJavaMethod javaMethod) {
         return methodMap.get(javaMethod);
@@ -1120,8 +1120,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Parses a Java method in {@linkplain GraphBuilderConfiguration#getDefault default} mode to
-     * produce a graph.
+     * Parses a Java method in {@linkplain GraphBuilderConfiguration#getDefault default} mode to produce
+     * a graph.
      *
      * @param methodName the name of the method in {@code this.getClass()} to be parsed
      * @param allowAssumptions specifies if {@link Assumption}s can be made compiling the graph
@@ -1132,8 +1132,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Parses a Java method in {@linkplain GraphBuilderConfiguration#getDefault default} mode to
-     * produce a graph.
+     * Parses a Java method in {@linkplain GraphBuilderConfiguration#getDefault default} mode to produce
+     * a graph.
      *
      * @param method the method to be parsed
      * @param allowAssumptions specifies if {@link Assumption}s can be made compiling the graph
@@ -1143,8 +1143,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)}
-     * set to true to produce a graph.
+     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)} set
+     * to true to produce a graph.
      *
      * @param methodName the name of the method in {@code this.getClass()} to be parsed
      * @param allowAssumptions specifies if {@link Assumption}s can be made compiling the graph
@@ -1155,8 +1155,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)}
-     * set to true to produce a graph.
+     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)} set
+     * to true to produce a graph.
      *
      * @param methodName the name of the method in {@code this.getClass()} to be parsed
      * @param allowAssumptions specifies if {@link Assumption}s can be made compiling the graph
@@ -1173,8 +1173,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)}
-     * set to true to produce a graph.
+     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)} set
+     * to true to produce a graph.
      *
      * @param method the method to be parsed
      * @param allowAssumptions specifies if {@link Assumption}s can be made compiling the graph
@@ -1188,8 +1188,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)}
-     * set to true to produce a graph.
+     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)} set
+     * to true to produce a graph.
      *
      * @param method the method to be parsed
      * @param allowAssumptions specifies if {@link Assumption}s can be made compiling the graph
@@ -1200,8 +1200,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)}
-     * set to true to produce a graph.
+     * Parses a Java method with {@linkplain GraphBuilderConfiguration#withEagerResolving(boolean)} set
+     * to true to produce a graph.
      *
      * @param method the method to be parsed
      * @param allowAssumptions specifies if {@link Assumption}s can be made compiling the graph
@@ -1303,8 +1303,8 @@ public abstract class GraalCompilerTest extends GraalTest {
      * Registers extra invocation plugins for this test. The extra plugins are removed in the
      * {@link #afterTest()} method.
      *
-     * Subclasses overriding this method should always call the same method on the super class in
-     * case it wants to register plugins.
+     * Subclasses overriding this method should always call the same method on the super class in case
+     * it wants to register plugins.
      *
      * @param invocationPlugins
      */
@@ -1383,11 +1383,10 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Supplements {@link BytecodeParserForceInline} and {@link BytecodeParserNeverInline} in terms
-     * of allowing a test to influence the inlining decision made during bytecode parsing.
+     * Supplements {@link BytecodeParserForceInline} and {@link BytecodeParserNeverInline} in terms of
+     * allowing a test to influence the inlining decision made during bytecode parsing.
      *
-     * @see InlineInvokePlugin#shouldInlineInvoke(GraphBuilderContext, ResolvedJavaMethod,
-     *      ValueNode[])
+     * @see InlineInvokePlugin#shouldInlineInvoke(GraphBuilderContext, ResolvedJavaMethod, ValueNode[])
      */
     @SuppressWarnings("unused")
     protected InlineInvokePlugin.InlineInfo bytecodeParserShouldInlineInvoke(GraphBuilderContext b, ResolvedJavaMethod method, ValueNode[] args) {
@@ -1420,8 +1419,7 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Inject an iteration count for a loop condition into the profiling information of this test
-     * case.
+     * Inject an iteration count for a loop condition into the profiling information of this test case.
      *
      * @param i the iteration count of the loop
      * @param cond the condition of the loop
@@ -1432,8 +1430,8 @@ public abstract class GraalCompilerTest extends GraalTest {
     }
 
     /**
-     * Test if the current test runs on the given platform. The name must match the name given in
-     * the {@link Architecture#getName()}.
+     * Test if the current test runs on the given platform. The name must match the name given in the
+     * {@link Architecture#getName()}.
      *
      * @param name The name to test
      * @return true if we run on the architecture given by name

@@ -25,8 +25,9 @@ package org.graalvm.compiler.lir;
 import static jdk.vm.ci.code.ValueUtil.asRegister;
 import static jdk.vm.ci.code.ValueUtil.isRegister;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 import jdk.vm.ci.code.Register;
 import jdk.vm.ci.code.RegisterValue;
@@ -103,12 +104,12 @@ public final class LIRValueUtil {
     }
 
     /**
-     * Checks if all the provided values are different physical registers. The parameters can be
-     * either {@link Register registers}, {@link Value values} or arrays of them. All values that
-     * are not {@link RegisterValue registers} are ignored.
+     * Checks if all the provided values are different physical registers. The parameters can be either
+     * {@link Register registers}, {@link Value values} or arrays of them. All values that are not
+     * {@link RegisterValue registers} are ignored.
      */
     public static boolean differentRegisters(Object... values) {
-        List<Register> registers = collectRegisters(values, new ArrayList<Register>());
+        List<Register> registers = collectRegisters(values, SpecifiedArrayList.createNew());
         for (int i = 1; i < registers.size(); i++) {
             Register r1 = registers.get(i);
             for (int j = 0; j < i; j++) {
@@ -146,7 +147,7 @@ public final class LIRValueUtil {
      * @return resulting set of registers (x - y).
      */
     public static Value[] subtractRegisters(Value[] x, Value[] y) {
-        ArrayList<Value> result = new ArrayList<>(x.length);
+        SpecifiedArrayList<Value> result = SpecifiedArrayList.createNew(x.length);
         for (Value i : x) {
             boolean append = true;
             for (Value j : y) {

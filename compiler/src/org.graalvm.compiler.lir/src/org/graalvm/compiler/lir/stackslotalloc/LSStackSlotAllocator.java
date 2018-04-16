@@ -28,7 +28,6 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 import static org.graalvm.compiler.lir.phases.LIRPhase.Options.LIROptimization;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.EnumMap;
@@ -36,6 +35,7 @@ import java.util.EnumSet;
 import java.util.PriorityQueue;
 
 import org.graalvm.collections.EconomicSet;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.DebugCloseable;
 import org.graalvm.compiler.debug.DebugContext;
@@ -183,7 +183,7 @@ public final class LSStackSlotAllocator extends AllocationPhase {
             int index = 0;
             for (AbstractBlockBase<?> block : sortedBlocks) {
 
-                ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+                SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
 
                 int numInst = instructions.size();
                 for (int j = 0; j < numInst; j++) {
@@ -254,8 +254,7 @@ public final class LSStackSlotAllocator extends AllocationPhase {
                 StackSlot slot = findFreeSlot((SimpleVirtualStackSlot) virtualSlot);
                 if (slot != null) {
                     /*
-                     * Free stack slot available. Note that we create a new one because the kind
-                     * might not match.
+                     * Free stack slot available. Note that we create a new one because the kind might not match.
                      */
                     location = StackSlot.get(current.kind(), slot.getRawOffset(), slot.getRawAddFrameSize());
                     StackSlotAllocatorUtil.reusedSlots.increment(debug);
@@ -308,8 +307,7 @@ public final class LSStackSlotAllocator extends AllocationPhase {
         }
 
         /**
-         * @return the list of free stack slots for {@code size}. If there is none a list is
-         *         created.
+         * @return the list of free stack slots for {@code size}. If there is none a list is created.
          */
         private Deque<StackSlot> getOrInitFreeSlots(SlotSize size) {
             assert size != SlotSize.Illegal;
@@ -373,8 +371,8 @@ public final class LSStackSlotAllocator extends AllocationPhase {
         }
 
         /**
-         * Gets the lowest {@link StackInterval#to() end position} of all active intervals. If there
-         * is none {@link Integer#MAX_VALUE} is returned.
+         * Gets the lowest {@link StackInterval#to() end position} of all active intervals. If there is none
+         * {@link Integer#MAX_VALUE} is returned.
          */
         private int activePeekId() {
             StackInterval first = active.peek();

@@ -25,13 +25,13 @@ package org.graalvm.compiler.lir;
 import static jdk.vm.ci.code.ValueUtil.isRegister;
 import static jdk.vm.ci.code.ValueUtil.isStackSlot;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.CounterKey;
@@ -67,15 +67,15 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
     }
 
     /**
-     * Holds the entry and exit states for each block for dataflow analysis. The state is an array
-     * with an element for each relevant location (register or stack slot). Each element holds the
-     * global number of the location's definition. A location definition is simply an output of an
-     * instruction. Note that because instructions can have multiple outputs it is not possible to
-     * use the instruction id for value numbering. In addition, the result of merging at block
-     * entries (= phi values) get unique value numbers.
+     * Holds the entry and exit states for each block for dataflow analysis. The state is an array with
+     * an element for each relevant location (register or stack slot). Each element holds the global
+     * number of the location's definition. A location definition is simply an output of an instruction.
+     * Note that because instructions can have multiple outputs it is not possible to use the
+     * instruction id for value numbering. In addition, the result of merging at block entries (= phi
+     * values) get unique value numbers.
      *
-     * The value numbers also contain information if it is an object kind value or not: if the
-     * number is negative it is an object kind value.
+     * The value numbers also contain information if it is an object kind value or not: if the number is
+     * negative it is an object kind value.
      */
     private static final class BlockData {
 
@@ -85,14 +85,14 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
         }
 
         /*
-         * The state at block entry for global dataflow analysis. It contains a global value number
-         * for each location to optimize.
+         * The state at block entry for global dataflow analysis. It contains a global value number for each
+         * location to optimize.
          */
         int[] entryState;
 
         /*
-         * The state at block exit for global dataflow analysis. It contains a global value number
-         * for each location to optimize.
+         * The state at block exit for global dataflow analysis. It contains a global value number for each
+         * location to optimize.
          */
         int[] exitState;
 
@@ -114,8 +114,8 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
         int[] eligibleRegs;
 
         /**
-         * A map from the {@link StackSlot} {@link #getOffset offset} to an index into the state.
-         * StackSlots of different kinds that map to the same location will map to the same index.
+         * A map from the {@link StackSlot} {@link #getOffset offset} to an index into the state. StackSlots
+         * of different kinds that map to the same location will map to the same index.
          */
         EconomicMap<Integer, Integer> stackIndices = EconomicMap.create(Equivalence.DEFAULT);
 
@@ -163,8 +163,8 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
         }
 
         /**
-         * The maximum number of locations * blocks. This is a complexity limit for the inner loop
-         * in {@link #mergeState} (assuming a small number of iterations in {@link #solveDataFlow}.
+         * The maximum number of locations * blocks. This is a complexity limit for the inner loop in
+         * {@link #mergeState} (assuming a small number of iterations in {@link #solveDataFlow}.
          */
         private static final int COMPLEXITY_LIMIT = 30000;
 
@@ -176,11 +176,11 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
             int maxStackLocations = COMPLEXITY_LIMIT / blocks.length;
 
             /*
-             * Search for relevant locations which can be optimized. These are register or stack
-             * slots which occur as destinations of move instructions.
+             * Search for relevant locations which can be optimized. These are register or stack slots which
+             * occur as destinations of move instructions.
              */
             for (AbstractBlockBase<?> block : blocks) {
-                ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+                SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
                 for (LIRInstruction op : instructions) {
                     if (isEligibleMove(op)) {
                         Value dest = MoveOp.asMoveOp(op).getResult();
@@ -244,9 +244,8 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
 
                             BlockData data = blockData.get(block);
                             /*
-                             * Initialize the number for global value numbering for this block. It
-                             * is essential that the starting number for a block is consistent at
-                             * all iterations and also in eliminateMoves().
+                             * Initialize the number for global value numbering for this block. It is essential that the
+                             * starting number for a block is consistent at all iterations and also in eliminateMoves().
                              */
                             if (firstRound) {
                                 data.entryValueNum = currentValueNum;
@@ -257,12 +256,10 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
 
                             if (block == blocks[0] || block.isExceptionEntry()) {
                                 /*
-                                 * The entry block has undefined values. And also exception handler
-                                 * blocks: the LinearScan can insert moves at the end of an
-                                 * exception handler predecessor block (after the invoke, which
-                                 * throws the exception), and in reality such moves are not in the
-                                 * control flow in case of an exception. So we assume a save default
-                                 * for exception handler blocks.
+                                 * The entry block has undefined values. And also exception handler blocks: the LinearScan can
+                                 * insert moves at the end of an exception handler predecessor block (after the invoke, which throws
+                                 * the exception), and in reality such moves are not in the control flow in case of an exception. So
+                                 * we assume a save default for exception handler blocks.
                                  */
                                 debug.log("kill all values at entry of block %d", block.getId());
                                 clearValues(data.entryState, valueNum);
@@ -283,12 +280,11 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
                                 try (Indent indent3 = debug.logAndIndent("update block %d", block.getId())) {
 
                                     /*
-                                     * Derive the exit state from the entry state by iterating
-                                     * through all instructions of the block.
+                                     * Derive the exit state from the entry state by iterating through all instructions of the block.
                                      */
                                     int[] iterState = data.exitState;
                                     copyState(iterState, data.entryState);
-                                    ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+                                    SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
 
                                     for (LIRInstruction op : instructions) {
                                         valueNum = updateState(debug, iterState, op, valueNum);
@@ -319,8 +315,7 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
         }
 
         /**
-         * Deletes all move instructions where the target location already contains the source
-         * value.
+         * Deletes all move instructions where the target location already contains the source value.
          */
         @SuppressWarnings("try")
         private void eliminateMoves(LIR lir) {
@@ -334,7 +329,7 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
 
                     try (Indent indent2 = debug.logAndIndent("eliminate moves in block %d", block.getId())) {
 
-                        ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+                        SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
                         BlockData data = blockData.get(block);
                         boolean hasDead = false;
 
@@ -442,11 +437,10 @@ public final class RedundantMoveElimination extends PostAllocationOptimizationPh
 
                 if (op.hasState()) {
                     /*
-                     * All instructions with framestates (mostly method calls), may do garbage
-                     * collection. GC will rewrite all object references which are live at this
-                     * point. So we can't rely on their values. It would be sufficient to just kill
-                     * all values which are referenced in the state (or all values which are not),
-                     * but for simplicity we kill all values.
+                     * All instructions with framestates (mostly method calls), may do garbage collection. GC will
+                     * rewrite all object references which are live at this point. So we can't rely on their values. It
+                     * would be sufficient to just kill all values which are referenced in the state (or all values
+                     * which are not), but for simplicity we kill all values.
                      */
                     debug.log("kill all object values");
                     clearValuesOfKindObject(state, valueNum);

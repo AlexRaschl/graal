@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.lir.profiling;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
@@ -80,9 +80,9 @@ public class MoveProfilingPhase extends PostAllocationOptimizationPhase {
             this.lirGenRes = lirGenRes;
             this.diagnosticLirGenTool = diagnosticLirGenTool;
             this.buffer = new LIRInsertionBuffer();
-            this.names = new ArrayList<>();
-            this.groups = new ArrayList<>();
-            this.increments = new ArrayList<>();
+            this.names = SpecifiedArrayList.createNew();
+            this.groups = SpecifiedArrayList.createNew();
+            this.increments = SpecifiedArrayList.createNew();
         }
 
         public void run() {
@@ -121,7 +121,7 @@ public class MoveProfilingPhase extends PostAllocationOptimizationPhase {
             int size = names.size();
             if (size > 0) { // Don't pollute LIR when nothing has to be done
                 assert size > 0 && size == groups.size() && size == increments.size();
-                ArrayList<LIRInstruction> instructions = lirGenRes.getLIR().getLIRforBlock(block);
+                SpecifiedArrayList<LIRInstruction> instructions = lirGenRes.getLIR().getLIRforBlock(block);
                 LIRInstruction inst = diagnosticLirGenTool.createMultiBenchmarkCounter(names.toArray(new String[size]), groups.toArray(new String[size]),
                                 increments.toArray(new Value[size]));
                 assert inst != null;

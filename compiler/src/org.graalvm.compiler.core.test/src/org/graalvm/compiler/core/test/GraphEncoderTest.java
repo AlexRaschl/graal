@@ -31,7 +31,7 @@ import java.util.Map;
 import jdk.vm.ci.meta.ResolvedJavaMethod;
 
 import org.junit.Test;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.nodes.EncodedGraph;
 import org.graalvm.compiler.nodes.GraphEncoder;
 import org.graalvm.compiler.nodes.StructuredGraph;
@@ -53,7 +53,7 @@ public class GraphEncoderTest extends GraalCompilerTest {
 
     public void testStringMethods(boolean canonicalize) {
         /* Encode and decode all methods of java.lang.String. */
-        List<StructuredGraph> originalGraphs = new ArrayList<>();
+        List<StructuredGraph> originalGraphs = SpecifiedArrayList.createNew();
         for (Method method : String.class.getDeclaredMethods()) {
             ResolvedJavaMethod javaMethod = getMetaAccess().lookupJavaMethod(method);
             if (javaMethod.hasBytecodes()) {

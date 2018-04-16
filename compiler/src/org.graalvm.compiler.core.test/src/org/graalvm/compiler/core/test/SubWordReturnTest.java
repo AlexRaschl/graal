@@ -22,10 +22,9 @@
  */
 package org.graalvm.compiler.core.test;
 
-import java.util.ArrayList;
 import java.util.List;
-import jdk.vm.ci.meta.JavaKind;
-import jdk.vm.ci.meta.ResolvedJavaMethod;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -34,6 +33,9 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import jdk.vm.ci.meta.JavaKind;
+import jdk.vm.ci.meta.ResolvedJavaMethod;
 
 @RunWith(Parameterized.class)
 public class SubWordReturnTest extends GraalCompilerTest {
@@ -67,7 +69,7 @@ public class SubWordReturnTest extends GraalCompilerTest {
 
     @Parameters(name = "{0}, {1}")
     public static List<Object[]> data() {
-        ArrayList<Object[]> ret = new ArrayList<>();
+        SpecifiedArrayList<Object[]> ret = SpecifiedArrayList.createNew();
         for (int i : new int[]{1000000, 1000001, -1000000, -1}) {
             ret.add(new Object[]{JavaKind.Boolean, i});
             ret.add(new Object[]{JavaKind.Byte, i});

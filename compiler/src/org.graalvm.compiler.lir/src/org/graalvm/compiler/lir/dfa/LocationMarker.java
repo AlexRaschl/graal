@@ -24,9 +24,9 @@ package org.graalvm.compiler.lir.dfa;
 
 import static jdk.vm.ci.code.ValueUtil.isIllegal;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
@@ -105,7 +105,7 @@ public abstract class LocationMarker<S extends ValueSet<S>> {
             DebugContext debug = lir.getDebug();
             try (Indent indent = debug.logAndIndent("handle block %s", block)) {
                 currentSet = liveOutMap.get(block).copy();
-                ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+                SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
                 for (int i = instructions.size() - 1; i >= 0; i--) {
                     LIRInstruction inst = instructions.get(i);
                     processInstructionBottomUp(inst);
@@ -124,8 +124,8 @@ public abstract class LocationMarker<S extends ValueSet<S>> {
     private S currentSet;
 
     /**
-     * Process all values of an instruction bottom-up, i.e. definitions before usages. Values that
-     * start or end at the current operation are not included.
+     * Process all values of an instruction bottom-up, i.e. definitions before usages. Values that start
+     * or end at the current operation are not included.
      */
     @SuppressWarnings("try")
     private void processInstructionBottomUp(LIRInstruction op) {

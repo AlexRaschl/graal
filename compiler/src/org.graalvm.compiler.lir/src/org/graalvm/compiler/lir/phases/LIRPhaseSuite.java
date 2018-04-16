@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.lir.phases;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.lir.gen.LIRGenerationResult;
 
 import jdk.vm.ci.code.TargetDescription;
@@ -36,7 +36,7 @@ public class LIRPhaseSuite<C> extends LIRPhase<C> {
     private boolean immutable;
 
     public LIRPhaseSuite() {
-        phases = new ArrayList<>();
+        phases = SpecifiedArrayList.createNew();
     }
 
     /**

@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.jtt.JTTTest;
 
 @RunWith(Parameterized.class)
@@ -54,7 +54,7 @@ public abstract class BC_float_base extends JTTTest {
 
     @Parameters(name = "{0}, {1}")
     public static Collection<Object[]> data() {
-        List<Object[]> d = new ArrayList<>();
+        List<Object[]> d = SpecifiedArrayList.createNew();
         for (int i = 0; i < values.length; i++) {
             float x = values[i];
             for (int j = 0; j < values.length; j++) {

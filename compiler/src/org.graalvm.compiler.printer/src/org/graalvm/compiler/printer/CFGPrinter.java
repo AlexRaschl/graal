@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.graalvm.collections.UnmodifiableMapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.BytecodeDisassembler;
 import org.graalvm.compiler.core.common.alloc.Trace;
@@ -101,8 +102,7 @@ class CFGPrinter extends CompilationPrinter {
      * Prints the control flow graph denoted by a given block map.
      *
      * @param label A label describing the compilation phase that produced the control flow graph.
-     * @param blockMap A data structure describing the blocks in a method and how they are
-     *            connected.
+     * @param blockMap A data structure describing the blocks in a method and how they are connected.
      */
     public void printCFG(String label, BciBlockMapping blockMap) {
         begin("cfg");
@@ -477,7 +477,7 @@ class CFGPrinter extends CompilationPrinter {
         if (lir == null) {
             return;
         }
-        ArrayList<LIRInstruction> lirInstructions = lir.getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> lirInstructions = lir.getLIRforBlock(block);
         if (lirInstructions == null) {
             return;
         }
@@ -746,7 +746,7 @@ class CFGPrinter extends CompilationPrinter {
         out.println("LIR");
 
         for (AbstractBlockBase<?> block : trace.getBlocks()) {
-            ArrayList<LIRInstruction> lirInstructions = lir.getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> lirInstructions = lir.getLIRforBlock(block);
             if (lirInstructions == null) {
                 continue;
             }

@@ -27,9 +27,9 @@ import static jdk.vm.ci.code.ValueUtil.isRegister;
 import static org.graalvm.compiler.lir.LIRValueUtil.asVariable;
 import static org.graalvm.compiler.lir.alloc.trace.lsra.TraceLinearScanPhase.isVariableOrRegister;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
 import org.graalvm.compiler.debug.DebugContext;
@@ -48,7 +48,7 @@ import jdk.vm.ci.meta.Value;
 final class RegisterVerifier {
 
     TraceLinearScan allocator;
-    ArrayList<AbstractBlockBase<?>> workList; // all blocks that must be processed
+    SpecifiedArrayList<AbstractBlockBase<?>> workList; // all blocks that must be processed
     BlockMap<TraceInterval[]> savedStates; // saved information of previous check
 
     // simplified access to methods of LinearScan
@@ -78,7 +78,7 @@ final class RegisterVerifier {
 
     RegisterVerifier(TraceLinearScan allocator) {
         this.allocator = allocator;
-        workList = new ArrayList<>(16);
+        workList = SpecifiedArrayList.createNew(16);
         this.savedStates = new BlockMap<>(allocator.getLIR().getControlFlowGraph());
 
     }
@@ -213,7 +213,7 @@ final class RegisterVerifier {
     }
 
     void processOperations(AbstractBlockBase<?> block, final TraceInterval[] inputState) {
-        ArrayList<LIRInstruction> ops = allocator.getLIR().getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> ops = allocator.getLIR().getLIRforBlock(block);
         DebugContext debug = allocator.getDebug();
         InstructionValueConsumer useConsumer = new InstructionValueConsumer() {
 

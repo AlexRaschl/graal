@@ -22,12 +22,12 @@
  */
 package org.graalvm.compiler.lir.constopt;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.AbstractControlFlowGraph;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
@@ -69,7 +69,7 @@ public class ConstantTree extends PrintableDominatorOptimizationProblem<Constant
 
         public void addUsage(UseEntry usage) {
             if (usages == null) {
-                usages = new ArrayList<>();
+                usages = SpecifiedArrayList.createNew();
             }
             usages.add(usage);
         }
@@ -110,7 +110,7 @@ public class ConstantTree extends PrintableDominatorOptimizationProblem<Constant
     private List<UseEntry> getOrInitList(AbstractBlockBase<?> block) {
         List<UseEntry> list = blockMap.get(block);
         if (list == null) {
-            list = new ArrayList<>();
+            list = SpecifiedArrayList.createNew();
             blockMap.put(block, list);
         }
         return list;

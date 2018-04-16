@@ -30,12 +30,12 @@ import static jdk.vm.ci.code.ValueUtil.isRegister;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 import static org.graalvm.compiler.lir.phases.LIRPhase.Options.LIROptimization;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.EnumSet;
 
 import org.graalvm.collections.Pair;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
@@ -87,31 +87,29 @@ public class LinearScan {
     public static class BlockData {
 
         /**
-         * Bit map specifying which operands are live upon entry to this block. These are values
-         * used in this block or any of its successors where such value are not defined in this
-         * block. The bit index of an operand is its {@linkplain LinearScan#operandNumber(Value)
-         * operand number}.
+         * Bit map specifying which operands are live upon entry to this block. These are values used in
+         * this block or any of its successors where such value are not defined in this block. The bit index
+         * of an operand is its {@linkplain LinearScan#operandNumber(Value) operand number}.
          */
         public BitSet liveIn;
 
         /**
-         * Bit map specifying which operands are live upon exit from this block. These are values
-         * used in a successor block that are either defined in this block or were live upon entry
-         * to this block. The bit index of an operand is its
-         * {@linkplain LinearScan#operandNumber(Value) operand number}.
+         * Bit map specifying which operands are live upon exit from this block. These are values used in a
+         * successor block that are either defined in this block or were live upon entry to this block. The
+         * bit index of an operand is its {@linkplain LinearScan#operandNumber(Value) operand number}.
          */
         public BitSet liveOut;
 
         /**
-         * Bit map specifying which operands are used (before being defined) in this block. That is,
-         * these are the values that are live upon entry to the block. The bit index of an operand
-         * is its {@linkplain LinearScan#operandNumber(Value) operand number}.
+         * Bit map specifying which operands are used (before being defined) in this block. That is, these
+         * are the values that are live upon entry to the block. The bit index of an operand is its
+         * {@linkplain LinearScan#operandNumber(Value) operand number}.
          */
         public BitSet liveGen;
 
         /**
-         * Bit map specifying which operands are defined/overwritten in this block. The bit index of
-         * an operand is its {@linkplain LinearScan#operandNumber(Value) operand number}.
+         * Bit map specifying which operands are defined/overwritten in this block. The bit index of an
+         * operand is its {@linkplain LinearScan#operandNumber(Value) operand number}.
          */
         public BitSet liveKill;
     }
@@ -156,16 +154,15 @@ public class LinearScan {
     private Interval[] sortedIntervals;
 
     /**
-     * Map from an instruction {@linkplain LIRInstruction#id id} to the instruction. Entries should
-     * be retrieved with {@link #instructionForId(int)} as the id is not simply an index into this
-     * array.
+     * Map from an instruction {@linkplain LIRInstruction#id id} to the instruction. Entries should be
+     * retrieved with {@link #instructionForId(int)} as the id is not simply an index into this array.
      */
     private LIRInstruction[] opIdToInstructionMap;
 
     /**
-     * Map from an instruction {@linkplain LIRInstruction#id id} to the
-     * {@linkplain AbstractBlockBase block} containing the instruction. Entries should be retrieved
-     * with {@link #blockForId(int)} as the id is not simply an index into this array.
+     * Map from an instruction {@linkplain LIRInstruction#id id} to the {@linkplain AbstractBlockBase
+     * block} containing the instruction. Entries should be retrieved with {@link #blockForId(int)} as
+     * the id is not simply an index into this array.
      */
     private AbstractBlockBase<?>[] opIdToBlockMap;
 
@@ -232,7 +229,7 @@ public class LinearScan {
     }
 
     public int getLastLirInstructionId(AbstractBlockBase<?> block) {
-        ArrayList<LIRInstruction> instructions = ir.getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> instructions = ir.getLIRforBlock(block);
         int result = instructions.get(instructions.size() - 1).id();
         assert result >= 0;
         return result;
@@ -253,9 +250,9 @@ public class LinearScan {
     }
 
     /**
-     * Converts an operand (variable or register) to an index in a flat address space covering all
-     * the {@linkplain Variable variables} and {@linkplain RegisterValue registers} being processed
-     * by this allocator.
+     * Converts an operand (variable or register) to an index in a flat address space covering all the
+     * {@linkplain Variable variables} and {@linkplain RegisterValue registers} being processed by this
+     * allocator.
      */
     int operandNumber(Value operand) {
         if (isRegister(operand)) {
@@ -323,8 +320,8 @@ public class LinearScan {
 
     void assignSpillSlot(Interval interval) {
         /*
-         * Assign the canonical spill slot of the parent (if a part of the interval is already
-         * spilled) or allocate a new spill slot.
+         * Assign the canonical spill slot of the parent (if a part of the interval is already spilled) or
+         * allocate a new spill slot.
          */
         if (interval.canMaterialize()) {
             interval.assignLocation(Value.ILLEGAL);
@@ -381,8 +378,7 @@ public class LinearScan {
         intervalsSize++;
         assert intervalsSize <= intervals.length;
         /*
-         * Note that these variables are not managed and must therefore never be inserted into the
-         * LIR
+         * Note that these variables are not managed and must therefore never be inserted into the LIR
          */
         Variable variable = new Variable(source.kind(), numVariables++);
 
@@ -452,8 +448,8 @@ public class LinearScan {
 
     /**
      * Converts an {@linkplain LIRInstruction#id instruction id} to an instruction index. All LIR
-     * instructions in a method have an index one greater than their linear-scan order predecessor
-     * with the first instruction having an index of 0.
+     * instructions in a method have an index one greater than their linear-scan order predecessor with
+     * the first instruction having an index of 0.
      */
     private static int opIdToIndex(int opId) {
         return opId >> 1;
@@ -666,8 +662,8 @@ public class LinearScan {
 
         if (opId != -1) {
             /*
-             * Operands are not changed when an interval is split during allocation, so search the
-             * right interval here.
+             * Operands are not changed when an interval is split during allocation, so search the right
+             * interval here.
              */
             interval = splitChildAtOpId(interval, opId, mode);
         }
@@ -884,7 +880,7 @@ public class LinearScan {
             IntervalWalker iw = new IntervalWalker(this, fixedIntervals, otherIntervals);
 
             for (AbstractBlockBase<?> block : sortedBlocks) {
-                ArrayList<LIRInstruction> instructions = ir.getLIRforBlock(block);
+                SpecifiedArrayList<LIRInstruction> instructions = ir.getLIRforBlock(block);
 
                 for (int j = 0; j < instructions.size(); j++) {
                     LIRInstruction op = instructions.get(j);
@@ -894,16 +890,15 @@ public class LinearScan {
                         boolean checkLive = true;
 
                         /*
-                         * Make sure none of the fixed registers is live across an oopmap since we
-                         * can't handle that correctly.
+                         * Make sure none of the fixed registers is live across an oopmap since we can't handle that
+                         * correctly.
                          */
                         if (checkLive) {
                             for (Interval interval = iw.activeLists.get(RegisterBinding.Fixed); !interval.isEndMarker(); interval = interval.next) {
                                 if (interval.currentTo() > op.id() + 1) {
                                     /*
-                                     * This interval is live out of this op so make sure that this
-                                     * interval represents some value that's referenced by this op
-                                     * either as an input or output.
+                                     * This interval is live out of this op so make sure that this interval represents some value that's
+                                     * referenced by this op either as an input or output.
                                      */
                                     checkConsumer.curInterval = interval;
                                     checkConsumer.ok = false;

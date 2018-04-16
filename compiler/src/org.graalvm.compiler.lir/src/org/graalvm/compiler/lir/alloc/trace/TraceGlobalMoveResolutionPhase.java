@@ -30,9 +30,9 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.alloc.trace.TraceUtil.asShadowedRegisterValue;
 import static org.graalvm.compiler.lir.alloc.trace.TraceUtil.isShadowedRegisterValue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.Trace;
 import org.graalvm.compiler.core.common.alloc.TraceBuilderResult;
@@ -90,7 +90,7 @@ public final class TraceGlobalMoveResolutionPhase {
                             try (Indent indent0 = debug.logAndIndent("Handle trace edge from %s (Trace%d) to %s (Trace%d)", fromBlock, resultTraces.getTraceForBlock(fromBlock).getId(), toBlock,
                                             resultTraces.getTraceForBlock(toBlock).getId())) {
 
-                                final ArrayList<LIRInstruction> instructions;
+                                final SpecifiedArrayList<LIRInstruction> instructions;
                                 final int insertIdx;
                                 if (fromBlock.getSuccessorCount() == 1) {
                                     instructions = lir.getLIRforBlock(fromBlock);

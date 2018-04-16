@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.Trace;
@@ -284,7 +285,7 @@ public final class TraceLinearScanPhase extends TraceAllocationPhase<TraceAlloca
         }
 
         public int getLastLirInstructionId(AbstractBlockBase<?> block) {
-            ArrayList<LIRInstruction> instructions = getLIR().getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> instructions = getLIR().getLIRforBlock(block);
             int result = instructions.get(instructions.size() - 1).id();
             assert result >= 0;
             return result;
@@ -314,8 +315,8 @@ public final class TraceLinearScanPhase extends TraceAllocationPhase<TraceAlloca
 
         void assignSpillSlot(TraceInterval interval) {
             /*
-             * Assign the canonical spill slot of the parent (if a part of the interval is already
-             * spilled) or allocate a new spill slot.
+             * Assign the canonical spill slot of the parent (if a part of the interval is already spilled) or
+             * allocate a new spill slot.
              */
             if (interval.canMaterialize()) {
                 interval.assignLocation(Value.ILLEGAL);
@@ -558,8 +559,8 @@ public final class TraceLinearScanPhase extends TraceAllocationPhase<TraceAlloca
 
             if (opId != -1) {
                 /*
-                 * Operands are not changed when an interval is split during allocation, so search
-                 * the right interval here.
+                 * Operands are not changed when an interval is split during allocation, so search the right
+                 * interval here.
                  */
                 interval = splitChildAtOpId(interval, opId, mode);
             }
@@ -778,16 +779,15 @@ public final class TraceLinearScanPhase extends TraceAllocationPhase<TraceAlloca
         private int intervalsSize;
 
         /**
-         * Map from an instruction {@linkplain LIRInstruction#id id} to the instruction. Entries
-         * should be retrieved with {@link #instructionForId(int)} as the id is not simply an index
-         * into this array.
+         * Map from an instruction {@linkplain LIRInstruction#id id} to the instruction. Entries should be
+         * retrieved with {@link #instructionForId(int)} as the id is not simply an index into this array.
          */
         private LIRInstruction[] opIdToInstructionMap;
 
         /**
-         * Map from an instruction {@linkplain LIRInstruction#id id} to the
-         * {@linkplain AbstractBlockBase block} containing the instruction. Entries should be
-         * retrieved with {@link #blockForId(int)} as the id is not simply an index into this array.
+         * Map from an instruction {@linkplain LIRInstruction#id id} to the {@linkplain AbstractBlockBase
+         * block} containing the instruction. Entries should be retrieved with {@link #blockForId(int)} as
+         * the id is not simply an index into this array.
          */
         private AbstractBlockBase<?>[] opIdToBlockMap;
 
@@ -934,9 +934,9 @@ public final class TraceLinearScanPhase extends TraceAllocationPhase<TraceAlloca
         }
 
         /**
-         * Converts an {@linkplain LIRInstruction#id instruction id} to an instruction index. All
-         * LIR instructions in a method have an index one greater than their linear-scan order
-         * predecessor with the first instruction having an index of 0.
+         * Converts an {@linkplain LIRInstruction#id instruction id} to an instruction index. All LIR
+         * instructions in a method have an index one greater than their linear-scan order predecessor with
+         * the first instruction having an index of 0.
          */
         private int opIdToIndex(int opId) {
             return opId >> 1;

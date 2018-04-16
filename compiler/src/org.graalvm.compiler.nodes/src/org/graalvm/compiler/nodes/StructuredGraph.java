@@ -24,7 +24,6 @@ package org.graalvm.compiler.nodes;
 
 import static org.graalvm.compiler.graph.Graph.SourcePositionTracking.Default;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,6 +33,7 @@ import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.UnmodifiableEconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.CancellationBailoutException;
 import org.graalvm.compiler.core.common.CompilationIdentifier;
 import org.graalvm.compiler.core.common.GraalOptions;
@@ -79,23 +79,21 @@ public final class StructuredGraph extends Graph implements JavaMethodContext {
      */
     public enum GuardsStage {
         /**
-         * During this stage, there can be {@link FloatingNode floating} {@link DeoptimizingNode}
-         * such as {@link GuardNode GuardNodes}. New {@link DeoptimizingNode DeoptimizingNodes} can
-         * be introduced without constraints. {@link FrameState} nodes are associated with
-         * {@link StateSplit} nodes.
+         * During this stage, there can be {@link FloatingNode floating} {@link DeoptimizingNode} such as
+         * {@link GuardNode GuardNodes}. New {@link DeoptimizingNode DeoptimizingNodes} can be introduced
+         * without constraints. {@link FrameState} nodes are associated with {@link StateSplit} nodes.
          */
         FLOATING_GUARDS,
         /**
-         * During this stage, all {@link DeoptimizingNode DeoptimizingNodes} must be
-         * {@link FixedNode fixed} but new {@link DeoptimizingNode DeoptimizingNodes} can still be
-         * introduced. {@link FrameState} nodes are still associated with {@link StateSplit} nodes.
+         * During this stage, all {@link DeoptimizingNode DeoptimizingNodes} must be {@link FixedNode fixed}
+         * but new {@link DeoptimizingNode DeoptimizingNodes} can still be introduced. {@link FrameState}
+         * nodes are still associated with {@link StateSplit} nodes.
          */
         FIXED_DEOPTS,
         /**
-         * During this stage, all {@link DeoptimizingNode DeoptimizingNodes} must be
-         * {@link FixedNode fixed}. New {@link DeoptimizingNode DeoptimizingNodes} can not be
-         * introduced any more. {@link FrameState} nodes are now associated with
-         * {@link DeoptimizingNode} nodes.
+         * During this stage, all {@link DeoptimizingNode DeoptimizingNodes} must be {@link FixedNode
+         * fixed}. New {@link DeoptimizingNode DeoptimizingNodes} can not be introduced any more.
+         * {@link FrameState} nodes are now associated with {@link DeoptimizingNode} nodes.
          */
         AFTER_FSA;
 
@@ -320,7 +318,7 @@ public final class StructuredGraph extends Graph implements JavaMethodContext {
      * Records the methods that were used while constructing this graph, one entry for each time a
      * specific method is used.
      */
-    private final List<ResolvedJavaMethod> methods = new ArrayList<>();
+    private final List<ResolvedJavaMethod> methods = SpecifiedArrayList.createNew();
 
     /**
      * Records the fields that were accessed while constructing this graph.
@@ -600,8 +598,8 @@ public final class StructuredGraph extends Graph implements JavaMethodContext {
     }
 
     /**
-     * Unlinks a node from all its control flow neighbors and then removes it from its graph. The
-     * node must have no {@linkplain Node#usages() usages}.
+     * Unlinks a node from all its control flow neighbors and then removes it from its graph. The node
+     * must have no {@linkplain Node#usages() usages}.
      *
      * @param node the node to be unlinked and removed
      */
@@ -868,8 +866,8 @@ public final class StructuredGraph extends Graph implements JavaMethodContext {
     }
 
     /**
-     * Updates the {@linkplain #getMethods() methods} used to build this graph with the methods used
-     * to build another graph.
+     * Updates the {@linkplain #getMethods() methods} used to build this graph with the methods used to
+     * build another graph.
      */
     public void updateMethods(StructuredGraph other) {
         assert this != other;
@@ -895,8 +893,8 @@ public final class StructuredGraph extends Graph implements JavaMethodContext {
     }
 
     /**
-     * Updates the {@linkplain #getFields() fields} of this graph with the accessed fields of
-     * another graph.
+     * Updates the {@linkplain #getFields() fields} of this graph with the accessed fields of another
+     * graph.
      */
     public void updateFields(StructuredGraph other) {
         assert this != other;
@@ -910,10 +908,10 @@ public final class StructuredGraph extends Graph implements JavaMethodContext {
     }
 
     /**
-     * Gets the input bytecode {@linkplain ResolvedJavaMethod#getCodeSize() size} from which this
-     * graph is constructed. This ignores how many bytecodes in each constituent method are actually
-     * parsed (which may be none for methods whose IR is retrieved from a cache or less than the
-     * full amount for any given method due to profile guided branch pruning).
+     * Gets the input bytecode {@linkplain ResolvedJavaMethod#getCodeSize() size} from which this graph
+     * is constructed. This ignores how many bytecodes in each constituent method are actually parsed
+     * (which may be none for methods whose IR is retrieved from a cache or less than the full amount
+     * for any given method due to profile guided branch pruning).
      */
     public int getBytecodeSize() {
         int res = 0;

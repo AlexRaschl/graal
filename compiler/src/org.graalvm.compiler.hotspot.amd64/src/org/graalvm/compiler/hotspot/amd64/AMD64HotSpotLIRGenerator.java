@@ -25,17 +25,17 @@ package org.graalvm.compiler.hotspot.amd64;
 import static jdk.vm.ci.amd64.AMD64.rbp;
 import static org.graalvm.compiler.core.common.GraalOptions.GeneratePIC;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.INITIALIZE_KLASS_BY_SYMBOL;
+import static org.graalvm.compiler.hotspot.HotSpotBackend.RESOLVE_DYNAMIC_INVOKE;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.RESOLVE_KLASS_BY_SYMBOL;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.RESOLVE_METHOD_BY_SYMBOL_AND_LOAD_COUNTERS;
 import static org.graalvm.compiler.hotspot.HotSpotBackend.RESOLVE_STRING_BY_SYMBOL;
-import static org.graalvm.compiler.hotspot.HotSpotBackend.RESOLVE_DYNAMIC_INVOKE;
-import static org.graalvm.compiler.hotspot.meta.HotSpotConstantLoadAction.RESOLVE;
 import static org.graalvm.compiler.hotspot.meta.HotSpotConstantLoadAction.INITIALIZE;
 import static org.graalvm.compiler.hotspot.meta.HotSpotConstantLoadAction.LOAD_COUNTERS;
+import static org.graalvm.compiler.hotspot.meta.HotSpotConstantLoadAction.RESOLVE;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.asm.amd64.AMD64Address.Scale;
 import org.graalvm.compiler.core.amd64.AMD64ArithmeticLIRGenerator;
 import org.graalvm.compiler.core.amd64.AMD64LIRGenerator;
@@ -180,9 +180,9 @@ public class AMD64HotSpotLIRGenerator extends AMD64LIRGenerator implements HotSp
     }
 
     /**
-     * Helper instruction to reserve a stack slot for the whole method. Note that the actual users
-     * of the stack slot might be inserted after stack slot allocation. This dummy instruction
-     * ensures that the stack slot is alive and gets a real stack slot assigned.
+     * Helper instruction to reserve a stack slot for the whole method. Note that the actual users of
+     * the stack slot might be inserted after stack slot allocation. This dummy instruction ensures that
+     * the stack slot is alive and gets a real stack slot assigned.
      */
     private static final class RescueSlotDummyOp extends LIRInstruction {
         public static final LIRInstructionClass<RescueSlotDummyOp> TYPE = LIRInstructionClass.create(RescueSlotDummyOp.class);
@@ -221,7 +221,7 @@ public class AMD64HotSpotLIRGenerator extends AMD64LIRGenerator implements HotSp
     /**
      * List of epilogue operations that need to restore RBP.
      */
-    List<AMD64HotSpotRestoreRbpOp> epilogueOps = new ArrayList<>(2);
+    List<AMD64HotSpotRestoreRbpOp> epilogueOps = SpecifiedArrayList.createNew(2);
 
     @Override
     public <I extends LIRInstruction> I append(I op) {
@@ -283,13 +283,12 @@ public class AMD64HotSpotLIRGenerator extends AMD64LIRGenerator implements HotSp
         AMD64 arch = (AMD64) target().arch;
         if (arch.getFeatures().contains(AMD64.CPUFeature.AVX) && hsLinkage.mayContainFP() && !hsLinkage.isCompiledStub()) {
             /*
-             * If the target may contain FP ops, and it is not compiled by us, we may have an
-             * AVX-SSE transition.
+             * If the target may contain FP ops, and it is not compiled by us, we may have an AVX-SSE
+             * transition.
              *
-             * We exclude the argument registers from the zeroing LIR instruction since it violates
-             * the LIR semantics of @Temp that values must not be live. Note that the emitted
-             * machine instruction actually zeros _all_ XMM registers which is fine since we know
-             * that their upper half is not used.
+             * We exclude the argument registers from the zeroing LIR instruction since it violates the LIR
+             * semantics of @Temp that values must not be live. Note that the emitted machine instruction
+             * actually zeros _all_ XMM registers which is fine since we know that their upper half is not used.
              */
             append(new AMD64VZeroUpper(arguments));
         }
@@ -558,7 +557,7 @@ public class AMD64HotSpotLIRGenerator extends AMD64LIRGenerator implements HotSp
             LIRInstruction op = getOrInitRescueSlotOp();
             // insert dummy instruction into the start block
             LIR lir = getResult().getLIR();
-            ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(lir.getControlFlowGraph().getStartBlock());
+            SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(lir.getControlFlowGraph().getStartBlock());
             instructions.add(1, op);
             lir.getDebug().dump(DebugContext.INFO_LEVEL, lir, "created rescue dummy op");
         }

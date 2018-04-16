@@ -149,8 +149,7 @@ public class InvocationPlugins {
         }
 
         /**
-         * Gets the resolved {@link Class} corresponding to this symbol or {@code null} if
-         * resolution fails.
+         * Gets the resolved {@link Class} corresponding to this symbol or {@code null} if resolution fails.
          */
         public Class<?> resolve() {
             if (resolved == null) {
@@ -183,12 +182,12 @@ public class InvocationPlugins {
         }
 
         /**
-         * Creates an object for registering {@link InvocationPlugin}s for methods declared by a
-         * given class.
+         * Creates an object for registering {@link InvocationPlugin}s for methods declared by a given
+         * class.
          *
          * @param plugins where to register the plugins
-         * @param declaringType the class declaring the methods for which plugins will be registered
-         *            via this object
+         * @param declaringType the class declaring the methods for which plugins will be registered via
+         *            this object
          */
         public Registration(InvocationPlugins plugins, Type declaringType) {
             this.plugins = plugins;
@@ -197,14 +196,14 @@ public class InvocationPlugins {
         }
 
         /**
-         * Creates an object for registering {@link InvocationPlugin}s for methods declared by a
-         * given class.
+         * Creates an object for registering {@link InvocationPlugin}s for methods declared by a given
+         * class.
          *
          * @param plugins where to register the plugins
-         * @param declaringType the class declaring the methods for which plugins will be registered
-         *            via this object
-         * @param methodSubstitutionBytecodeProvider provider used to get the bytecodes to parse for
-         *            method substitutions
+         * @param declaringType the class declaring the methods for which plugins will be registered via
+         *            this object
+         * @param methodSubstitutionBytecodeProvider provider used to get the bytecodes to parse for method
+         *            substitutions
          */
         public Registration(InvocationPlugins plugins, Type declaringType, BytecodeProvider methodSubstitutionBytecodeProvider) {
             this.plugins = plugins;
@@ -213,14 +212,14 @@ public class InvocationPlugins {
         }
 
         /**
-         * Creates an object for registering {@link InvocationPlugin}s for methods declared by a
-         * given class.
+         * Creates an object for registering {@link InvocationPlugin}s for methods declared by a given
+         * class.
          *
          * @param plugins where to register the plugins
-         * @param declaringClassName the name of the class class declaring the methods for which
-         *            plugins will be registered via this object
-         * @param methodSubstitutionBytecodeProvider provider used to get the bytecodes to parse for
-         *            method substitutions
+         * @param declaringClassName the name of the class class declaring the methods for which plugins
+         *            will be registered via this object
+         * @param methodSubstitutionBytecodeProvider provider used to get the bytecodes to parse for method
+         *            substitutions
          */
         public Registration(InvocationPlugins plugins, String declaringClassName, BytecodeProvider methodSubstitutionBytecodeProvider) {
             this.plugins = plugins;
@@ -371,9 +370,9 @@ public class InvocationPlugins {
          *
          * @param substituteDeclaringClass the class declaring the substitute method
          * @param name the name of both the original and substitute method
-         * @param argumentTypes the argument types of the method. Element 0 of this array must be
-         *            the {@link Class} value for {@link InvocationPlugin.Receiver} iff the method
-         *            is non-static. Upon returning, element 0 will have been rewritten to
+         * @param argumentTypes the argument types of the method. Element 0 of this array must be the
+         *            {@link Class} value for {@link InvocationPlugin.Receiver} iff the method is
+         *            non-static. Upon returning, element 0 will have been rewritten to
          *            {@code declaringClass}
          */
         @Override
@@ -387,9 +386,9 @@ public class InvocationPlugins {
          * @param substituteDeclaringClass the class declaring the substitute method
          * @param name the name of both the original method
          * @param substituteName the name of the substitute method
-         * @param argumentTypes the argument types of the method. Element 0 of this array must be
-         *            the {@link Class} value for {@link InvocationPlugin.Receiver} iff the method
-         *            is non-static. Upon returning, element 0 will have been rewritten to
+         * @param argumentTypes the argument types of the method. Element 0 of this array must be the
+         *            {@link Class} value for {@link InvocationPlugin.Receiver} iff the method is
+         *            non-static. Upon returning, element 0 will have been rewritten to
          *            {@code declaringClass}
          */
         @Override
@@ -417,12 +416,12 @@ public class InvocationPlugins {
         private final Type declaringType;
 
         /**
-         * Creates an object for registering {@link InvocationPlugin}s for methods declared by a
-         * given class.
+         * Creates an object for registering {@link InvocationPlugin}s for methods declared by a given
+         * class.
          *
          * @param plugins where to register the plugins
-         * @param declaringType the class declaring the methods for which plugins will be registered
-         *            via this object
+         * @param declaringType the class declaring the methods for which plugins will be registered via
+         *            this object
          */
         public LateRegistration(InvocationPlugins plugins, Type declaringType) {
             this.plugins = plugins;
@@ -430,12 +429,12 @@ public class InvocationPlugins {
         }
 
         /**
-         * Registers an invocation plugin for a given method. There must be no plugin currently
-         * registered for {@code method}.
+         * Registers an invocation plugin for a given method. There must be no plugin currently registered
+         * for {@code method}.
          *
-         * @param argumentTypes the argument types of the method. Element 0 of this array must be
-         *            the {@link Class} value for {@link InvocationPlugin.Receiver} iff the method
-         *            is non-static. Upon returning, element 0 will have been rewritten to
+         * @param argumentTypes the argument types of the method. Element 0 of this array must be the
+         *            {@link Class} value for {@link InvocationPlugin.Receiver} iff the method is
+         *            non-static. Upon returning, element 0 will have been rewritten to
          *            {@code declaringClass}
          */
         public void register(InvocationPlugin plugin, String name, Type... argumentTypes) {
@@ -482,8 +481,8 @@ public class InvocationPlugins {
         /**
          * A partial
          * <a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.3.3">method
-         * descriptor</a> for the associated method. The descriptor includes enclosing {@code '('}
-         * and {@code ')'} characters but omits the return type suffix.
+         * descriptor</a> for the associated method. The descriptor includes enclosing {@code '('} and
+         * {@code ')'} characters but omits the return type suffix.
          */
         public final String argumentsDescriptor;
 
@@ -524,21 +523,21 @@ public class InvocationPlugins {
     }
 
     /**
-     * Plugin registrations for already resolved methods. If non-null, then {@link #registrations}
-     * is null and no further registrations can be made.
+     * Plugin registrations for already resolved methods. If non-null, then {@link #registrations} is
+     * null and no further registrations can be made.
      */
     private final UnmodifiableEconomicMap<ResolvedJavaMethod, InvocationPlugin> resolvedRegistrations;
 
     /**
      * Map from class names in {@linkplain MetaUtil#toInternalName(String) internal} form to the
-     * invocation plugin bindings for the class. Tf non-null, then {@link #resolvedRegistrations}
-     * will be null.
+     * invocation plugin bindings for the class. Tf non-null, then {@link #resolvedRegistrations} will
+     * be null.
      */
     private final EconomicMap<String, ClassPlugins> registrations;
 
     /**
-     * Deferred registrations as well as the guard for delimiting the initial registration phase.
-     * The guard uses double-checked locking which is why this field is {@code volatile}.
+     * Deferred registrations as well as the guard for delimiting the initial registration phase. The
+     * guard uses double-checked locking which is why this field is {@code volatile}.
      */
     private volatile List<Runnable> deferredRegistrations = new ArrayList<>();
 
@@ -749,10 +748,9 @@ public class InvocationPlugins {
                         throw t;
                     } catch (Throwable t) {
                         /*
-                         * Something went wrong during registration but it's possible we'll end up
-                         * coming back into this code. nulling out deferredRegistrations would just
-                         * cause other things to break and rerunning them would cause errors about
-                         * already registered plugins, so rethrow the original exception during
+                         * Something went wrong during registration but it's possible we'll end up coming back into this
+                         * code. nulling out deferredRegistrations would just cause other things to break and rerunning them
+                         * would cause errors about already registered plugins, so rethrow the original exception during
                          * later invocations.
                          */
                         deferredRegistrations.clear();
@@ -786,13 +784,14 @@ public class InvocationPlugins {
      * Extends the plugins in this object with those from {@code other}. The added plugins should be
      * {@linkplain #removeTestPlugins(InvocationPlugins) removed} after the test.
      *
-     * This extension mechanism exists only for tests that want to add extra invocation plugins
-     * after the compiler has been initialized.
+     * This extension mechanism exists only for tests that want to add extra invocation plugins after
+     * the compiler has been initialized.
      *
      * @param ignored if non-null, the bindings from {@code other} already in this object prior to
      *            calling this method are added to this list. These bindings are not added to this
      *            object.
      */
+    @SuppressWarnings("unused")
     public synchronized void addTestPlugins(InvocationPlugins other, List<Pair<String, Binding>> ignored) {
         assert resolvedRegistrations == null : "registration is closed";
         EconomicMap<String, List<Binding>> otherBindings = other.getBindings(true, false);
@@ -824,8 +823,7 @@ public class InvocationPlugins {
     }
 
     /**
-     * Removes the plugins from {@code other} in this object that were added by
-     * {@link #addTestPlugins}.
+     * Removes the plugins from {@code other} in this object that were added by {@link #addTestPlugins}.
      */
     public synchronized void removeTestPlugins(InvocationPlugins other) {
         assert resolvedRegistrations == null : "registration is closed";
@@ -885,8 +883,8 @@ public class InvocationPlugins {
     }
 
     /**
-     * The plugins {@linkplain #lookupInvocation(ResolvedJavaMethod) searched} before searching in
-     * this object.
+     * The plugins {@linkplain #lookupInvocation(ResolvedJavaMethod) searched} before searching in this
+     * object.
      */
     protected final InvocationPlugins parent;
 
@@ -910,8 +908,8 @@ public class InvocationPlugins {
     }
 
     /**
-     * Creates a closed set of invocation plugins for a set of resolved methods. Such an object
-     * cannot have further plugins registered.
+     * Creates a closed set of invocation plugins for a set of resolved methods. Such an object cannot
+     * have further plugins registered.
      */
     public InvocationPlugins(Map<ResolvedJavaMethod, InvocationPlugin> plugins, InvocationPlugins parent) {
         this.parent = parent;
@@ -936,8 +934,8 @@ public class InvocationPlugins {
     }
 
     /**
-     * Registers an invocation plugin for a given method. There must be no plugin currently
-     * registered for {@code method}.
+     * Registers an invocation plugin for a given method. There must be no plugin currently registered
+     * for {@code method}.
      *
      * @param argumentTypes the argument types of the method. Element 0 of this array must be the
      *            {@link Class} value for {@link InvocationPlugin.Receiver} iff the method is
@@ -953,8 +951,8 @@ public class InvocationPlugins {
     }
 
     /**
-     * Registers an invocation plugin for a given, optional method. There must be no plugin
-     * currently registered for {@code method}.
+     * Registers an invocation plugin for a given, optional method. There must be no plugin currently
+     * registered for {@code method}.
      *
      * @param argumentTypes the argument types of the method. Element 0 of this array must be the
      *            {@link Class} value for {@link InvocationPlugin.Receiver} iff the method is
@@ -984,8 +982,8 @@ public class InvocationPlugins {
     /**
      * Gets the set of registered invocation plugins.
      *
-     * @return a map from class names in {@linkplain MetaUtil#toInternalName(String) internal} form
-     *         to the invocation plugin bindings for methods in the class
+     * @return a map from class names in {@linkplain MetaUtil#toInternalName(String) internal} form to
+     *         the invocation plugin bindings for methods in the class
      */
     public EconomicMap<String, List<Binding>> getBindings(boolean includeParents) {
         return getBindings(includeParents, true);
@@ -994,8 +992,8 @@ public class InvocationPlugins {
     /**
      * Gets the set of registered invocation plugins.
      *
-     * @return a map from class names in {@linkplain MetaUtil#toInternalName(String) internal} form
-     *         to the invocation plugin bindings for methods in the class
+     * @return a map from class names in {@linkplain MetaUtil#toInternalName(String) internal} form to
+     *         the invocation plugin bindings for methods in the class
      */
     private EconomicMap<String, List<Binding>> getBindings(boolean includeParents, boolean flushDeferrables) {
         EconomicMap<String, List<Binding>> res = EconomicMap.create(Equivalence.DEFAULT);
@@ -1066,8 +1064,8 @@ public class InvocationPlugins {
     }
 
     /**
-     * Gets the invocation plugins {@linkplain #lookupInvocation(ResolvedJavaMethod) searched}
-     * before searching in this object.
+     * Gets the invocation plugins {@linkplain #lookupInvocation(ResolvedJavaMethod) searched} before
+     * searching in this object.
      */
     public InvocationPlugins getParent() {
         return parent;
@@ -1259,9 +1257,9 @@ public class InvocationPlugins {
     }
 
     /**
-     * Resolves a given binding to a method in a given class. If more than one method with the
-     * parameter types matching {@code binding} is found and the return types of all the matching
-     * methods form an inheritance chain, the one with the most specific type is returned; otherwise
+     * Resolves a given binding to a method in a given class. If more than one method with the parameter
+     * types matching {@code binding} is found and the return types of all the matching methods form an
+     * inheritance chain, the one with the most specific type is returned; otherwise
      * {@link NoSuchMethodError} is thrown.
      *
      * @param declaringClass the class to search for a method matching {@code binding}
@@ -1297,9 +1295,8 @@ public class InvocationPlugins {
     }
 
     /**
-     * Same as {@link #resolveMethod(Class, Binding)} and
-     * {@link #resolveConstructor(Class, Binding)} except in terms of {@link ResolvedJavaType} and
-     * {@link ResolvedJavaMethod}.
+     * Same as {@link #resolveMethod(Class, Binding)} and {@link #resolveConstructor(Class, Binding)}
+     * except in terms of {@link ResolvedJavaType} and {@link ResolvedJavaMethod}.
      */
     public static ResolvedJavaMethod resolveJavaMethod(ResolvedJavaType declaringClass, Binding binding) {
         ResolvedJavaMethod[] methods = declaringClass.getDeclaredMethods();

@@ -25,13 +25,13 @@ package org.graalvm.compiler.nodes;
 import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_1;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_2;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.calc.Condition;
 import org.graalvm.compiler.core.common.type.IntegerStamp;
 import org.graalvm.compiler.core.common.type.Stamp;
@@ -418,8 +418,8 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
                 }
                 result = proxyReplacement(result);
                 /*
-                 * This optimization can be performed even if multiple values merge at this phi
-                 * since the two inputs get simplified into one.
+                 * This optimization can be performed even if multiple values merge at this phi since the two inputs
+                 * get simplified into one.
                  */
                 phi.setValueAt(trueEnd, result);
                 removeThroughFalseBranch(tool, merge);
@@ -491,8 +491,8 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
                     AbstractBeginNode trueSucc = ifNode2.trueSuccessor();
                     IntegerBelowNode below = null;
                     /*
-                     * Convert x >= 0 && x < positive which is represented as !(x < 0) && x <
-                     * <positive> into an unsigned compare.
+                     * Convert x >= 0 && x < positive which is represented as !(x < 0) && x < <positive> into an
+                     * unsigned compare.
                      */
                     if (lessThan2.getX() == lessThan.getX() && lessThan2.getY().stamp(view) instanceof IntegerStamp &&
                                     ((IntegerStamp) lessThan2.getY().stamp(view)).isPositive() &&
@@ -504,10 +504,9 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
                         trueSucc = tmp;
                     } else if (lessThan2.getY() == lessThan.getX() && sameDestination(trueSuccessor(), ifNode2.trueSuccessor)) {
                         /*
-                         * Convert x >= 0 && x <= positive which is represented as !(x < 0) &&
-                         * !(<positive> > x), into x <| positive + 1. This can only be done for
-                         * constants since there isn't a IntegerBelowEqualThanNode but that doesn't
-                         * appear to be interesting.
+                         * Convert x >= 0 && x <= positive which is represented as !(x < 0) && !(<positive> > x), into x <|
+                         * positive + 1. This can only be done for constants since there isn't a IntegerBelowEqualThanNode
+                         * but that doesn't appear to be interesting.
                          */
                         JavaConstant positive = lessThan2.getX().asJavaConstant();
                         if (positive != null && positive.asLong() > 0 && positive.asLong() < positive.getJavaKind().getMaxValue()) {
@@ -536,8 +535,8 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
     }
 
     /**
-     * Check it these two blocks end up at the same place. Meeting at the same merge, or
-     * deoptimizing in the same way.
+     * Check it these two blocks end up at the same place. Meeting at the same merge, or deoptimizing in
+     * the same way.
      */
     private static boolean sameDestination(AbstractBeginNode succ1, AbstractBeginNode succ2) {
         Node next1 = succ1.next();
@@ -689,8 +688,7 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
                 }
                 if (distinct == 0) {
                     /*
-                     * Multiple phis but merging same values for true and false, so simply delete
-                     * the path
+                     * Multiple phis but merging same values for true and false, so simply delete the path
                      */
                     removeThroughFalseBranch(tool, merge);
                     return true;
@@ -733,12 +731,12 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
 
     private ValueNode proxyReplacement(ValueNode replacement) {
         /*
-         * Special case: Every empty diamond we collapse to a conditional node can potentially
-         * contain loop exit nodes on both branches. See the graph below: The two loop exits
-         * (instanceof begin node) exit the same loop. The resulting phi is defined outside the
-         * loop, but the resulting conditional node will be inside the loop, so we need to proxy the
-         * resulting conditional node. Callers of this method ensure that true and false successor
-         * have no usages, therefore a and b in the graph below can never be proxies themselves.
+         * Special case: Every empty diamond we collapse to a conditional node can potentially contain loop
+         * exit nodes on both branches. See the graph below: The two loop exits (instanceof begin node) exit
+         * the same loop. The resulting phi is defined outside the loop, but the resulting conditional node
+         * will be inside the loop, so we need to proxy the resulting conditional node. Callers of this
+         * method ensure that true and false successor have no usages, therefore a and b in the graph below
+         * can never be proxies themselves.
          */
         // @formatter:off
         //              +--+
@@ -845,8 +843,8 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
 
     /**
      * Take an if that is immediately dominated by a merge with a single phi and split off any paths
-     * where the test would be statically decidable creating a new merge below the approriate side
-     * of the IfNode. Any undecidable tests will continue to use the original IfNode.
+     * where the test would be statically decidable creating a new merge below the approriate side of
+     * the IfNode. Any undecidable tests will continue to use the original IfNode.
      *
      * @param tool
      */
@@ -874,8 +872,7 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
         PhiNode phi = merge.phis().first();
         if (phi.usages().count() != 1) {
             /*
-             * For simplicity the below code assumes assumes the phi goes dead at the end so skip
-             * this case.
+             * For simplicity the below code assumes assumes the phi goes dead at the end so skip this case.
              */
             return false;
         }
@@ -889,9 +886,9 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
         }
 
         /*
-         * We could additionally filter for the case that at least some of the Phi inputs or one of
-         * the condition inputs are constants but there are cases where a non-constant is
-         * simplifiable, usually where the stamp allows the question to be answered.
+         * We could additionally filter for the case that at least some of the Phi inputs or one of the
+         * condition inputs are constants but there are cases where a non-constant is simplifiable, usually
+         * where the stamp allows the question to be answered.
          */
 
         /* Each successor of the if gets a new merge if needed. */
@@ -956,9 +953,9 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
     /**
      * @param condition
      * @param phi
-     * @return true if the passed in {@code condition} uses {@code phi} and the condition is only
-     *         used once. Since the phi will go dead the condition using it will also have to be
-     *         dead after the optimization.
+     * @return true if the passed in {@code condition} uses {@code phi} and the condition is only used
+     *         once. Since the phi will go dead the condition using it will also have to be dead after
+     *         the optimization.
      */
     private static boolean conditionUses(LogicNode condition, PhiNode phi) {
         if (condition.usages().count() != 1) {
@@ -967,10 +964,9 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
         if (condition instanceof ShortCircuitOrNode) {
             if (condition.graph().getGuardsStage().areDeoptsFixed()) {
                 /*
-                 * It can be unsafe to simplify a ShortCircuitOr before deopts are fixed because
-                 * conversion to guards assumes that all the required conditions are being tested.
-                 * Simplfying the condition based on context before this happens may lose a
-                 * condition.
+                 * It can be unsafe to simplify a ShortCircuitOr before deopts are fixed because conversion to
+                 * guards assumes that all the required conditions are being tested. Simplfying the condition based
+                 * on context before this happens may lose a condition.
                  */
                 ShortCircuitOrNode orNode = (ShortCircuitOrNode) condition;
                 return (conditionUses(orNode.x, phi) || conditionUses(orNode.y, phi));
@@ -1079,8 +1075,8 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
     }
 
     /**
-     * Tries to connect code that initializes a variable directly with the successors of an if
-     * construct that switches on the variable. For example, the pseudo code below:
+     * Tries to connect code that initializes a variable directly with the successors of an if construct
+     * that switches on the variable. For example, the pseudo code below:
      *
      * <pre>
      * contains(list, e, yes, no) {
@@ -1175,8 +1171,8 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
             return false;
         }
 
-        List<EndNode> falseEnds = new ArrayList<>(mergePredecessors.size());
-        List<EndNode> trueEnds = new ArrayList<>(mergePredecessors.size());
+        List<EndNode> falseEnds = SpecifiedArrayList.createNew(mergePredecessors.size());
+        List<EndNode> trueEnds = SpecifiedArrayList.createNew(mergePredecessors.size());
         EconomicMap<AbstractEndNode, ValueNode> phiValues = EconomicMap.create(Equivalence.IDENTITY, mergePredecessors.size());
 
         AbstractBeginNode oldFalseSuccessor = falseSuccessor();
@@ -1351,11 +1347,11 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
 
     /**
      * Gets an array of constants derived from a node that is either a {@link ConstantNode} or a
-     * {@link PhiNode} whose input values are all constants. The length of the returned array is
-     * equal to the number of ends terminating in a given merge node.
+     * {@link PhiNode} whose input values are all constants. The length of the returned array is equal
+     * to the number of ends terminating in a given merge node.
      *
-     * @return null if {@code node} is neither a {@link ConstantNode} nor a {@link PhiNode} whose
-     *         input values are all constants
+     * @return null if {@code node} is neither a {@link ConstantNode} nor a {@link PhiNode} whose input
+     *         values are all constants
      */
     public static Constant[] constantValues(ValueNode node, AbstractMergeNode merge, boolean allowNull) {
         if (node.isConstant()) {

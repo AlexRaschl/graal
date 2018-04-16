@@ -22,8 +22,6 @@
  */
 package org.graalvm.compiler.lir.alloc.trace;
 
-import java.util.ArrayList;
-
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.Trace;
@@ -99,7 +97,7 @@ public final class DefaultTraceRegisterAllocationPolicy {
         @Override
         protected TraceAllocationPhase<TraceAllocationContext> initAllocator(TargetDescription target, LIRGenerationResult lirGenRes, MoveFactory spillMoveFactory,
                         RegisterAllocationConfig registerAllocationConfig, AllocatableValue[] cachedStackSlots, TraceBuilderResult resultTraces, boolean neverSpillConstant,
-                        GlobalLivenessInfo livenessInfo, ArrayList<AllocationStrategy> strategies) {
+                        GlobalLivenessInfo livenessInfo, SpecifiedArrayList<AllocationStrategy> strategies) {
             return new TrivialTraceAllocator();
         }
     }
@@ -131,7 +129,7 @@ public final class DefaultTraceRegisterAllocationPolicy {
         @Override
         protected TraceAllocationPhase<TraceAllocationContext> initAllocator(TargetDescription target, LIRGenerationResult lirGenRes, MoveFactory spillMoveFactory,
                         RegisterAllocationConfig registerAllocationConfig, AllocatableValue[] cachedStackSlots, TraceBuilderResult resultTraces, boolean neverSpillConstant,
-                        GlobalLivenessInfo livenessInfo, ArrayList<AllocationStrategy> strategies) {
+                        GlobalLivenessInfo livenessInfo, SpecifiedArrayList<AllocationStrategy> strategies) {
             return new BottomUpAllocator(target, lirGenRes, spillMoveFactory, registerAllocationConfig, cachedStackSlots, resultTraces, neverSpillConstant, livenessInfo);
         }
     }
@@ -361,7 +359,7 @@ public final class DefaultTraceRegisterAllocationPolicy {
         @Override
         protected TraceAllocationPhase<TraceAllocationContext> initAllocator(TargetDescription target, LIRGenerationResult lirGenRes, MoveFactory spillMoveFactory,
                         RegisterAllocationConfig registerAllocationConfig, AllocatableValue[] cachedStackSlots, TraceBuilderResult resultTraces, boolean neverSpillConstant,
-                        GlobalLivenessInfo livenessInfo, ArrayList<AllocationStrategy> strategies) {
+                        GlobalLivenessInfo livenessInfo, SpecifiedArrayList<AllocationStrategy> strategies) {
             return new TraceLinearScanPhase(target, lirGenRes, spillMoveFactory, registerAllocationConfig, resultTraces, neverSpillConstant, cachedStackSlots, livenessInfo);
         }
 

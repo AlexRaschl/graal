@@ -23,16 +23,15 @@
 
 package org.graalvm.compiler.jtt.bytecode;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.compiler.jtt.JTTTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-
-import org.graalvm.compiler.jtt.JTTTest;
 
 @RunWith(Parameterized.class)
 public abstract class BC_double_base extends JTTTest {
@@ -54,7 +53,7 @@ public abstract class BC_double_base extends JTTTest {
 
     @Parameters(name = "{0}, {1}")
     public static Collection<Object[]> data() {
-        List<Object[]> d = new ArrayList<>();
+        List<Object[]> d = SpecifiedArrayList.createNew();
         for (int i = 0; i < values.length; i++) {
             double x = values[i];
             for (int j = 0; j < values.length; j++) {

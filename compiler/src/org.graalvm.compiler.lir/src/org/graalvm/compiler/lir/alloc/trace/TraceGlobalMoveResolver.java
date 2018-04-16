@@ -34,10 +34,10 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 import static org.graalvm.compiler.lir.alloc.trace.TraceUtil.asShadowedRegisterValue;
 import static org.graalvm.compiler.lir.alloc.trace.TraceUtil.isShadowedRegisterValue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.debug.CounterKey;
@@ -71,9 +71,9 @@ public final class TraceGlobalMoveResolver extends TraceGlobalMoveResolutionPhas
     private int insertIdx;
     private LIRInsertionBuffer insertionBuffer; // buffer where moves are inserted
 
-    private final ArrayList<Value> mappingFrom;
-    private final ArrayList<Value> mappingFromStack;
-    private final ArrayList<AllocatableValue> mappingTo;
+    private final SpecifiedArrayList<Value> mappingFrom;
+    private final SpecifiedArrayList<Value> mappingFromStack;
+    private final SpecifiedArrayList<AllocatableValue> mappingTo;
     private final int[] registerBlocked;
     private static final int STACK_SLOT_IN_CALLER_FRAME_IDX = -1;
     private int[] stackBlocked;
@@ -143,9 +143,9 @@ public final class TraceGlobalMoveResolver extends TraceGlobalMoveResolutionPhas
 
     public TraceGlobalMoveResolver(LIRGenerationResult res, MoveFactory spillMoveFactory, RegisterAllocationConfig registerAllocationConfig, Architecture arch) {
 
-        this.mappingFrom = new ArrayList<>(8);
-        this.mappingFromStack = new ArrayList<>(8);
-        this.mappingTo = new ArrayList<>(8);
+        this.mappingFrom = SpecifiedArrayList.createNew(8);
+        this.mappingFromStack = SpecifiedArrayList.createNew(8);
+        this.mappingTo = SpecifiedArrayList.createNew(8);
         this.insertIdx = -1;
         this.insertionBuffer = new LIRInsertionBuffer();
 
@@ -281,8 +281,7 @@ public final class TraceGlobalMoveResolver extends TraceGlobalMoveResolutionPhas
             }
         } else {
             /*
-             * A shadowed destination value is never a self move it both values are not equal. Fall
-             * through.
+             * A shadowed destination value is never a self move it both values are not equal. Fall through.
              */
             // if (isShadowedRegisterValue(to)) return false;
 
@@ -306,7 +305,7 @@ public final class TraceGlobalMoveResolver extends TraceGlobalMoveResolutionPhas
         return isRegister(location) || isStackSlotValue(location);
     }
 
-    private void createInsertionBuffer(ArrayList<LIRInstruction> list) {
+    private void createInsertionBuffer(SpecifiedArrayList<LIRInstruction> list) {
         assert !insertionBuffer.initialized() : "overwriting existing buffer";
         insertionBuffer.init(list);
     }
@@ -361,7 +360,7 @@ public final class TraceGlobalMoveResolver extends TraceGlobalMoveResolutionPhas
                 block(from);
             }
 
-            ArrayList<AllocatableValue> busySpillSlots = null;
+            SpecifiedArrayList<AllocatableValue> busySpillSlots = null;
             while (mappingFrom.size() > 0) {
                 boolean processedInterval = false;
 
@@ -376,7 +375,7 @@ public final class TraceGlobalMoveResolver extends TraceGlobalMoveResolutionPhas
                         unblock(fromLocation);
                         if (isStackSlotValue(toLocation)) {
                             if (busySpillSlots == null) {
-                                busySpillSlots = new ArrayList<>(2);
+                                busySpillSlots = SpecifiedArrayList.createNew(2);
                             }
                             busySpillSlots.add(toLocation);
                         }
@@ -449,7 +448,7 @@ public final class TraceGlobalMoveResolver extends TraceGlobalMoveResolutionPhas
         }
     }
 
-    public void setInsertPosition(ArrayList<LIRInstruction> insertList, int insertIdx) {
+    public void setInsertPosition(SpecifiedArrayList<LIRInstruction> insertList, int insertIdx) {
         assert this.insertIdx == -1 : "use moveInsertPosition instead of setInsertPosition when data already set";
 
         createInsertionBuffer(insertList);
