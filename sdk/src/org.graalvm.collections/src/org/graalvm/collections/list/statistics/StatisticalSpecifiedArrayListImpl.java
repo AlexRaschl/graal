@@ -15,6 +15,7 @@ import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Opera
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.EMPTY;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ENSURE_CAP;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.GET_INDEXED;
+import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.GROW;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.INDEX_OF;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.INDEX_OF_LAST;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ITERATOR;
@@ -27,10 +28,8 @@ import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Opera
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.SUBLIST;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TO_ARRAY;
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TRIM_TO_SIZE;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.GROW;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -58,6 +57,8 @@ import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
  */
 
 public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalCollection {
+
+    private static final long serialVersionUID = 2325200269334451909L;
 
     private final static boolean TRACKS_ALL = false;
     private final static HashSet<String> trackedSites = new HashSet<>(10);

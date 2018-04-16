@@ -397,18 +397,18 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         return -1;
     }
 
-    @Override
-    public Object clone() {
-        try {
-            SpecifiedArrayListImpl<?> v = (SpecifiedArrayListImpl<?>) super.clone();
-            v.elementData = Arrays.copyOf(elementData, size);
-            v.modCount = 0;
-            return v;
-        } catch (CloneNotSupportedException e) {
-            // this shouldn't happen, since we are Cloneable
-            throw new InternalError(e);
-        }
-    }
+// @Override
+// public Object clone() {
+// try {
+// SpecifiedArrayListImpl<?> v = (SpecifiedArrayListImpl<?>) super.clone();
+// v.elementData = Arrays.copyOf(elementData, size);
+// v.modCount = 0;
+// return v;
+// } catch (CloneNotSupportedException e) {
+// // this shouldn't happen, since we are Cloneable
+// throw new InternalError(e);
+// }
+// }
 
     @Override
     public Iterator<E> iterator() {
@@ -431,7 +431,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
         protected int cursor;
         protected int lastRet;
-        protected int expectedModCount = modCount;
+        protected int expectedModCount = getModCount();
 
         Itr() {
             cursor = 0;
@@ -468,7 +468,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
                 SpecifiedArrayListImpl.this.remove(lastRet);
                 cursor = lastRet;
                 lastRet = -1;
-                expectedModCount = modCount;
+                expectedModCount = getModCount();
             } catch (IndexOutOfBoundsException ex) {
                 throw new ConcurrentModificationException();
             }
@@ -488,7 +488,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
             if (i >= elementData.length) {
                 throw new ConcurrentModificationException();
             }
-            while (i != size && modCount == expectedModCount) {
+            while (i != size && getModCount() == expectedModCount) {
                 consumer.accept((E) elementData[i++]);
             }
             // update once at end of iteration to reduce heap write traffic
@@ -498,7 +498,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         }
 
         final void checkForComodification() {
-            if (modCount != expectedModCount)
+            if (getModCount() != expectedModCount)
                 throw new ConcurrentModificationException();
         }
 
@@ -573,7 +573,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
                 SpecifiedArrayListImpl.this.add(i, e);
                 cursor = i + 1;
                 lastRet = -1;
-                expectedModCount = modCount;
+                expectedModCount = getModCount();
             } catch (IndexOutOfBoundsException ex) {
                 throw new ConcurrentModificationException();
             }
@@ -954,7 +954,7 @@ class SubList<E> extends SpecifiedArrayListImpl<E> {
         l = list;
         offset = fromIndex;
         size = toIndex - fromIndex;
-        this.modCount = l.modCount;
+        this.modCount = l.getModCount();
     }
 
     @Override
@@ -982,7 +982,7 @@ class SubList<E> extends SpecifiedArrayListImpl<E> {
         rangeCheckForAdd(index);
         checkForComodification();
         l.add(index + offset, element);
-        this.modCount = l.modCount;
+        this.modCount = l.getModCount();
         size++;
     }
 
@@ -991,7 +991,7 @@ class SubList<E> extends SpecifiedArrayListImpl<E> {
         rangeCheck(index);
         checkForComodification();
         E result = l.remove(index + offset);
-        this.modCount = l.modCount;
+        this.modCount = l.getModCount();
         size--;
         return result;
     }
@@ -1000,7 +1000,7 @@ class SubList<E> extends SpecifiedArrayListImpl<E> {
     protected void removeRange(int fromIndex, int toIndex) {
         checkForComodification();
         l.removeRange(fromIndex + offset, toIndex + offset);
-        this.modCount = l.modCount;
+        this.modCount = l.getModCount();
         size -= (toIndex - fromIndex);
     }
 
@@ -1018,7 +1018,7 @@ class SubList<E> extends SpecifiedArrayListImpl<E> {
 
         checkForComodification();
         l.addAll(offset + index, c);
-        this.modCount = l.modCount;
+        this.modCount = l.getModCount();
         size += cSize;
         return true;
     }
@@ -1075,7 +1075,7 @@ class SubList<E> extends SpecifiedArrayListImpl<E> {
             @Override
             public void remove() {
                 i.remove();
-                SubList.this.modCount = l.modCount;
+                SubList.this.modCount = l.getModCount();
                 size--;
             }
 
@@ -1087,7 +1087,7 @@ class SubList<E> extends SpecifiedArrayListImpl<E> {
             @Override
             public void add(E e) {
                 i.add(e);
-                SubList.this.modCount = l.modCount;
+                SubList.this.modCount = l.getModCount();
                 size++;
             }
         };
@@ -1113,7 +1113,7 @@ class SubList<E> extends SpecifiedArrayListImpl<E> {
     }
 
     private void checkForComodification() {
-        if (this.modCount != l.modCount)
+        if (this.modCount != l.getModCount())
             throw new ConcurrentModificationException();
     }
 }
