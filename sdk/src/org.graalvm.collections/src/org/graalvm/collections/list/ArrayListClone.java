@@ -102,6 +102,7 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
      * Trims the capacity of this <tt>ArrayList</tt> instance to be the list's current size. An
      * application can use this operation to minimize the storage of an <tt>ArrayList</tt> instance.
      */
+
     @Override
     public void trimToSize() {
         modCount++;
@@ -118,6 +119,7 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
      *
      * @param minCapacity the desired minimum capacity
      */
+
     @Override
     public void ensureCapacity(int minCapacity) {
         int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
@@ -1176,6 +1178,7 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
                 throw new ConcurrentModificationException();
         }
 
+        @Override
         public Spliterator<E> spliterator() {
             checkForComodification();
             return new ArrayListCloneSpliterator<E>(ArrayListClone.this, offset,
@@ -1266,6 +1269,7 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
             return hi;
         }
 
+        @Override
         public ArrayListCloneSpliterator<E> trySplit() {
             int hi = getFence(), lo = index, mid = (lo + hi) >>> 1;
             return (lo >= mid) ? null : // divide range in half unless too small
@@ -1273,6 +1277,7 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
                                             expectedModCount);
         }
 
+        @Override
         public boolean tryAdvance(Consumer<? super E> action) {
             if (action == null)
                 throw new NullPointerException();
@@ -1289,6 +1294,7 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
             return false;
         }
 
+        @Override
         public void forEachRemaining(Consumer<? super E> action) {
             int i, hi, mc; // hoist accesses and checks from loop
             ArrayListClone<E> lst;
@@ -1314,10 +1320,12 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
             throw new ConcurrentModificationException();
         }
 
+        @Override
         public long estimateSize() {
             return (long) (getFence() - index);
         }
 
+        @Override
         public int characteristics() {
             return Spliterator.ORDERED | Spliterator.SIZED | Spliterator.SUBSIZED;
         }

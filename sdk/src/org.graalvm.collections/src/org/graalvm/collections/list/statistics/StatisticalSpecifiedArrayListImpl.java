@@ -56,7 +56,7 @@ import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
  * @author Alex R.
  */
 
-public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayListImpl<E> implements StatisticalCollection {
+public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> implements StatisticalCollection {
 
     private static final long serialVersionUID = 2325200269334451909L;
 

@@ -37,7 +37,7 @@ public class SpecifiedArrayListSimpleTest {
     @Before
     public void setupSAR() {
         // SpecifiedArrayList
-        testList = SpecifiedArrayListImpl.createNew();
+        testList = new SpecifiedArrayList<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(testData[i]); // Assuming Add works like intended
         }

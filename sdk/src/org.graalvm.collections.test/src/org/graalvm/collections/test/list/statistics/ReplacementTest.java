@@ -7,9 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.CSVGenerator;
-import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayList;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.collections.test.list.TestUtilities;

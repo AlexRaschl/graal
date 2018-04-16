@@ -37,7 +37,7 @@ public class SpecifiedArrayListEnhancedTest {
     @Before
     public void setupSAR() {
         // SpecifiedArrayList
-        testList = SpecifiedArrayListImpl.createNew();
+        testList = new SpecifiedArrayList<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(testData[i]); // Assuming Add works like intended
         }
@@ -106,7 +106,7 @@ public class SpecifiedArrayListEnhancedTest {
 
     @Test
     public void testSetOfOperations() {
-        testList = SpecifiedArrayListImpl.createNew(20);
+        testList = new SpecifiedArrayList<>(20);
         referenceList = new ArrayList<>(20);
 
         testList.add("ABC");
@@ -124,7 +124,7 @@ public class SpecifiedArrayListEnhancedTest {
         Assert.assertTrue(testList.removeAll(Arrays.asList(arr)));
         Assert.assertTrue(testList.isEmpty() && testList.size() == 0);
         //
-        testList = SpecifiedArrayListImpl.createNew(Arrays.asList(arr));
+        testList = new SpecifiedArrayList<>(Arrays.asList(arr));
         Assert.assertTrue(testList.size() == 4);
         testList.ensureCapacity(1000);
         testList.trimToSize();
@@ -134,7 +134,7 @@ public class SpecifiedArrayListEnhancedTest {
         Assert.assertFalse(testList.contains(null));
         Assert.assertFalse(testList.contains("a"));
         //
-        testList = SpecifiedArrayListImpl.createNew();
+        testList = new SpecifiedArrayList<>();
         testList.add("ABC");
         testList.add(0, "def");
         testList.addAll(Arrays.asList(arr));
@@ -238,7 +238,7 @@ public class SpecifiedArrayListEnhancedTest {
 
     @Test
     public void testRandomInsertionsAndRemovals() {
-        SpecifiedArrayList<Integer> testList2 = SpecifiedArrayListImpl.createNew(TEST_SIZE);
+        SpecifiedArrayList<Integer> testList2 = new SpecifiedArrayList<>(TEST_SIZE);
         ArrayList<Integer> referenceList2 = new ArrayList<>(TEST_SIZE);
         testList2.add(1);
         referenceList2.add(1);
