@@ -68,9 +68,10 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
         trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
         trackedSites.add("org.graalvm.collections.test.list.statistics.ReplacementTest");
         //
-        // trackedSites.add("org.graalvm.compiler.asm.Label");
-        // trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
-        // trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
+        trackedSites.add("org.graalvm.compiler.asm.Label");
+        trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
+        trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
+        //
         trackedSites.add("org.graalvm.compiler.nodes.IfNode");
         trackedSites.add("org.graalvm.compiler.nodes.InliningLog");
     }
