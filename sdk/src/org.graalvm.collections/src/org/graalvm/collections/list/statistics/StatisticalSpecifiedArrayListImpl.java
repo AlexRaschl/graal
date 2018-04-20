@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.graalvm.collections.list.ArrayListClone;
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
@@ -379,42 +380,40 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     }
 
     private void setAllocationSite() {
-        try {
-            throw new Exception();
-        } catch (Exception e) {
-            StackTraceElement[] elems = e.getStackTrace();
+        Exception e = new Exception();
 
-            if (elems.length >= 2 && !elems[1].getMethodName().equals("<init>")) {
-                tracker.setAllocSiteElem(elems[1]);
+        StackTraceElement[] elems = e.getStackTrace();
+
+        if (elems.length >= 2 && !elems[1].getMethodName().equals("<init>")) {
+            tracker.setAllocSiteElem(elems[1]);
+        } else {
+            if (!elems[2].getMethodName().equals("createNew")) {
+                tracker.setAllocSiteElem(elems[2]);
             } else {
-                if (!elems[2].getMethodName().equals("createNew")) {
-                    tracker.setAllocSiteElem(elems[2]);
-                } else {
-                    tracker.setAllocSiteElem(elems[3]);
-                }
+                tracker.setAllocSiteElem(elems[3]);
             }
-
         }
+
     }
 
-    private String getAllocationSiteName() {
-        try {
-            throw new Exception();
-        } catch (Exception e) {
-            // e.printStackTrace();
-            StackTraceElement[] elems = e.getStackTrace();
+    private static String getAllocationSiteName() {
 
-            if (elems.length > 2 && !elems[2].getMethodName().equals("<init>")) {
-                return elems[2].getClassName();
+        Exception e = new Exception();
+
+        // e.printStackTrace();
+        StackTraceElement[] elems = e.getStackTrace();
+
+        if (elems.length > 2 && !elems[2].getMethodName().equals("<init>")) {
+            return elems[2].getClassName();
+        } else {
+            if (!elems[3].getMethodName().equals("createNew")) {
+                return elems[3].getClassName();
             } else {
-                if (!elems[3].getMethodName().equals("createNew")) {
-                    return elems[3].getClassName();
-                } else {
-                    return elems[4].getClassName();
-                }
-
+                return elems[4].getClassName();
             }
+
         }
+
     }
 
     private boolean isTracked() {

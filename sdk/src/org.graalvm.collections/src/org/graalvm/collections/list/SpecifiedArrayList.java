@@ -44,7 +44,20 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * Factory methods
      */
 
-    // TODO If only one occurrence is replaced with SSAR only these instances will be tracked
+// TODO If only one occurrence is replaced with SSAR only these instances will be tracked
+//
+// public static <E> SpecifiedArrayList<E> createNew() {
+// return new ArrayListClone<>();
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+// return new ArrayListClone<>(initalCapacity);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+// return new ArrayListClone<>(c);
+// }
+
     public static <E> SpecifiedArrayList<E> createNew() {
         return new StatisticalSpecifiedArrayListImpl<>();
     }
@@ -57,7 +70,21 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         return new StatisticalSpecifiedArrayListImpl<>(c);
     }
 
+// public static <E> SpecifiedArrayList<E> createNew() {
+// return new SpecifiedArrayList<>();
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+// return new SpecifiedArrayList<>(initalCapacity);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+// return new SpecifiedArrayList<>(c);
+// }
+
     // -------------------------FIELDS-------------------------------------------------
+
+    // TODO SPLIT IMITATION FROM REPLACE
 
     private static final boolean USE_AL_STRATEGY = true;
     private static final long serialVersionUID = 9130616599645229594L;
@@ -66,9 +93,11 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     private final static int NEXT_CAPACITY = 10; // Capacity after first grow
     private final static int GROW_FACTOR = 2; // Growing factor
     private final static int CAPACITY_GROWING_THRESHOLD = 32; // Unused
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+    //
+    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
-    private int size;
+    // Non Private for ArrayListClone
+    int size;
     transient Object elementData[];
 
     // ARRAYLIST IMMITATION Stuff

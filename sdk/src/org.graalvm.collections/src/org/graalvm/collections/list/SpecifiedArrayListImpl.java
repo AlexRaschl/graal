@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 
 import sun.misc.SharedSecrets;
 
+@Deprecated
 public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
 
     private static final long serialVersionUID = 9130616599645229594L;

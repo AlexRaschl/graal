@@ -72,6 +72,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
     // tracked
     private int modifications;
 
+    // TODO dont save reference to lists
     @SuppressWarnings("rawtypes") private final StatisticalSpecifiedArrayListImpl list; // No Use of get, add, ....
 
     @SuppressWarnings("rawtypes")
