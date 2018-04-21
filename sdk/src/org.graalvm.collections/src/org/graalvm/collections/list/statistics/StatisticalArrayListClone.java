@@ -30,70 +30,15 @@ import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Opera
 import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TRIM_TO_SIZE;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.graalvm.collections.list.ArrayListClone;
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
 
-/**
- * This is an enhancement of the SpecifiedArrayList used to gather information during runtime. It
- * uses a StatisticTracker object to store the generated Information. This object can be used to
- * extract useful information about the SpecifiedArrayList like
- * <li>Size</li>
- * <li>Type Distribution</li>
- * <li>Load Factor</li>
- * <li>Distribution of Operators</li>
- *
- *
- * DONE Check if tracking also useful for Itr/ListItr -> Not necessary
- *
- * Done Check if the Interface is needed -> Nope
- *
- * @author Alex R.
- */
-
-public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> implements StatisticalCollection {
-
-    private static final long serialVersionUID = 2325200269334451909L;
-
-    final static boolean TRACKS_ALL = false;
-    final static HashSet<String> trackedSites = new HashSet<>(10);
-
-    /** Static block to set up Tracked Classes */
-    static {
-        trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
-        trackedSites.add("org.graalvm.collections.test.list.statistics.ReplacementTest");
-        //
-        trackedSites.add("org.graalvm.compiler.asm.Label");
-        trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
-        trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
-        //
-        trackedSites.add("org.graalvm.compiler.nodes.IfNode");
-        trackedSites.add("org.graalvm.compiler.nodes.InliningLog");
-    }
-
-    /**
-     * Factory methods
-     */
-    public static <E> SpecifiedArrayList<E> createNew() {
-        StatisticalSpecifiedArrayListImpl<E> list = new StatisticalSpecifiedArrayListImpl<>();
-        return list;
-
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        StatisticalSpecifiedArrayListImpl<E> list = new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
-        return list;
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new StatisticalSpecifiedArrayListImpl<>(c);
-    }
+@SuppressWarnings("serial")
+public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements StatisticalCollection {
 
     private StatisticTrackerImpl tracker = null;
 
@@ -102,7 +47,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      *
      * @param initialCapacity Capacity the list will have from beginning
      */
-    public StatisticalSpecifiedArrayListImpl(int initialCapacity) {
+    public StatisticalArrayListClone(int initialCapacity) {
         super(initialCapacity);
         if (isTracked()) {
             tracker = new StatisticTrackerImpl(this);
@@ -115,7 +60,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      * Creates an instance of StatisticalSpecifiedArrayListImpl.
      *
      */
-    public StatisticalSpecifiedArrayListImpl() {
+    public StatisticalArrayListClone() {
         super();
         if (isTracked()) {
             tracker = new StatisticTrackerImpl(this);
@@ -130,7 +75,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      *
      * @param collection
      */
-    public StatisticalSpecifiedArrayListImpl(Collection<E> collection) {
+    public StatisticalArrayListClone(Collection<E> collection) {
         super(collection);
         if (isTracked()) {
             tracker = new StatisticTrackerImpl(this);
@@ -421,15 +366,12 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     }
 
     private boolean isTracked() {
-        return TRACKS_ALL || trackedSites.contains(getAllocationSiteName());
+        return StatisticalSpecifiedArrayListImpl.TRACKS_ALL || StatisticalSpecifiedArrayListImpl.trackedSites.contains(getAllocationSiteName());
     }
 
     private void countIfTracked(Operation op) {
         if (tracker != null)
             tracker.countOP(op);
     }
-    /*
-     * TODO check if setType also needed in ListIterator/Iterator funcitons
-     */
 
 }

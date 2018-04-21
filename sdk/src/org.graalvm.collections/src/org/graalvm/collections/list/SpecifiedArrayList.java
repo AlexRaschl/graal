@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+import org.graalvm.collections.list.statistics.StatisticalArrayListClone;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 
 import sun.misc.SharedSecrets;
@@ -59,16 +60,28 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // }
 
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new StatisticalSpecifiedArrayListImpl<>();
+        return new StatisticalArrayListClone<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
+        return new StatisticalArrayListClone<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new StatisticalSpecifiedArrayListImpl<>(c);
+        return new StatisticalArrayListClone<>(c);
     }
+
+// public static <E> SpecifiedArrayList<E> createNew() {
+// return new StatisticalSpecifiedArrayListImpl<>();
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+// return new StatisticalSpecifiedArrayListImpl<>(c);
+// }
 
 // public static <E> SpecifiedArrayList<E> createNew() {
 // return new SpecifiedArrayList<>();
@@ -101,7 +114,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     transient Object elementData[];
 
     // ARRAYLIST IMMITATION Stuff
-    private static final Object[] EMPTY_ELEMENTDATA = {};
+    static final Object[] EMPTY_ELEMENTDATA = {};
     private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
     private final static int DEFAULT_CAPACITY = 10;
 

@@ -11,10 +11,10 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
     private static final long serialVersionUID = -5786771564421642851L;
 
     // TODO REMOVE
-    private static final boolean USE_AL_STRATEGY = false;
+    private static final boolean USE_AL_STRATEGY = true;
 
     // ARRAYLIST IMMITATION Stuff
-    private static final Object[] EMPTY_ELEMENTDATA = {}; // TODO check if super.EMPTY_ELEMENTDATA needed
+    private static final Object[] EMPTY_ELEMENTDATA = SpecifiedArrayList.EMPTY_ELEMENTDATA; // TODO check if super.EMPTY_ELEMENTDATA needed
     private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
     private final static int DEFAULT_CAPACITY = 10;
 

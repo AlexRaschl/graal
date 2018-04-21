@@ -21,4 +21,7 @@ interface StatisticalCollection {
      * @return capacity of list
      */
     int getCurrentCapacity();
+
+    int getCurrentSize();
+
 }

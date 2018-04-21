@@ -73,10 +73,9 @@ public class StatisticTrackerImpl implements StatisticTracker {
     private int modifications;
 
     // TODO dont save reference to lists
-    @SuppressWarnings("rawtypes") private final StatisticalSpecifiedArrayListImpl list; // No Use of get, add, ....
+    private final StatisticalCollection list;
 
-    @SuppressWarnings("rawtypes")
-    public StatisticTrackerImpl(StatisticalSpecifiedArrayListImpl list) {
+    public StatisticTrackerImpl(StatisticalCollection list) {
         ID = nextID++;
         this.localOpMap = new HashMap<>(Operation.values().length);
         this.localTypeOpMap = new HashMap<>();
@@ -102,7 +101,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     public int getCurrentSize() {
-        return list.size();
+        return list.getCurrentSize();
     }
 
     public double getCurrentLoadFactor() {
@@ -209,7 +208,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
         sb.append(this.type.getTypeName());
         sb.append('\n');
         sb.append("Current used Size: ");
-        sb.append(list.size());
+        sb.append(list.getCurrentSize());
         sb.append('\n');
         sb.append("Current Capacity: ");
         sb.append(list.getCurrentCapacity());

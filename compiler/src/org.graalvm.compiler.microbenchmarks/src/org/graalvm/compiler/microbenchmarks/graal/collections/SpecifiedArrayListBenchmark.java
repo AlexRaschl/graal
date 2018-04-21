@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.compiler.microbenchmarks.graal.GraalBenchmark;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -61,7 +60,7 @@ public class SpecifiedArrayListBenchmark extends GraalBenchmark {
 
     @State(Scope.Benchmark)
     public static class ClearedThreadState {
-        final SpecifiedArrayListImpl<Integer> list = new SpecifiedArrayListImpl<>(N);
+        final SpecifiedArrayList<Integer> list = new SpecifiedArrayList<>(N);
 
         // We don't want to measure the cost of list clearing
         @Setup(Level.Invocation)
@@ -85,7 +84,7 @@ public class SpecifiedArrayListBenchmark extends GraalBenchmark {
 
     @State(Scope.Benchmark)
     public static class AddedClearedThreadState {
-        final SpecifiedArrayListImpl<Integer> list = new SpecifiedArrayListImpl<>(N);
+        final SpecifiedArrayList<Integer> list = new SpecifiedArrayList<>(N);
         final Integer[] integers = new Integer[N];
 
         // We don't want to measure the cost of list clearing

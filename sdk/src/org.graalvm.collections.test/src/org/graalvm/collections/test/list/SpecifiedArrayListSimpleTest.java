@@ -59,7 +59,7 @@ public class SpecifiedArrayListSimpleTest {
 
     @Test
     public void testAdd() {
-        testList = SpecifiedArrayListImpl.createNew();
+        testList = new SpecifiedArrayList<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(i);
         }
@@ -365,7 +365,7 @@ public class SpecifiedArrayListSimpleTest {
 
     @Test
     public void testAddNull() {
-        testList = SpecifiedArrayListImpl.createNew();
+        testList = new SpecifiedArrayList<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(null);
         }
@@ -373,7 +373,7 @@ public class SpecifiedArrayListSimpleTest {
 
     @Test
     public void testSortWithListItr() {
-        testList = SpecifiedArrayListImpl.createNew();
+        testList = new SpecifiedArrayList<>();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(r.nextInt(TEST_SIZE / 10));
         }
