@@ -38,7 +38,6 @@ import sun.misc.SharedSecrets;
  *
  */
 
-// TODO Implements List<E>
 public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
 
     /**
@@ -59,29 +58,29 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // return new ArrayListClone<>(c);
 // }
 
-    public static <E> SpecifiedArrayList<E> createNew() {
-        return new StatisticalArrayListClone<>();
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new StatisticalArrayListClone<>(initalCapacity);
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new StatisticalArrayListClone<>(c);
-    }
-
 // public static <E> SpecifiedArrayList<E> createNew() {
-// return new StatisticalSpecifiedArrayListImpl<>();
+// return new StatisticalArrayListClone<>();
 // }
 //
 // public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
+// return new StatisticalArrayListClone<>(initalCapacity);
 // }
 //
 // public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-// return new StatisticalSpecifiedArrayListImpl<>(c);
+// return new StatisticalArrayListClone<>(c);
 // }
+
+    public static <E> SpecifiedArrayList<E> createNew() {
+        return new StatisticalSpecifiedArrayListImpl<>();
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+        return new StatisticalSpecifiedArrayListImpl<>(c);
+    }
 
 // public static <E> SpecifiedArrayList<E> createNew() {
 // return new SpecifiedArrayList<>();
@@ -99,13 +98,12 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     // TODO SPLIT IMITATION FROM REPLACE
 
-    private static final boolean USE_AL_STRATEGY = true;
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
     private final static int NEXT_CAPACITY = 10; // Capacity after first grow
-    private final static int GROW_FACTOR = 2; // Growing factor
-    private final static int CAPACITY_GROWING_THRESHOLD = 32; // Unused
+    private final static int TRIM_FACTOR = 2; // Growing factor
+    // private final static int CAPACITY_GROWING_THRESHOLD = 32; // Unused
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
@@ -115,7 +113,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     // ARRAYLIST IMMITATION Stuff
     static final Object[] EMPTY_ELEMENTDATA = {};
-    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+    static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
     private final static int DEFAULT_CAPACITY = 10;
 
     // ---------------------CONSTRUCTORS --------------------------------
@@ -125,24 +123,13 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * @param initialCapacity Capacity the list will have from beginning
      */
     public SpecifiedArrayList(int initialCapacity) {
-        if (USE_AL_STRATEGY) {
-            if (initialCapacity > 0) {
-                // this.size = 0;
-                this.elementData = new Object[initialCapacity];
-            } else if (initialCapacity == 0) {
-                this.elementData = EMPTY_ELEMENTDATA;
-            } else {
-                throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
-            }
 
+        if (initialCapacity > 0) {
+            this.elementData = new Object[initialCapacity];
+        } else if (initialCapacity == 0) {
+            this.elementData = EMPTY_ELEMENTDATA;
         } else {
-            if (initialCapacity > 0) {
-                this.elementData = new Object[initialCapacity];
-            } else if (initialCapacity == 0) {
-                this.elementData = EMPTY_ELEMENTDATA;
-            } else {
-                throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
-            }
+            throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
         }
 
     }
@@ -151,13 +138,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * Creates an instance of SpecifiedArrayList.
      */
     public SpecifiedArrayList() {
-        if (USE_AL_STRATEGY) {
-            this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
-        } else {
-            // this(INITIAL_CAPACITY);
-            this.size = 0;
-            this.elementData = EMPTY_ELEMENTDATA;
-        }
+
+        // this(INITIAL_CAPACITY);
+        this.size = 0;
+        this.elementData = EMPTY_ELEMENTDATA;
 
     }
 
@@ -167,28 +151,17 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * @param collection
      */
     public SpecifiedArrayList(Collection<? extends E> collection) {
-        if (USE_AL_STRATEGY) {
-            elementData = collection.toArray();
-            if ((size = elementData.length) != 0) {
-                // c.toArray might (incorrectly) not return Object[] (see 6260652)
-                if (elementData.getClass() != Object[].class)
-                    elementData = Arrays.copyOf(elementData, size, Object[].class);
-            } else {
-                // replace with empty array.
-                this.elementData = EMPTY_ELEMENTDATA;
-            }
-        } else {
-            size = collection.size();
-            elementData = collection.toArray();
-            if (size != 0) {
-                // c.toArray might (incorrectly) not return Object[] (see 6260652)
-                if (elementData.getClass() != Object[].class)
-                    elementData = Arrays.copyOf(elementData, size, Object[].class);
-            } else {
-                this.elementData = EMPTY_ELEMENTDATA;
-            }
 
+        size = collection.size();
+        elementData = collection.toArray();
+        if (size != 0) {
+            // c.toArray might (incorrectly) not return Object[] (see 6260652)
+            if (elementData.getClass() != Object[].class)
+                elementData = Arrays.copyOf(elementData, size, Object[].class);
+        } else {
+            this.elementData = EMPTY_ELEMENTDATA;
         }
+
     }
 
     /**
@@ -196,16 +169,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      */
     public void trimToSize() {
         modCount++;
-        if (USE_AL_STRATEGY) {
-            if (size < elementData.length) {
-                elementData = (size == 0)
-                                ? EMPTY_ELEMENTDATA
-                                : Arrays.copyOf(elementData, size);
-            }
-        } else {
-            if (elementData.length >= size)
-                elementData = Arrays.copyOf(elementData, size);
-        }
+
+        if (elementData.length >= size)
+            elementData = Arrays.copyOf(elementData, size);
+
     }
 
     @Override
@@ -242,12 +209,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public boolean add(E e) {
-        if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + 1);
-        } else {
-            newEnsureCapacity(size + 1);
-            // growIfNeeded();
-        }
+
+        ensureCapacity(size + 1);
+        // growIfNeeded();
+
         elementData[size++] = e;
         return true;
     }
@@ -255,12 +220,9 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     @Override
     public void add(int index, E element) {
         checkBoundsForAdd(index);
-        if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + 1);
-        } else {
-            // growIfNeeded();
-            newEnsureCapacity(size + 1);
-        }
+
+        // growIfNeeded();
+        ensureCapacity(size + 1);
 
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
@@ -290,27 +252,13 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public E remove(int index) {
-        if (USE_AL_STRATEGY) {
-            checkBoundaries(index);
 
-            modCount++;
-            E oldValue = castUnchecked(elementData[index]);
-
-            int numMoved = size - index - 1;
-            if (numMoved > 0)
-                System.arraycopy(elementData, index + 1, elementData, index,
-                                numMoved);
-            elementData[--size] = null; // clear to let GC do its work
-
-            return oldValue;
-        } else {
-            checkBoundaries(index);
-            modCount++;
-            Object oldElem = elementData[index];
-            System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
-            elementData[--size] = null;
-            return castUnchecked(oldElem);
-        }
+        checkBoundaries(index);
+        modCount++;
+        Object oldElem = elementData[index];
+        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+        elementData[--size] = null;
+        return castUnchecked(oldElem);
 
     }
 
@@ -319,15 +267,9 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public void clear() {
         modCount++;
 
-        if (USE_AL_STRATEGY) {
-            for (int i = 0; i < size; i++) {
-                elementData[i] = null;
-            }
-            size = 0;
-        } else {
-            elementData = EMPTY_ELEMENTDATA;
-            size = 0;
-        }
+        elementData = EMPTY_ELEMENTDATA;
+        size = 0;
+
     }
 
     @Override
@@ -393,11 +335,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
         // if(cSize == 0)return false;
 
-        if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + cSize);// Useful if c is large
-        } else {
-            newEnsureCapacity(size + cSize);// Useful if c is large
-        }
+        ensureCapacity(size + cSize);// Useful if c is large
 
         System.arraycopy(a, 0, elementData, size, cSize);
         size = size + cSize;
@@ -419,17 +357,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         Object[] arr = c.toArray();
         int cSize = arr.length;
 
-        if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + cSize);
-            int numMoved = size - index;
-            if (numMoved > 0)
-                System.arraycopy(elementData, index, elementData, index + cSize,
-                                numMoved);
-        } else {
-            newEnsureCapacity(size + cSize);
-            System.arraycopy(elementData, index, elementData, index + cSize, size - index);
-
-        }
+        ensureCapacity(size + cSize);
+        System.arraycopy(elementData, index, elementData, index + cSize, size - index);
 
         System.arraycopy(arr, 0, elementData, index, cSize);
         size += cSize;
@@ -809,9 +738,9 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
         if (size > 0) {
             // be like clone(), allocate array based upon size not capacity
-            int capacity = calculateCapacityAL(elementData, size);
+            int capacity = calculateCapacity(elementData, size);
             SharedSecrets.getJavaOISAccess().checkArray(s, Object[].class, capacity);
-            ensureCapacityInternalAL(size);
+            ensureCapacity(size);
 
             Object[] a = elementData;
             // Read in all elements in the proper order.
@@ -823,40 +752,31 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     // ------------------GROWING METHODS------------------------
 
-    public void ensureCapacity(int minCapacity) {
-        modCount++;
-        int curCapacity = elementData.length;
-        if (curCapacity < minCapacity) {
-            // If we ensure that there is enough capacity it will be most likely that not much more elements
-            // than this capacity will be added in the near future.
-            // TODO CHECK IF USEFUL IN PROJECT
-            int newLength;
-            if (minCapacity <= CAPACITY_GROWING_THRESHOLD) {
-                newLength = minCapacity;
-            } else {
-                // newLength = capacity + INITIAL_CAPACITY;
-                newLength = curCapacity + (curCapacity >> 1);
-            }
-            elementData = Arrays.copyOf(elementData, newLength);
-        }
-    }
+// Old ensureCap Method
+// public void ensureCapacity(int minCapacity) {
+// modCount++;
+// int curCapacity = elementData.length;
+// if (curCapacity < minCapacity) {
+// // If we ensure that there is enough capacity it will be most likely that not much more elements
+// // than this capacity will be added in the near future.
+// // TODO CHECK IF USEFUL IN PROJECT
+// int newLength;
+// if (minCapacity <= CAPACITY_GROWING_THRESHOLD) {
+// newLength = minCapacity;
+// } else {
+// // newLength = capacity + INITIAL_CAPACITY;
+// newLength = curCapacity + (curCapacity >> 1);
+// }
+// elementData = Arrays.copyOf(elementData, newLength);
+// }
+// }
 
-    public void newEnsureCapacity(int minCapacity) {
+    public void ensureCapacity(int minCapacity) {
         modCount++;
 
         final int curCapacity = elementData.length;
-
         if (curCapacity < minCapacity) {
-            if (elementData == EMPTY_ELEMENTDATA) {
-                elementData = new Object[calculateCapacity(INITIAL_CAPACITY, minCapacity)];
-
-            } else if (curCapacity == INITIAL_CAPACITY) {
-                elementData = Arrays.copyOf(elementData, calculateCapacity(NEXT_CAPACITY, minCapacity));
-            } else {
-                // grow();
-                int newLength = curCapacity + (curCapacity >> 1);
-                elementData = Arrays.copyOf(elementData, calculateCapacity(newLength, minCapacity));
-            }
+            grow(minCapacity);
         }
     }
 
@@ -906,7 +826,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     }
 
     private void trimIfUseful() {
-        int threshold = (elementData.length / GROW_FACTOR) + 1; // TODO Find more efficient strategy
+        int threshold = (elementData.length / TRIM_FACTOR) + 1; // TODO Find more efficient strategy
         if (threshold > size && threshold < elementData.length) {
             trim(threshold);
         }
@@ -933,15 +853,28 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     /**
      * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
      */
-    protected void grow() {
-        int newLength = elementData.length * GROW_FACTOR; // TODO remove Protected
-        elementData = Arrays.copyOf(elementData, newLength);
+    protected void grow(int minCapacity) {
+        final int curCapacity = elementData.length;
+
+// TODO I actually have no Idea why this commenting this stuff raises the loadFactor by 10 Percent
+
+// if (elementData == EMPTY_ELEMENTDATA) {
+// elementData = new Object[calculateCapacity(INITIAL_CAPACITY, minCapacity)];
+//
+// } else
+        if (curCapacity == INITIAL_CAPACITY) {
+            elementData = Arrays.copyOf(elementData, calculateCapacity(NEXT_CAPACITY, minCapacity));
+        } else {
+            int newLength = curCapacity + (curCapacity >> 1);
+            elementData = Arrays.copyOf(elementData, calculateCapacity(newLength, minCapacity));
+        }
     }
 
-    @SuppressWarnings("unused")
-    private void growIfNeeded() {
-        if (size == elementData.length)
-            grow();
+    // TODO Use like in ArrayList
+    private static int hugeCapacityAL(int minCapacity) {
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
     }
 
     private boolean removeCollection(Collection<?> c, boolean isRetained) {
@@ -966,8 +899,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             modCount += size - w;
             size = w;
         }
-        if (!USE_AL_STRATEGY)
-            trimIfUseful();
+
+        // trimIfUseful(); TODO Check if useful
         return removed != 0;
     }
 
@@ -976,68 +909,11 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         return (E) obj;
     }
 
-    // ----------METHODS NEEDED FOR IMITATION OF ARRAYLIST------------------
-
-    /**
-     * Increases the capacity to ensure that it can hold at least the number of elements specified by
-     * the minimum capacity argument.
-     *
-     * @param minCapacity the desired minimum capacity
-     */
-    protected void growAL(int minCapacity) {
-        // overflow-conscious code
-        int oldCapacity = elementData.length;
-        int newCapacity = oldCapacity + (oldCapacity >> 1);
-        if (newCapacity - minCapacity < 0)
-            newCapacity = minCapacity;
-        if (newCapacity - MAX_ARRAY_SIZE > 0)
-            newCapacity = hugeCapacityAL(minCapacity);
-        // minCapacity is usually close to size, so this is a win:
-        elementData = Arrays.copyOf(elementData, newCapacity);
-    }
-
-    private static int hugeCapacityAL(int minCapacity) {
-        if (minCapacity < 0) // overflow
-            throw new OutOfMemoryError();
-        return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
-    }
-
-    /**
-     * Increases the capacity of this <tt>ArrayList</tt> instance, if necessary, to ensure that it can
-     * hold at least the number of elements specified by the minimum capacity argument.
-     *
-     * @param minCapacity the desired minimum capacity
-     */
-    public void ensureCapacityAL(int minCapacity) {
-        int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
-                        // any size if not default element table
-                        ? 0
-                        // larger than default for default empty table. It's already
-                        // supposed to be at default size.
-                        : DEFAULT_CAPACITY;
-
-        if (minCapacity > minExpand) {
-            ensureExplicitCapacityAL(minCapacity);
-        }
-    }
-
-    private static int calculateCapacityAL(Object[] elementData, int minCapacity) {
+    private static int calculateCapacity(Object[] elementData, int minCapacity) {
         if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
             return Math.max(DEFAULT_CAPACITY, minCapacity);
         }
         return minCapacity;
-    }
-
-    private void ensureCapacityInternalAL(int minCapacity) {
-        ensureExplicitCapacityAL(calculateCapacityAL(elementData, minCapacity));
-    }
-
-    private void ensureExplicitCapacityAL(int minCapacity) {
-        modCount++;
-
-        // overflow-conscious code
-        if (minCapacity - elementData.length > 0)
-            growAL(minCapacity);
     }
 
     //
@@ -1047,11 +923,11 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     //
 
     /**
-     * Returns a view of the portion of this list between the specified {@code fromIndex}, inclusive,
-     * and {@code toIndex}, exclusive. (If {@code fromIndex} and {@code toIndex} are equal, the returned
-     * list is empty.) The returned list is backed by this list, so non-structural changes in the
-     * returned list are reflected in this list, and vice-versa. The returned list supports all of the
-     * optional list operations.
+     * Returns a view of theensureCapacityInternalAl portion of this list between the specified
+     * {@code fromIndex}, inclusive, and {@code toIndex}, exclusive. (If {@code fromIndex} and
+     * {@code toIndex} are equal, the returned list is empty.) The returned list is backed by this list,
+     * so non-structural changes in the returned list are reflected in this list, and vice-versa. The
+     * returned list supports all of the optional list operations.
      *
      * <p>
      * This method eliminates the need for explicit range operations (of the sort that commonly exist

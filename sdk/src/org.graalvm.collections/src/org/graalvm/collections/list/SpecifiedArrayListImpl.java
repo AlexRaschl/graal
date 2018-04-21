@@ -657,7 +657,6 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
         }
     }
 
-    @Override
     public void newEnsureCapacity(int minCapacity) {
         modCount++;
 
@@ -758,7 +757,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
     /**
      * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
      */
-    @Override
+
     protected void grow() {
         int newLength = elementData.length * GROW_FACTOR; // TODO remove Protected
         elementData = Arrays.copyOf(elementData, newLength);
@@ -816,7 +815,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      *
      * @param minCapacity the desired minimum capacity
      */
-    @Override
+
     protected void growAL(int minCapacity) {
         // overflow-conscious code
         int oldCapacity = elementData.length;
@@ -841,7 +840,7 @@ public class SpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> {
      *
      * @param minCapacity the desired minimum capacity
      */
-    @Override
+
     public void ensureCapacityAL(int minCapacity) {
         int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
                         // any size if not default element table

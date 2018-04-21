@@ -86,16 +86,10 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
         }
     }
 
-// @Override
-// protected void grow() {
-// countIfTracked(GROW);
-// super.grow();
-// }
-
     @Override
-    protected void growAL(int minCapacity) {
+    protected void grow(int minCapacity) {
         countIfTracked(GROW);
-        super.growAL(minCapacity);
+        super.grow(minCapacity);
     }
 
     @Override

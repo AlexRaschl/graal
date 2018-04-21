@@ -5,54 +5,31 @@ import java.util.Collection;
 import java.util.List;
 import java.util.RandomAccess;
 
-// TODO Implements List<E>
 public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
 
     private static final long serialVersionUID = -5786771564421642851L;
 
-    // TODO REMOVE
-    private static final boolean USE_AL_STRATEGY = true;
-
-    // ARRAYLIST IMMITATION Stuff
-    private static final Object[] EMPTY_ELEMENTDATA = SpecifiedArrayList.EMPTY_ELEMENTDATA; // TODO check if super.EMPTY_ELEMENTDATA needed
-    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+    // Fetch rererences from SpecifiedArrayList Since we need ReferenceEquality for tracking
+    private static final Object[] EMPTY_ELEMENTDATA = SpecifiedArrayList.EMPTY_ELEMENTDATA;
+    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = SpecifiedArrayList.DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
     private final static int DEFAULT_CAPACITY = 10;
 
     public ArrayListClone(int initialCapacity) {
-        if (USE_AL_STRATEGY) {
-            if (initialCapacity > 0) {
-                // this.size = 0;
-                this.elementData = new Object[initialCapacity];
-            } else if (initialCapacity == 0) {
-                this.elementData = EMPTY_ELEMENTDATA;
-            } else {
-                throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
-            }
-
+        if (initialCapacity > 0) {
+            // this.size = 0;
+            this.elementData = new Object[initialCapacity];
+        } else if (initialCapacity == 0) {
+            this.elementData = EMPTY_ELEMENTDATA;
         } else {
-            if (initialCapacity > 0) {
-                this.elementData = new Object[initialCapacity];
-            } else if (initialCapacity == 0) {
-                this.elementData = EMPTY_ELEMENTDATA;
-            } else {
-                throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
-            }
+            throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
         }
-
     }
 
     /**
      * Creates an instance of SpecifiedArrayList.
      */
     public ArrayListClone() {
-        if (USE_AL_STRATEGY) {
-            this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
-        } else {
-            // this(INITIAL_CAPACITY);
-            this.size = 0;
-            this.elementData = EMPTY_ELEMENTDATA;
-        }
-
+        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
     }
 
     /**
@@ -61,27 +38,14 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
      * @param collection
      */
     public ArrayListClone(Collection<? extends E> collection) {
-        if (USE_AL_STRATEGY) {
-            elementData = collection.toArray();
-            if ((size = elementData.length) != 0) {
-                // c.toArray might (incorrectly) not return Object[] (see 6260652)
-                if (elementData.getClass() != Object[].class)
-                    elementData = Arrays.copyOf(elementData, size, Object[].class);
-            } else {
-                // replace with empty array.
-                this.elementData = EMPTY_ELEMENTDATA;
-            }
+        elementData = collection.toArray();
+        if ((size = elementData.length) != 0) {
+            // c.toArray might (incorrectly) not return Object[] (see 6260652)
+            if (elementData.getClass() != Object[].class)
+                elementData = Arrays.copyOf(elementData, size, Object[].class);
         } else {
-            size = collection.size();
-            elementData = collection.toArray();
-            if (size != 0) {
-                // c.toArray might (incorrectly) not return Object[] (see 6260652)
-                if (elementData.getClass() != Object[].class)
-                    elementData = Arrays.copyOf(elementData, size, Object[].class);
-            } else {
-                this.elementData = EMPTY_ELEMENTDATA;
-            }
-
+            // replace with empty array.
+            this.elementData = EMPTY_ELEMENTDATA;
         }
     }
 
@@ -91,26 +55,17 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
     @Override
     public void trimToSize() {
         modCount++;
-        if (USE_AL_STRATEGY) {
-            if (size < elementData.length) {
-                elementData = (size == 0)
-                                ? EMPTY_ELEMENTDATA
-                                : Arrays.copyOf(elementData, size);
-            }
-        } else {
-            if (elementData.length >= size)
-                elementData = Arrays.copyOf(elementData, size);
+        if (size < elementData.length) {
+            elementData = (size == 0)
+                            ? EMPTY_ELEMENTDATA
+                            : Arrays.copyOf(elementData, size);
         }
+
     }
 
     @Override
     public boolean add(E e) {
-        if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + 1);
-        } else {
-            newEnsureCapacity(size + 1);
-            // growIfNeeded();
-        }
+        ensureCapacityInternal(size + 1);
         elementData[size++] = e;
         return true;
     }
@@ -118,13 +73,7 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
     @Override
     public void add(int index, E element) {
         checkBoundsForAdd(index);
-        if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + 1);
-        } else {
-            // growIfNeeded();
-            newEnsureCapacity(size + 1);
-        }
-
+        ensureCapacityInternal(size + 1);
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
         size++;
@@ -133,31 +82,17 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
     @Override
     public void clear() {
         modCount++;
-
-        if (USE_AL_STRATEGY) {
-            for (int i = 0; i < size; i++) {
-                elementData[i] = null;
-            }
-            size = 0;
-        } else {
-            elementData = EMPTY_ELEMENTDATA;
-            size = 0;
+        for (int i = 0; i < size; i++) {
+            elementData[i] = null;
         }
+        size = 0;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
         Object[] a = c.toArray();
         int cSize = c.size();
-
-        // if(cSize == 0)return false;
-
-        if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + cSize);// Useful if c is large
-        } else {
-            newEnsureCapacity(size + cSize);// Useful if c is large
-        }
-
+        ensureCapacityInternal(size + cSize);// Useful if c is large
         System.arraycopy(a, 0, elementData, size, cSize);
         size = size + cSize;
         return cSize != 0;
@@ -169,19 +104,11 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
 
         Object[] arr = c.toArray();
         int cSize = arr.length;
-
-        if (USE_AL_STRATEGY) {
-            ensureCapacityInternalAL(size + cSize);
-            int numMoved = size - index;
-            if (numMoved > 0)
-                System.arraycopy(elementData, index, elementData, index + cSize,
-                                numMoved);
-        } else {
-            newEnsureCapacity(size + cSize);
-            System.arraycopy(elementData, index, elementData, index + cSize, size - index);
-
-        }
-
+        ensureCapacityInternal(size + cSize);
+        int numMoved = size - index;
+        if (numMoved > 0)
+            System.arraycopy(elementData, index, elementData, index + cSize,
+                            numMoved);
         System.arraycopy(arr, 0, elementData, index, cSize);
         size += cSize;
         return cSize != 0;
@@ -207,19 +134,19 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
      * @param minCapacity the desired minimum capacity
      */
     @Override
-    protected void growAL(int minCapacity) {
+    protected void grow(int minCapacity) {
         // overflow-conscious code
         int oldCapacity = elementData.length;
         int newCapacity = oldCapacity + (oldCapacity >> 1);
         if (newCapacity - minCapacity < 0)
             newCapacity = minCapacity;
         if (newCapacity - MAX_ARRAY_SIZE > 0)
-            newCapacity = hugeCapacityAL(minCapacity);
+            newCapacity = hugeCapacity(minCapacity);
         // minCapacity is usually close to size, so this is a win:
         elementData = Arrays.copyOf(elementData, newCapacity);
     }
 
-    private static int hugeCapacityAL(int minCapacity) {
+    private static int hugeCapacity(int minCapacity) {
         if (minCapacity < 0) // overflow
             throw new OutOfMemoryError();
         return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
@@ -232,7 +159,7 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
      * @param minCapacity the desired minimum capacity
      */
     @Override
-    public void ensureCapacityAL(int minCapacity) {
+    public void ensureCapacity(int minCapacity) {
         int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
                         // any size if not default element table
                         ? 0
@@ -241,27 +168,27 @@ public class ArrayListClone<E> extends SpecifiedArrayList<E> implements List<E>,
                         : DEFAULT_CAPACITY;
 
         if (minCapacity > minExpand) {
-            ensureExplicitCapacityAL(minCapacity);
+            ensureExplicitCapacity(minCapacity);
         }
     }
 
-    private static int calculateCapacityAL(Object[] elementData, int minCapacity) {
+    private static int calculateCapacity(Object[] elementData, int minCapacity) {
         if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
             return Math.max(DEFAULT_CAPACITY, minCapacity);
         }
         return minCapacity;
     }
 
-    private void ensureCapacityInternalAL(int minCapacity) {
-        ensureExplicitCapacityAL(calculateCapacityAL(elementData, minCapacity));
+    private void ensureCapacityInternal(int minCapacity) {
+        ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
     }
 
-    private void ensureExplicitCapacityAL(int minCapacity) {
+    private void ensureExplicitCapacity(int minCapacity) {
         modCount++;
 
         // overflow-conscious code
         if (minCapacity - elementData.length > 0)
-            growAL(minCapacity);
+            grow(minCapacity);
     }
 
 }

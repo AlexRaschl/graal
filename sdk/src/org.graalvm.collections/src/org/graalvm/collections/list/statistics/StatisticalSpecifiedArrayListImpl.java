@@ -141,16 +141,10 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
         }
     }
 
-// @Override
-// protected void grow() {
-// countIfTracked(GROW);
-// super.grow();
-// }
-
     @Override
-    protected void growAL(int minCapacity) {
+    protected void grow(int minCapacity) {
         countIfTracked(GROW);
-        super.growAL(minCapacity);
+        super.grow(minCapacity);
     }
 
     @Override
@@ -353,7 +347,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     @Override
     public void ensureCapacity(int capacity) {
-        countIfTracked(ENSURE_CAP);
+        countIfTracked(ENSURE_CAP); // Faked by internal calls. Shows more than actual called via public api
         super.ensureCapacity(capacity);
     }
 
