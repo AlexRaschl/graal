@@ -42,8 +42,8 @@ public interface BytecodeProvider {
     boolean supportsInvokedynamic();
 
     /**
-     * Determines if methods parsed using this provider should be recorded so that method
-     * redefinition can invalidate the resulting code.
+     * Determines if methods parsed using this provider should be recorded so that method redefinition
+     * can invalidate the resulting code.
      */
     boolean shouldRecordMethodDependencies();
 }

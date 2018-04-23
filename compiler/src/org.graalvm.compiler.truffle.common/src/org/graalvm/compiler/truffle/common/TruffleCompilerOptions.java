@@ -78,8 +78,8 @@ public class TruffleCompilerOptions {
 
     /**
      * Forces specified values in the object returned by {@link #getOptions()} until
-     * {@link TruffleOptionsOverrideScope#close()} is called on the object returned by this method.
-     * The values forced while the override is active are taken from the key/value pairs in
+     * {@link TruffleOptionsOverrideScope#close()} is called on the object returned by this method. The
+     * values forced while the override is active are taken from the key/value pairs in
      * {@code overrides}. The override is thread local.
      * <p>
      * The returned object should be used with the try-with-resource construct:

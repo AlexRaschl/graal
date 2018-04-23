@@ -80,10 +80,10 @@ public class ReplacementsParseTest extends ReplacementsTest {
 
     /**
      * Marker value to indicate an exception handler was interpreted. We cannot use a complex string
-     * expression in this context without risking non-deterministic behavior dependent on whether
-     * String intrinsics are applied or whether String expression evaluation hit an uncommon trap
-     * when executed by C1 or C2 (and thus potentially altering the profile such that the exception
-     * handler is *not* compiled by Graal even when we want it to be).
+     * expression in this context without risking non-deterministic behavior dependent on whether String
+     * intrinsics are applied or whether String expression evaluation hit an uncommon trap when executed
+     * by C1 or C2 (and thus potentially altering the profile such that the exception handler is *not*
+     * compiled by Graal even when we want it to be).
      */
     private static final String IN_INTERPRETED_HANDLER_MARKER = "*** in interpreted handler ***";
 
@@ -241,9 +241,8 @@ public class ReplacementsParseTest extends ReplacementsTest {
         private static native String asNonNullStringIntrinsic(Object object, @ConstantNodeParameter Class<?> toType, @ConstantNodeParameter boolean exactType, @ConstantNodeParameter boolean nonNull);
 
         /**
-         * An valid intrinsic as the frame state associated with the merge should prevent the frame
-         * states associated with the array stores from being associated with subsequent
-         * deoptimizing nodes.
+         * An valid intrinsic as the frame state associated with the merge should prevent the frame states
+         * associated with the array stores from being associated with subsequent deoptimizing nodes.
          */
         @MethodSubstitution
         static int copyFirst(byte[] left, byte[] right, boolean left2right) {
@@ -251,8 +250,8 @@ public class ReplacementsParseTest extends ReplacementsTest {
         }
 
         /**
-         * An invalid intrinsic as the frame state associated with the array assignment can leak out
-         * to subsequent deoptimizing nodes.
+         * An invalid intrinsic as the frame state associated with the array assignment can leak out to
+         * subsequent deoptimizing nodes.
          */
         @MethodSubstitution
         static int copyFirstL2R(byte[] left, byte[] right) {
@@ -562,9 +561,9 @@ public class ReplacementsParseTest extends ReplacementsTest {
     }
 
     /**
-     * This tests the case where an intrinsic ends with a runtime call but returns some kind of
-     * value. This requires that a FrameState is available after the {@link ForeignCallNode} since
-     * the return value must be computed on return from the call.
+     * This tests the case where an intrinsic ends with a runtime call but returns some kind of value.
+     * This requires that a FrameState is available after the {@link ForeignCallNode} since the return
+     * value must be computed on return from the call.
      */
     @Test
     public void testNonVoidIntrinsicWithCall() {
@@ -579,9 +578,9 @@ public class ReplacementsParseTest extends ReplacementsTest {
     }
 
     /**
-     * This is similar to {@link #testNonVoidIntrinsicWithCall()} but has a merge after the call
-     * which would normally capture the {@link FrameState} but in this case we force the merge to be
-     * optimized away.
+     * This is similar to {@link #testNonVoidIntrinsicWithCall()} but has a merge after the call which
+     * would normally capture the {@link FrameState} but in this case we force the merge to be optimized
+     * away.
      */
     @Test
     public void testNonVoidIntrinsicWithOptimizedSplit() {

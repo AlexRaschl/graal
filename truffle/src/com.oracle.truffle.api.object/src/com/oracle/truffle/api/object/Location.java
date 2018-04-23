@@ -137,8 +137,8 @@ public abstract class Location {
 
     /**
      * Like {@link #set(DynamicObject, Object, Shape)}, but does not invalidate final locations. For
-     * internal use only and subject to change, use {@link DynamicObjectFactory} to create objects
-     * with predefined properties.
+     * internal use only and subject to change, use {@link DynamicObjectFactory} to create objects with
+     * predefined properties.
      *
      * @throws IncompatibleLocationException if value is of non-assignable type
      * @since 0.8 or earlier
@@ -169,8 +169,7 @@ public abstract class Location {
     /**
      * Returns {@code true} if the location is compatible with the type of the value.
      *
-     * The actual value may still be rejected if {@link #canSet(DynamicObject, Object)} returns
-     * false.
+     * The actual value may still be rejected if {@link #canSet(DynamicObject, Object)} returns false.
      *
      * @param value the value in question
      * @since 0.8 or earlier

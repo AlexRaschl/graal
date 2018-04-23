@@ -70,8 +70,8 @@ public class HotSpotTruffleRuntimeAccess implements TruffleRuntimeAccess {
     }
 
     /**
-     * A supplier of a {@link GraalRuntime} that retrieves the runtime in a synchronized block on
-     * first request and caches it for subsequent requests. This allows delaying initialization of a
+     * A supplier of a {@link GraalRuntime} that retrieves the runtime in a synchronized block on first
+     * request and caches it for subsequent requests. This allows delaying initialization of a
      * {@link GraalRuntime} until the first Truffle compilation.
      */
     private static final class LazyGraalRuntime implements Supplier<GraalRuntime> {

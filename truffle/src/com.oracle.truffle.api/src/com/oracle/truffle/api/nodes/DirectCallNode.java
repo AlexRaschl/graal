@@ -88,9 +88,9 @@ public abstract class DirectCallNode extends Node {
     }
 
     /**
-     * Returns the originally supplied {@link CallTarget} when this call node was created. Please
-     * note that the returned {@link CallTarget} is not necessarily the {@link CallTarget} that is
-     * called. For that use {@link #getCurrentCallTarget()} instead.
+     * Returns the originally supplied {@link CallTarget} when this call node was created. Please note
+     * that the returned {@link CallTarget} is not necessarily the {@link CallTarget} that is called.
+     * For that use {@link #getCurrentCallTarget()} instead.
      *
      * @return the {@link CallTarget} provided.
      * @since 0.8 or earlier
@@ -110,8 +110,8 @@ public abstract class DirectCallNode extends Node {
 
     /**
      * Returns <code>true</code> if the {@link CallTarget} is forced to be inlined. A
-     * {@link DirectCallNode} can either be inlined manually by invoking {@link #forceInlining()} or
-     * by the runtime system which may at any point decide to inline.
+     * {@link DirectCallNode} can either be inlined manually by invoking {@link #forceInlining()} or by
+     * the runtime system which may at any point decide to inline.
      *
      * @return true if this method was inlined else false.
      * @since 0.8 or earlier
@@ -119,17 +119,17 @@ public abstract class DirectCallNode extends Node {
     public abstract boolean isInliningForced();
 
     /**
-     * Enforces the runtime system to inline the {@link CallTarget} at this call site. If the
-     * runtime system does not support inlining or it is already inlined this method has no effect.
-     * The runtime system may decide to not inline calls which were forced to inline.
+     * Enforces the runtime system to inline the {@link CallTarget} at this call site. If the runtime
+     * system does not support inlining or it is already inlined this method has no effect. The runtime
+     * system may decide to not inline calls which were forced to inline.
      *
      * @since 0.8 or earlier
      */
     public abstract void forceInlining();
 
     /**
-     * Returns <code>true</code> if the runtime system supports cloning and the {@link RootNode}
-     * returns <code>true</code> in {@link RootNode#isCloningAllowed()}.
+     * Returns <code>true</code> if the runtime system supports cloning and the {@link RootNode} returns
+     * <code>true</code> in {@link RootNode#isCloningAllowed()}.
      *
      * @return <code>true</code> if the target is allowed to be cloned.
      * @since 0.8 or earlier
@@ -137,19 +137,18 @@ public abstract class DirectCallNode extends Node {
     public abstract boolean isCallTargetCloningAllowed();
 
     /**
-     * Clones the {@link CallTarget} instance returned by {@link #getCallTarget()} in an
-     * uninitialized state for this {@link DirectCallNode}. This can be sensible to gather call site
-     * sensitive profiling information for this {@link DirectCallNode}. If
-     * {@link #isCallTargetCloningAllowed()} returns <code>false</code> this method has no effect
-     * and returns <code>false</code>.
+     * Clones the {@link CallTarget} instance returned by {@link #getCallTarget()} in an uninitialized
+     * state for this {@link DirectCallNode}. This can be sensible to gather call site sensitive
+     * profiling information for this {@link DirectCallNode}. If {@link #isCallTargetCloningAllowed()}
+     * returns <code>false</code> this method has no effect and returns <code>false</code>.
      *
      * @since 0.8 or earlier
      */
     public abstract boolean cloneCallTarget();
 
     /**
-     * Returns <code>true</code> if the target of the {@link DirectCallNode} was cloned by the
-     * runtime system or by the guest language implementation.
+     * Returns <code>true</code> if the target of the {@link DirectCallNode} was cloned by the runtime
+     * system or by the guest language implementation.
      *
      * @return if the target was split
      * @since 0.8 or earlier

@@ -51,8 +51,8 @@ public class UnsafeAllocateInstance01 extends JTTTest {
     protected Result executeExpected(ResolvedJavaMethod method, Object receiver, Object... args) {
         if (args.length == 1) {
             /*
-             * HotSpot will crash if the C2 intrinsic for this is used with array classes, so just
-             * handle it explicitly so that we can still exercise Graal.
+             * HotSpot will crash if the C2 intrinsic for this is used with array classes, so just handle it
+             * explicitly so that we can still exercise Graal.
              */
             Class<?> cl = (Class<?>) args[0];
             if (cl.isArray()) {

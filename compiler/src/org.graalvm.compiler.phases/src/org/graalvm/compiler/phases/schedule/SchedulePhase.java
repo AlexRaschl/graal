@@ -531,9 +531,8 @@ public final class SchedulePhase extends Phase {
                 for (Node usage : currentNode.usages()) {
                     if (immutableGraph && !visited.contains(usage)) {
                         /*
-                         * Normally, dead nodes are deleted by the scheduler before we reach this
-                         * point. Only when the scheduler is asked to not modify a graph, we can see
-                         * dead nodes here.
+                         * Normally, dead nodes are deleted by the scheduler before we reach this point. Only when the
+                         * scheduler is asked to not modify a graph, we can see dead nodes here.
                          */
                         continue;
                     }
@@ -645,8 +644,8 @@ public final class SchedulePhase extends Phase {
         }
 
         /**
-         * Micro block that is allocated for each fixed node and captures all floating nodes that
-         * need to be scheduled immediately after the corresponding fixed node.
+         * Micro block that is allocated for each fixed node and captures all floating nodes that need to be
+         * scheduled immediately after the corresponding fixed node.
          */
         private static class MicroBlock {
             private final int id;
@@ -690,8 +689,7 @@ public final class SchedulePhase extends Phase {
             }
 
             /**
-             * The id of the micro block, with a block always associated with a lower id than its
-             * successors.
+             * The id of the micro block, with a block always associated with a lower id than its successors.
              */
             public int getId() {
                 return id;
@@ -705,8 +703,7 @@ public final class SchedulePhase extends Phase {
             }
 
             /**
-             * Takes all nodes in this micro blocks and prepends them to the nodes of the given
-             * parameter.
+             * Takes all nodes in this micro blocks and prepends them to the nodes of the given parameter.
              *
              * @param newBlock the new block for the nodes
              */
@@ -824,8 +821,8 @@ public final class SchedulePhase extends Phase {
                     }
 
                     /*
-                     * the processing of one loop phi could have marked a previously checked loop
-                     * phi, therefore this needs to be iterative.
+                     * the processing of one loop phi could have marked a previously checked loop phi, therefore this
+                     * needs to be iterative.
                      */
                 } while (unmarkedPhi && changed);
             }
@@ -959,8 +956,8 @@ public final class SchedulePhase extends Phase {
              * After an earliest schedule, this will re-sort guards to honor their
              * {@linkplain StaticDeoptimizingNode#computePriority() priority}.
              *
-             * Note that this only changes the order of nodes within {@linkplain MicroBlock
-             * micro-blocks}, nodes will not be moved from one micro-block to another.
+             * Note that this only changes the order of nodes within {@linkplain MicroBlock micro-blocks}, nodes
+             * will not be moved from one micro-block to another.
              */
             private static void resortGuards(StructuredGraph graph, NodeMap<MicroBlock> entries, NodeStack stack) {
                 assert stack.isEmpty();
@@ -988,9 +985,9 @@ public final class SchedulePhase extends Phase {
             /**
              * This resorts guards within one micro-block.
              *
-             * {@code stack}, {@code blockNodes} and {@code priorities} are just temporary
-             * data-structures which are allocated once by the callers of this method. They should
-             * be in their "initial"/"empty" state when calling this method and when it returns.
+             * {@code stack}, {@code blockNodes} and {@code priorities} are just temporary data-structures which
+             * are allocated once by the callers of this method. They should be in their "initial"/"empty" state
+             * when calling this method and when it returns.
              */
             private static MicroBlock resortGuards(MicroBlock block, NodeStack stack, NodeBitMap blockNodes, NodeMap<GuardPriority> priorities) {
                 if (!propagatePriority(block, stack, priorities, blockNodes)) {
@@ -1025,8 +1022,8 @@ public final class SchedulePhase extends Phase {
             }
 
             /**
-             * This checks if {@code n} can be scheduled, if it is the case, it schedules it now by
-             * calling {@link #addNodeToResort(Node, NodeStack, NodeBitMap, MicroBlock, boolean)}.
+             * This checks if {@code n} can be scheduled, if it is the case, it schedules it now by calling
+             * {@link #addNodeToResort(Node, NodeStack, NodeBitMap, MicroBlock, boolean)}.
              */
             private static void checkIfAvailable(Node n, NodeStack stack, NodeBitMap sorted, Instance.MicroBlock newBlock, SortedSet<GuardNode> availableGuardNodes, boolean pushUsages) {
                 if (sorted.isMarked(n)) {
@@ -1045,8 +1042,8 @@ public final class SchedulePhase extends Phase {
             }
 
             /**
-             * Add a node to the re-sorted micro-block. This also pushes nodes that need to be
-             * (re-)examined on the stack.
+             * Add a node to the re-sorted micro-block. This also pushes nodes that need to be (re-)examined on
+             * the stack.
              */
             private static void addNodeToResort(Node n, NodeStack stack, NodeBitMap sorted, MicroBlock newBlock, boolean pushUsages) {
                 sorted.mark(n);
@@ -1061,11 +1058,11 @@ public final class SchedulePhase extends Phase {
             }
 
             /**
-             * This fills in a map of transitive priorities ({@code priorities}). It also marks the
-             * nodes from this micro-block in {@code blockNodes}.
+             * This fills in a map of transitive priorities ({@code priorities}). It also marks the nodes from
+             * this micro-block in {@code blockNodes}.
              *
-             * The transitive priority of a guard is the highest of its priority and the priority of
-             * the guards that depend on it (transitively).
+             * The transitive priority of a guard is the highest of its priority and the priority of the guards
+             * that depend on it (transitively).
              *
              * This method returns {@code false} if no re-ordering is necessary in this micro-block.
              */
@@ -1115,9 +1112,9 @@ public final class SchedulePhase extends Phase {
         }
 
         /**
-         * Processes the inputs of given block. Pushes unprocessed inputs onto the stack. Returns
-         * null if there were still unprocessed inputs, otherwise returns the earliest block given
-         * node can be scheduled in.
+         * Processes the inputs of given block. Pushes unprocessed inputs onto the stack. Returns null if
+         * there were still unprocessed inputs, otherwise returns the earliest block given node can be
+         * scheduled in.
          */
         private static MicroBlock processInputs(NodeMap<MicroBlock> nodeToBlock, NodeStack stack, MicroBlock startBlock, Node current) {
             if (current.getNodeClass().isLeafNode()) {

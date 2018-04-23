@@ -57,8 +57,8 @@ import com.oracle.truffle.api.nodes.UnexpectedResultException;
 public abstract class SLExpressionNode extends SLStatementNode {
 
     /**
-     * The execute method when no specialization is possible. This is the most general case,
-     * therefore it must be provided by all subclasses.
+     * The execute method when no specialization is possible. This is the most general case, therefore
+     * it must be provided by all subclasses.
      */
     public abstract Object executeGeneric(VirtualFrame frame);
 
@@ -72,9 +72,9 @@ public abstract class SLExpressionNode extends SLStatementNode {
     }
 
     /*
-     * Execute methods for specialized types. They all follow the same pattern: they call the
-     * generic execution method and then expect a result of their return type. Type-specialized
-     * subclasses overwrite the appropriate methods.
+     * Execute methods for specialized types. They all follow the same pattern: they call the generic
+     * execution method and then expect a result of their return type. Type-specialized subclasses
+     * overwrite the appropriate methods.
      */
 
     public long executeLong(VirtualFrame frame) throws UnexpectedResultException {

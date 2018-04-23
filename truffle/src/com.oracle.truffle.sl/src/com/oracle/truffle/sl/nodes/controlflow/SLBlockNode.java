@@ -58,8 +58,8 @@ public final class SLBlockNode extends SLStatementNode {
 
     /**
      * The array of child nodes. The annotation {@link com.oracle.truffle.api.nodes.Node.Children
-     * Children} informs Truffle that the field contains multiple children. It is a Truffle
-     * requirement that the field is {@code final} and an array of nodes.
+     * Children} informs Truffle that the field contains multiple children. It is a Truffle requirement
+     * that the field is {@code final} and an array of nodes.
      */
     @Children private final SLStatementNode[] bodyNodes;
 
@@ -68,9 +68,9 @@ public final class SLBlockNode extends SLStatementNode {
     }
 
     /**
-     * Execute all child statements. The annotation {@link ExplodeLoop} triggers full unrolling of
-     * the loop during compilation. This allows the {@link SLStatementNode#executeVoid} method of
-     * all children to be inlined.
+     * Execute all child statements. The annotation {@link ExplodeLoop} triggers full unrolling of the
+     * loop during compilation. This allows the {@link SLStatementNode#executeVoid} method of all
+     * children to be inlined.
      */
     @Override
     @ExplodeLoop

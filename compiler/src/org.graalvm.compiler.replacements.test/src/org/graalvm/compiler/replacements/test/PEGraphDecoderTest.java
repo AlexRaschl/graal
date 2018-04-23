@@ -54,9 +54,8 @@ import jdk.vm.ci.meta.ResolvedJavaMethod;
 public class PEGraphDecoderTest extends GraalCompilerTest {
 
     /**
-     * This method is intrinsified to a node with a guard dependency on the block it is in. The
-     * various tests ensure that this guard is correctly updated when blocks are merged during
-     * inlining.
+     * This method is intrinsified to a node with a guard dependency on the block it is in. The various
+     * tests ensure that this guard is correctly updated when blocks are merged during inlining.
      */
     private static native int readInt(Object obj, long offset);
 

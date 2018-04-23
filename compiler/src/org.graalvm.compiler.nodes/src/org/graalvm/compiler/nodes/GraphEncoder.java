@@ -128,9 +128,9 @@ public class GraphEncoder {
     protected final Architecture architecture;
 
     /**
-     * Collects all non-primitive data referenced from nodes. The encoding uses an index into an
-     * array for decoding. Because of the variable-length encoding, it is beneficial that frequently
-     * used objects have the small indices.
+     * Collects all non-primitive data referenced from nodes. The encoding uses an index into an array
+     * for decoding. Because of the variable-length encoding, it is beneficial that frequently used
+     * objects have the small indices.
      */
     protected final FrequencyEncoder<Object> objects;
     /**
@@ -232,14 +232,14 @@ public class GraphEncoder {
                 AbstractEndNode end = (AbstractEndNode) node;
                 AbstractMergeNode merge = end.merge();
                 /*
-                 * Write the orderId of the merge. The merge is not a successor in the Graal graph
-                 * (only the merge has an input edge to the EndNode).
+                 * Write the orderId of the merge. The merge is not a successor in the Graal graph (only the merge
+                 * has an input edge to the EndNode).
                  */
                 writeOrderId(merge, nodeOrder);
 
                 /*
-                 * Write all phi mappings (the oderId of the phi input for this EndNode, and the
-                 * orderId of the phi node.
+                 * Write all phi mappings (the oderId of the phi input for this EndNode, and the orderId of the phi
+                 * node.
                  */
                 writer.putUV(merge.phis().count());
                 for (PhiNode phi : merge.phis()) {
@@ -277,8 +277,8 @@ public class GraphEncoder {
         }
 
         /*
-         * Write out the metadata (maximum fixed node order id and the table of contents with the
-         * start offset for all nodes).
+         * Write out the metadata (maximum fixed node order id and the table of contents with the start
+         * offset for all nodes).
          */
         int metadataStart = TypeConversion.asS4(writer.getBytesWritten());
         writer.putUV(nodeOrder.maxFixedNodeOrderId);
@@ -345,12 +345,11 @@ public class GraphEncoder {
             maxFixedNodeOrderId = nextOrderId - 1;
 
             /*
-             * Emit all parameters consecutively at a known location (after all fixed nodes). This
-             * allows substituting parameters when inlining during decoding by pre-initializing the
-             * decoded node list.
+             * Emit all parameters consecutively at a known location (after all fixed nodes). This allows
+             * substituting parameters when inlining during decoding by pre-initializing the decoded node list.
              *
-             * Note that not all parameters must be present (unused parameters are deleted after
-             * parsing). This leads to holes in the orderId, i.e., unused orderIds.
+             * Note that not all parameters must be present (unused parameters are deleted after parsing). This
+             * leads to holes in the orderId, i.e., unused orderIds.
              */
             int parameterCount = graph.method().getSignature().getParameterCount(!graph.method().isStatic());
             for (ParameterNode node : graph.getNodes(ParameterNode.TYPE)) {
@@ -429,8 +428,8 @@ public class GraphEncoder {
     }
 
     /**
-     * Verification code that checks that the decoding of an encode graph is the same as the
-     * original graph.
+     * Verification code that checks that the decoding of an encode graph is the same as the original
+     * graph.
      */
     @SuppressWarnings("try")
     public static boolean verifyEncoding(StructuredGraph originalGraph, EncodedGraph encodedGraph, Architecture architecture) {

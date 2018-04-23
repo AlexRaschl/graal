@@ -55,8 +55,8 @@ public final class ScopeImpl implements DebugContext.Scope {
                     parentIndent.printScopeName(str, false);
                 }
                 /*
-                 * Always print the current scope, scopes with context and the any scope whose
-                 * parent didn't print. This ensure the first new scope always shows up.
+                 * Always print the current scope, scopes with context and the any scope whose parent didn't print.
+                 * This ensure the first new scope always shows up.
                  */
                 if (isCurrent || printContext(null) != 0 || !parentPrinted) {
                     str.append(indent).append("[thread:").append(Thread.currentThread().getId()).append("] scope: ").append(getQualifiedName()).append(System.lineSeparator());
@@ -238,8 +238,8 @@ public final class ScopeImpl implements DebugContext.Scope {
      * level scope.
      *
      * @param name the name of the new scope
-     * @param sandboxConfig the configuration to use for a new top level scope, or null if the new
-     *            scope should be a child scope
+     * @param sandboxConfig the configuration to use for a new top level scope, or null if the new scope
+     *            should be a child scope
      * @param newContextObjects objects to be appended to the debug context
      * @return the new scope which will be exited when its {@link #close()} method is called
      */

@@ -67,8 +67,8 @@ public class OptionValues {
     }
 
     /**
-     * Gets an immutable view of the key/value pairs in this object. Values read from this view
-     * should be {@linkplain #decodeNull(Object) decoded} before being used.
+     * Gets an immutable view of the key/value pairs in this object. Values read from this view should
+     * be {@linkplain #decodeNull(Object) decoded} before being used.
      */
     public UnmodifiableEconomicMap<OptionKey<?>, Object> getMap() {
         return values;
@@ -187,8 +187,8 @@ public class OptionValues {
 
     /**
      * Prints a help message to {@code out} describing all options available via {@code loader}. The
-     * key/value for each option is separated by {@code :=} if the option has an entry in this
-     * object otherwise {@code =} is used as the separator.
+     * key/value for each option is separated by {@code :=} if the option has an entry in this object
+     * otherwise {@code =} is used as the separator.
      *
      * @param loader
      * @param out

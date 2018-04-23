@@ -75,8 +75,8 @@ public final class AssertionNode extends FixedWithNextNode implements Lowerable,
             return null;
         }
         /*
-         * Assertions with a constant "false" value do not immediately cause an error, since they
-         * may be unreachable and could thus be removed by later optimizations.
+         * Assertions with a constant "false" value do not immediately cause an error, since they may be
+         * unreachable and could thus be removed by later optimizations.
          */
         return this;
     }

@@ -38,10 +38,10 @@ public abstract class CallsiteHolder {
     public abstract ResolvedJavaMethod method();
 
     /**
-     * The stack realized by {@link InliningData} grows upon {@link InliningData#moveForward()}
-     * deciding to explore (depth-first) a callsite of the graph associated to this
-     * {@link CallsiteHolder}. The list of not-yet-considered callsites is managed by
-     * {@link CallsiteHolderExplorable}, and this method reports whether any such candidates remain.
+     * The stack realized by {@link InliningData} grows upon {@link InliningData#moveForward()} deciding
+     * to explore (depth-first) a callsite of the graph associated to this {@link CallsiteHolder}. The
+     * list of not-yet-considered callsites is managed by {@link CallsiteHolderExplorable}, and this
+     * method reports whether any such candidates remain.
      */
     public abstract boolean hasRemainingInvokes();
 

@@ -142,8 +142,8 @@ public abstract class ShapeImpl extends Shape {
      * @param parent predecessor shape
      * @param transitionFromParent direct transition from parent shape
      *
-     * @see #ShapeImpl(Layout, ShapeImpl, ObjectType, Object, PropertyMap, Transition,
-     *      BaseAllocator, int)
+     * @see #ShapeImpl(Layout, ShapeImpl, ObjectType, Object, PropertyMap, Transition, BaseAllocator,
+     *      int)
      */
     private ShapeImpl(Layout layout, ShapeImpl parent, ObjectType objectType, Object sharedData, PropertyMap propertyMap, Transition transitionFromParent, int objectArraySize, int objectFieldSize,
                     int primitiveFieldSize, int primitiveArraySize, boolean hasPrimitiveArray, int id) {

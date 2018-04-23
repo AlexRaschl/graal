@@ -68,9 +68,9 @@ public abstract class UnaryNode extends FloatingNode implements Canonicalizable.
     }
 
     /**
-     * Compute an improved for this node using the passed in stamp. The stamp must be compatible
-     * with the current value of {@link #value}. This code is used to provide the default
-     * implementation of {@link #inferStamp()} and may be used by external optimizations.
+     * Compute an improved for this node using the passed in stamp. The stamp must be compatible with
+     * the current value of {@link #value}. This code is used to provide the default implementation of
+     * {@link #inferStamp()} and may be used by external optimizations.
      *
      * @param newStamp
      */

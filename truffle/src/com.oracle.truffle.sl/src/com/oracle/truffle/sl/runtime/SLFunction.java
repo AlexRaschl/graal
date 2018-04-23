@@ -76,8 +76,8 @@ public final class SLFunction implements TruffleObject {
 
     /**
      * Manages the assumption that the {@link #callTarget} is stable. We use the utility class
-     * {@link CyclicAssumption}, which automatically creates a new {@link Assumption} when the old
-     * one gets invalidated.
+     * {@link CyclicAssumption}, which automatically creates a new {@link Assumption} when the old one
+     * gets invalidated.
      */
     private final CyclicAssumption callTargetStable;
 
@@ -94,8 +94,8 @@ public final class SLFunction implements TruffleObject {
     protected void setCallTarget(RootCallTarget callTarget) {
         this.callTarget = callTarget;
         /*
-         * We have a new call target. Invalidate all code that speculated that the old call target
-         * was stable.
+         * We have a new call target. Invalidate all code that speculated that the old call target was
+         * stable.
          */
         callTargetStable.invalidate();
     }
@@ -109,8 +109,8 @@ public final class SLFunction implements TruffleObject {
     }
 
     /**
-     * This method is, e.g., called when using a function literal in a string concatenation. So
-     * changing it has an effect on SL programs.
+     * This method is, e.g., called when using a function literal in a string concatenation. So changing
+     * it has an effect on SL programs.
      */
     @Override
     public String toString() {
@@ -118,9 +118,9 @@ public final class SLFunction implements TruffleObject {
     }
 
     /**
-     * In case you want some of your objects to co-operate with other languages, you need to make
-     * them implement {@link TruffleObject} and provide additional
-     * {@link SLFunctionMessageResolution foreign access implementation}.
+     * In case you want some of your objects to co-operate with other languages, you need to make them
+     * implement {@link TruffleObject} and provide additional {@link SLFunctionMessageResolution foreign
+     * access implementation}.
      */
     @Override
     public ForeignAccess getForeignAccess() {

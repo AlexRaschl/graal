@@ -52,8 +52,8 @@ public class CollectionSizeTest {
     }
 
     /**
-     * Tests whether the map actually compresses the entries array when a large number of entries
-     * are deleted.
+     * Tests whether the map actually compresses the entries array when a large number of entries are
+     * deleted.
      */
     @Test
     public void testCompress() {

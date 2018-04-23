@@ -32,8 +32,8 @@ import org.graalvm.compiler.lir.VirtualStackSlot;
 public abstract class FrameMapBuilderTool extends FrameMapBuilder {
 
     /**
-     * Returns the number of {@link VirtualStackSlot}s created by this {@link FrameMapBuilder}. Can
-     * be used as an upper bound for an array indexed by {@link VirtualStackSlot#getId()}.
+     * Returns the number of {@link VirtualStackSlot}s created by this {@link FrameMapBuilder}. Can be
+     * used as an upper bound for an array indexed by {@link VirtualStackSlot#getId()}.
      */
     public abstract int getNumberOfStackSlots();
 

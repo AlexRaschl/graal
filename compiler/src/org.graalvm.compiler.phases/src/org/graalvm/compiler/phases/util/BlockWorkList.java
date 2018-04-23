@@ -86,9 +86,8 @@ public class BlockWorkList {
     }
 
     /**
-     * Removes the next block from this work list. If the blocks have been added in a sorted order,
-     * then the block with the lowest number is returned. Otherwise, the last block added is
-     * returned.
+     * Removes the next block from this work list. If the blocks have been added in a sorted order, then
+     * the block with the lowest number is returned. Otherwise, the last block added is returned.
      *
      * @return the next block in the list
      */

@@ -40,16 +40,15 @@ public interface DebugDumpHandler extends Closeable, DebugHandler {
      *
      * @param debug the debug context requesting the dump
      * @param object the object to be dumped
-     * @param format a format string specifying a title that describes the context of the dump
-     *            (e.g., the compiler phase in which request is made)
+     * @param format a format string specifying a title that describes the context of the dump (e.g.,
+     *            the compiler phase in which request is made)
      * @param arguments arguments referenced by the format specifiers in {@code format}
      */
     void dump(DebugContext debug, Object object, String format, Object... arguments);
 
     /**
-     * Flushes and releases resources managed by this dump handler. A subsequent call to
-     * {@link #dump} will create and open new resources. That is, this method can be used to reset
-     * the handler.
+     * Flushes and releases resources managed by this dump handler. A subsequent call to {@link #dump}
+     * will create and open new resources. That is, this method can be used to reset the handler.
      */
     @Override
     default void close() {

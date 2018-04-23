@@ -36,11 +36,11 @@ import java.util.function.BiFunction;
 public interface EconomicMap<K, V> extends UnmodifiableEconomicMap<K, V> {
 
     /**
-     * Associates {@code value} with {@code key} in this map. If the map previously contained a
-     * mapping for {@code key}, the old value is replaced by {@code value}.
+     * Associates {@code value} with {@code key} in this map. If the map previously contained a mapping
+     * for {@code key}, the old value is replaced by {@code value}.
      *
-     * @return the previous value associated with {@code key}, or {@code null} if there was no
-     *         mapping for {@code key}.
+     * @return the previous value associated with {@code key}, or {@code null} if there was no mapping
+     *         for {@code key}.
      * @since 1.0
      */
     V put(K key, V value);
@@ -77,11 +77,11 @@ public interface EconomicMap<K, V> extends UnmodifiableEconomicMap<K, V> {
     void clear();
 
     /**
-     * Removes the mapping for {@code key} from this map if it is present. The map will not contain
-     * a mapping for {@code key} once the call returns.
+     * Removes the mapping for {@code key} from this map if it is present. The map will not contain a
+     * mapping for {@code key} once the call returns.
      *
-     * @return the previous value associated with {@code key}, or {@code null} if there was no
-     *         mapping for {@code key}.
+     * @return the previous value associated with {@code key}, or {@code null} if there was no mapping
+     *         for {@code key}.
      * @since 1.0
      */
     V removeKey(K key);
@@ -95,8 +95,8 @@ public interface EconomicMap<K, V> extends UnmodifiableEconomicMap<K, V> {
     MapCursor<K, V> getEntries();
 
     /**
-     * Replaces each entry's value with the result of invoking {@code function} on that entry until
-     * all entries have been processed or the function throws an exception. Exceptions thrown by the
+     * Replaces each entry's value with the result of invoking {@code function} on that entry until all
+     * entries have been processed or the function throws an exception. Exceptions thrown by the
      * function are relayed to the caller.
      *
      * @since 1.0
@@ -146,8 +146,8 @@ public interface EconomicMap<K, V> extends UnmodifiableEconomicMap<K, V> {
     }
 
     /**
-     * Creates a new map that guarantees insertion order on the key set and copies all elements from
-     * the specified existing map.
+     * Creates a new map that guarantees insertion order on the key set and copies all elements from the
+     * specified existing map.
      *
      * @since 1.0
      */
@@ -156,8 +156,8 @@ public interface EconomicMap<K, V> extends UnmodifiableEconomicMap<K, V> {
     }
 
     /**
-     * Creates a new map that guarantees insertion order on the key set and initializes with a
-     * specified capacity.
+     * Creates a new map that guarantees insertion order on the key set and initializes with a specified
+     * capacity.
      *
      * @since 1.0
      */

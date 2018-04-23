@@ -132,12 +132,12 @@ public class VerifyDebugUsage extends VerifyPhase<PhaseContext> {
 
     /**
      * The set of methods allowed to call a {@code Debug.dump(...)} method with the {@code level}
-     * parameter bound to {@link DebugContext#BASIC_LEVEL} and the {@code object} parameter bound to
-     * a {@link StructuredGraph} value.
+     * parameter bound to {@link DebugContext#BASIC_LEVEL} and the {@code object} parameter bound to a
+     * {@link StructuredGraph} value.
      *
-     * This whitelist exists to ensure any increase in graph dumps is in line with the policy
-     * outlined by {@link DebugContext#BASIC_LEVEL}. If you add a *justified* graph dump at this
-     * level, then update the whitelist.
+     * This whitelist exists to ensure any increase in graph dumps is in line with the policy outlined
+     * by {@link DebugContext#BASIC_LEVEL}. If you add a *justified* graph dump at this level, then
+     * update the whitelist.
      */
     private static final Set<String> BasicLevelStructuredGraphDumpWhitelist = new HashSet<>(Arrays.asList(
                     "org.graalvm.compiler.phases.BasePhase.dumpAfter",
@@ -152,12 +152,12 @@ public class VerifyDebugUsage extends VerifyPhase<PhaseContext> {
 
     /**
      * The set of methods allowed to call a {@code Debug.dump(...)} method with the {@code level}
-     * parameter bound to {@link DebugContext#INFO_LEVEL} and the {@code object} parameter bound to
-     * a {@link StructuredGraph} value.
+     * parameter bound to {@link DebugContext#INFO_LEVEL} and the {@code object} parameter bound to a
+     * {@link StructuredGraph} value.
      *
-     * This whitelist exists to ensure any increase in graph dumps is in line with the policy
-     * outlined by {@link DebugContext#INFO_LEVEL}. If you add a *justified* graph dump at this
-     * level, then update the whitelist.
+     * This whitelist exists to ensure any increase in graph dumps is in line with the policy outlined
+     * by {@link DebugContext#INFO_LEVEL}. If you add a *justified* graph dump at this level, then
+     * update the whitelist.
      */
     private static final Set<String> InfoLevelStructuredGraphDumpWhitelist = new HashSet<>(Arrays.asList(
                     "org.graalvm.compiler.core.GraalCompiler.emitFrontEnd",
@@ -210,8 +210,8 @@ public class VerifyDebugUsage extends VerifyPhase<PhaseContext> {
     }
 
     /**
-     * The {@code level} arg for the {@code Debug.dump(...)} methods must be a reference to one of
-     * the {@code Debug.*_LEVEL} constants.
+     * The {@code level} arg for the {@code Debug.dump(...)} methods must be a reference to one of the
+     * {@code Debug.*_LEVEL} constants.
      */
     protected Integer verifyDumpLevelParameter(StructuredGraph callerGraph, MethodCallTargetNode debugCallTarget, ResolvedJavaMethod verifiedCallee, ValueNode arg)
                     throws org.graalvm.compiler.phases.VerifyPhase.VerificationError {

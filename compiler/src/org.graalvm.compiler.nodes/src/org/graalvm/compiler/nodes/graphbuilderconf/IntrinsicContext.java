@@ -88,9 +88,9 @@ public class IntrinsicContext {
     }
 
     /**
-     * A partial intrinsic exits by (effectively) calling the intrinsified method. Normally, this
-     * call must use exactly the same arguments as the call that is being intrinsified. This allows
-     * to override this behavior.
+     * A partial intrinsic exits by (effectively) calling the intrinsified method. Normally, this call
+     * must use exactly the same arguments as the call that is being intrinsified. This allows to
+     * override this behavior.
      */
     public boolean allowPartialIntrinsicArgumentMismatch() {
         return allowPartialIntrinsicArgumentMismatch;
@@ -150,8 +150,8 @@ public class IntrinsicContext {
      */
     public enum CompilationContext {
         /**
-         * An intrinsic is being processed when parsing an invoke bytecode that calls the
-         * intrinsified method.
+         * An intrinsic is being processed when parsing an invoke bytecode that calls the intrinsified
+         * method.
          */
         INLINE_DURING_PARSING,
 
@@ -167,8 +167,8 @@ public class IntrinsicContext {
     }
 
     /**
-     * Models the state of a graph in terms of {@link StateSplit#hasSideEffect() side effects} that
-     * are control flow predecessors of the current point in a graph.
+     * Models the state of a graph in terms of {@link StateSplit#hasSideEffect() side effects} that are
+     * control flow predecessors of the current point in a graph.
      */
     public interface SideEffectsState {
 

@@ -95,30 +95,28 @@ final class ClosureNativePointer {
 
     /**
      * The native side of this object has a JNI reference to a {@link CallTarget}. This
-     * {@link CallTarget} may indirectly hold a reference to this object, preventing garbage
-     * collection of the whole structure. To break this reference cycle, the native side contains a
-     * weak JNI reference, and this object contains a strong managed reference to keep the object
-     * alive. That way the GC can collect everything on the Java side before the native side is
-     * deallocated.
+     * {@link CallTarget} may indirectly hold a reference to this object, preventing garbage collection
+     * of the whole structure. To break this reference cycle, the native side contains a weak JNI
+     * reference, and this object contains a strong managed reference to keep the object alive. That way
+     * the GC can collect everything on the Java side before the native side is deallocated.
      */
     final CallTarget callTarget;
 
     /**
-     * The LibFFI closure structure keeps a pointer to the native signature. Keep a Java reference
-     * to the signature around to prevent GC as long as the closure is alive.
+     * The LibFFI closure structure keeps a pointer to the native signature. Keep a Java reference to
+     * the signature around to prevent GC as long as the closure is alive.
      */
     final LibFFISignature signature;
 
     /**
      * The destructor of {@link LibFFIClosure} needs a reference to this object, in order to call
-     * {@link #releaseRef} when it dies. Since this object in turn might contain a transitive
-     * reference to the {@link LibFFIClosure} object, we must not keep the destructor
-     * unconditionally alive, otherwise that will keep the {@link LibFFIClosure} object alive
-     * forever, and the reference count will never drop to zero. By keeping the destructor reference
-     * here, we allow the {@link ClosureNativePointer} object and the {@link LibFFIClosure} object
-     * to die simultaneously (e.g. if a context is disposed). In that case, the destructor will not
-     * run, but since the {@link ClosureNativePointer} object is dead anyway, we don't care about
-     * the reference count.
+     * {@link #releaseRef} when it dies. Since this object in turn might contain a transitive reference
+     * to the {@link LibFFIClosure} object, we must not keep the destructor unconditionally alive,
+     * otherwise that will keep the {@link LibFFIClosure} object alive forever, and the reference count
+     * will never drop to zero. By keeping the destructor reference here, we allow the
+     * {@link ClosureNativePointer} object and the {@link LibFFIClosure} object to die simultaneously
+     * (e.g. if a context is disposed). In that case, the destructor will not run, but since the
+     * {@link ClosureNativePointer} object is dead anyway, we don't care about the reference count.
      */
     private final NativeAllocation.Queue releaseRefQueue;
 

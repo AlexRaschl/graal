@@ -89,8 +89,8 @@ public abstract class SLEqualNode extends SLBinaryNode {
     @Specialization
     protected boolean equal(SLFunction left, SLFunction right) {
         /*
-         * Our function registry maintains one canonical SLFunction object per function name, so we
-         * do not need equals().
+         * Our function registry maintains one canonical SLFunction object per function name, so we do not
+         * need equals().
          */
         return left == right;
     }
@@ -110,17 +110,17 @@ public abstract class SLEqualNode extends SLBinaryNode {
     }
 
     /**
-     * We covered all the cases that can return true in the type specializations above. If we
-     * compare two values with different types, the result is known to be false.
+     * We covered all the cases that can return true in the type specializations above. If we compare
+     * two values with different types, the result is known to be false.
      * <p>
      * Note that the guard is essential for correctness: without the guard, the specialization would
-     * also match when the left and right value have the same type. The following scenario would
-     * return a wrong value: First, the node is executed with the left value 42 (type long) and the
-     * right value "abc" (String). This specialization matches, and since it is the first execution
-     * it is also the only specialization. Then, the node is executed with the left value "42" (type
-     * long) and the right value "42" (type long). Since this specialization is already present, and
-     * (without the guard) also matches (long values can be boxed to Object), it is executed. The
-     * wrong return value is "false".
+     * also match when the left and right value have the same type. The following scenario would return
+     * a wrong value: First, the node is executed with the left value 42 (type long) and the right value
+     * "abc" (String). This specialization matches, and since it is the first execution it is also the
+     * only specialization. Then, the node is executed with the left value "42" (type long) and the
+     * right value "42" (type long). Since this specialization is already present, and (without the
+     * guard) also matches (long values can be boxed to Object), it is executed. The wrong return value
+     * is "false".
      */
     @Specialization(guards = "differentClasses(left, right)")
     protected boolean equal(Object left, Object right) {

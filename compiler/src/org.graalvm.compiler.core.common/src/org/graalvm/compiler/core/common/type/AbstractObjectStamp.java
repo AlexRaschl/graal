@@ -155,16 +155,16 @@ public abstract class AbstractObjectStamp extends AbstractPointerStamp {
     }
 
     /**
-     * Returns the stamp representing the type of this stamp after a cast to the type represented by
-     * the {@code to} stamp. While this is very similar to a {@link #join} operation, in the case
-     * where both types are not obviously related, the cast operation will prefer the type of the
-     * {@code to} stamp. This is necessary as long as ObjectStamps are not able to accurately
-     * represent intersection types.
+     * Returns the stamp representing the type of this stamp after a cast to the type represented by the
+     * {@code to} stamp. While this is very similar to a {@link #join} operation, in the case where both
+     * types are not obviously related, the cast operation will prefer the type of the {@code to} stamp.
+     * This is necessary as long as ObjectStamps are not able to accurately represent intersection
+     * types.
      *
      * For example when joining the {@link RandomAccess} type with the {@link AbstractList} type,
      * without intersection types, this would result in the most generic type ({@link Object} ). For
-     * this reason, in some cases a {@code castTo} operation is preferable in order to keep at least
-     * the {@link AbstractList} type.
+     * this reason, in some cases a {@code castTo} operation is preferable in order to keep at least the
+     * {@link AbstractList} type.
      *
      * @param other the stamp this stamp should be casted to
      * @return the new improved stamp or {@code null} if this stamp cannot be improved

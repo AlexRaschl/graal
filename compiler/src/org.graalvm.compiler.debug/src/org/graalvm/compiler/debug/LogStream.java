@@ -109,8 +109,8 @@ public class LogStream {
     }
 
     /**
-     * Prepends {@link #indentation} to the current output line until its write position is equal to
-     * the current {@linkplain #indentationLevel()} level.
+     * Prepends {@link #indentation} to the current output line until its write position is equal to the
+     * current {@linkplain #indentationLevel()} level.
      */
     private void indent() {
         if (ps != null) {
@@ -135,8 +135,8 @@ public class LogStream {
     }
 
     /**
-     * Flushes the stream. This is done by terminating the current line if it is not at position 0
-     * and then flushing the underlying output stream.
+     * Flushes the stream. This is done by terminating the current line if it is not at position 0 and
+     * then flushing the underlying output stream.
      */
     public void flush() {
         if (ps != null) {
@@ -233,8 +233,7 @@ public class LogStream {
     }
 
     /**
-     * Writes a boolean value to this stream followed by a {@linkplain #LINE_SEPARATOR line
-     * separator}.
+     * Writes a boolean value to this stream followed by a {@linkplain #LINE_SEPARATOR line separator}.
      *
      * @param b the value to be printed
      * @return this {@link LogStream} instance
@@ -327,8 +326,7 @@ public class LogStream {
     }
 
     /**
-     * Writes a float value to this stream followed by a {@linkplain #LINE_SEPARATOR line separator}
-     * .
+     * Writes a float value to this stream followed by a {@linkplain #LINE_SEPARATOR line separator} .
      *
      * @param f the value to be printed
      * @return this {@link LogStream} instance
@@ -386,8 +384,7 @@ public class LogStream {
     }
 
     /**
-     * Writes a double value to this stream followed by a {@linkplain #LINE_SEPARATOR line
-     * separator}.
+     * Writes a double value to this stream followed by a {@linkplain #LINE_SEPARATOR line separator}.
      *
      * @param d the value to be printed
      * @return this {@link LogStream} instance

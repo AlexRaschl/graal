@@ -56,8 +56,8 @@ public final class CompilerDirectives {
     public static final double FASTPATH_PROBABILITY = 1.0 - SLOWPATH_PROBABILITY;
 
     /**
-     * Directive for the compiler to discontinue compilation at this code position and instead
-     * insert a transfer to the interpreter.
+     * Directive for the compiler to discontinue compilation at this code position and instead insert a
+     * transfer to the interpreter.
      *
      * @since 0.8 or earlier
      */
@@ -68,8 +68,8 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Directive for the compiler to discontinue compilation at this code position and instead
-     * insert a transfer to the interpreter, invalidating the currently executing machine code.
+     * Directive for the compiler to discontinue compilation at this code position and instead insert a
+     * transfer to the interpreter, invalidating the currently executing machine code.
      *
      * @since 0.8 or earlier
      */
@@ -112,9 +112,8 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Returns a boolean indicating whether or not a given value is seen as constant in optimized
-     * code. If this method is called in the interpreter this method will always return
-     * <code>true</code>.
+     * Returns a boolean indicating whether or not a given value is seen as constant in optimized code.
+     * If this method is called in the interpreter this method will always return <code>true</code>.
      *
      * Note that optimizations that a compiler will apply to code that is conditional on
      * <code>isCompilationConstant</code> may be limited. For this reason
@@ -132,9 +131,9 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Returns a boolean indicating whether or not a given value is seen as constant during the
-     * initial partial evaluation phase. If this method is called in the interpreter this method
-     * will always return <code>true</code>.
+     * Returns a boolean indicating whether or not a given value is seen as constant during the initial
+     * partial evaluation phase. If this method is called in the interpreter this method will always
+     * return <code>true</code>.
      *
      * @param value
      * @return {@code true} when given value is seen as compilation constant, {@code false} if not
@@ -146,8 +145,8 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Directive for the compiler that the given runnable should only be executed in the interpreter
-     * and ignored in the compiled code.
+     * Directive for the compiler that the given runnable should only be executed in the interpreter and
+     * ignored in the compiled code.
      *
      * @param runnable the closure that should only be executed in the interpreter
      * @since 0.8 or earlier
@@ -157,8 +156,7 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Directive for the compiler that the given callable should only be executed in the
-     * interpreter.
+     * Directive for the compiler that the given callable should only be executed in the interpreter.
      *
      * @param callable the closure that should only be executed in the interpreter
      * @return the result of executing the closure in the interpreter and null in the compiled code
@@ -170,12 +168,12 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Injects a probability for the given condition into the probability information of the
-     * immediately succeeding branch instruction for the condition. The probability must be a value
-     * between 0.0 and 1.0 (inclusive). The condition should not be a combined condition.
+     * Injects a probability for the given condition into the probability information of the immediately
+     * succeeding branch instruction for the condition. The probability must be a value between 0.0 and
+     * 1.0 (inclusive). The condition should not be a combined condition.
      *
-     * Example usage immediately before an if statement (it specifies that the likelihood for a to
-     * be greater than b is 90%):
+     * Example usage immediately before an if statement (it specifies that the likelihood for a to be
+     * greater than b is 90%):
      *
      * <code>
      * if (injectBranchProbability(0.9, a &gt; b)) {
@@ -183,9 +181,8 @@ public final class CompilerDirectives {
      * }
      * </code>
      *
-     * Example usage for a combined condition (it specifies that the likelihood for a to be greater
-     * than b is 90% and under the assumption that this is true, the likelihood for a being 0 is
-     * 10%):
+     * Example usage for a combined condition (it specifies that the likelihood for a to be greater than
+     * b is 90% and under the assumption that this is true, the likelihood for a being 0 is 10%):
      *
      * <code>
      * if (injectBranchProbability(0.9, a &gt; b) &amp;&amp; injectBranchProbability(0.1, a == 0)) {
@@ -193,9 +190,8 @@ public final class CompilerDirectives {
      * }
      * </code>
      *
-     * There are predefined constants for commonly used probabilities (see
-     * {@link #LIKELY_PROBABILITY} , {@link #UNLIKELY_PROBABILITY}, {@link #SLOWPATH_PROBABILITY},
-     * {@link #FASTPATH_PROBABILITY} ).
+     * There are predefined constants for commonly used probabilities (see {@link #LIKELY_PROBABILITY} ,
+     * {@link #UNLIKELY_PROBABILITY}, {@link #SLOWPATH_PROBABILITY}, {@link #FASTPATH_PROBABILITY} ).
      *
      * @param probability the probability value between 0.0 and 1.0 that should be injected
      * @since 0.8 or earlier
@@ -227,16 +223,16 @@ public final class CompilerDirectives {
         /**
          * Specifies the number of array dimensions to be marked as compilation final.
          *
-         * This value should be specified for all array-typed compilation-final fields and should be
-         * left unspecified for other field types for which it has no meaning.
+         * This value should be specified for all array-typed compilation-final fields and should be left
+         * unspecified for other field types for which it has no meaning.
          *
-         * The allowed range is from 0 to the number of declared array dimensions (inclusive).
-         * Specifically, a {@code dimensions} value of 0 marks only the reference to the (outermost)
-         * array as final but not its elements, a value of 1 marks the outermost array and all its
-         * elements as final but not the elements of any nested arrays.
+         * The allowed range is from 0 to the number of declared array dimensions (inclusive). Specifically,
+         * a {@code dimensions} value of 0 marks only the reference to the (outermost) array as final but
+         * not its elements, a value of 1 marks the outermost array and all its elements as final but not
+         * the elements of any nested arrays.
          *
-         * For compatibility reasons, array-typed fields without an explicit {@code dimensions}
-         * parameter default to the number of array dimensions declared in the field type.
+         * For compatibility reasons, array-typed fields without an explicit {@code dimensions} parameter
+         * default to the number of array dimensions declared in the field type.
          *
          * @since 0.14
          */
@@ -277,8 +273,8 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Marks classes as value types. Reference comparisons (==) between instances of those classes
-     * have undefined semantics and can either return true or false.
+     * Marks classes as value types. Reference comparisons (==) between instances of those classes have
+     * undefined semantics and can either return true or false.
      *
      * @since 0.8 or earlier
      */
@@ -288,8 +284,8 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Ensures that the given object is not virtual, i.e., not removed by Escape Analysis at the
-     * point of this call.
+     * Ensures that the given object is not virtual, i.e., not removed by Escape Analysis at the point
+     * of this call.
      *
      * @param obj the object to exclude from Escape Analysis
      * @since 0.8 or earlier
@@ -298,8 +294,8 @@ public final class CompilerDirectives {
     }
 
     /**
-     * Ensures that the given object will be virtual (escape analyzed) at all points that are
-     * dominated by the current position.
+     * Ensures that the given object will be virtual (escape analyzed) at all points that are dominated
+     * by the current position.
      *
      * @since 0.8 or earlier
      */

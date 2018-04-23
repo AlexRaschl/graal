@@ -309,8 +309,8 @@ public abstract class GraalCompilerState {
     /**
      * Copies the {@link #originalGraph original graph} and prepares the {@link #request}.
      *
-     * The {@link Suites} can be changed by overriding {@link #createSuites}. {@link LIRSuites} can
-     * be changed by overriding {@link #createLIRSuites}.
+     * The {@link Suites} can be changed by overriding {@link #createSuites}. {@link LIRSuites} can be
+     * changed by overriding {@link #createLIRSuites}.
      */
     protected final void prepareRequest() {
         assert originalGraph != null : "call initialzeMethod first";

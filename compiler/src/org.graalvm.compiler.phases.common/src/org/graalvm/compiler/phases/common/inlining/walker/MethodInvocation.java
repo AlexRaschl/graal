@@ -61,16 +61,16 @@ public class MethodInvocation {
      * A freshly instantiated argument is either:
      * <uL>
      * <li>an {@link InliningData#isFreshInstantiation(org.graalvm.compiler.nodes.ValueNode)}</li>
-     * <li>a fixed-param of the graph containing the callsite (ie, of <code>callee.graph()</code>
-     * that contains <code>callee.invoke</code>)</li>
+     * <li>a fixed-param of the graph containing the callsite (ie, of <code>callee.graph()</code> that
+     * contains <code>callee.invoke</code>)</li>
      * </uL>
      * </p>
      *
      * <p>
      * Given those positions, the
-     * {@link org.graalvm.compiler.phases.common.inlining.walker.CallsiteHolderExplorable}
-     * instantiated in {@link #buildCallsiteHolderForElement(int)} can determine which of <i>its</i>
-     * parameters are fixed.
+     * {@link org.graalvm.compiler.phases.common.inlining.walker.CallsiteHolderExplorable} instantiated
+     * in {@link #buildCallsiteHolderForElement(int)} can determine which of <i>its</i> parameters are
+     * fixed.
      * </p>
      */
     private final BitSet freshlyInstantiatedArguments;

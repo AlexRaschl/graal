@@ -103,8 +103,8 @@ public class PartialEscapeAnalysisTreesTest extends EATestBase {
     }
 
     /**
-     * Prepare a graph that includes some blackholes and then remove the blackholes and compile
-     * normally to create an unusual situation for PEA.
+     * Prepare a graph that includes some blackholes and then remove the blackholes and compile normally
+     * to create an unusual situation for PEA.
      */
     @SuppressWarnings("try")
     public void testGraph(String name) {

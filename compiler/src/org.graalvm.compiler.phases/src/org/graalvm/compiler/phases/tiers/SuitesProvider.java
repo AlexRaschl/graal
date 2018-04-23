@@ -45,10 +45,9 @@ public interface SuitesProvider {
     PhaseSuite<HighTierContext> getDefaultGraphBuilderSuite();
 
     /**
-     * Get the default LIR phase suites of this compiler. This will take in account any options
-     * enabled at the time of call, returning an appropriately constructed suite. The returned suite
-     * is immutable by default but {@link LIRSuites#copy} can be used to create a customized
-     * version.
+     * Get the default LIR phase suites of this compiler. This will take in account any options enabled
+     * at the time of call, returning an appropriately constructed suite. The returned suite is
+     * immutable by default but {@link LIRSuites#copy} can be used to create a customized version.
      */
     LIRSuites getDefaultLIRSuites(OptionValues options);
 }

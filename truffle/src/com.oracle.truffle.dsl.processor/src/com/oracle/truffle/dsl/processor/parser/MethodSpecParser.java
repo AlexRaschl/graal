@@ -136,10 +136,10 @@ public final class MethodSpecParser {
     }
 
     /*
-     * Parameter parsing tries to parse required arguments starting from offset 0 with increasing
-     * offset until it finds a signature end that matches the required specification. If there is no
-     * end matching the required arguments, parsing fails. Parameters prior to the parsed required
-     * ones are cut and used to parse the optional parameters.
+     * Parameter parsing tries to parse required arguments starting from offset 0 with increasing offset
+     * until it finds a signature end that matches the required specification. If there is no end
+     * matching the required arguments, parsing fails. Parameters prior to the parsed required ones are
+     * cut and used to parse the optional parameters.
      */
     private static List<Parameter> parseParameters(MethodSpec spec, List<? extends VariableElement> parameterTypes, boolean varArgs) {
         List<Parameter> parsedRequired = null;

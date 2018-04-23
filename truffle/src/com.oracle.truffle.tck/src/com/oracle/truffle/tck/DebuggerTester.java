@@ -88,9 +88,9 @@ public final class DebuggerTester implements AutoCloseable {
     private SuspendedCallback handler;
 
     /**
-     * Constructs a new debugger tester instance. Boots up a new {@link Context context} on Thread
-     * in the background. The tester instance needs to be {@link #close() closed} after use. Throws
-     * an AssertionError if the engine initialization fails.
+     * Constructs a new debugger tester instance. Boots up a new {@link Context context} on Thread in
+     * the background. The tester instance needs to be {@link #close() closed} after use. Throws an
+     * AssertionError if the engine initialization fails.
      *
      * @since 0.16
      */
@@ -101,8 +101,8 @@ public final class DebuggerTester implements AutoCloseable {
     /**
      * Constructs a new debugger tester instance with a pre-set context builder.
      *
-     * @param contextBuilder a pre-set context builder. Only out and err streams are set on this
-     *            builder prior the {@link Context} instance creation.
+     * @param contextBuilder a pre-set context builder. Only out and err streams are set on this builder
+     *            prior the {@link Context} instance creation.
      *
      * @see #DebuggerTester()
      * @since 0.31
@@ -165,10 +165,10 @@ public final class DebuggerTester implements AutoCloseable {
     }
 
     /**
-     * Starts a new {@link Debugger#startSession(SuspendedCallback) debugger session} in the
-     * context's {@link Engine engine}. The debugger session allows to suspend the execution and to
-     * install breakpoints. If multiple sessions are created for one {@link #startEval(Source)
-     * evaluation} then all suspended events are delegated to this debugger tester instance.
+     * Starts a new {@link Debugger#startSession(SuspendedCallback) debugger session} in the context's
+     * {@link Engine engine}. The debugger session allows to suspend the execution and to install
+     * breakpoints. If multiple sessions are created for one {@link #startEval(Source) evaluation} then
+     * all suspended events are delegated to this debugger tester instance.
      *
      * @return a new debugger session
      * @since 0.16
@@ -182,10 +182,10 @@ public final class DebuggerTester implements AutoCloseable {
     }
 
     /**
-     * Starts a new {@link PolyglotEngine#eval(Source) evaluation} on the background thread. Only
-     * one evaluation can be active at a time. Please ensure that {@link #expectDone()} completed
-     * successfully before starting a new evaluation. Throws an {@link IllegalStateException} if
-     * another evaluation is still executing or the tester is already closed.
+     * Starts a new {@link PolyglotEngine#eval(Source) evaluation} on the background thread. Only one
+     * evaluation can be active at a time. Please ensure that {@link #expectDone()} completed
+     * successfully before starting a new evaluation. Throws an {@link IllegalStateException} if another
+     * evaluation is still executing or the tester is already closed.
      *
      * @since 0.16
      * @deprecated Use {@link #startEval(org.graalvm.polyglot.Source)} instead.
@@ -201,8 +201,8 @@ public final class DebuggerTester implements AutoCloseable {
     /**
      * Starts a new {@link Context#eval(Source) evaluation} on the background thread. Only one
      * evaluation can be active at a time. Please ensure that {@link #expectDone()} completed
-     * successfully before starting a new evaluation. Throws an {@link IllegalStateException} if
-     * another evaluation is still executing or the tester is already closed.
+     * successfully before starting a new evaluation. Throws an {@link IllegalStateException} if another
+     * evaluation is still executing or the tester is already closed.
      *
      * @since 0.27
      */
@@ -214,11 +214,11 @@ public final class DebuggerTester implements AutoCloseable {
     }
 
     /**
-     * Expects an suspended event and returns it for potential assertions. If the execution
-     * completed or was killed instead then an assertion error is thrown. The returned suspended
-     * event is only valid until on of {@link #expectKilled()},
-     * {@link #expectSuspended(SuspendedCallback)} or {@link #expectDone()} is called again. Throws
-     * an {@link IllegalStateException} if the tester is already closed.
+     * Expects an suspended event and returns it for potential assertions. If the execution completed or
+     * was killed instead then an assertion error is thrown. The returned suspended event is only valid
+     * until on of {@link #expectKilled()}, {@link #expectSuspended(SuspendedCallback)} or
+     * {@link #expectDone()} is called again. Throws an {@link IllegalStateException} if the tester is
+     * already closed.
      *
      * @param callback handler to be called when the execution is suspended
      * @since 0.16
@@ -261,9 +261,9 @@ public final class DebuggerTester implements AutoCloseable {
 
     /**
      * Expects the current evaluation to be completed with an error and not be killed or to produce
-     * further suspended events. It returns a string representation of the result value to be
-     * asserted. If the evaluation caused any errors they are thrown as {@link AssertionError}.
-     * Throws an {@link IllegalStateException} if the tester is already closed.
+     * further suspended events. It returns a string representation of the result value to be asserted.
+     * If the evaluation caused any errors they are thrown as {@link AssertionError}. Throws an
+     * {@link IllegalStateException} if the tester is already closed.
      *
      * @since 0.16
      */
@@ -273,9 +273,9 @@ public final class DebuggerTester implements AutoCloseable {
 
     /**
      * Expects the current evaluation to be completed successfully and not be killed or to produce
-     * further suspended events. It returns a string representation of the result value to be
-     * asserted. If the evaluation caused any errors they are thrown as {@link AssertionError}.
-     * Throws an {@link IllegalStateException} if the tester is already closed.
+     * further suspended events. It returns a string representation of the result value to be asserted.
+     * If the evaluation caused any errors they are thrown as {@link AssertionError}. Throws an
+     * {@link IllegalStateException} if the tester is already closed.
      *
      * @since 0.16
      */
@@ -325,9 +325,9 @@ public final class DebuggerTester implements AutoCloseable {
     }
 
     /**
-     * Expects the current evaluation to be killed and not be completed or to produce further
-     * suspended events. Throws an {@link IllegalStateException} if the tester is already closed. If
-     * the evaluation caused any errors besides the kill exception then they are thrown as
+     * Expects the current evaluation to be killed and not be completed or to produce further suspended
+     * events. Throws an {@link IllegalStateException} if the tester is already closed. If the
+     * evaluation caused any errors besides the kill exception then they are thrown as
      * {@link AssertionError}.
      *
      * @since 0.16
@@ -362,8 +362,8 @@ public final class DebuggerTester implements AutoCloseable {
     }
 
     /**
-     * Closes the current debugger tester session and all its associated resources like the
-     * background thread. The debugger tester becomes unusable after closing.
+     * Closes the current debugger tester session and all its associated resources like the background
+     * thread. The debugger tester becomes unusable after closing.
      *
      * @since 0.16
      */

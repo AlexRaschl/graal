@@ -94,8 +94,8 @@ public class ObjectState {
     }
 
     /**
-     * Ensure that if an {@link JavaConstant#forIllegal() illegal value} is seen that the previous
-     * value is a double word value.
+     * Ensure that if an {@link JavaConstant#forIllegal() illegal value} is seen that the previous value
+     * is a double word value.
      */
     public static boolean checkIllegalValues(ValueNode[] values) {
         if (values != null) {
@@ -107,8 +107,8 @@ public class ObjectState {
     }
 
     /**
-     * Ensure that if an {@link JavaConstant#forIllegal() illegal value} is seen that the previous
-     * value is a double word value.
+     * Ensure that if an {@link JavaConstant#forIllegal() illegal value} is seen that the previous value
+     * is a double word value.
      */
     public static boolean checkIllegalValue(ValueNode[] values, int v) {
         if (v > 0 && values[v].isConstant() && values[v].asConstant().equals(JavaConstant.forIllegal())) {
@@ -125,8 +125,8 @@ public class ObjectState {
                 /*
                  * Clear out entries that are default values anyway.
                  *
-                 * TODO: this should be propagated into ObjectState.entries, but that will take some
-                 * more refactoring.
+                 * TODO: this should be propagated into ObjectState.entries, but that will take some more
+                 * refactoring.
                  */
                 ValueNode[] newEntries = entries.clone();
                 for (int i = 0; i < newEntries.length; i++) {

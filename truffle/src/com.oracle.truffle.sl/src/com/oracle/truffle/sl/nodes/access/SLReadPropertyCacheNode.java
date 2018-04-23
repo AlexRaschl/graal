@@ -88,8 +88,8 @@ public abstract class SLReadPropertyCacheNode extends SLPropertyCacheNode {
     }
 
     /**
-     * The generic case is used if the number of shapes accessed overflows the limit of the
-     * polymorphic inline cache.
+     * The generic case is used if the number of shapes accessed overflows the limit of the polymorphic
+     * inline cache.
      */
     @TruffleBoundary
     @Specialization(replaces = {"readCached"}, guards = "receiver.getShape().isValid()")

@@ -48,8 +48,8 @@ package com.oracle.truffle.api.instrumentation;
 public interface AllocationListener {
 
     /**
-     * Notifies about an intent to allocate or re-allocate a guest language value. This method is
-     * called prior to the actual allocation and is followed by a call to
+     * Notifies about an intent to allocate or re-allocate a guest language value. This method is called
+     * prior to the actual allocation and is followed by a call to
      * {@link #onReturnValue(com.oracle.truffle.api.instrumentation.AllocationEvent)} after the
      * successful allocation.
      *
@@ -60,11 +60,11 @@ public interface AllocationListener {
 
     /**
      * Notifies about an allocated guest language value. This method is called after a preceding
-     * {@link #onEnter(com.oracle.truffle.api.instrumentation.AllocationEvent)} call and right after
-     * the allocation is performed. When
+     * {@link #onEnter(com.oracle.truffle.api.instrumentation.AllocationEvent)} call and right after the
+     * allocation is performed. When
      * {@link #onEnter(com.oracle.truffle.api.instrumentation.AllocationEvent) onEnter} provided a
-     * non-<code>null</code> value in the event, it was re-allocated and the same value instance is
-     * in this event.
+     * non-<code>null</code> value in the event, it was re-allocated and the same value instance is in
+     * this event.
      *
      * @param event the event describing the finished allocation
      * @since 0.27

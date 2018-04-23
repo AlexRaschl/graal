@@ -91,9 +91,8 @@ public class CachingPEGraphDecoder extends PEGraphDecoder {
             PhaseContext context = new PhaseContext(providers);
             new CanonicalizerPhase().apply(graphToEncode, context);
             /*
-             * ConvertDeoptimizeToGuardPhase reduces the number of merges in the graph, so that
-             * fewer frame states will be created. This significantly reduces the number of nodes in
-             * the initial graph.
+             * ConvertDeoptimizeToGuardPhase reduces the number of merges in the graph, so that fewer frame
+             * states will be created. This significantly reduces the number of nodes in the initial graph.
              */
             new ConvertDeoptimizeToGuardPhase().apply(graphToEncode, context);
 

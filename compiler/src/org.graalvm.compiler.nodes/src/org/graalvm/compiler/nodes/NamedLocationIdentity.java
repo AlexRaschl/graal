@@ -75,8 +75,7 @@ public class NamedLocationIdentity extends LocationIdentity implements FormatWit
     }
 
     /**
-     * Creates a named unique location identity for read and write operations against mutable
-     * memory.
+     * Creates a named unique location identity for read and write operations against mutable memory.
      *
      * @param name the name of the new location identity
      */
@@ -85,9 +84,8 @@ public class NamedLocationIdentity extends LocationIdentity implements FormatWit
     }
 
     /**
-     * Creates a named unique location identity for read operations against immutable memory.
-     * Immutable memory will never have a visible write in the graph, which is more restrictive than
-     * Java final.
+     * Creates a named unique location identity for read operations against immutable memory. Immutable
+     * memory will never have a visible write in the graph, which is more restrictive than Java final.
      *
      * @param name the name of the new location identity
      */
@@ -116,9 +114,9 @@ public class NamedLocationIdentity extends LocationIdentity implements FormatWit
     }
 
     /**
-     * Returns the named location identity for an array of the given element kind. Array accesses of
-     * the same kind must have the same location identity unless an alias analysis guarantees that
-     * two distinct arrays are accessed.
+     * Returns the named location identity for an array of the given element kind. Array accesses of the
+     * same kind must have the same location identity unless an alias analysis guarantees that two
+     * distinct arrays are accessed.
      */
     public static LocationIdentity getArrayLocation(JavaKind elementKind) {
         return ARRAY_LOCATIONS.get(elementKind);

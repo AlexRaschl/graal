@@ -72,8 +72,8 @@ public final class VirtualFrameSetNode extends VirtualFrameAccessorNode implemen
         }
 
         /*
-         * Deoptimization is our only option here. We cannot go back to a UnsafeStoreNode because we
-         * do not have a FrameState to use for the memory store.
+         * Deoptimization is our only option here. We cannot go back to a UnsafeStoreNode because we do not
+         * have a FrameState to use for the memory store.
          */
         insertDeoptimization(tool);
     }

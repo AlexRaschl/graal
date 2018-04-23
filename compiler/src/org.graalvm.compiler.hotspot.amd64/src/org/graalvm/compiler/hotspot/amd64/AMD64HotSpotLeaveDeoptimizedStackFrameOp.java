@@ -56,8 +56,8 @@ final class AMD64HotSpotLeaveDeoptimizedStackFrameOp extends AMD64HotSpotEpilogu
         masm.addq(stackPointer, asRegister(frameSize));
 
         /*
-         * Restore the frame pointer before stack bang because if a stack overflow is thrown it
-         * needs to be pushed (and preserved).
+         * Restore the frame pointer before stack bang because if a stack overflow is thrown it needs to be
+         * pushed (and preserved).
          */
         masm.movq(rbp, asRegister(framePointer));
     }

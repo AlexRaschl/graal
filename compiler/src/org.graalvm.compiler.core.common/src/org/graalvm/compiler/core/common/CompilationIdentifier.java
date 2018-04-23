@@ -71,8 +71,7 @@ public interface CompilationIdentifier {
     String toString();
 
     /**
-     * Creates a String representation for this compilation identifier with a given
-     * {@link Verbosity}.
+     * Creates a String representation for this compilation identifier with a given {@link Verbosity}.
      */
     String toString(Verbosity verbosity);
 }

@@ -140,8 +140,8 @@ abstract class GraphProtocol<Graph, Node, NodeClass, Edges, Block, ResolvedJavaM
     protected abstract ResolvedJavaMethod findMethod(Object obj);
 
     /**
-     * Attempts to recognize the provided object as a node. Used to encode it with
-     * {@link #POOL_NODE} pool type.
+     * Attempts to recognize the provided object as a node. Used to encode it with {@link #POOL_NODE}
+     * pool type.
      *
      * @param obj any object
      * @return <code>null</code> if it is not a node object, non-null otherwise
@@ -265,8 +265,8 @@ abstract class GraphProtocol<Graph, Node, NodeClass, Edges, Block, ResolvedJavaM
     private void flush() throws IOException {
         buffer.flip();
         /*
-         * Try not to let interrupted threads abort the write. There's still a race here but an
-         * interrupt that's been pending for a long time shouldn't stop this writing.
+         * Try not to let interrupted threads abort the write. There's still a race here but an interrupt
+         * that's been pending for a long time shouldn't stop this writing.
          */
         boolean interrupted = Thread.interrupted();
         try {

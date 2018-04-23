@@ -106,8 +106,8 @@ public class ArrayNFITest extends NFITest {
                     actual = (Character) elem;
                 } else if (elem instanceof Boolean) {
                     /*
-                     * The conversion from native byte to Java boolean is undefined and may be
-                     * different on different VM versions.
+                     * The conversion from native byte to Java boolean is undefined and may be different on different VM
+                     * versions.
                      */
                     return;
                 }

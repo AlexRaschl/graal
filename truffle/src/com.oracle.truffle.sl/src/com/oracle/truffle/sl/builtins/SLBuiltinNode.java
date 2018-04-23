@@ -69,8 +69,8 @@ import com.oracle.truffle.sl.runtime.SLFunctionRegistry;
 public abstract class SLBuiltinNode extends SLExpressionNode {
 
     /**
-     * Accessor for the {@link SLContext}. The implementation of this method is generated
-     * automatically based on the {@link NodeField} annotation on the class.
+     * Accessor for the {@link SLContext}. The implementation of this method is generated automatically
+     * based on the {@link NodeField} annotation on the class.
      */
     public final SLContext getContext() {
         return getRootNode().getLanguage(SLLanguage.class).getContextReference().get();

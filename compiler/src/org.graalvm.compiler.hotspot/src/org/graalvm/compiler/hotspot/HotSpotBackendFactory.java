@@ -31,8 +31,8 @@ public interface HotSpotBackendFactory {
 
     /**
      * Gets the name of this backend factory. This should not include the {@link #getArchitecture()
-     * architecture}. The {@link CompilerConfigurationFactory} can select alternative backends based
-     * on this name.
+     * architecture}. The {@link CompilerConfigurationFactory} can select alternative backends based on
+     * this name.
      */
     String getName();
 

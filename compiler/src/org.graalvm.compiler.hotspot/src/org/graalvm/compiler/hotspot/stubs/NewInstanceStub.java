@@ -118,8 +118,8 @@ public class NewInstanceStub extends SnippetStub {
         Word end = readTlabEnd(thread);
         Word newTop = top.add(size);
         /*
-         * this check might lead to problems if the TLAB is within 16GB of the address space end
-         * (checked in c++ code)
+         * this check might lead to problems if the TLAB is within 16GB of the address space end (checked in
+         * c++ code)
          */
         if (probability(FAST_PATH_PROBABILITY, newTop.belowOrEqual(end))) {
             writeTlabTop(thread, newTop);
@@ -143,8 +143,7 @@ public class NewInstanceStub extends SnippetStub {
     @Snippet
     private static Object newInstance(KlassPointer hub, @ConstantParameter KlassPointer intArrayHub, @ConstantParameter Register threadRegister, @ConstantParameter OptionValues options) {
         /*
-         * The type is known to be an instance so Klass::_layout_helper is the instance size as a
-         * raw number
+         * The type is known to be an instance so Klass::_layout_helper is the instance size as a raw number
          */
         Word thread = registerAsWord(threadRegister);
         boolean inlineContiguousAllocationSupported = GraalHotSpotVMConfigNode.inlineContiguousAllocationSupported();
@@ -176,8 +175,8 @@ public class NewInstanceStub extends SnippetStub {
      * @param sizeInBytes the size of the allocation
      * @param log specifies if logging is enabled
      *
-     * @return the newly allocated, uninitialized chunk of memory, or {@link WordFactory#zero()} if
-     *         the operation was unsuccessful
+     * @return the newly allocated, uninitialized chunk of memory, or {@link WordFactory#zero()} if the
+     *         operation was unsuccessful
      */
     static Word refillAllocate(Word thread, KlassPointer intArrayHub, int sizeInBytes, boolean log) {
         // If G1 is enabled, the "eden" allocation space is not the same always

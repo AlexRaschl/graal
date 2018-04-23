@@ -302,8 +302,8 @@ public class InstanceOfTest extends TypeCheckTest {
      * This test exists to show the kind of pattern that is be optimizable by
      * {@code removeIntermediateMaterialization()} in {@link IfNode}.
      * <p>
-     * The test exists in this source file as the transformation was originally motivated by the
-     * need to remove use of special JumpNodes in the {@code InstanceOfSnippets}.
+     * The test exists in this source file as the transformation was originally motivated by the need to
+     * remove use of special JumpNodes in the {@code InstanceOfSnippets}.
      */
     @Test
     public void testRemoveIntermediateMaterialization() {

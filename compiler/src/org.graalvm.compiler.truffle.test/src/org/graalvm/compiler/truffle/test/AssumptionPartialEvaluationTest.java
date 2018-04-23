@@ -65,8 +65,7 @@ public class AssumptionPartialEvaluationTest extends PartialEvaluationTest {
     }
 
     /**
-     * This tests whether a valid Assumption does successfully cut of the branch that is not
-     * executed.
+     * This tests whether a valid Assumption does successfully cut of the branch that is not executed.
      */
     @Test
     public void assumptionBranchCutoff() {

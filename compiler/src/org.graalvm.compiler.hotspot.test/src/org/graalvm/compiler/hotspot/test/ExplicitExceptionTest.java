@@ -39,10 +39,10 @@ public class ExplicitExceptionTest extends GraalCompilerTest {
     private int expectedForeignCallCount;
 
     /**
-     * Determines if profiling info for {@code method} indicates an exception was thrown somewhere
-     * in the method. In the case of the {@code -Xcomp} VM option, interpreter execution can be
-     * skipped altogether and other execution engines (e.g., C1) may not record seen exceptions in a
-     * method profile.
+     * Determines if profiling info for {@code method} indicates an exception was thrown somewhere in
+     * the method. In the case of the {@code -Xcomp} VM option, interpreter execution can be skipped
+     * altogether and other execution engines (e.g., C1) may not record seen exceptions in a method
+     * profile.
      */
     private static boolean exceptionWasSeen(ResolvedJavaMethod method) {
         ProfilingInfo profilingInfo = method.getProfilingInfo();

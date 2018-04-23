@@ -64,8 +64,8 @@ public abstract class AbstractVerifier {
         if (unboxedValue != null) {
             if (expectedType == TypeMirror.class && unboxedValue instanceof String) {
                 /*
-                 * Happens if type is invalid when using the ECJ compiler. The ECJ does not match
-                 * AP-API specification here.
+                 * Happens if type is invalid when using the ECJ compiler. The ECJ does not match AP-API
+                 * specification here.
                  */
                 return null;
             }

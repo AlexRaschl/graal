@@ -58,8 +58,8 @@ public final class EncodedSymbolConstant extends DataPointerConstant {
     }
 
     /**
-     * Converts a string to a byte array with modified UTF-8 encoding. The first two bytes of the
-     * byte array store the length of the string in bytes.
+     * Converts a string to a byte array with modified UTF-8 encoding. The first two bytes of the byte
+     * array store the length of the string in bytes.
      *
      * @param s a java.lang.String in UTF-16
      */

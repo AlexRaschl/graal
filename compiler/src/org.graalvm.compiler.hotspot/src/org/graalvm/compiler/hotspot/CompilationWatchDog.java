@@ -65,30 +65,28 @@ class CompilationWatchDog extends Thread implements AutoCloseable {
 
     private enum WatchDogState {
         /**
-         * The watch dog thread sleeps currently, either no method is currently compiled, or no
-         * method is compiled long enough to be monitored.
+         * The watch dog thread sleeps currently, either no method is currently compiled, or no method is
+         * compiled long enough to be monitored.
          */
         SLEEPING,
         /**
-         * The watch dog thread identified a compilation that already takes long enough to be
-         * interesting. It will sleep and wake up periodically and check if the current compilation
-         * takes too long. If it takes too long it will start collecting stack traces from the
-         * compiler thread.
+         * The watch dog thread identified a compilation that already takes long enough to be interesting.
+         * It will sleep and wake up periodically and check if the current compilation takes too long. If it
+         * takes too long it will start collecting stack traces from the compiler thread.
          */
         WATCHING_WITHOUT_STACK_INSPECTION,
         /**
-         * The watch dog thread is fully monitoring the compiler thread. It takes stack traces
-         * periodically and sleeps again until the next period. If the number of stack traces
-         * reaches a certain upper bound and those stack traces are equal it will shut down the
-         * entire VM with an error.
+         * The watch dog thread is fully monitoring the compiler thread. It takes stack traces periodically
+         * and sleeps again until the next period. If the number of stack traces reaches a certain upper
+         * bound and those stack traces are equal it will shut down the entire VM with an error.
          */
         WATCHING_WITH_STACK_INSPECTION
     }
 
     /**
      * The number of milliseconds a watch dog thread sleeps between observing the state of the
-     * compilation thread it is associated with. Most compilations are expected to complete within
-     * this time period and thus not be actively monitored by the watch dog.
+     * compilation thread it is associated with. Most compilations are expected to complete within this
+     * time period and thus not be actively monitored by the watch dog.
      */
     private static final int SPIN_TIMEOUT_MS = 1000;
 
@@ -146,8 +144,8 @@ class CompilationWatchDog extends Thread implements AutoCloseable {
      * {@link CompilationWatchDog#compilerThread}.
      *
      * @param newStackTrace the current stack trace of the monitored compiler thread
-     * @return {@code true} if the stack trace is equal to the last stack trace (or if it is the
-     *         first one) and {@code false} if it is not equal to the last one.
+     * @return {@code true} if the stack trace is equal to the last stack trace (or if it is the first
+     *         one) and {@code false} if it is not equal to the last one.
      */
     private boolean recordStackTrace(StackTraceElement[] newStackTrace) {
         if (lastStackTrace == null) {
@@ -270,15 +268,15 @@ class CompilationWatchDog extends Thread implements AutoCloseable {
             }
         } catch (VirtualMachineError vmError) {
             /*
-             * We encounter a VM error. This includes for example OutOfMemoryExceptions. In such a
-             * case we silently swallow the error. If it happens again the application thread will
-             * most likely encounter the same problem. If not the watchdog thread will no longer
-             * monitor the compilation and thus the error cannot happen again.
+             * We encounter a VM error. This includes for example OutOfMemoryExceptions. In such a case we
+             * silently swallow the error. If it happens again the application thread will most likely encounter
+             * the same problem. If not the watchdog thread will no longer monitor the compilation and thus the
+             * error cannot happen again.
              */
         } catch (Throwable t) {
             /*
-             * A real exception happened on the compilation watchdog. This is unintended behavior
-             * and must not happen in any case.
+             * A real exception happened on the compilation watchdog. This is unintended behavior and must not
+             * happen in any case.
              */
             throw new InternalError(String.format("%s encountered an exception%n%s%n", this, fmt(t)), t);
         }
@@ -291,10 +289,9 @@ class CompilationWatchDog extends Thread implements AutoCloseable {
      *
      * @param method a method about to be compiled
      * @param id compilation request identifier
-     * @return {@code null} if the compilation watch dog is disabled otherwise this object. The
-     *         returned value should be used in a {@code try}-with-resources statement whose scope
-     *         is the whole compilation so that leaving the scope will cause {@link #close()} to be
-     *         called.
+     * @return {@code null} if the compilation watch dog is disabled otherwise this object. The returned
+     *         value should be used in a {@code try}-with-resources statement whose scope is the whole
+     *         compilation so that leaving the scope will cause {@link #close()} to be called.
      */
     static CompilationWatchDog watch(ResolvedJavaMethod method, int id, OptionValues options) {
         long startDelayMilliseconds = ms(Options.CompilationWatchDogStartDelay.getValue(options));

@@ -57,10 +57,9 @@ public class BytecodeInterpreterPartialEvaluationTest extends PartialEvaluationT
     public static boolean TRACE = false;
 
     /*
-     * A method with a non-exploded loop, which goes away after loop unrolling as long as the
-     * parameter is a compilation constant. The method is called from multiple places to inject
-     * additional loops into the test cases, i.e., to stress the partial evaluator and compiler
-     * optimizations.
+     * A method with a non-exploded loop, which goes away after loop unrolling as long as the parameter
+     * is a compilation constant. The method is called from multiple places to inject additional loops
+     * into the test cases, i.e., to stress the partial evaluator and compiler optimizations.
      */
     static int nonExplodedLoop(int x) {
         if (x >= 0 && x < 50) {

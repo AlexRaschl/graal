@@ -49,8 +49,8 @@ public final class TruffleOptions {
     public static final boolean TraceRewrites;
 
     /**
-     * Enables the generation of detailed rewrite reasons. Enabling this may introduce some overhead
-     * for rewriting nodes.
+     * Enables the generation of detailed rewrite reasons. Enabling this may introduce some overhead for
+     * rewriting nodes.
      * <p>
      * Can be set with {@code -Dtruffle.DetailedRewriteReasons=true}.
      * 
@@ -69,8 +69,8 @@ public final class TruffleOptions {
     public static final String TraceRewritesFilterClass;
 
     /**
-     * Filters rewrites which does not contain the {@link NodeCost} in its source {@link NodeInfo}.
-     * If no {@link NodeInfo} is defined the element is filtered if the filter value is set.
+     * Filters rewrites which does not contain the {@link NodeCost} in its source {@link NodeInfo}. If
+     * no {@link NodeInfo} is defined the element is filtered if the filter value is set.
      * <p>
      * Can be set with
      * {@code -Dtruffle.TraceRewritesFilterFromCost=NONE|MONOMORPHIC|POLYMORPHIC|MEGAMORPHIC}.
@@ -80,8 +80,8 @@ public final class TruffleOptions {
     public static final NodeCost TraceRewritesFilterFromCost;
 
     /**
-     * Filters rewrites which does not contain the {@link NodeCost} in its target {@link NodeInfo}.
-     * If no {@link NodeInfo} is defined the element is filtered if the filter value is set.
+     * Filters rewrites which does not contain the {@link NodeCost} in its target {@link NodeInfo}. If
+     * no {@link NodeInfo} is defined the element is filtered if the filter value is set.
      * <p>
      * Can be set with
      * {@code -Dtruffle.TraceRewritesFilterToKind=UNINITIALIZED|SPECIALIZED|POLYMORPHIC|GENERIC}.
@@ -119,9 +119,9 @@ public final class TruffleOptions {
         final Object[] objs = new Object[3];
 
         /*
-         * Ensure TruffleRuntime gets initialized before TruffleOptions are set. This allows a
-         * specific TruffleRuntime to effect the system properties that are used to determine the
-         * values for the TruffleOptions below.
+         * Ensure TruffleRuntime gets initialized before TruffleOptions are set. This allows a specific
+         * TruffleRuntime to effect the system properties that are used to determine the values for the
+         * TruffleOptions below.
          */
         Truffle.getRuntime();
 

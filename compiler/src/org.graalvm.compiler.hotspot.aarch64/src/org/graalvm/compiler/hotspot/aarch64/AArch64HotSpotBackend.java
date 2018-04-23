@@ -275,8 +275,8 @@ public class AArch64HotSpotBackend extends HotSpotHostBackend {
             }
             masm.cmp(64, inlineCacheKlass, klass);
             /*
-             * Conditional jumps have a much lower range than unconditional ones, which can be a
-             * problem because the miss handler could be out of range.
+             * Conditional jumps have a much lower range than unconditional ones, which can be a problem because
+             * the miss handler could be out of range.
              */
             masm.branchConditionally(AArch64Assembler.ConditionFlag.EQ, verifiedStub);
             AArch64Call.directJmp(crb, masm, getForeignCalls().lookupForeignCall(IC_MISS_HANDLER));
@@ -289,8 +289,8 @@ public class AArch64HotSpotBackend extends HotSpotHostBackend {
 
     private static void emitCodeBody(CompilationResultBuilder crb, LIR lir, AArch64MacroAssembler masm) {
         /*
-         * Insert a nop at the start of the prolog so we can patch in a branch if we need to
-         * invalidate the method later.
+         * Insert a nop at the start of the prolog so we can patch in a branch if we need to invalidate the
+         * method later.
          */
         crb.blockComment("[nop for method invalidation]");
         masm.nop();

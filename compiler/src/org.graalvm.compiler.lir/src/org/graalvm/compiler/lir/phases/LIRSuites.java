@@ -51,8 +51,8 @@ public class LIRSuites {
     }
 
     /**
-     * {@link PreAllocationOptimizationPhase}s are executed between {@link LIR} generation and
-     * register allocation.
+     * {@link PreAllocationOptimizationPhase}s are executed between {@link LIR} generation and register
+     * allocation.
      * <p>
      * {@link PreAllocationOptimizationPhase Implementers} can create new
      * {@link LIRGeneratorTool#newVariable variables}, {@link LIRGenerationResult#getFrameMap stack

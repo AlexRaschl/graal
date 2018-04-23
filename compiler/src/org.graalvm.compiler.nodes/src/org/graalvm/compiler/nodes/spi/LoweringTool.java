@@ -67,8 +67,8 @@ public interface LoweringTool {
     }
 
     /**
-     * The lowering stages used in a standard Graal phase plan. Lowering is called 3 times, during
-     * every tier of compilation.
+     * The lowering stages used in a standard Graal phase plan. Lowering is called 3 times, during every
+     * tier of compilation.
      */
     enum StandardLoweringStage implements LoweringStage {
         HIGH_TIER,

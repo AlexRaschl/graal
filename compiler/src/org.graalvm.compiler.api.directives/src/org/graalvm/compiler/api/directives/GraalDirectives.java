@@ -43,15 +43,15 @@ public final class GraalDirectives {
     }
 
     /**
-     * Directive for the compiler to fall back to the bytecode interpreter at this point, invalidate
-     * the compiled code and reprofile the method.
+     * Directive for the compiler to fall back to the bytecode interpreter at this point, invalidate the
+     * compiled code and reprofile the method.
      */
     public static void deoptimizeAndInvalidate() {
     }
 
     /**
-     * Directive for the compiler to fall back to the bytecode interpreter at this point, invalidate
-     * the compiled code, record a speculation and reprofile the method.
+     * Directive for the compiler to fall back to the bytecode interpreter at this point, invalidate the
+     * compiled code, record a speculation and reprofile the method.
      */
     public static void deoptimizeAndInvalidateWithSpeculation() {
     }
@@ -81,9 +81,8 @@ public final class GraalDirectives {
      * }
      * </code>
      *
-     * There are predefined constants for commonly used probabilities (see
-     * {@link #LIKELY_PROBABILITY} , {@link #UNLIKELY_PROBABILITY}, {@link #SLOWPATH_PROBABILITY},
-     * {@link #FASTPATH_PROBABILITY} ).
+     * There are predefined constants for commonly used probabilities (see {@link #LIKELY_PROBABILITY} ,
+     * {@link #UNLIKELY_PROBABILITY}, {@link #SLOWPATH_PROBABILITY}, {@link #FASTPATH_PROBABILITY} ).
      *
      * @param probability the probability value between 0.0 and 1.0 that should be injected
      */
@@ -95,11 +94,11 @@ public final class GraalDirectives {
     /**
      * Injects an average iteration count of a loop into the probability information of a loop exit
      * condition. The iteration count specifies how often the condition is checked, i.e. in for and
-     * while loops it is one more than the body iteration count, and in do-while loops it is equal
-     * to the body iteration count. The iteration count must be >= 1.0.
+     * while loops it is one more than the body iteration count, and in do-while loops it is equal to
+     * the body iteration count. The iteration count must be >= 1.0.
      *
-     * Example usage (it specifies that the expected iteration count of the loop condition is 500,
-     * so the iteration count of the loop body is 499):
+     * Example usage (it specifies that the expected iteration count of the loop condition is 500, so
+     * the iteration count of the loop body is 499):
      *
      * <code>
      * for (int i = 0; injectIterationCount(500, i < array.length); i++) {
@@ -114,72 +113,72 @@ public final class GraalDirectives {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(boolean value) {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(byte value) {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(short value) {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(char value) {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(int value) {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(long value) {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(float value) {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(double value) {
     }
 
     /**
-     * Consume a value, making sure the compiler doesn't optimize away the computation of this
-     * value, even if it is otherwise unused.
+     * Consume a value, making sure the compiler doesn't optimize away the computation of this value,
+     * even if it is otherwise unused.
      */
     @SuppressWarnings("unused")
     public static void blackhole(Object value) {
@@ -258,8 +257,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static boolean opaque(boolean value) {
         return value;
@@ -269,8 +268,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static byte opaque(byte value) {
         return value;
@@ -280,8 +279,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static short opaque(short value) {
         return value;
@@ -291,8 +290,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static char opaque(char value) {
         return value;
@@ -302,8 +301,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static int opaque(int value) {
         return value;
@@ -313,8 +312,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static long opaque(long value) {
         return value;
@@ -324,8 +323,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static float opaque(float value) {
         return value;
@@ -335,8 +334,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static double opaque(double value) {
         return value;
@@ -346,8 +345,8 @@ public final class GraalDirectives {
      * Do nothing, but also make sure the compiler doesn't do any optimizations across this call.
      *
      * For example, the compiler will constant fold the expression 5 * 3, but the expression 5 *
-     * opaque(3) will result in a real multiplication, because the compiler will not see that
-     * opaque(3) is a constant.
+     * opaque(3) will result in a real multiplication, because the compiler will not see that opaque(3)
+     * is a constant.
      */
     public static <T> T opaque(T value) {
         return value;
@@ -361,8 +360,8 @@ public final class GraalDirectives {
     }
 
     /**
-     * Ensures that the given object will be virtual (escape analyzed) at all points that are
-     * dominated by the current position.
+     * Ensures that the given object will be virtual (escape analyzed) at all points that are dominated
+     * by the current position.
      */
     public static void ensureVirtualized(@SuppressWarnings("unused") Object object) {
     }

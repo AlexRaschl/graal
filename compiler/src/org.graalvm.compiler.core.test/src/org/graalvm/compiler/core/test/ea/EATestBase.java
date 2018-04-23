@@ -127,14 +127,12 @@ public class EATestBase extends GraalCompilerTest {
     protected List<ReturnNode> returnNodes;
 
     /**
-     * Runs Escape Analysis on the given snippet and makes sure that no allocations remain in the
-     * graph.
+     * Runs Escape Analysis on the given snippet and makes sure that no allocations remain in the graph.
      *
      * @param snippet the name of the method whose graph should be processed
-     * @param expectedConstantResult if this is non-null, the resulting graph needs to have the
-     *            given constant return value
-     * @param iterativeEscapeAnalysis true if escape analysis should be run for more than one
-     *            iteration
+     * @param expectedConstantResult if this is non-null, the resulting graph needs to have the given
+     *            constant return value
+     * @param iterativeEscapeAnalysis true if escape analysis should be run for more than one iteration
      */
     protected void testEscapeAnalysis(String snippet, JavaConstant expectedConstantResult, boolean iterativeEscapeAnalysis) {
         prepareGraph(snippet, iterativeEscapeAnalysis);

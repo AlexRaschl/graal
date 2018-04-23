@@ -69,8 +69,8 @@ public final class SSALinearScan extends LinearScan {
     @SuppressWarnings("try")
     protected void beforeSpillMoveElimination() {
         /*
-         * PHI Ins are needed for the RegisterVerifier, otherwise PHIs where the Out and In value
-         * matches (ie. there is no resolution move) are falsely detected as errors.
+         * PHI Ins are needed for the RegisterVerifier, otherwise PHIs where the Out and In value matches
+         * (ie. there is no resolution move) are falsely detected as errors.
          */
         try (DebugContext.Scope s1 = debug.scope("Remove Phi In")) {
             for (AbstractBlockBase<?> toBlock : sortedBlocks()) {

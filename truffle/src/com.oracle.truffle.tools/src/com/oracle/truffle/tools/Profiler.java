@@ -79,8 +79,8 @@ import com.oracle.truffle.tools.Profiler.Counter.TimeKind;
 public final class Profiler {
 
     /**
-     * Finds profiler associated with given engine. There is at most one profiler associated with
-     * any {@link PolyglotEngine}. One can access it by calling this static method.
+     * Finds profiler associated with given engine. There is at most one profiler associated with any
+     * {@link PolyglotEngine}. One can access it by calling this static method.
      *
      * @param engine the engine to find profiler for
      * @return an instance of associated profiler, never <code>null</code>
@@ -172,12 +172,12 @@ public final class Profiler {
     /**
      * Controls whether profile data being collected includes timing, {@code false} by default.
      * <p>
-     * If data is not currently being {@linkplain #isCollecting() collected}, this setting remains
-     * and takes effect when collection resumes.
+     * If data is not currently being {@linkplain #isCollecting() collected}, this setting remains and
+     * takes effect when collection resumes.
      * <p>
-     * While timing data is not being collected, any previously collected timing data remains.
-     * Unless explicitly {@linkplain #clearData() cleared}, previously collected timing data will be
-     * included in data collected when collection resumes.
+     * While timing data is not being collected, any previously collected timing data remains. Unless
+     * explicitly {@linkplain #clearData() cleared}, previously collected timing data will be included
+     * in data collected when collection resumes.
      *
      * @throws IllegalStateException if disposed
      * @since 0.15
@@ -193,8 +193,7 @@ public final class Profiler {
     }
 
     /**
-     * Does data being {@linkplain #isCollecting() collected} include timing}? Default is
-     * {@code false}.
+     * Does data being {@linkplain #isCollecting() collected} include timing}? Default is {@code false}.
      *
      * @throws IllegalStateException if disposed
      * @since 0.15
@@ -320,8 +319,8 @@ public final class Profiler {
     }
 
     /**
-     * Prints a simple, default textual summary of currently collected data, format subject to
-     * change. Use {@linkplain #getCounters() counters} explicitly for reliable access.
+     * Prints a simple, default textual summary of currently collected data, format subject to change.
+     * Use {@linkplain #getCounters() counters} explicitly for reliable access.
      *
      * @throws IllegalStateException if disposed
      * @since 0.15
@@ -557,8 +556,8 @@ public final class Profiler {
         private long compiledChildTime;
 
         /*
-         * This is a rather hacky flag to find out if the parent was already compiled and so the
-         * child time is accounted as interpretedChildTime or compiledChildTime (CHumer)
+         * This is a rather hacky flag to find out if the parent was already compiled and so the child time
+         * is accounted as interpretedChildTime or compiledChildTime (CHumer)
          */
         private boolean compiled;
 
@@ -615,8 +614,8 @@ public final class Profiler {
         }
 
         /**
-         * Total time in nanoseconds taken executing the program element since the last time data
-         * was {@linkplain #clear() cleared}.
+         * Total time in nanoseconds taken executing the program element since the last time data was
+         * {@linkplain #clear() cleared}.
          *
          * @param kind specifies execution mode for results: slow-path, fast-path, or combined.
          * @since 0.15

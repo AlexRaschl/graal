@@ -45,9 +45,9 @@ public class InliningPhase extends AbstractInliningPhase {
         public static final OptionKey<Boolean> AlwaysInlineIntrinsics = new OptionKey<>(false);
 
         /**
-         * This is a defensive measure against known pathologies of the inliner where the breadth of
-         * the inlining call tree exploration can be wide enough to prevent inlining from completing
-         * in reasonable time.
+         * This is a defensive measure against known pathologies of the inliner where the breadth of the
+         * inlining call tree exploration can be wide enough to prevent inlining from completing in
+         * reasonable time.
          */
         @Option(help = "Per-compilation method inlining exploration limit before giving up (use 0 to disable)", type = OptionType.Debug)//
         public static final OptionKey<Integer> MethodInlineBailoutLimit = new OptionKey<>(5000);

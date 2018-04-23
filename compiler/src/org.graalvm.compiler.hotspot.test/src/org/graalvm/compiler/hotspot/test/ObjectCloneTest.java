@@ -59,8 +59,8 @@ public class ObjectCloneTest extends GraalCompilerTest {
     }
 
     /*
-     * This test checks that the ObjectCloneNode doesn't accidentally inject non-nullness into the
-     * graph which is later removed.
+     * This test checks that the ObjectCloneNode doesn't accidentally inject non-nullness into the graph
+     * which is later removed.
      */
     public static Object notCloneable(ObjectCloneable cloneable) throws CloneNotSupportedException {
         ObjectCloneable clone = (ObjectCloneable) cloneable.clone();

@@ -47,8 +47,8 @@ public abstract class SLGraalRuntimeBuiltin extends SLBuiltinNode {
     }
 
     /**
-     * Finds all {@link DirectCallNode} instances calling a certain original {@link CallTarget} in
-     * the caller function.
+     * Finds all {@link DirectCallNode} instances calling a certain original {@link CallTarget} in the
+     * caller function.
      */
     @TruffleBoundary
     protected static final Set<DirectCallNode> findCallsTo(OptimizedCallTarget originalCallTarget) {

@@ -335,8 +335,8 @@ public abstract class Shape {
     }
 
     /**
-     * Make a shared variant of this shape, to allow safe usage of this object between threads.
-     * Shared shapes will not reuse storage locations for other fields. In combination with careful
+     * Make a shared variant of this shape, to allow safe usage of this object between threads. Shared
+     * shapes will not reuse storage locations for other fields. In combination with careful
      * synchronization on writes, this can prevent reading out-of-thin-air values.
      *
      * @return a cached and shared variant of this shape
@@ -408,24 +408,24 @@ public abstract class Shape {
         }
 
         /**
-         * Creates a new location from a constant value. The value is stored in the shape rather
-         * than in the object.
+         * Creates a new location from a constant value. The value is stored in the shape rather than in the
+         * object.
          *
          * @since 0.8 or earlier
          */
         public abstract Location constantLocation(Object value);
 
         /**
-         * Creates a new declared location with a default value. A declared location only assumes a
-         * type after the first set (initialization).
+         * Creates a new declared location with a default value. A declared location only assumes a type
+         * after the first set (initialization).
          *
          * @since 0.8 or earlier
          */
         public abstract Location declaredLocation(Object value);
 
         /**
-         * Reserves space for the given location, so that it will not be available to subsequently
-         * allocated locations.
+         * Reserves space for the given location, so that it will not be available to subsequently allocated
+         * locations.
          *
          * @since 0.8 or earlier
          */

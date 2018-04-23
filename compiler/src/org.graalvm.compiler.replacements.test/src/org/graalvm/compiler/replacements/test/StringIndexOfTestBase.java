@@ -92,8 +92,8 @@ public abstract class StringIndexOfTestBase extends GraalCompilerTest {
     @Test
     public void testStringBuilderIndexOfConstant() {
         /*
-         * Put a copy of the target string in the space after the current string to detect cases
-         * where we search too far.
+         * Put a copy of the target string in the space after the current string to detect cases where we
+         * search too far.
          */
         StringBuilder sb = new StringBuilder(this.sourceString);
         sb.append(constantString);
@@ -104,8 +104,8 @@ public abstract class StringIndexOfTestBase extends GraalCompilerTest {
     @Test
     public void testStringBuilderIndexOfConstantOffset() {
         /*
-         * Put a copy of the target string in the space after the current string to detect cases
-         * where we search too far.
+         * Put a copy of the target string in the space after the current string to detect cases where we
+         * search too far.
          */
         StringBuilder sb = new StringBuilder(this.sourceString);
         sb.append(constantString);

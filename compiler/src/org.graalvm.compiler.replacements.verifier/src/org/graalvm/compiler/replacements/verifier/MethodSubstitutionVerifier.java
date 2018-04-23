@@ -142,8 +142,7 @@ public final class MethodSubstitutionVerifier extends AbstractVerifier {
                 }
             } catch (Exception e) {
                 /*
-                 * That's not good practice and should be changed after APHotSpotSignature has
-                 * received a cleanup.
+                 * That's not good practice and should be changed after APHotSpotSignature has received a cleanup.
                  */
                 env.getMessager().printMessage(Kind.ERROR, String.format("Parsing the signature failed: %s", e.getMessage() != null ? e.getMessage() : e.toString()), method, annotation,
                                 signatureValue);
@@ -227,8 +226,7 @@ public final class MethodSubstitutionVerifier extends AbstractVerifier {
     }
 
     /**
-     * Tests whether one type is a subtype of another. Any type is considered to be a subtype of
-     * itself.
+     * Tests whether one type is a subtype of another. Any type is considered to be a subtype of itself.
      *
      * @param t1 the first type
      * @param t2 the second type

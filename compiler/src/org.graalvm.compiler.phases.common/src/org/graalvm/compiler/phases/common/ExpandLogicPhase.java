@@ -102,13 +102,13 @@ public class ExpandLogicPhase extends Phase {
 
     private static void processIf(LogicNode x, boolean xNegated, LogicNode y, boolean yNegated, IfNode ifNode, double shortCircuitProbability) {
         /*
-         * this method splits an IfNode, which has a ShortCircuitOrNode as its condition, into two
-         * separate IfNodes: if(X) and if(Y)
+         * this method splits an IfNode, which has a ShortCircuitOrNode as its condition, into two separate
+         * IfNodes: if(X) and if(Y)
          *
-         * for computing the probabilities P(X) and P(Y), we use two different approaches. The first
-         * one assumes that the shortCircuitProbability and the probability on the IfNode were
-         * created with each other in mind. If this assumption does not hold, we fall back to
-         * another mechanism for computing the probabilities.
+         * for computing the probabilities P(X) and P(Y), we use two different approaches. The first one
+         * assumes that the shortCircuitProbability and the probability on the IfNode were created with each
+         * other in mind. If this assumption does not hold, we fall back to another mechanism for computing
+         * the probabilities.
          */
         AbstractBeginNode trueTarget = ifNode.trueSuccessor();
         AbstractBeginNode falseTarget = ifNode.falseSuccessor();
@@ -126,9 +126,9 @@ public class ExpandLogicPhase extends Phase {
              * the assumption above did not hold, so we either used an artificial probability as
              * shortCircuitProbability or the ShortCircuitOrNode was moved to some other IfNode.
              *
-             * so, we distribute the if's trueSuccessorProbability between the newly generated if
-             * nodes according to the shortCircuitProbability. the following invariant is always
-             * true in this case: P(originalIf.trueSuccessor) == P(X) + ((1 - P(X)) * P(Y))
+             * so, we distribute the if's trueSuccessorProbability between the newly generated if nodes
+             * according to the shortCircuitProbability. the following invariant is always true in this case:
+             * P(originalIf.trueSuccessor) == P(X) + ((1 - P(X)) * P(Y))
              */
             firstIfTrueProbability = ifNode.getTrueSuccessorProbability() * shortCircuitProbability;
             secondIfTrueProbability = sanitizeProbability(1 - (ifNode.probability(falseTarget) / (1 - firstIfTrueProbability)));

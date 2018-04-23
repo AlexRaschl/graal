@@ -144,12 +144,11 @@ public abstract class AArch64Assembler extends Assembler {
         /**
          * Tests whether an immediate can be encoded for logical instructions.
          *
-         * @param is64bit if true immediate is considered a 64-bit pattern. If false we may use a
-         *            64-bit instruction to load the 32-bit pattern into a register.
-         * @return enum specifying whether immediate can be used for 32- and 64-bit logical
-         *         instructions ({@code #Representable.YES}), for 64-bit instructions only (
-         *         {@link Representable#SIXTY_FOUR_BIT_ONLY}) or not at all (
-         *         {@link Representable#NO}).
+         * @param is64bit if true immediate is considered a 64-bit pattern. If false we may use a 64-bit
+         *            instruction to load the 32-bit pattern into a register.
+         * @return enum specifying whether immediate can be used for 32- and 64-bit logical instructions
+         *         ({@code #Representable.YES}), for 64-bit instructions only (
+         *         {@link Representable#SIXTY_FOUR_BIT_ONLY}) or not at all ( {@link Representable#NO}).
          */
         public static Representable isRepresentable(boolean is64bit, long immediate) {
             int pos = getLogicalImmTablePos(is64bit, immediate);
@@ -181,8 +180,8 @@ public abstract class AArch64Assembler extends Assembler {
 
         /**
          * @param is64bit if true also allow 64-bit only encodings to be returned.
-         * @return If positive the return value is the position into the IMMEDIATE_TABLE for the
-         *         given immediate, if negative the immediate cannot be encoded.
+         * @return If positive the return value is the position into the IMMEDIATE_TABLE for the given
+         *         immediate, if negative the immediate cannot be encoded.
          */
         private static int getLogicalImmTablePos(boolean is64bit, long value) {
             Immediate imm;
@@ -208,14 +207,14 @@ public abstract class AArch64Assembler extends Assembler {
         }
 
         /**
-         * To quote 5.4.2: [..] an immediate is a 32 or 64 bit pattern viewed as a vector of
-         * identical elements of size e = 2, 4, 8, 16, 32 or (in the case of bimm64) 64 bits. Each
-         * element contains the same sub-pattern: a single run of 1 to e-1 non-zero bits, rotated by
-         * 0 to e-1 bits. It is encoded in the following: 10-16: rotation amount (6bit) starting
-         * from 1s in the LSB (i.e. 0111->1011->1101->1110) 16-22: This stores a combination of the
-         * number of set bits and the pattern size. The pattern size is encoded as follows (x is
-         * used to store the number of 1 bits - 1) e pattern 2 1111xx 4 1110xx 8 110xxx 16 10xxxx 32
-         * 0xxxxx 64 xxxxxx 22: if set we have an instruction with 64bit pattern?
+         * To quote 5.4.2: [..] an immediate is a 32 or 64 bit pattern viewed as a vector of identical
+         * elements of size e = 2, 4, 8, 16, 32 or (in the case of bimm64) 64 bits. Each element contains
+         * the same sub-pattern: a single run of 1 to e-1 non-zero bits, rotated by 0 to e-1 bits. It is
+         * encoded in the following: 10-16: rotation amount (6bit) starting from 1s in the LSB (i.e.
+         * 0111->1011->1101->1110) 16-22: This stores a combination of the number of set bits and the
+         * pattern size. The pattern size is encoded as follows (x is used to store the number of 1 bits -
+         * 1) e pattern 2 1111xx 4 1110xx 8 110xxx 16 10xxxx 32 0xxxxx 64 xxxxxx 22: if set we have an
+         * instruction with 64bit pattern?
          */
         private static final class Immediate implements Comparable<Immediate> {
             public final long imm;
@@ -357,8 +356,8 @@ public abstract class AArch64Assembler extends Assembler {
 
     /**
      * Enumeration of all different instruction kinds: General32/64 are the general instructions
-     * (integer, branch, etc.), for 32-, respectively 64-bit operands. FP32/64 is the encoding for
-     * the 32/64bit float operations
+     * (integer, branch, etc.), for 32-, respectively 64-bit operands. FP32/64 is the encoding for the
+     * 32/64bit float operations
      */
     protected enum InstructionType {
         General32(0b00 << 30, 32, true),
@@ -1158,9 +1157,9 @@ public abstract class AArch64Assembler extends Assembler {
     }
 
     /**
-     * Load Pair of Registers calculates an address from a base register value and an immediate
-     * offset, and stores two 32-bit words or two 64-bit doublewords to the calculated address, from
-     * two registers.
+     * Load Pair of Registers calculates an address from a base register value and an immediate offset,
+     * and stores two 32-bit words or two 64-bit doublewords to the calculated address, from two
+     * registers.
      */
     public void ldp(int size, Register rt, Register rt2, AArch64Address address) {
         assert size == 32 || size == 64;
@@ -1168,9 +1167,9 @@ public abstract class AArch64Assembler extends Assembler {
     }
 
     /**
-     * Store Pair of Registers calculates an address from a base register value and an immediate
-     * offset, and stores two 32-bit words or two 64-bit doublewords to the calculated address, from
-     * two registers.
+     * Store Pair of Registers calculates an address from a base register value and an immediate offset,
+     * and stores two 32-bit words or two 64-bit doublewords to the calculated address, from two
+     * registers.
      */
     public void stp(int size, Register rt, Register rt2, AArch64Address address) {
         assert size == 32 || size == 64;
@@ -1212,12 +1211,12 @@ public abstract class AArch64Assembler extends Assembler {
     }
 
     /**
-     * Store address exclusive. Natural alignment of address is required. rs and rt may not point to
-     * the same register.
+     * Store address exclusive. Natural alignment of address is required. rs and rt may not point to the
+     * same register.
      *
      * @param size size of bits written to memory. Must be 8, 16, 32 or 64.
-     * @param rs general purpose register. Set to exclusive access status. 0 means success,
-     *            everything else failure. May not be null, or stackpointer.
+     * @param rs general purpose register. Set to exclusive access status. 0 means success, everything
+     *            else failure. May not be null, or stackpointer.
      * @param rt general purpose register. May not be null or stackpointer.
      * @param rn general purpose register.
      */
@@ -1272,12 +1271,12 @@ public abstract class AArch64Assembler extends Assembler {
     }
 
     /**
-     * Store-release exclusive. Natural alignment of address is required. rs and rt may not point to
-     * the same register.
+     * Store-release exclusive. Natural alignment of address is required. rs and rt may not point to the
+     * same register.
      *
      * @param size size of bits written to memory. Must be 8, 16, 32 or 64.
-     * @param rs general purpose register. Set to exclusive access status. 0 means success,
-     *            everything else failure. May not be null, or stackpointer.
+     * @param rs general purpose register. Set to exclusive access status. 0 means success, everything
+     *            else failure. May not be null, or stackpointer.
      * @param rt general purpose register. May not be null or stackpointer.
      * @param rn general purpose register.
      */
@@ -1297,10 +1296,10 @@ public abstract class AArch64Assembler extends Assembler {
     /**
      * Stores data from rt into address and sets rs to the returned exclusive access status.
      *
-     * @param rs general purpose register into which the exclusive access status is written. May not
-     *            be null.
-     * @param rt general purpose register containing data to be written to memory at address. May
-     *            not be null
+     * @param rs general purpose register into which the exclusive access status is written. May not be
+     *            null.
+     * @param rt general purpose register containing data to be written to memory at address. May not be
+     *            null
      * @param rn general purpose register containing the address specifying where rt is written to.
      * @param log2TransferSize log2Ceil of memory transfer size.
      */
@@ -1314,8 +1313,8 @@ public abstract class AArch64Assembler extends Assembler {
     /* PC-relative Address Calculation (5.4.4) */
 
     /**
-     * Address of page: sign extends 21-bit offset, shifts if left by 12 and adds it to the value of
-     * the PC with its bottom 12-bits cleared, writing the result to dst.
+     * Address of page: sign extends 21-bit offset, shifts if left by 12 and adds it to the value of the
+     * PC with its bottom 12-bits cleared, writing the result to dst.
      *
      * @param dst general purpose register. May not be null, zero-register or stackpointer.
      * @param imm Signed 33-bit offset with lower 12bits clear.
@@ -1358,8 +1357,8 @@ public abstract class AArch64Assembler extends Assembler {
      * @param size register size. Has to be 32 or 64.
      * @param dst general purpose register. May not be null or zero-register.
      * @param src general purpose register. May not be null or zero-register.
-     * @param aimm arithmetic immediate. Either unsigned 12-bit value or unsigned 24-bit value with
-     *            the lower 12-bit cleared.
+     * @param aimm arithmetic immediate. Either unsigned 12-bit value or unsigned 24-bit value with the
+     *            lower 12-bit cleared.
      */
     protected void add(int size, Register dst, Register src, int aimm) {
         assert !dst.equals(zr);
@@ -1373,8 +1372,8 @@ public abstract class AArch64Assembler extends Assembler {
      * @param size register size. Has to be 32 or 64.
      * @param dst general purpose register. May not be null or stackpointer.
      * @param src general purpose register. May not be null or zero-register.
-     * @param aimm arithmetic immediate. Either unsigned 12-bit value or unsigned 24-bit value with
-     *            the lower 12-bit cleared.
+     * @param aimm arithmetic immediate. Either unsigned 12-bit value or unsigned 24-bit value with the
+     *            lower 12-bit cleared.
      */
     protected void adds(int size, Register dst, Register src, int aimm) {
         assert !dst.equals(sp);
@@ -1388,8 +1387,8 @@ public abstract class AArch64Assembler extends Assembler {
      * @param size register size. Has to be 32 or 64.
      * @param dst general purpose register. May not be null or zero-register.
      * @param src general purpose register. May not be null or zero-register.
-     * @param aimm arithmetic immediate. Either unsigned 12-bit value or unsigned 24-bit value with
-     *            the lower 12-bit cleared.
+     * @param aimm arithmetic immediate. Either unsigned 12-bit value or unsigned 24-bit value with the
+     *            lower 12-bit cleared.
      */
     protected void sub(int size, Register dst, Register src, int aimm) {
         assert !dst.equals(zr);
@@ -1403,8 +1402,8 @@ public abstract class AArch64Assembler extends Assembler {
      * @param size register size. Has to be 32 or 64.
      * @param dst general purpose register. May not be null or stackpointer.
      * @param src general purpose register. May not be null or zero-register.
-     * @param aimm arithmetic immediate. Either unsigned 12-bit value or unsigned 24-bit value with
-     *            the lower 12-bit cleared.
+     * @param aimm arithmetic immediate. Either unsigned 12-bit value or unsigned 24-bit value with the
+     *            lower 12-bit cleared.
      */
     protected void subs(int size, Register dst, Register src, int aimm) {
         assert !dst.equals(sp);
@@ -1419,8 +1418,8 @@ public abstract class AArch64Assembler extends Assembler {
     /**
      * Encodes arithmetic immediate.
      *
-     * @param imm Immediate has to be either an unsigned 12-bit value or an unsigned 24-bit value
-     *            with the lower 12 bits zero.
+     * @param imm Immediate has to be either an unsigned 12-bit value or an unsigned 24-bit value with
+     *            the lower 12 bits zero.
      * @return Representation of immediate for use with arithmetic instructions.
      */
     private static int encodeAimm(int imm) {
@@ -1437,8 +1436,8 @@ public abstract class AArch64Assembler extends Assembler {
     /**
      * Checks whether immediate can be encoded as an arithmetic immediate.
      *
-     * @param imm Immediate has to be either an unsigned 12bit value or un unsigned 24bit value with
-     *            the lower 12 bits 0.
+     * @param imm Immediate has to be either an unsigned 12bit value or un unsigned 24bit value with the
+     *            lower 12 bits 0.
      * @return true if valid arithmetic immediate, false otherwise.
      */
     protected static boolean isAimm(int imm) {
@@ -1524,8 +1523,8 @@ public abstract class AArch64Assembler extends Assembler {
      * @param size register size. Has to be 32 or 64.
      * @param dst general purpose register. May not be null, stackpointer or zero-register.
      * @param uimm16 16-bit unsigned immediate
-     * @param shiftAmt amount by which uimm16 is left shifted. Can be any multiple of 16 smaller
-     *            than size.
+     * @param shiftAmt amount by which uimm16 is left shifted. Can be any multiple of 16 smaller than
+     *            size.
      */
     protected void movz(int size, Register dst, int uimm16, int shiftAmt) {
         moveWideImmInstruction(MOVZ, dst, uimm16, shiftAmt, generalFromSize(size));
@@ -1537,8 +1536,8 @@ public abstract class AArch64Assembler extends Assembler {
      * @param size register size. Has to be 32 or 64.
      * @param dst general purpose register. May not be null, stackpointer or zero-register.
      * @param uimm16 16-bit unsigned immediate
-     * @param shiftAmt amount by which uimm16 is left shifted. Can be any multiple of 16 smaller
-     *            than size.
+     * @param shiftAmt amount by which uimm16 is left shifted. Can be any multiple of 16 smaller than
+     *            size.
      */
     protected void movn(int size, Register dst, int uimm16, int shiftAmt) {
         moveWideImmInstruction(MOVN, dst, uimm16, shiftAmt, generalFromSize(size));
@@ -1550,8 +1549,7 @@ public abstract class AArch64Assembler extends Assembler {
      * @param size register size. Has to be 32 or 64.
      * @param dst general purpose register. May not be null, stackpointer or zero-register.
      * @param uimm16 16-bit unsigned immediate
-     * @param pos position into which uimm16 is inserted. Can be any multiple of 16 smaller than
-     *            size.
+     * @param pos position into which uimm16 is inserted. Can be any multiple of 16 smaller than size.
      */
     protected void movk(int size, Register dst, int uimm16, int pos) {
         moveWideImmInstruction(MOVK, dst, uimm16, pos, generalFromSize(size));
@@ -1946,9 +1944,9 @@ public abstract class AArch64Assembler extends Assembler {
     /* Bit Operations (5.5.5) */
 
     /**
-     * Counts leading sign bits. Sets Wd to the number of consecutive bits following the topmost bit
-     * in dst, that are the same as the topmost bit. The count does not include the topmost bit
-     * itself , so the result will be in the range 0 to size-1 inclusive.
+     * Counts leading sign bits. Sets Wd to the number of consecutive bits following the topmost bit in
+     * dst, that are the same as the topmost bit. The count does not include the topmost bit itself , so
+     * the result will be in the range 0 to size-1 inclusive.
      *
      * @param size register size. Has to be 32 or 64.
      * @param dst general purpose register. May not be null, zero-register or the stackpointer.
@@ -2257,10 +2255,9 @@ public abstract class AArch64Assembler extends Assembler {
      *
      * @param size register size. Has to be 32 or 64.
      * @param dst floating point register. May not be null.
-     * @param imm immediate that is loaded into dst. If size is 32 only float immediates can be
-     *            loaded, i.e. (float) imm == imm must be true. In all cases
-     *            {@code isFloatImmediate}, respectively {@code #isDoubleImmediate} must be true
-     *            depending on size.
+     * @param imm immediate that is loaded into dst. If size is 32 only float immediates can be loaded,
+     *            i.e. (float) imm == imm must be true. In all cases {@code isFloatImmediate},
+     *            respectively {@code #isDoubleImmediate} must be true depending on size.
      */
     protected void fmov(int size, Register dst, double imm) {
         assert dst.getRegisterCategory().equals(SIMD);

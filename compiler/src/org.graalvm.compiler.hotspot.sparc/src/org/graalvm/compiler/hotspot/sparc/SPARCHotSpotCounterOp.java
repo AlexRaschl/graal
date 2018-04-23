@@ -95,8 +95,8 @@ public class SPARCHotSpotCounterOp extends HotSpotCounterOp {
 
     /**
      * Patches the increment value in the instruction emitted by the
-     * {@link #emitIncrement(int, SPARCMacroAssembler, SPARCAddress, Value)} method. This method is
-     * used if patching is needed after assembly.
+     * {@link #emitIncrement(int, SPARCMacroAssembler, SPARCAddress, Value)} method. This method is used
+     * if patching is needed after assembly.
      *
      * @param asm
      * @param increment

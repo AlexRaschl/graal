@@ -75,8 +75,8 @@ public final class ExceptionObjectNode extends BeginStateSplitNode implements Lo
     public void lower(LoweringTool tool) {
         if (graph().getGuardsStage() == StructuredGraph.GuardsStage.FIXED_DEOPTS) {
             /*
-             * Now the lowering to BeginNode+LoadExceptionNode can be performed, since no more
-             * deopts can float in between the begin node and the load exception node.
+             * Now the lowering to BeginNode+LoadExceptionNode can be performed, since no more deopts can float
+             * in between the begin node and the load exception node.
              */
             LocationIdentity locationsKilledByInvoke = ((InvokeWithExceptionNode) predecessor()).getLocationIdentity();
             AbstractBeginNode entry = graph().add(KillingBeginNode.create(locationsKilledByInvoke));

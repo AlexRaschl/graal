@@ -68,8 +68,8 @@ public abstract class BinaryOpLogicNode extends LogicNode implements LIRLowerabl
 
     /**
      * Ensure a canonical ordering of inputs for commutative nodes to improve GVN results. Order the
-     * inputs by increasing {@link Node#id} and call {@link Graph#findDuplicate(Node)} on the node
-     * if it's currently in a graph.
+     * inputs by increasing {@link Node#id} and call {@link Graph#findDuplicate(Node)} on the node if
+     * it's currently in a graph.
      *
      * @return the original node or another node with the same inputs, ignoring ordering.
      */

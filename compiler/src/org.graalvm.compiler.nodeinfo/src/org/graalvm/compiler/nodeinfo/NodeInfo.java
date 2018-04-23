@@ -37,16 +37,16 @@ public @interface NodeInfo {
     String shortName() default "";
 
     /**
-     * The template used to build the {@link Verbosity#Name} version. Variable part are specified
-     * using &#123;i#inputName&#125; or &#123;p#propertyName&#125;.
+     * The template used to build the {@link Verbosity#Name} version. Variable part are specified using
+     * &#123;i#inputName&#125; or &#123;p#propertyName&#125;.
      */
     String nameTemplate() default "";
 
     InputType[] allowedUsageTypes() default {};
 
     /**
-     * An estimation of the number of CPU cycles needed to execute this node that can be used to
-     * compare its execution cost against other nodes.
+     * An estimation of the number of CPU cycles needed to execute this node that can be used to compare
+     * its execution cost against other nodes.
      *
      * Implementations of graph cost models based on this value might throw an exception if a node's
      * {@link NodeCycles} value is {@link NodeCycles#CYCLES_UNSET}. As such, it is recommended to
@@ -60,12 +60,12 @@ public @interface NodeInfo {
     String cyclesRationale() default "";
 
     /**
-     * An estimation of the code size needed to represent this node in machine code that can be used
-     * to compare its size cost against other nodes.
+     * An estimation of the code size needed to represent this node in machine code that can be used to
+     * compare its size cost against other nodes.
      *
      * Implementations of graph cost models based on this value might throw an exception if a node's
-     * {@link NodeSize} value is {@link NodeSize#SIZE_UNSET}. As such, it is recommended to specify
-     * a value for nodes likely to be inputs to a graph cost model.
+     * {@link NodeSize} value is {@link NodeSize#SIZE_UNSET}. As such, it is recommended to specify a
+     * value for nodes likely to be inputs to a graph cost model.
      */
     NodeSize size() default SIZE_UNSET;
 

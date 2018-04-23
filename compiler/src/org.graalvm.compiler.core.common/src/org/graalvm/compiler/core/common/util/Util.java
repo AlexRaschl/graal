@@ -56,15 +56,14 @@ public class Util {
     }
 
     /**
-     * Sets the element at a given position of a list and ensures that this position exists. If the
-     * list is current shorter than the position, intermediate positions are filled with a given
-     * value.
+     * Sets the element at a given position of a list and ensures that this position exists. If the list
+     * is current shorter than the position, intermediate positions are filled with a given value.
      *
      * @param list the list to put the element into
      * @param pos the position at which to insert the element
      * @param x the element that should be inserted
-     * @param filler the filler element that is used for the intermediate positions in case the list
-     *            is shorter than pos
+     * @param filler the filler element that is used for the intermediate positions in case the list is
+     *            shorter than pos
      */
     public static <T> void atPutGrow(List<T> list, int pos, T x, T filler) {
         if (list.size() < pos + 1) {

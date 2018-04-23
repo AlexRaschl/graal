@@ -183,8 +183,8 @@ public final class RemoteObject {
     }
 
     /**
-     * Create a JSON object representing the provided {@link DebugValue}. Use when a reply by value
-     * is requested.
+     * Create a JSON object representing the provided {@link DebugValue}. Use when a reply by value is
+     * requested.
      */
     public static JSONObject createJSONResultValue(DebugValue debugValue, PrintWriter err) {
         JSONObject json = new JSONObject();

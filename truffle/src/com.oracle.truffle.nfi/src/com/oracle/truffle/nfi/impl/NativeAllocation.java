@@ -38,14 +38,14 @@ final class NativeAllocation extends PhantomReference<Object> {
     private static final Queue globalQueue = new Queue();
 
     /**
-     * Returns a global default {@link Queue}. Most users of this class usually want to use this
-     * global queue.
+     * Returns a global default {@link Queue}. Most users of this class usually want to use this global
+     * queue.
      * <p>
      * Note however that the {@link Destructor} object will be kept alive by the {@link Queue} until
      * after the {@code javaObject} dies, so care must be taken with potential references from the
      * {@link Destructor} back to the {@code javaObject}. Such a reference cycle will keep the
-     * {@code javaObject} alive until the {@link Queue} dies. In that case, a local {@link Queue}
-     * must be used to prevent memory leaks.
+     * {@code javaObject} alive until the {@link Queue} dies. In that case, a local {@link Queue} must
+     * be used to prevent memory leaks.
      */
     public static Queue getGlobalQueue() {
         return globalQueue;
@@ -76,12 +76,12 @@ final class NativeAllocation extends PhantomReference<Object> {
         private final NativeAllocation first = new NativeAllocation(this);
 
         /**
-         * Register a native {@link Destructor} that should be called when some managed object dies.
-         * The {@link Destructor#destroy} method will be called after the {@code javaObject} becomes
-         * unreachable from GC roots.
+         * Register a native {@link Destructor} that should be called when some managed object dies. The
+         * {@link Destructor#destroy} method will be called after the {@code javaObject} becomes unreachable
+         * from GC roots.
          * <p>
-         * This will only happen if the {@link Queue} is still alive when the {@code javaObject}
-         * dies. If the {@link Queue} dies before or at the same time as the {@code javaObject}, the
+         * This will only happen if the {@link Queue} is still alive when the {@code javaObject} dies. If
+         * the {@link Queue} dies before or at the same time as the {@code javaObject}, the
          * {@link Destructor#destroy} method might not be called.
          *
          * @see NativeAllocation#getGlobalQueue

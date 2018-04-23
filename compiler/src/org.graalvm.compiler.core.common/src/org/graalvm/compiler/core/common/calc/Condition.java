@@ -165,8 +165,8 @@ public enum Condition {
     }
 
     /**
-     * Given a condition and its negation, this method returns true for one of the two and false for
-     * the other one. This can be used to keep comparisons in a canonical form.
+     * Given a condition and its negation, this method returns true for one of the two and false for the
+     * other one. This can be used to keep comparisons in a canonical form.
      *
      * @return true if this condition is considered to be the canonical form, false otherwise.
      */
@@ -197,8 +197,8 @@ public enum Condition {
     }
 
     /**
-     * Returns true if the condition needs to be mirrored to get to a canonical condition. The
-     * result of the mirroring operation might still need to be negated to achieve a canonical form.
+     * Returns true if the condition needs to be mirrored to get to a canonical condition. The result of
+     * the mirroring operation might still need to be negated to achieve a canonical form.
      */
     private boolean canonicalMirror() {
         switch (this) {
@@ -227,8 +227,8 @@ public enum Condition {
     }
 
     /**
-     * Returns true if the condition needs to be negated to get to a canonical condition. The result
-     * of the negation might still need to be mirrored to achieve a canonical form.
+     * Returns true if the condition needs to be negated to get to a canonical condition. The result of
+     * the negation might still need to be mirrored to achieve a canonical form.
      */
     private boolean canonicalNegate() {
         switch (this) {
@@ -348,8 +348,8 @@ public enum Condition {
     }
 
     /**
-     * Returns true if this condition represents an unsigned comparison. EQ and NE are not
-     * considered to be unsigned.
+     * Returns true if this condition represents an unsigned comparison. EQ and NE are not considered to
+     * be unsigned.
      */
     public final boolean isUnsigned() {
         return this == Condition.BT || this == Condition.BE || this == Condition.AT || this == Condition.AE;
@@ -370,8 +370,8 @@ public enum Condition {
      * @param lt the constant on the left side of the comparison
      * @param rt the constant on the right side of the comparison
      * @param constantReflection needed to compare constants
-     * @return {@link Boolean#TRUE} if the comparison is known to be true, {@link Boolean#FALSE} if
-     *         the comparison is known to be false
+     * @return {@link Boolean#TRUE} if the comparison is known to be true, {@link Boolean#FALSE} if the
+     *         comparison is known to be false
      */
     public boolean foldCondition(JavaConstant lt, JavaConstant rt, ConstantReflectionProvider constantReflection) {
         assert !lt.getJavaKind().isNumericFloat() && !rt.getJavaKind().isNumericFloat();
@@ -385,8 +385,7 @@ public enum Condition {
      * @param rt the constant on the right side of the comparison
      * @param constantReflection needed to compare constants
      * @param unorderedIsTrue true if an undecided float comparison should result in "true"
-     * @return true if the comparison is known to be true, false if the comparison is known to be
-     *         false
+     * @return true if the comparison is known to be true, false if the comparison is known to be false
      */
     public boolean foldCondition(Constant lt, Constant rt, ConstantReflectionProvider constantReflection, boolean unorderedIsTrue) {
         if (lt instanceof PrimitiveConstant) {
@@ -415,8 +414,7 @@ public enum Condition {
      * @param lp the constant on the left side of the comparison
      * @param rp the constant on the right side of the comparison
      * @param unorderedIsTrue true if an undecided float comparison should result in "true"
-     * @return true if the comparison is known to be true, false if the comparison is known to be
-     *         false
+     * @return true if the comparison is known to be true, false if the comparison is known to be false
      */
     public boolean foldCondition(PrimitiveConstant lp, PrimitiveConstant rp, boolean unorderedIsTrue) {
         switch (lp.getJavaKind()) {

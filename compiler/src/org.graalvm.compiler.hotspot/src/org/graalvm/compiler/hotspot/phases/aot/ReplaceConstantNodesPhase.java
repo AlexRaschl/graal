@@ -133,9 +133,9 @@ public class ReplaceConstantNodesPhase extends BasePhase<PhaseContext> {
     }
 
     /**
-     * Insert the replacement node into the graph. We may need to insert it into a place different
-     * than the original {@link FloatingNode} since we need to make sure that replacement will have
-     * a valid state assigned.
+     * Insert the replacement node into the graph. We may need to insert it into a place different than
+     * the original {@link FloatingNode} since we need to make sure that replacement will have a valid
+     * state assigned.
      *
      * @param graph
      * @param stateMapper
@@ -149,8 +149,8 @@ public class ReplaceConstantNodesPhase extends BasePhase<PhaseContext> {
     }
 
     /**
-     * Find a good place to insert a stateful fixed node that is above the given node. A good
-     * insertion point should have a valid FrameState reaching it.
+     * Find a good place to insert a stateful fixed node that is above the given node. A good insertion
+     * point should have a valid FrameState reaching it.
      *
      * @param graph
      * @param stateMapper
@@ -164,8 +164,8 @@ public class ReplaceConstantNodesPhase extends BasePhase<PhaseContext> {
     }
 
     /**
-     * Find the first {@link FixedWithNextNode} that is currently scheduled before the given
-     * floating node.
+     * Find the first {@link FixedWithNextNode} that is currently scheduled before the given floating
+     * node.
      *
      * @param graph
      * @param node start search from this node up
@@ -190,8 +190,8 @@ public class ReplaceConstantNodesPhase extends BasePhase<PhaseContext> {
     }
 
     /**
-     * Find first dominating {@link FixedWithNextNode} that has a valid state reaching it starting
-     * from the given node.
+     * Find first dominating {@link FixedWithNextNode} that has a valid state reaching it starting from
+     * the given node.
      *
      * @param graph
      * @param stateMapper

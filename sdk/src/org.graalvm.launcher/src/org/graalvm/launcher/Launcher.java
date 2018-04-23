@@ -176,8 +176,8 @@ public abstract class Launcher {
      *
      * This aborts by throwing an {@link AbortException}.
      *
-     * @param message an error message that will be printed to {@linkplain System#err stderr}. If
-     *            null, nothing will be printed.
+     * @param message an error message that will be printed to {@linkplain System#err stderr}. If null,
+     *            nothing will be printed.
      */
     protected final AbortException abort(String message) {
         return abort(message, 1);
@@ -188,8 +188,8 @@ public abstract class Launcher {
      *
      * This aborts by throwing an {@link AbortException}.
      *
-     * @param message an error message that will be printed to {@linkplain System#err stderr}. If
-     *            null, nothing will be printed.
+     * @param message an error message that will be printed to {@linkplain System#err stderr}. If null,
+     *            nothing will be printed.
      * @param exitCode the exit code of the launcher process.
      */
     @SuppressWarnings("static-method")
@@ -327,8 +327,8 @@ public abstract class Launcher {
     }
 
     /**
-     * Prints a help message to {@linkplain System#out stdout}. This only prints options that belong
-     * to categories {@code maxCategory or less}.
+     * Prints a help message to {@linkplain System#out stdout}. This only prints options that belong to
+     * categories {@code maxCategory or less}.
      *
      * @param maxCategory the maximum category of options that should be printed.
      */

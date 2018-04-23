@@ -150,8 +150,7 @@ public final class AArch64ArrayEqualsOp extends AArch64LIRInstruction {
         masm.cbz(64, result, breakLabel);
 
         /*
-         * Compare the remaining bytes with an unaligned memory load aligned to the end of the
-         * array.
+         * Compare the remaining bytes with an unaligned memory load aligned to the end of the array.
          */
         masm.lea(array1, AArch64Address.createUnscaledImmediateAddress(array1, -VECTOR_SIZE));
         masm.lea(array2, AArch64Address.createUnscaledImmediateAddress(array2, -VECTOR_SIZE));

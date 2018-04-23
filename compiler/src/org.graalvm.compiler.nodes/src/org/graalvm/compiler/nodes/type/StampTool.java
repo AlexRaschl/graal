@@ -52,8 +52,8 @@ public class StampTool {
     }
 
     /**
-     * Meet a collection of {@link ValueNode}s optionally excluding {@code selfValue}. If no values
-     * are encountered then return {@code null}.
+     * Meet a collection of {@link ValueNode}s optionally excluding {@code selfValue}. If no values are
+     * encountered then return {@code null}.
      */
     public static Stamp meetOrNull(Iterable<? extends ValueNode> values, ValueNode selfValue) {
         Iterator<? extends ValueNode> iterator = values.iterator();
@@ -126,8 +126,8 @@ public class StampTool {
     }
 
     /**
-     * Checks whether this {@link ValueNode} represents a {@linkplain Stamp#hasValues() legal}
-     * pointer value which is known to be always null.
+     * Checks whether this {@link ValueNode} represents a {@linkplain Stamp#hasValues() legal} pointer
+     * value which is known to be always null.
      *
      * @param node the node to check
      * @return true if this node represents a legal object value which is known to be always null
@@ -137,12 +137,12 @@ public class StampTool {
     }
 
     /**
-     * Checks whether this {@link Stamp} represents a {@linkplain Stamp#hasValues() legal} pointer
-     * stamp whose values are known to be always null.
+     * Checks whether this {@link Stamp} represents a {@linkplain Stamp#hasValues() legal} pointer stamp
+     * whose values are known to be always null.
      *
      * @param stamp the stamp to check
-     * @return true if this stamp represents a legal object stamp whose values are known to be
-     *         always null
+     * @return true if this stamp represents a legal object stamp whose values are known to be always
+     *         null
      */
     public static boolean isPointerAlwaysNull(Stamp stamp) {
         if (stamp instanceof AbstractPointerStamp && stamp.hasValues()) {
@@ -152,8 +152,8 @@ public class StampTool {
     }
 
     /**
-     * Checks whether this {@link ValueNode} represents a {@linkplain Stamp#hasValues() legal}
-     * pointer value which is known to never be null.
+     * Checks whether this {@link ValueNode} represents a {@linkplain Stamp#hasValues() legal} pointer
+     * value which is known to never be null.
      *
      * @param node the node to check
      * @return true if this node represents a legal object value which is known to never be null
@@ -163,12 +163,12 @@ public class StampTool {
     }
 
     /**
-     * Checks whether this {@link Stamp} represents a {@linkplain Stamp#hasValues() legal} pointer
-     * stamp whose values are known to never be null.
+     * Checks whether this {@link Stamp} represents a {@linkplain Stamp#hasValues() legal} pointer stamp
+     * whose values are known to never be null.
      *
      * @param stamp the stamp to check
-     * @return true if this stamp represents a legal object stamp whose values are known to be
-     *         always null
+     * @return true if this stamp represents a legal object stamp whose values are known to be always
+     *         null
      */
     public static boolean isPointerNonNull(Stamp stamp) {
         if (stamp instanceof AbstractPointerStamp) {
@@ -178,8 +178,8 @@ public class StampTool {
     }
 
     /**
-     * Returns the {@linkplain ResolvedJavaType Java type} this {@linkplain ValueNode} has if it is
-     * a {@linkplain Stamp#hasValues() legal} Object value.
+     * Returns the {@linkplain ResolvedJavaType Java type} this {@linkplain ValueNode} has if it is a
+     * {@linkplain Stamp#hasValues() legal} Object value.
      *
      * @param node the node to check
      * @return the Java type this value has if it is a legal Object type, null otherwise
@@ -234,10 +234,10 @@ public class StampTool {
     }
 
     /**
-     * Checks whether this {@link ValueNode} represents a {@linkplain Stamp#hasValues() legal}
-     * Object value whose Java type is known exactly. If this method returns true then the
-     * {@linkplain ResolvedJavaType Java type} returned by {@link #typeReferenceOrNull(ValueNode)}
-     * is the concrete dynamic/runtime Java type of this value.
+     * Checks whether this {@link ValueNode} represents a {@linkplain Stamp#hasValues() legal} Object
+     * value whose Java type is known exactly. If this method returns true then the
+     * {@linkplain ResolvedJavaType Java type} returned by {@link #typeReferenceOrNull(ValueNode)} is
+     * the concrete dynamic/runtime Java type of this value.
      *
      * @param node the node to check
      * @return true if this node represents a legal object value whose Java type is known exactly
@@ -247,9 +247,9 @@ public class StampTool {
     }
 
     /**
-     * Checks whether this {@link Stamp} represents a {@linkplain Stamp#hasValues() legal} Object
-     * stamp whose {@linkplain ResolvedJavaType Java type} is known exactly. If this method returns
-     * true then the Java type returned by {@link #typeReferenceOrNull(Stamp)} is the only concrete
+     * Checks whether this {@link Stamp} represents a {@linkplain Stamp#hasValues() legal} Object stamp
+     * whose {@linkplain ResolvedJavaType Java type} is known exactly. If this method returns true then
+     * the Java type returned by {@link #typeReferenceOrNull(Stamp)} is the only concrete
      * dynamic/runtime Java type possible for values of this stamp.
      *
      * @param stamp the stamp to check

@@ -49,8 +49,8 @@ public final class IntList {
      * Creates an int list with a specified initial array.
      *
      * @param array the initial array used for the list (no copy is made)
-     * @param initialSize the initial {@linkplain #size() size} of the list (must be less than or
-     *            equal to {@code array.length}
+     * @param initialSize the initial {@linkplain #size() size} of the list (must be less than or equal
+     *            to {@code array.length}
      */
     public IntList(int[] array, int initialSize) {
         assert initialSize <= array.length;
@@ -145,9 +145,8 @@ public final class IntList {
     /**
      * Adjusts the {@linkplain #size() size} of this int list.
      *
-     * If {@code newSize < size()}, the size is changed to {@code newSize}. If
-     * {@code newSize > size()}, sufficient 0 elements are {@linkplain #add(int) added} until
-     * {@code size() == newSize}.
+     * If {@code newSize < size()}, the size is changed to {@code newSize}. If {@code newSize > size()},
+     * sufficient 0 elements are {@linkplain #add(int) added} until {@code size() == newSize}.
      *
      * @param newSize the new size of this int list
      */

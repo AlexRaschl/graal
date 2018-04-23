@@ -54,8 +54,8 @@ public abstract class CompositeValue extends Value {
     }
 
     /**
-     * Invoke {@code proc} on each {@link Value} element of this {@link CompositeValue}. If
-     * {@code proc} replaces any value then a new CompositeValue should be returned.
+     * Invoke {@code proc} on each {@link Value} element of this {@link CompositeValue}. If {@code proc}
+     * replaces any value then a new CompositeValue should be returned.
      *
      * @param inst
      * @param mode

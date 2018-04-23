@@ -154,17 +154,15 @@ class VirtualizerToolImpl implements VirtualizerTool, CanonicalizerTool {
         if (!canVirtualize) {
             if (entryKind == JavaKind.Long && oldValue.getStackKind() == newValue.getStackKind() && oldValue.getStackKind().isPrimitive()) {
                 /*
-                 * Special case: If the entryKind is long, allow arbitrary kinds as long as a value
-                 * of the same kind is already there. This can only happen if some other node
-                 * initialized the entry with a value of a different kind. One example where this
-                 * happens is the Truffle NewFrameNode.
+                 * Special case: If the entryKind is long, allow arbitrary kinds as long as a value of the same kind
+                 * is already there. This can only happen if some other node initialized the entry with a value of a
+                 * different kind. One example where this happens is the Truffle NewFrameNode.
                  */
                 getDebug().log(DebugContext.DETAILED_LEVEL, "virtualizing %s with primitive of kind %s in long entry ", current, oldValue.getStackKind());
                 canVirtualize = true;
             } else if (entryKind == JavaKind.Int && (accessKind == JavaKind.Long || accessKind == JavaKind.Double) && offset % 8 == 0) {
                 /*
-                 * Special case: Allow storing a single long or double value into two consecutive
-                 * int slots.
+                 * Special case: Allow storing a single long or double value into two consecutive int slots.
                  */
                 int nextIndex = virtual.entryIndexForOffset(getArrayOffsetProvider(), offset + 4, JavaKind.Int);
                 if (nextIndex != -1) {

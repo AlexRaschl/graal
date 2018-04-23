@@ -88,9 +88,8 @@ public final class AllocationEventFilter {
         }
 
         /**
-         * Specify languages that are instrumented for allocations of guest language values.
-         * Initially the filter accepts any language. Multiple calls to this method rewrite the set
-         * of languages.
+         * Specify languages that are instrumented for allocations of guest language values. Initially the
+         * filter accepts any language. Multiple calls to this method rewrite the set of languages.
          *
          * @since 0.27
          */
@@ -103,8 +102,7 @@ public final class AllocationEventFilter {
         }
 
         /**
-         * Create an instance of {@link AllocationEventFilter} based on the current setup of this
-         * builder.
+         * Create an instance of {@link AllocationEventFilter} based on the current setup of this builder.
          *
          * @since 0.27
          */

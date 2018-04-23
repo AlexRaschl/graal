@@ -212,12 +212,11 @@ public class NewInstanceTest extends GraalCompilerTest {
     }
 
     /**
-     * Tests that an earlier bug does not occur. The issue was that the loading of the TLAB 'top'
-     * and 'end' values was being GVN'ed from each branch of the 'if' statement. This meant that the
+     * Tests that an earlier bug does not occur. The issue was that the loading of the TLAB 'top' and
+     * 'end' values was being GVN'ed from each branch of the 'if' statement. This meant that the
      * allocated B object in the true branch overwrote the allocated array. The cause is that
-     * RegisterNode was a floating node and the reads from it were UnsafeLoads which are also
-     * floating. The fix was to make RegisterNode a fixed node (which it should have been in the
-     * first place).
+     * RegisterNode was a floating node and the reads from it were UnsafeLoads which are also floating.
+     * The fix was to make RegisterNode a fixed node (which it should have been in the first place).
      */
     public static Object newRegression(boolean condition) {
         Object result;

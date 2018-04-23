@@ -103,16 +103,16 @@ public class GraalTest {
     }
 
     /**
-     * Compares two given objects for {@linkplain Assert#assertEquals(Object, Object) equality}.
-     * Does a deep copy equality comparison if {@code expected} is an array.
+     * Compares two given objects for {@linkplain Assert#assertEquals(Object, Object) equality}. Does a
+     * deep copy equality comparison if {@code expected} is an array.
      */
     protected void assertDeepEquals(Object expected, Object actual) {
         assertDeepEquals(null, expected, actual);
     }
 
     /**
-     * Compares two given objects for {@linkplain Assert#assertEquals(Object, Object) equality}.
-     * Does a deep copy equality comparison if {@code expected} is an array.
+     * Compares two given objects for {@linkplain Assert#assertEquals(Object, Object) equality}. Does a
+     * deep copy equality comparison if {@code expected} is an array.
      *
      * @param message the identifying message for the {@link AssertionError}
      */
@@ -125,8 +125,8 @@ public class GraalTest {
     }
 
     /**
-     * Compares two given values for equality, doing a recursive test if both values are arrays of
-     * the same type.
+     * Compares two given values for equality, doing a recursive test if both values are arrays of the
+     * same type.
      *
      * @param message the identifying message for the {@link AssertionError}
      * @param delta the maximum delta between two doubles or floats for which both numbers are still
@@ -177,12 +177,12 @@ public class GraalTest {
     }
 
     /**
-     * Compares two given values for equality, doing a recursive test if both values are arrays of
-     * the same type. Uses {@linkplain StrictMath#ulp(float) ULP}s for comparison of floats.
+     * Compares two given values for equality, doing a recursive test if both values are arrays of the
+     * same type. Uses {@linkplain StrictMath#ulp(float) ULP}s for comparison of floats.
      *
      * @param message the identifying message for the {@link AssertionError}
-     * @param ulpsDelta the maximum allowed ulps difference between two doubles or floats for which
-     *            both numbers are still considered equal.
+     * @param ulpsDelta the maximum allowed ulps difference between two doubles or floats for which both
+     *            numbers are still considered equal.
      */
     protected void assertDeepEquals(String message, Object expected, Object actual, int ulpsDelta) {
         ComparisonCriteria doubleUlpsDeltaCriteria = new ComparisonCriteria() {
@@ -233,8 +233,8 @@ public class GraalTest {
 
     /**
      * Gets the value used by {@link #assertDeepEquals(Object, Object)} and
-     * {@link #assertDeepEquals(String, Object, Object)} for the maximum delta between two doubles
-     * or floats for which both numbers are still considered equal.
+     * {@link #assertDeepEquals(String, Object, Object)} for the maximum delta between two doubles or
+     * floats for which both numbers are still considered equal.
      */
     protected double equalFloatsOrDoublesDelta() {
         return 0.0D;
@@ -281,15 +281,14 @@ public class GraalTest {
     }
 
     /*
-     * Overrides to the normal JUnit {@link Assert} routines that provide varargs style formatting
-     * and produce an exception stack trace with the assertion frames trimmed out.
+     * Overrides to the normal JUnit {@link Assert} routines that provide varargs style formatting and
+     * produce an exception stack trace with the assertion frames trimmed out.
      */
 
     /**
      * Fails a test with the given message.
      *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     *            okay)
+     * @param message the identifying message for the {@link AssertionError} (<code>null</code> okay)
      * @see AssertionError
      */
     public static void fail(String message, Object... objects) {
@@ -311,11 +310,10 @@ public class GraalTest {
     }
 
     /**
-     * Asserts that a condition is true. If it isn't it throws an {@link AssertionError} with the
-     * given message.
+     * Asserts that a condition is true. If it isn't it throws an {@link AssertionError} with the given
+     * message.
      *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     *            okay)
+     * @param message the identifying message for the {@link AssertionError} (<code>null</code> okay)
      * @param condition condition to be checked
      */
     public static void assertTrue(String message, boolean condition) {
@@ -333,11 +331,10 @@ public class GraalTest {
     }
 
     /**
-     * Asserts that a condition is false. If it isn't it throws an {@link AssertionError} with the
-     * given message.
+     * Asserts that a condition is false. If it isn't it throws an {@link AssertionError} with the given
+     * message.
      *
-     * @param message the identifying message for the {@link AssertionError} (<code>null</code>
-     *            okay)
+     * @param message the identifying message for the {@link AssertionError} (<code>null</code> okay)
      * @param condition condition to be checked
      */
     public static void assertFalse(String message, boolean condition) {
@@ -355,8 +352,8 @@ public class GraalTest {
     }
 
     /**
-     * Asserts that a condition is true. If it isn't it throws an {@link AssertionError} with the
-     * given message.
+     * Asserts that a condition is true. If it isn't it throws an {@link AssertionError} with the given
+     * message.
      *
      * @param condition condition to be checked
      * @param message the identifying message for the {@link AssertionError}
@@ -369,8 +366,8 @@ public class GraalTest {
     }
 
     /**
-     * Asserts that a condition is false. If it isn't it throws an {@link AssertionError} with the
-     * given message produced by {@link String#format}.
+     * Asserts that a condition is false. If it isn't it throws an {@link AssertionError} with the given
+     * message produced by {@link String#format}.
      *
      * @param condition condition to be checked
      * @param message the identifying message for the {@link AssertionError}
@@ -388,18 +385,18 @@ public class GraalTest {
     }
 
     /**
-     * Gets a {@link DebugContext} object corresponding to {@code options}, creating a new one if
-     * none currently exists. Debug contexts created by this method will have their
-     * {@link DebugDumpHandler}s closed in {@link #afterTest()}.
+     * Gets a {@link DebugContext} object corresponding to {@code options}, creating a new one if none
+     * currently exists. Debug contexts created by this method will have their {@link DebugDumpHandler}s
+     * closed in {@link #afterTest()}.
      */
     protected DebugContext getDebugContext(OptionValues options) {
         return getDebugContext(options, null, null);
     }
 
     /**
-     * Gets a {@link DebugContext} object corresponding to {@code options}, creating a new one if
-     * none currently exists. Debug contexts created by this method will have their
-     * {@link DebugDumpHandler}s closed in {@link #afterTest()}.
+     * Gets a {@link DebugContext} object corresponding to {@code options}, creating a new one if none
+     * currently exists. Debug contexts created by this method will have their {@link DebugDumpHandler}s
+     * closed in {@link #afterTest()}.
      *
      * @param options currently active options
      * @param id identification of the compilation or {@code null}

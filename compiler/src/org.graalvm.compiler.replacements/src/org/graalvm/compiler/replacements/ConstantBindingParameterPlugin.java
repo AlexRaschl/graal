@@ -41,9 +41,9 @@ public class ConstantBindingParameterPlugin implements ParameterPlugin {
     private final SnippetReflectionProvider snippetReflection;
 
     /**
-     * Creates a plugin that will create {@link ConstantNode}s for each parameter with an index
-     * equal to that of a non-null object in {@code constantArgs} (from which the
-     * {@link ConstantNode} is created if it isn't already a {@link ConstantNode}).
+     * Creates a plugin that will create {@link ConstantNode}s for each parameter with an index equal to
+     * that of a non-null object in {@code constantArgs} (from which the {@link ConstantNode} is created
+     * if it isn't already a {@link ConstantNode}).
      */
     public ConstantBindingParameterPlugin(Object[] constantArgs, MetaAccessProvider metaAccess, SnippetReflectionProvider snippetReflection) {
         this.constantArgs = constantArgs;
@@ -60,8 +60,7 @@ public class ConstantBindingParameterPlugin implements ParameterPlugin {
                 ConstantNode otherCon = (ConstantNode) arg;
                 if (otherCon.graph() != b.getGraph()) {
                     /*
-                     * This is a node from another graph, so copy over extra state into a new
-                     * ConstantNode.
+                     * This is a node from another graph, so copy over extra state into a new ConstantNode.
                      */
                     constantNode = ConstantNode.forConstant(stamp.getTrustedStamp(), otherCon.getValue(), otherCon.getStableDimension(), otherCon.isDefaultStable(), metaAccess);
                 } else {

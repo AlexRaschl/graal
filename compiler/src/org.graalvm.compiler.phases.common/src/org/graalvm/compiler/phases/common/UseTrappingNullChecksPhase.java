@@ -238,9 +238,9 @@ public class UseTrappingNullChecksPhase extends BasePhase<LowTierContext> {
         trappingNullCheck.setStateBefore(deopt.stateBefore());
 
         /*
-         * We now have the pattern NullCheck/BeginNode/... It's possible some node is using the
-         * BeginNode as a guard input, so replace guard users of the Begin with the NullCheck and
-         * then remove the Begin from the graph.
+         * We now have the pattern NullCheck/BeginNode/... It's possible some node is using the BeginNode as
+         * a guard input, so replace guard users of the Begin with the NullCheck and then remove the Begin
+         * from the graph.
          */
         nonTrappingContinuation.replaceAtUsages(InputType.Guard, trappingNullCheck);
 

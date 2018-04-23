@@ -76,10 +76,9 @@ public final class UnsupportedSpecializationException extends RuntimeException {
     }
 
     /**
-     * Returns the children of the {@link Node} returned by {@link #getNode()} which produced the
-     * values returned by {@link #getSuppliedValues()}. The array returned by
-     * {@link #getSuppliedNodes()} has the same length as the array returned by
-     * {@link #getSuppliedValues()}. Never returns null.
+     * Returns the children of the {@link Node} returned by {@link #getNode()} which produced the values
+     * returned by {@link #getSuppliedValues()}. The array returned by {@link #getSuppliedNodes()} has
+     * the same length as the array returned by {@link #getSuppliedValues()}. Never returns null.
      *
      * @since 0.8 or earlier
      */

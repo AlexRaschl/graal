@@ -182,9 +182,8 @@ public class TypeSystemTest extends GraalCompilerTest {
         DebugContext debug = graph.getDebug();
         debug.dump(DebugContext.BASIC_LEVEL, graph, "Graph");
         /*
-         * When using FlowSensitiveReductionPhase instead of ConditionalEliminationPhase,
-         * tail-duplication gets activated thus resulting in a graph with more nodes than the
-         * reference graph.
+         * When using FlowSensitiveReductionPhase instead of ConditionalEliminationPhase, tail-duplication
+         * gets activated thus resulting in a graph with more nodes than the reference graph.
          */
         new ConditionalEliminationPhase(false).apply(graph, new PhaseContext(getProviders()));
         new CanonicalizerPhase().apply(graph, new PhaseContext(getProviders()));

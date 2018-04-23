@@ -159,8 +159,8 @@ public class NumericNFITest extends NFITest {
     }
 
     /**
-     * Test callback function as argument to native functions, and all primitive types as argument
-     * and return type of callback functions.
+     * Test callback function as argument to native functions, and all primitive types as argument and
+     * return type of callback functions.
      */
     public class TestCallbackNode extends SendExecuteNode {
 

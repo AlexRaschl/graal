@@ -263,16 +263,15 @@ public class NewObjectSnippets implements Snippets {
             if (probability(FAST_PATH_PROBABILITY, isInstanceKlassFullyInitialized(nonNullHub))) {
                 int layoutHelper = readLayoutHelper(nonNullHub);
                 /*
-                 * src/share/vm/oops/klass.hpp: For instances, layout helper is a positive number,
-                 * the instance size. This size is already passed through align_object_size and
-                 * scaled to bytes. The low order bit is set if instances of this class cannot be
-                 * allocated using the fastpath.
+                 * src/share/vm/oops/klass.hpp: For instances, layout helper is a positive number, the instance
+                 * size. This size is already passed through align_object_size and scaled to bytes. The low order
+                 * bit is set if instances of this class cannot be allocated using the fastpath.
                  */
                 if (probability(FAST_PATH_PROBABILITY, (layoutHelper & 1) == 0)) {
                     Word prototypeMarkWord = nonNullHub.readWord(prototypeMarkWordOffset(INJECTED_VMCONFIG), PROTOTYPE_MARK_WORD_LOCATION);
                     /*
-                     * FIXME(je,ds): we should actually pass typeContext instead of "" but late
-                     * binding of parameters is not yet supported by the GraphBuilderPlugin system.
+                     * FIXME(je,ds): we should actually pass typeContext instead of "" but late binding of parameters is
+                     * not yet supported by the GraphBuilderPlugin system.
                      */
                     return allocateInstanceHelper(layoutHelper, nonNullHub, prototypeMarkWord, fillContents, threadRegister, false, "", options, counters);
                 }
@@ -362,8 +361,7 @@ public class NewObjectSnippets implements Snippets {
     private static Object allocateArrayDynamicImpl(Class<?> elementType, Class<?> voidClass, int length, boolean fillContents, Register threadRegister, JavaKind knownElementKind,
                     int knownLayoutHelper, Word prototypeMarkWord, OptionValues options, Counters counters) {
         /*
-         * We only need the dynamic check for void when we have no static information from
-         * knownElementKind.
+         * We only need the dynamic check for void when we have no static information from knownElementKind.
          */
         staticAssert(knownElementKind != JavaKind.Void, "unsupported knownElementKind");
         if (knownElementKind == JavaKind.Illegal && probability(SLOW_PATH_PROBABILITY, elementType == null || DynamicNewArrayNode.throwsIllegalArgumentException(elementType, voidClass))) {
@@ -430,14 +428,14 @@ public class NewObjectSnippets implements Snippets {
     public static native Object newArrayCall(@ConstantNodeParameter ForeignCallDescriptor descriptor, KlassPointer hub, int rank, Word dims);
 
     /**
-     * Maximum number of long stores to emit when zeroing an object with a constant size. Larger
-     * objects have their bodies initialized in a loop.
+     * Maximum number of long stores to emit when zeroing an object with a constant size. Larger objects
+     * have their bodies initialized in a loop.
      */
     private static final int MAX_UNROLLED_OBJECT_ZEROING_STORES = 8;
 
     /**
-     * Zero uninitialized memory in a newly allocated object, unrolling as necessary and ensuring
-     * that stores are aligned.
+     * Zero uninitialized memory in a newly allocated object, unrolling as necessary and ensuring that
+     * stores are aligned.
      *
      * @param size number of bytes to zero
      * @param memory beginning of object which is being zeroed
@@ -493,8 +491,8 @@ public class NewObjectSnippets implements Snippets {
     }
 
     /**
-     * Fill uninitialized memory with garbage value in a newly allocated object, unrolling as
-     * necessary and ensuring that stores are aligned.
+     * Fill uninitialized memory with garbage value in a newly allocated object, unrolling as necessary
+     * and ensuring that stores are aligned.
      *
      * @param size number of bytes to zero
      * @param memory beginning of object which is being zeroed
@@ -548,8 +546,8 @@ public class NewObjectSnippets implements Snippets {
                     Counters counters) {
         memory.writeInt(arrayLengthOffset(INJECTED_VMCONFIG), length, LocationIdentity.init());
         /*
-         * store hub last as the concurrent garbage collectors assume length is valid if hub field
-         * is not null
+         * store hub last as the concurrent garbage collectors assume length is valid if hub field is not
+         * null
          */
         initializeObjectHeader(memory, prototypeMarkWord, hub);
         if (fillContents) {
@@ -703,8 +701,8 @@ public class NewObjectSnippets implements Snippets {
             args.addConst("fillContents", newArrayNode.fillContents());
             args.addConst("threadRegister", registers.getThreadRegister());
             /*
-             * We use Kind.Illegal as a marker value instead of null because constant snippet
-             * parameters cannot be null.
+             * We use Kind.Illegal as a marker value instead of null because constant snippet parameters cannot
+             * be null.
              */
             args.addConst("knownElementKind", newArrayNode.getKnownElementKind() == null ? JavaKind.Illegal : newArrayNode.getKnownElementKind());
             if (newArrayNode.getKnownElementKind() != null) {

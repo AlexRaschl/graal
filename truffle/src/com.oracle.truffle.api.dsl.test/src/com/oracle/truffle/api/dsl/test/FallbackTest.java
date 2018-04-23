@@ -379,9 +379,8 @@ public class FallbackTest {
         Assert.assertEquals(1, node.fcount);
 
         /*
-         * The fallback is now active and the new implicit casted type (double) must use the
-         * specialization instead of the fall back case even if double is not an active implicit
-         * cast type.
+         * The fallback is now active and the new implicit casted type (double) must use the specialization
+         * instead of the fall back case even if double is not an active implicit cast type.
          */
         node.execute(1d);
         Assert.assertEquals(2, node.s0count);

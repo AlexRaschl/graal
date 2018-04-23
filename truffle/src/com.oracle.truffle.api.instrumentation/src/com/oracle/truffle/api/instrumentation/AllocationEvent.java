@@ -55,9 +55,9 @@ public final class AllocationEvent {
     }
 
     /**
-     * Returns an old size of the value prior to the allocation, in bytes. Returns <code>0</code>
-     * when a new value is to be allocated, or the size of the value prior to the re-allocation.
-     * When the old size is unknown, {@link AllocationReporter#SIZE_UNKNOWN} is returned.
+     * Returns an old size of the value prior to the allocation, in bytes. Returns <code>0</code> when a
+     * new value is to be allocated, or the size of the value prior to the re-allocation. When the old
+     * size is unknown, {@link AllocationReporter#SIZE_UNKNOWN} is returned.
      *
      * @since 0.27
      */
@@ -74,8 +74,8 @@ public final class AllocationEvent {
      * {@link AllocationListener#onEnter(com.oracle.truffle.api.instrumentation.AllocationEvent)
      * onEnter}. When the allocated size is unknown, {@link AllocationReporter#SIZE_UNKNOWN} is
      * returned. The change in memory consumption caused by the allocation is
-     * <code>{@link #getNewSize()} - {@link #getOldSize()}</code> when both old size and new size
-     * are known. The change can be either positive or negative.
+     * <code>{@link #getNewSize()} - {@link #getOldSize()}</code> when both old size and new size are
+     * known. The change can be either positive or negative.
      *
      * @since 0.27
      */
@@ -85,8 +85,8 @@ public final class AllocationEvent {
 
     /**
      * Returns the value which is a subject of allocation. When called from
-     * {@link AllocationListener#onEnter(com.oracle.truffle.api.instrumentation.AllocationEvent)}
-     * the returned value is either <code>null</code> when a new one is to be allocated, or non-
+     * {@link AllocationListener#onEnter(com.oracle.truffle.api.instrumentation.AllocationEvent)} the
+     * returned value is either <code>null</code> when a new one is to be allocated, or non-
      * <code>null</code> when the value is to be re-allocated. When called from
      * {@link AllocationListener#onReturnValue(com.oracle.truffle.api.instrumentation.AllocationEvent)}
      * it is always non-<code>null</code> and it is either the newly allocated value, or the same

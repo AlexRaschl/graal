@@ -343,8 +343,8 @@ public class LoopEx {
     }
 
     /**
-     * Collect all the basic induction variables for the loop and the find any induction variables
-     * which are derived from the basic ones.
+     * Collect all the basic induction variables for the loop and the find any induction variables which
+     * are derived from the basic ones.
      *
      * @param loop
      * @return a map from node to induction variable
@@ -377,8 +377,8 @@ public class LoopEx {
                 }
                 if (op.usages().count() == 1 && op.usages().first() == baseIvNode) {
                     /*
-                     * This is just the base induction variable increment with no other uses so
-                     * don't bother reporting it.
+                     * This is just the base induction variable increment with no other uses so don't bother reporting
+                     * it.
                      */
                     continue;
                 }

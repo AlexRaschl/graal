@@ -54,9 +54,9 @@ public @interface CFunction {
          */
         TO_NATIVE,
         /**
-         * No prologue and epilogue is emitted. The C code must not block and must not call back to
-         * Java. Also, long running C code delays safepoints (and therefore garbage collection) of
-         * other threads until the call returns.
+         * No prologue and epilogue is emitted. The C code must not block and must not call back to Java.
+         * Also, long running C code delays safepoints (and therefore garbage collection) of other threads
+         * until the call returns.
          */
         NO_TRANSITION,
     }

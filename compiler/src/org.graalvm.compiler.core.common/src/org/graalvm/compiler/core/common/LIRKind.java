@@ -91,9 +91,9 @@ public final class LIRKind extends ValueKind<LIRKind> {
     }
 
     /**
-     * Create a {@link LIRKind} of type {@code platformKind} that contains a primitive value. Should
-     * be only used when it's guaranteed that the value is not even indirectly derived from a
-     * reference. Otherwise, {@link #combine(Value...)} should be used instead.
+     * Create a {@link LIRKind} of type {@code platformKind} that contains a primitive value. Should be
+     * only used when it's guaranteed that the value is not even indirectly derived from a reference.
+     * Otherwise, {@link #combine(Value...)} should be used instead.
      */
     public static LIRKind value(PlatformKind platformKind) {
         return new LIRKind(platformKind, 0, 0, null);
@@ -108,8 +108,8 @@ public final class LIRKind extends ValueKind<LIRKind> {
     }
 
     /**
-     * Create a {@link LIRKind} of type {@code platformKind} that contains a single, tracked,
-     * compressed oop reference.
+     * Create a {@link LIRKind} of type {@code platformKind} that contains a single, tracked, compressed
+     * oop reference.
      */
     public static LIRKind compressedReference(PlatformKind platformKind) {
         return derivedReference(platformKind, null, true);
@@ -139,10 +139,10 @@ public final class LIRKind extends ValueKind<LIRKind> {
     }
 
     /**
-     * Create a {@link LIRKind} of type {@code platformKind} that contains a value that is derived
-     * from a reference in a non-linear way. Values of this {@link LIRKind} can not be live at
-     * safepoints. In most cases, this should not be called directly. {@link #combine} should be
-     * used instead to automatically propagate this information.
+     * Create a {@link LIRKind} of type {@code platformKind} that contains a value that is derived from
+     * a reference in a non-linear way. Values of this {@link LIRKind} can not be live at safepoints. In
+     * most cases, this should not be called directly. {@link #combine} should be used instead to
+     * automatically propagate this information.
      */
     public static LIRKind unknownReference(PlatformKind platformKind) {
         return new LIRKind(platformKind, UNKNOWN_REFERENCE, UNKNOWN_REFERENCE, null);
@@ -171,8 +171,8 @@ public final class LIRKind extends ValueKind<LIRKind> {
      * inputs. If all inputs are values, the result is a value. Otherwise, the result is an unknown
      * reference.
      *
-     * This method should be used to construct the result {@link LIRKind} of any operation that
-     * modifies values (e.g. arithmetics).
+     * This method should be used to construct the result {@link LIRKind} of any operation that modifies
+     * values (e.g. arithmetics).
      */
     public static LIRKind combine(Value... inputs) {
         assert inputs.length > 0;
@@ -214,9 +214,9 @@ public final class LIRKind extends ValueKind<LIRKind> {
     }
 
     /**
-     * Helper method to construct derived reference kinds. If one of {@code base1} or {@code base2}
-     * are set, it creates a derived reference using it as the base. If both are set, the result is
-     * an unknown reference.
+     * Helper method to construct derived reference kinds. If one of {@code base1} or {@code base2} are
+     * set, it creates a derived reference using it as the base. If both are set, the result is an
+     * unknown reference.
      */
     public static LIRKind combineDerived(LIRKind kind, AllocatableValue base1, AllocatableValue base2) {
         if (base1 == null && base2 == null) {
@@ -231,9 +231,9 @@ public final class LIRKind extends ValueKind<LIRKind> {
     }
 
     /**
-     * Merges the reference information of the inputs. The result will have the {@link PlatformKind}
-     * of {@code mergeKind}. If all inputs are values (references), the result is a value
-     * (reference). Otherwise, the result is an unknown reference.
+     * Merges the reference information of the inputs. The result will have the {@link PlatformKind} of
+     * {@code mergeKind}. If all inputs are values (references), the result is a value (reference).
+     * Otherwise, the result is an unknown reference.
      *
      * The correctness of the {@link PlatformKind} is not verified.
      */
@@ -243,8 +243,8 @@ public final class LIRKind extends ValueKind<LIRKind> {
 
         if (mergeKind.isUnknownReference()) {
             /**
-             * {@code mergeKind} is an unknown reference, therefore the result can only be also an
-             * unknown reference.
+             * {@code mergeKind} is an unknown reference, therefore the result can only be also an unknown
+             * reference.
              */
             return mergeKind;
         }
@@ -278,8 +278,7 @@ public final class LIRKind extends ValueKind<LIRKind> {
         }
         if (inputKind.isDerivedReference()) {
             /*
-             * {@code mergeKind} is not derived but {@code inputKind} is. Make the result an unknown
-             * reference.
+             * {@code mergeKind} is not derived but {@code inputKind} is. Make the result an unknown reference.
              */
             return mergeKind.makeUnknownReference();
         }
@@ -289,8 +288,8 @@ public final class LIRKind extends ValueKind<LIRKind> {
 
     /**
      * Create a new {@link LIRKind} with the same reference information and a new
-     * {@linkplain #getPlatformKind platform kind}. If the new kind is a longer vector than this,
-     * the new elements are marked as untracked values.
+     * {@linkplain #getPlatformKind platform kind}. If the new kind is a longer vector than this, the
+     * new elements are marked as untracked values.
      */
     @Override
     public LIRKind changeType(PlatformKind newPlatformKind) {
@@ -313,8 +312,8 @@ public final class LIRKind extends ValueKind<LIRKind> {
     }
 
     /**
-     * Create a new {@link LIRKind} with a new {@linkplain #getPlatformKind platform kind}. If the
-     * new kind is longer than this, the reference positions are repeated to fill the vector.
+     * Create a new {@link LIRKind} with a new {@linkplain #getPlatformKind platform kind}. If the new
+     * kind is longer than this, the reference positions are repeated to fill the vector.
      */
     public LIRKind repeat(PlatformKind newPlatformKind) {
         if (isUnknownReference()) {

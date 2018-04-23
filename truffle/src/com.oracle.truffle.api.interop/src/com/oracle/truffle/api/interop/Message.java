@@ -43,11 +43,11 @@ import com.oracle.truffle.api.nodes.Node;
  */
 public abstract class Message {
     /**
-     * One can define their own extended message by subclassing. The expectation is that the
-     * subclass will have public constructor and its {@link #equals(java.lang.Object)} and
-     * {@link #hashCode()} methods will operate on the class equivalence. Only then the subclass
-     * will work properly with {@link #valueOf(java.lang.String)} and
-     * {@link #toString(com.oracle.truffle.api.interop.Message)} methods.
+     * One can define their own extended message by subclassing. The expectation is that the subclass
+     * will have public constructor and its {@link #equals(java.lang.Object)} and {@link #hashCode()}
+     * methods will operate on the class equivalence. Only then the subclass will work properly with
+     * {@link #valueOf(java.lang.String)} and {@link #toString(com.oracle.truffle.api.interop.Message)}
+     * methods.
      *
      * @since 0.8 or earlier
      */
@@ -64,8 +64,8 @@ public abstract class Message {
      * field to read - e.g. either {@link String} or a {@link Number} - if access to an array at
      * particular index is requested.
      * <p>
-     * If the object does not support the {@link #READ} message, an
-     * {@link UnsupportedMessageException} has to be thrown.
+     * If the object does not support the {@link #READ} message, an {@link UnsupportedMessageException}
+     * has to be thrown.
      *
      * If the object does not allow reading a property for a given identifier, an
      * {@link UnknownIdentifierException} has to be thrown.
@@ -91,11 +91,11 @@ public abstract class Message {
     /**
      * Converts {@link TruffleObject truffle value} to Java primitive type. Primitive types are
      * subclasses of {@link Number}, {@link Boolean}, {@link Character} and {@link String}. Before
-     * sending the {@link #UNBOX} message, it is desirable to send the {@link #IS_BOXED} one and
-     * verify that the object can really be unboxed.
+     * sending the {@link #UNBOX} message, it is desirable to send the {@link #IS_BOXED} one and verify
+     * that the object can really be unboxed.
      * <p>
-     * If the object does not support the {@link #UNBOX} message, an
-     * {@link UnsupportedMessageException} has to be thrown.
+     * If the object does not support the {@link #UNBOX} message, an {@link UnsupportedMessageException}
+     * has to be thrown.
      * <p>
      * To unbox an object, use:
      *
@@ -105,8 +105,8 @@ public abstract class Message {
      * );
      * </pre>
      *
-     * The returned value should be subclass of {@link Number}, {@link Boolean}, {@link Character}
-     * or {@link String}.
+     * The returned value should be subclass of {@link Number}, {@link Boolean}, {@link Character} or
+     * {@link String}.
      * <p>
      * To achieve good performance it is essential to cache/keep reference to the
      * {@link Message#createNode() created node}.
@@ -120,13 +120,12 @@ public abstract class Message {
      * {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) target} created for this
      * message accepts the object to modify as a
      * {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame) receiver} and two
-     * {@link ForeignAccess#getArguments(com.oracle.truffle.api.frame.Frame) arguments}. The first
-     * one identifies a field to read - e.g. either {@link String} or an {@link Integer} - if access
-     * to an array at particular index is requested. The second one is the value to assign to such
-     * field.
+     * {@link ForeignAccess#getArguments(com.oracle.truffle.api.frame.Frame) arguments}. The first one
+     * identifies a field to read - e.g. either {@link String} or an {@link Integer} - if access to an
+     * array at particular index is requested. The second one is the value to assign to such field.
      * <p>
-     * If the object does not support the {@link #WRITE} message, an
-     * {@link UnsupportedMessageException} has to be thrown.
+     * If the object does not support the {@link #WRITE} message, an {@link UnsupportedMessageException}
+     * has to be thrown.
      *
      * If the object does not allow writing a property for a given identifier, an
      * {@link UnknownIdentifierException} has to be thrown.
@@ -143,8 +142,8 @@ public abstract class Message {
      * </pre>
      *
      * Where <code>receiver</code> is the {@link TruffleObject foreign object} to access,
-     * <code>nameOfTheField</code> is the name (or index) of its field and <code>newValue</code> is
-     * the value to assign to the receiver's field.
+     * <code>nameOfTheField</code> is the name (or index) of its field and <code>newValue</code> is the
+     * value to assign to the receiver's field.
      * <p>
      * To achieve good performance it is essential to cache/keep reference to the
      * {@link Message#createNode() created node}.
@@ -159,8 +158,8 @@ public abstract class Message {
      * message accepts the object to modify as a
      * {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame) receiver} and one
      * {@link ForeignAccess#getArguments(com.oracle.truffle.api.frame.Frame) argument} identifying a
-     * field to remove - e.g. either {@link String} or a {@link Number} - if removal of an array
-     * element at particular index is requested.
+     * field to remove - e.g. either {@link String} or a {@link Number} - if removal of an array element
+     * at particular index is requested.
      * <p>
      * If the object does not support the {@link #REMOVE} message, an
      * {@link UnsupportedMessageException} has to be thrown.
@@ -187,12 +186,11 @@ public abstract class Message {
 
     /**
      * Creates a non-object oriented execution message. In contrast to {@link #createInvoke(int)}
-     * messages, which are more suitable for dealing with object oriented style of programming,
-     * messages created by this method are more suitable for execution where one can explicitly
-     * control all passed in arguments.
+     * messages, which are more suitable for dealing with object oriented style of programming, messages
+     * created by this method are more suitable for execution where one can explicitly control all
+     * passed in arguments.
      * <p>
-     * To inter-operate with a non-OOP language like <em>C</em> - for example to execute its
-     * function:
+     * To inter-operate with a non-OOP language like <em>C</em> - for example to execute its function:
      *
      * <pre>
      * <b>double</b> add(<b>double</b> a, <b>double</b> b) {
@@ -202,14 +200,13 @@ public abstract class Message {
      *
      * One can obtain reference to the <em>add</em> function (for example by
      * {@link Env#importSymbol(java.lang.String) importing it as a global symbol}) and store it into
-     * variable <code>addFunction</code>. Then it's time to check the object is executable by
-     * sending it the {@link #IS_EXECUTABLE} message.
+     * variable <code>addFunction</code>. Then it's time to check the object is executable by sending it
+     * the {@link #IS_EXECUTABLE} message.
      * <p>
      * If the object does not support the <code>EXECUTE</code> message, an
      * {@link UnsupportedMessageException} has to be thrown.
      *
-     * If the caller provides a wrong number of arguments, an {@link ArityException} has to be
-     * thrown.
+     * If the caller provides a wrong number of arguments, an {@link ArityException} has to be thrown.
      *
      * If one of the provided argument values has an unsupported type, an
      * {@link UnsupportedTypeException} has to be thrown.
@@ -228,9 +225,9 @@ public abstract class Message {
      * One can use this method to talk to object oriented language as well, however one needs to pay
      * attention to provide all necessary arguments manually - usually an OOP language requires the
      * first argument to represent <code>this</code> or <code>self</code> and only then pass in the
-     * additional arguments. It may be easier to use {@link #createInvoke(int)} message which is
-     * more suitable for object oriented languages and handles (if supported) the arguments
-     * manipulation automatically.
+     * additional arguments. It may be easier to use {@link #createInvoke(int)} message which is more
+     * suitable for object oriented languages and handles (if supported) the arguments manipulation
+     * automatically.
      * <p>
      *
      *
@@ -250,14 +247,13 @@ public abstract class Message {
      * Message to check executability of a
      * {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame) foreign object}.
      * <p>
-     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target}
-     * created for this message accepts
-     * {@link ForeignAccess#getArguments(com.oracle.truffle.api.frame.Frame) no arguments} and a
-     * single non-null {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame)
-     * receiver}. The call should yield value of {@link Boolean}. Either {@link Boolean#TRUE} if the
-     * receiver can be executed (i.e. accepts {@link #createExecute(int)} message, or
-     * {@link Boolean#FALSE} otherwise. This is the way to send the <code>IS_EXECUTABLE</code>
-     * message:
+     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target} created
+     * for this message accepts {@link ForeignAccess#getArguments(com.oracle.truffle.api.frame.Frame) no
+     * arguments} and a single non-null
+     * {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame) receiver}. The call should
+     * yield value of {@link Boolean}. Either {@link Boolean#TRUE} if the receiver can be executed (i.e.
+     * accepts {@link #createExecute(int)} message, or {@link Boolean#FALSE} otherwise. This is the way
+     * to send the <code>IS_EXECUTABLE</code> message:
      *
      * <pre>
      * {@link Boolean} canBeExecuted = ({@link Boolean}) {@link ForeignAccess}.sendIsExecutable(
@@ -276,14 +272,13 @@ public abstract class Message {
      * Message to check the ability to create new instances of a
      * {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame) foreign object}.
      * <p>
-     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target}
-     * created for this message accepts
-     * {@link ForeignAccess#getArguments(com.oracle.truffle.api.frame.Frame) no arguments} and a
-     * single non-null {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame)
-     * receiver}. The call should yield value of {@link Boolean}. Either {@link Boolean#TRUE} if the
-     * receiver can be instantiated (i.e. accepts {@link #createNew(int)} message, or
-     * {@link Boolean#FALSE} otherwise. This is the way to send the <code>IS_INSTANTIABLE</code>
-     * message:
+     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target} created
+     * for this message accepts {@link ForeignAccess#getArguments(com.oracle.truffle.api.frame.Frame) no
+     * arguments} and a single non-null
+     * {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame) receiver}. The call should
+     * yield value of {@link Boolean}. Either {@link Boolean#TRUE} if the receiver can be instantiated
+     * (i.e. accepts {@link #createNew(int)} message, or {@link Boolean#FALSE} otherwise. This is the
+     * way to send the <code>IS_INSTANTIABLE</code> message:
      *
      * <pre>
      * {@link Boolean} canBeinstantiated = ({@link Boolean}) {@link ForeignAccess}.sendIsInstantiable(
@@ -299,10 +294,9 @@ public abstract class Message {
     public static final Message IS_INSTANTIABLE = IsInstantiable.INSTANCE;
 
     /**
-     * Creates an object oriented execute message. Unlike {@link #createExecute(int)} the receiver
-     * of the message isn't the actual function to invoke, but an object. The object has the
-     * function as a field, or as a field of its class, or whatever is appropriate for an object
-     * oriented language.
+     * Creates an object oriented execute message. Unlike {@link #createExecute(int)} the receiver of
+     * the message isn't the actual function to invoke, but an object. The object has the function as a
+     * field, or as a field of its class, or whatever is appropriate for an object oriented language.
      * <p>
      * Languages that don't support object oriented semantics do not and should not implement this
      * message. When the invoke message isn't supported, the caller is expected to fall back into
@@ -313,21 +307,20 @@ public abstract class Message {
      * <li>sending {@link #createExecute(int) execute message}</li>
      * </ul>
      * <p>
-     * The last step is problematic, as it is not clear whether to pass just the execution
-     * arguments, or prefix them with the original receiver (aka <code>this</code> or
-     * <code>self</code>). Object oriented languages would in general welcome obtaining the
-     * receiving object as first argument, non-object languages like <em>C</em> would get confused
-     * by doing so. However it is not possible for the caller to find out what language one is
-     * sending message to - only the set of supported messages is known. As a result it is
-     * recommended for object oriented languages to support the {@link #createInvoke(int)} message
-     * and handle the semantics the way it is natural to them. Languages like <em>C</em> shouldn't
-     * implement {@link #createInvoke(int)} and just support primitive operations like
-     * {@link #createExecute(int)} and {@link #READ}.
+     * The last step is problematic, as it is not clear whether to pass just the execution arguments, or
+     * prefix them with the original receiver (aka <code>this</code> or <code>self</code>). Object
+     * oriented languages would in general welcome obtaining the receiving object as first argument,
+     * non-object languages like <em>C</em> would get confused by doing so. However it is not possible
+     * for the caller to find out what language one is sending message to - only the set of supported
+     * messages is known. As a result it is recommended for object oriented languages to support the
+     * {@link #createInvoke(int)} message and handle the semantics the way it is natural to them.
+     * Languages like <em>C</em> shouldn't implement {@link #createInvoke(int)} and just support
+     * primitive operations like {@link #createExecute(int)} and {@link #READ}.
      * <p>
-     * When accessing a method of an object in an object oriented manner, one is supposed to send
-     * the {@link #createInvoke(int)} message first. Only when that fails, fallback to non-object
-     * oriented workflow with {@link #createExecute(int)}. Imagine there is a <em>Java</em> class
-     * with <code>add</code> method and its instance:
+     * When accessing a method of an object in an object oriented manner, one is supposed to send the
+     * {@link #createInvoke(int)} message first. Only when that fails, fallback to non-object oriented
+     * workflow with {@link #createExecute(int)}. Imagine there is a <em>Java</em> class with
+     * <code>add</code> method and its instance:
      *
      * <pre>
      * <b>public class</b> Arith {
@@ -344,8 +337,7 @@ public abstract class Message {
      * If the object does not allow invoking a member with the given identifier, an
      * {@link UnknownIdentifierException} has to be thrown.
      *
-     * If the caller provides a wrong number of arguments, an {@link ArityException} has to be
-     * thrown.
+     * If the caller provides a wrong number of arguments, an {@link ArityException} has to be thrown.
      *
      * If one of the provided argument values has an unsupported type, an
      * {@link UnsupportedTypeException} has to be thrown.
@@ -368,12 +360,10 @@ public abstract class Message {
      * <p>
      * All messages created by this method are {@link Object#equals(java.lang.Object) equal} to each
      * other regardless of the value of <code>argumentsLength</code>. The expected behavior of this
-     * message is to perform {@link #READ} first and on the result invoke
-     * {@link #createExecute(int)}.
+     * message is to perform {@link #READ} first and on the result invoke {@link #createExecute(int)}.
      *
      * @param argumentsLength number of parameters to pass to the target
-     * @return message combining read & execute messages tailored for use with object oriented
-     *         languages
+     * @return message combining read & execute messages tailored for use with object oriented languages
      * @since 0.8 or earlier
      */
     public static Message createInvoke(int argumentsLength) {
@@ -383,16 +373,15 @@ public abstract class Message {
     /**
      * Creates an allocation message. All messages created by this method are
      * {@link Object#equals(java.lang.Object) equal} to each other regardless of the value of
-     * <code>argumentsLength</code>. The expected behavior of this message is to allocate a new
-     * instance of the {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame)
-     * receiver} and then perform its constructor with appropriate number of arguments. To check if
-     * an object supports allocation of new instances, use the {@link #IS_INSTANTIABLE} message.
+     * <code>argumentsLength</code>. The expected behavior of this message is to allocate a new instance
+     * of the {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame) receiver} and then
+     * perform its constructor with appropriate number of arguments. To check if an object supports
+     * allocation of new instances, use the {@link #IS_INSTANTIABLE} message.
      * <p>
      * If the object does not support the <code>NEW</code> message, an
      * {@link UnsupportedMessageException} has to be thrown.
      *
-     * If the caller provides a wrong number of arguments, an {@link ArityException} has to be
-     * thrown.
+     * If the caller provides a wrong number of arguments, an {@link ArityException} has to be thrown.
      *
      * If one of the provided argument values has an unsupported type, an
      * {@link UnsupportedTypeException} has to be thrown.
@@ -407,10 +396,10 @@ public abstract class Message {
     }
 
     /**
-     * Check for <code>null</code> message. The Truffle languages are suggested to have their own
-     * object representing <code>null</code> like values in their languages. For purposes of
-     * inter-operability it is essential to canonicalize such values from time to time - sending
-     * this message is a way to recognize such <code>null</code> representing values:
+     * Check for <code>null</code> message. The Truffle languages are suggested to have their own object
+     * representing <code>null</code> like values in their languages. For purposes of inter-operability
+     * it is essential to canonicalize such values from time to time - sending this message is a way to
+     * recognize such <code>null</code> representing values:
      *
      * <pre>
      * {@link Boolean} isNull = ({@link Boolean}) {@link ForeignAccess}.sendIsNull(
@@ -419,8 +408,8 @@ public abstract class Message {
      * </pre>
      *
      * <p>
-     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target}
-     * created for this message should yield value of {@link Boolean}.
+     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target} created
+     * for this message should yield value of {@link Boolean}.
      * <p>
      * To achieve good performance it is essential to cache/keep reference to the
      * {@link Message#createNode() created node}.
@@ -430,13 +419,13 @@ public abstract class Message {
     public static final Message IS_NULL = IsNull.INSTANCE;
 
     /**
-     * Message to check for having a size. If a {@link TruffleObject} indicates it <em>has a
-     * size</em>, it is expected it represents array-like structure and it also properly responds to
-     * {@link #GET_SIZE} message. When <code>HAS_SIZE</code> returns <code>false</code>, it
-     * indicates that {@link #GET_SIZE} message is not supported.
+     * Message to check for having a size. If a {@link TruffleObject} indicates it <em>has a size</em>,
+     * it is expected it represents array-like structure and it also properly responds to
+     * {@link #GET_SIZE} message. When <code>HAS_SIZE</code> returns <code>false</code>, it indicates
+     * that {@link #GET_SIZE} message is not supported.
      * <p>
-     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target}
-     * created for this message should yield value of {@link Boolean}.
+     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target} created
+     * for this message should yield value of {@link Boolean}.
      *
      * @since 0.8 or earlier
      * @see ForeignAccess#sendHasSize(com.oracle.truffle.api.nodes.Node,
@@ -445,14 +434,13 @@ public abstract class Message {
     public static final Message HAS_SIZE = HasSize.INSTANCE;
 
     /**
-     * Getter of the size. If {@link #HAS_SIZE supported}, this message has to return size of
-     * receiver's array like structure as an {@link Integer}. If the {@link #HAS_SIZE} message
-     * returns <code>true</code> implementations for {@link #READ} and {@link #WRITE} messages with
-     * {@link Integer} parameters from range <code>0</code> to <code>GET_SIZE - 1</code> are
-     * required.
+     * Getter of the size. If {@link #HAS_SIZE supported}, this message has to return size of receiver's
+     * array like structure as an {@link Integer}. If the {@link #HAS_SIZE} message returns
+     * <code>true</code> implementations for {@link #READ} and {@link #WRITE} messages with
+     * {@link Integer} parameters from range <code>0</code> to <code>GET_SIZE - 1</code> are required.
      * <p>
-     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target}
-     * created for this message should yield value of {@link Integer}.
+     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target} created
+     * for this message should yield value of {@link Integer}.
      * <p>
      * If the object does not support the {@link #GET_SIZE} message, an
      * {@link UnsupportedMessageException} has to be thrown.
@@ -465,11 +453,11 @@ public abstract class Message {
     public static final Message GET_SIZE = GetSize.INSTANCE;
 
     /**
-     * Check for value being boxed. Can the {@link TruffleObject foreign object} be converted to one
-     * of the basic Java types? Many languages have a special representation for types like number,
-     * string, etc. To ensure inter-operability, these types should support unboxing - if they do,
-     * they should handle this message and return {@link Boolean#TRUE}. The way to check whether an
-     * object is boxed is:
+     * Check for value being boxed. Can the {@link TruffleObject foreign object} be converted to one of
+     * the basic Java types? Many languages have a special representation for types like number, string,
+     * etc. To ensure inter-operability, these types should support unboxing - if they do, they should
+     * handle this message and return {@link Boolean#TRUE}. The way to check whether an object is boxed
+     * is:
      *
      * <pre>
      * {@link Boolean} isBoxed = ({@link Boolean}) {@link ForeignAccess}.sendIsBoxed(
@@ -477,8 +465,8 @@ public abstract class Message {
      * );
      * </pre>
      *
-     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target}
-     * created for this message should yield value of {@link Boolean}. If the object responds with
+     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target} created
+     * for this message should yield value of {@link Boolean}. If the object responds with
      * {@link Boolean#TRUE}, it is safe to continue by sending it {@link #UNBOX} message.
      *
      * @since 0.8 or earlier
@@ -487,9 +475,9 @@ public abstract class Message {
 
     /**
      * Message to retrieve flags about a particular key (a property name). The returned value is an
-     * integer containing bit flags. See {@link KeyInfo} for possible flags. This message also
-     * allows a fast check of existence of a property among {@link #KEYS}, the returned value is
-     * <code>0</code> iff the key does not exist. The
+     * integer containing bit flags. See {@link KeyInfo} for possible flags. This message also allows a
+     * fast check of existence of a property among {@link #KEYS}, the returned value is <code>0</code>
+     * iff the key does not exist. The
      * {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) target} created for this
      * message accepts (in addition to a
      * {@link ForeignAccess#getReceiver(com.oracle.truffle.api.frame.Frame) receiver}) a single
@@ -497,8 +485,8 @@ public abstract class Message {
      * property to get the info of - e.g. either {@link String} or a {@link Number} - if test of an
      * array at a particular index is requested.
      * <p>
-     * The default implementation requests {@link #KEYS} and test if they contain the requested key.
-     * If they do, a default bit mask <code>0b111</code> is returned.
+     * The default implementation requests {@link #KEYS} and test if they contain the requested key. If
+     * they do, a default bit mask <code>0b111</code> is returned.
      * <p>
      * The code that wants to send this message should use:
      *
@@ -520,15 +508,15 @@ public abstract class Message {
 
     /**
      * Message to check for having properties. If a {@link TruffleObject} indicates it <em>has
-     * keys</em>, it is expected it represents an object structure with properties and it also
-     * properly responds to {@link #KEYS} message. When <code>HAS_KEYS</code> returns
-     * <code>false</code>, it indicates that {@link #KEYS} message is not supported.
+     * keys</em>, it is expected it represents an object structure with properties and it also properly
+     * responds to {@link #KEYS} message. When <code>HAS_KEYS</code> returns <code>false</code>, it
+     * indicates that {@link #KEYS} message is not supported.
      * <p>
-     * The default implementation requests {@link #KEYS} and returns <code>true</code> if the
-     * request was successful and <code>false</code> otherwise.
+     * The default implementation requests {@link #KEYS} and returns <code>true</code> if the request
+     * was successful and <code>false</code> otherwise.
      * <p>
-     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target}
-     * created for this message should yield value of type {@link Boolean}.
+     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target} created
+     * for this message should yield value of type {@link Boolean}.
      *
      * @since 0.30
      * @see ForeignAccess#sendHasKeys(com.oracle.truffle.api.nodes.Node,
@@ -537,21 +525,21 @@ public abstract class Message {
     public static final Message HAS_KEYS = HasKeys.INSTANCE;
 
     /**
-     * Obtains list of property names. Checks the properties of a {@link TruffleObject foreign
-     * objects} and obtains list of its property names. Those names can then be used in
-     * {@link #READ} and {@link #WRITE} messages to obtain/assign real values. To check if an object
-     * supports properties, use the {@link #HAS_KEYS} message.
+     * Obtains list of property names. Checks the properties of a {@link TruffleObject foreign objects}
+     * and obtains list of its property names. Those names can then be used in {@link #READ} and
+     * {@link #WRITE} messages to obtain/assign real values. To check if an object supports properties,
+     * use the {@link #HAS_KEYS} message.
      * <p>
      * Since version 0.26 the {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message)
      * target} created for this message accepts a boolean argument specifying whether internal keys
-     * should be included. Internal keys are extra property keys that are a part of the object, but
-     * are not provided among ordinary keys. They may even not correspond to anything what is an
-     * explicit part of the guest language representation. An example of such internal values are
-     * internal slots in ECMAScript.
+     * should be included. Internal keys are extra property keys that are a part of the object, but are
+     * not provided among ordinary keys. They may even not correspond to anything what is an explicit
+     * part of the guest language representation. An example of such internal values are internal slots
+     * in ECMAScript.
      * <p>
      * The return value from using this message is another {@link TruffleObject} that responds to
-     * {@link #HAS_SIZE} message and its indexes 0 to {@link #GET_SIZE} - 1 contain {@link String}
-     * names of individual properties. The properties should be provided in deterministic order.
+     * {@link #HAS_SIZE} message and its indexes 0 to {@link #GET_SIZE} - 1 contain {@link String} names
+     * of individual properties. The properties should be provided in deterministic order.
      *
      * @since 0.18
      */
@@ -567,15 +555,15 @@ public abstract class Message {
      * );
      * </pre>
      *
-     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target}
-     * created for this message should yield value of {@link Boolean}. If the object responds with
+     * Calling {@link Factory#accessMessage(com.oracle.truffle.api.interop.Message) the target} created
+     * for this message should yield value of {@link Boolean}. If the object responds with
      * {@link Boolean#TRUE}, the object can be accessed by {@link #AS_POINTER} message.
      *
-     * It is expected that objects should only return {@link Boolean#TRUE} here if the native
-     * pointer value corresponding to this object already exists, and obtaining it is a cheap
-     * operation. If an object can be transformed to a pointer representation, but this hasn't
-     * happened yet, the object is expected to return {@link Boolean#FALSE} to {@link #IS_POINTER},
-     * and wait for the {@link #TO_NATIVE} message to trigger the transformation.
+     * It is expected that objects should only return {@link Boolean#TRUE} here if the native pointer
+     * value corresponding to this object already exists, and obtaining it is a cheap operation. If an
+     * object can be transformed to a pointer representation, but this hasn't happened yet, the object
+     * is expected to return {@link Boolean#FALSE} to {@link #IS_POINTER}, and wait for the
+     * {@link #TO_NATIVE} message to trigger the transformation.
      *
      * @since 0.26 or earlier
      */
@@ -583,8 +571,8 @@ public abstract class Message {
 
     /**
      * Converts {@link TruffleObject truffle value} to a raw 64bit pointer value. Before sending the
-     * {@link #AS_POINTER} message, it is desirable to send the {@link #IS_POINTER} one and verify
-     * that the object can really be unwrapped to a raw pointer value.
+     * {@link #AS_POINTER} message, it is desirable to send the {@link #IS_POINTER} one and verify that
+     * the object can really be unwrapped to a raw pointer value.
      * <p>
      * If the object does not support the {@link #AS_POINTER} message, an
      * {@link UnsupportedMessageException} has to be thrown.
@@ -607,14 +595,12 @@ public abstract class Message {
     public static final Message AS_POINTER = AsPointer.INSTANCE;
 
     /**
-     * Transforms a {@link TruffleObject truffle value} a new {@link TruffleObject truffle native
-     * value} that represents a raw native pointer. This resulting {@link TruffleObject truffle
-     * native value} returns true for {@link #IS_POINTER} and can be unwrapped using the
-     * {@link #AS_POINTER} message.
+     * Transforms a {@link TruffleObject truffle value} a new {@link TruffleObject truffle native value}
+     * that represents a raw native pointer. This resulting {@link TruffleObject truffle native value}
+     * returns true for {@link #IS_POINTER} and can be unwrapped using the {@link #AS_POINTER} message.
      * <p>
-     * If an object returns true for {@link #IS_POINTER}, it is still expected that this object
-     * supports the {@link #TO_NATIVE} message. It can just return a reference to itself in that
-     * case.
+     * If an object returns true for {@link #IS_POINTER}, it is still expected that this object supports
+     * the {@link #TO_NATIVE} message. It can just return a reference to itself in that case.
      * <p>
      * If the object does not support the {@link #TO_NATIVE} message, an
      * {@link UnsupportedMessageException} has to be thrown.
@@ -636,10 +622,10 @@ public abstract class Message {
     public static final Message TO_NATIVE = ToNative.INSTANCE;
 
     /**
-     * Compares types of two messages. Messages are encouraged to implement this method. All
-     * standard ones ({@link #IS_NULL}, {@link #READ}, etc.) do so. Messages obtained via the same
-     * {@link #createExecute(int) method} are equal, messages obtained by different methods or
-     * fields are not.
+     * Compares types of two messages. Messages are encouraged to implement this method. All standard
+     * ones ({@link #IS_NULL}, {@link #READ}, etc.) do so. Messages obtained via the same
+     * {@link #createExecute(int) method} are equal, messages obtained by different methods or fields
+     * are not.
      *
      * @param message the object to compare to
      * @return true, if the structure of the message is that same as of <code>this</code> one.
@@ -659,8 +645,8 @@ public abstract class Message {
     public abstract int hashCode();
 
     /**
-     * Creates an AST node for this message. The node can be inserted into AST of your language and
-     * will handle communication with the foreign language.
+     * Creates an AST node for this message. The node can be inserted into AST of your language and will
+     * handle communication with the foreign language.
      *
      * @return node to be inserted into your AST and passed back to
      *         {@link ForeignAccess#send(com.oracle.truffle.api.nodes.Node, com.oracle.truffle.api.interop.TruffleObject, java.lang.Object...)}
@@ -673,9 +659,9 @@ public abstract class Message {
     }
 
     /**
-     * Converts the message into canonical string representation. The converted string can be
-     * stored, persisted, transfered and later passed to {@link #valueOf(java.lang.String)} to
-     * construct the message again.
+     * Converts the message into canonical string representation. The converted string can be stored,
+     * persisted, transfered and later passed to {@link #valueOf(java.lang.String)} to construct the
+     * message again.
      *
      * @param message the message to convert
      * @return canonical string representation

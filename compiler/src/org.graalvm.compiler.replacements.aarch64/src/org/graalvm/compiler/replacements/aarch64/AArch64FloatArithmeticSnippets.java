@@ -135,8 +135,8 @@ public class AArch64FloatArithmeticSnippets extends SnippetTemplate.AbstractTemp
     private static native double safeRem(double x, double y);
 
     /**
-     * Marker interface to distinguish untreated nodes from ones where we have installed the
-     * additional checks.
+     * Marker interface to distinguish untreated nodes from ones where we have installed the additional
+     * checks.
      */
     private interface SafeNode {
     }

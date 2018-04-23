@@ -85,8 +85,8 @@ public final class LanguageInfo {
     }
 
     /**
-     * Returns the MIME types supported by this language. This set is equivalent to the set provided
-     * by {@link Registration#mimeType()}.
+     * Returns the MIME types supported by this language. This set is equivalent to the set provided by
+     * {@link Registration#mimeType()}.
      *
      * @since 0.25
      */
@@ -107,8 +107,8 @@ public final class LanguageInfo {
     }
 
     /**
-     * @return {@code true} if the language is {@link Registration#internal() internal},
-     *         {@code false} otherwise
+     * @return {@code true} if the language is {@link Registration#internal() internal}, {@code false}
+     *         otherwise
      * @since 0.31
      */
     public boolean isInternal() {

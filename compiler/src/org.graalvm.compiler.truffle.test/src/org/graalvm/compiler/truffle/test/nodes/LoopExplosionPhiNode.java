@@ -41,17 +41,17 @@ public class LoopExplosionPhiNode extends AbstractTestNode {
         int result = -1;
         if (x > 100) {
             /*
-             * First value for result, registered before processing the loop: a possible value that
-             * is registered for the phi function during decoding.
+             * First value for result, registered before processing the loop: a possible value that is
+             * registered for the phi function during decoding.
              */
             result = 42;
         } else {
             for (int i = 0; i < iterations; i++) {
                 if (i == x) {
                     /*
-                     * More values for result. But since we are exploding until the return, no merge
-                     * and no phi function will be created. The first value for the result
-                     * registered before processing the loop needs to be ignored.
+                     * More values for result. But since we are exploding until the return, no merge and no phi function
+                     * will be created. The first value for the result registered before processing the loop needs to be
+                     * ignored.
                      */
                     result = i;
                     break;

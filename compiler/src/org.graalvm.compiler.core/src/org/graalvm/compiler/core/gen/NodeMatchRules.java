@@ -106,8 +106,8 @@ public abstract class NodeMatchRules {
 
     /*
      * For now we do not want to expose the full lirBuilder to subclasses, so we delegate the few
-     * methods that are actually needed. If the list grows too long, exposing lirBuilder might be
-     * the better approach.
+     * methods that are actually needed. If the list grows too long, exposing lirBuilder might be the
+     * better approach.
      */
 
     protected final Value operand(Node node) {

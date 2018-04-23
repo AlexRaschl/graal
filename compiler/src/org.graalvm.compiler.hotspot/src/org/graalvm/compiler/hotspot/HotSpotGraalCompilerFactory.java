@@ -71,8 +71,8 @@ public final class HotSpotGraalCompilerFactory extends HotSpotJVMCICompilerFacto
         options = HotSpotGraalOptionValues.HOTSPOT_OPTIONS;
         initializeGraalCompilePolicyFields(options);
         /*
-         * Exercise this code path early to encourage loading now. This doesn't solve problem of
-         * deadlock during class loading but seems to eliminate it in practice.
+         * Exercise this code path early to encourage loading now. This doesn't solve problem of deadlock
+         * during class loading but seems to eliminate it in practice.
          */
         adjustCompilationLevelInternal(Object.class, "hashCode", "()I", CompilationLevel.FullOptimization);
         adjustCompilationLevelInternal(Object.class, "hashCode", "()I", CompilationLevel.Simple);

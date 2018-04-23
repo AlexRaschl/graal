@@ -209,8 +209,8 @@ public abstract class TVMCI {
     }
 
     /**
-     * Returns <code>true</code> if the java stack frame is a representing a guest language call.
-     * Needs to return <code>true</code> only once per java stack frame per guest language call.
+     * Returns <code>true</code> if the java stack frame is a representing a guest language call. Needs
+     * to return <code>true</code> only once per java stack frame per guest language call.
      *
      * @since 0.27
      */

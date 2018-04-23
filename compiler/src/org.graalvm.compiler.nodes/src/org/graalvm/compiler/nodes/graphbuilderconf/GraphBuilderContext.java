@@ -60,9 +60,9 @@ import jdk.vm.ci.meta.ResolvedJavaMethod;
 public interface GraphBuilderContext extends GraphBuilderTool {
 
     /**
-     * Pushes a given value to the frame state stack using an explicit kind. This should be used
-     * when {@code value.getJavaKind()} is different from the kind that the bytecode instruction
-     * currently being parsed pushes to the stack.
+     * Pushes a given value to the frame state stack using an explicit kind. This should be used when
+     * {@code value.getJavaKind()} is different from the kind that the bytecode instruction currently
+     * being parsed pushes to the stack.
      *
      * @param kind the kind to use when type checking this operation
      * @param value the value to push to the stack. The value must already have been
@@ -72,11 +72,11 @@ public interface GraphBuilderContext extends GraphBuilderTool {
 
     /**
      * Adds a node to the graph. If the node is in the graph, returns immediately. If the node is a
-     * {@link StateSplit} with a null {@linkplain StateSplit#stateAfter() frame state}, the frame
-     * state is initialized.
+     * {@link StateSplit} with a null {@linkplain StateSplit#stateAfter() frame state}, the frame state
+     * is initialized.
      *
-     * @param value the value to add to the graph and push to the stack. The
-     *            {@code value.getJavaKind()} kind is used when type checking this operation.
+     * @param value the value to add to the graph and push to the stack. The {@code value.getJavaKind()}
+     *            kind is used when type checking this operation.
      * @return a node equivalent to {@code value} in the graph
      */
     default <T extends ValueNode> T add(T value) {
@@ -95,12 +95,12 @@ public interface GraphBuilderContext extends GraphBuilderTool {
     }
 
     /**
-     * Adds a node and its inputs to the graph. If the node is in the graph, returns immediately. If
-     * the node is a {@link StateSplit} with a null {@linkplain StateSplit#stateAfter() frame state}
-     * , the frame state is initialized.
+     * Adds a node and its inputs to the graph. If the node is in the graph, returns immediately. If the
+     * node is a {@link StateSplit} with a null {@linkplain StateSplit#stateAfter() frame state} , the
+     * frame state is initialized.
      *
-     * @param value the value to add to the graph and push to the stack. The
-     *            {@code value.getJavaKind()} kind is used when type checking this operation.
+     * @param value the value to add to the graph and push to the stack. The {@code value.getJavaKind()}
+     *            kind is used when type checking this operation.
      * @return a node equivalent to {@code value} in the graph
      */
     default <T extends ValueNode> T addWithInputs(T value) {
@@ -131,9 +131,9 @@ public interface GraphBuilderContext extends GraphBuilderTool {
     }
 
     /**
-     * Adds a node with a non-void kind to the graph, pushes it to the stack. If the returned node
-     * is a {@link StateSplit} with a null {@linkplain StateSplit#stateAfter() frame state}, the
-     * frame state is initialized.
+     * Adds a node with a non-void kind to the graph, pushes it to the stack. If the returned node is a
+     * {@link StateSplit} with a null {@linkplain StateSplit#stateAfter() frame state}, the frame state
+     * is initialized.
      *
      * @param kind the kind to use when type checking this operation
      * @param value the value to add to the graph and push to the stack
@@ -152,23 +152,23 @@ public interface GraphBuilderContext extends GraphBuilderTool {
     }
 
     /**
-     * Handles an invocation that a plugin determines can replace the original invocation (i.e., the
-     * one for which the plugin was applied). This applies all standard graph builder processing to
-     * the replaced invocation including applying any relevant plugins.
+     * Handles an invocation that a plugin determines can replace the original invocation (i.e., the one
+     * for which the plugin was applied). This applies all standard graph builder processing to the
+     * replaced invocation including applying any relevant plugins.
      *
      * @param invokeKind the kind of the replacement invocation
      * @param targetMethod the target of the replacement invocation
      * @param args the arguments to the replacement invocation
-     * @param forceInlineEverything specifies if all invocations encountered in the scope of
-     *            handling the replaced invoke are to be force inlined
+     * @param forceInlineEverything specifies if all invocations encountered in the scope of handling
+     *            the replaced invoke are to be force inlined
      */
     void handleReplacedInvoke(InvokeKind invokeKind, ResolvedJavaMethod targetMethod, ValueNode[] args, boolean forceInlineEverything);
 
     void handleReplacedInvoke(CallTargetNode callTarget, JavaKind resultType);
 
     /**
-     * Intrinsifies an invocation of a given method by inlining the bytecodes of a given
-     * substitution method.
+     * Intrinsifies an invocation of a given method by inlining the bytecodes of a given substitution
+     * method.
      *
      * @param bytecodeProvider used to get the bytecodes to parse for the substitution method
      * @param targetMethod the method being intrinsified
@@ -237,8 +237,8 @@ public interface GraphBuilderContext extends GraphBuilderTool {
     }
 
     /**
-     * Gets the inline depth of this context. A return value of 0 implies that this is the context
-     * for the parse root.
+     * Gets the inline depth of this context. A return value of 0 implies that this is the context for
+     * the parse root.
      */
     default int getDepth() {
         GraphBuilderContext parent = getParent();
@@ -251,8 +251,8 @@ public interface GraphBuilderContext extends GraphBuilderTool {
     }
 
     /**
-     * Determines if this parsing context is within the bytecode of an intrinsic or a method inlined
-     * by an intrinsic.
+     * Determines if this parsing context is within the bytecode of an intrinsic or a method inlined by
+     * an intrinsic.
      */
     @Override
     default boolean parsingIntrinsic() {
@@ -298,9 +298,9 @@ public interface GraphBuilderContext extends GraphBuilderTool {
     }
 
     /**
-     * Interface whose instances hold inlining information about the current context, in a wider
-     * sense. The wider sense in this case concerns graph building approaches that don't necessarily
-     * keep a chain of {@link GraphBuilderContext} instances normally available through
+     * Interface whose instances hold inlining information about the current context, in a wider sense.
+     * The wider sense in this case concerns graph building approaches that don't necessarily keep a
+     * chain of {@link GraphBuilderContext} instances normally available through
      * {@linkplain #getParent()}. Examples of such approaches are partial evaluation and incremental
      * inlining.
      */

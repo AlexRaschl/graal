@@ -118,8 +118,8 @@ public abstract class Word extends WordFactory implements SignedWord, UnsignedWo
     }
 
     /*
-     * Outside users must use the different signed() and unsigned() methods to ensure proper
-     * expansion of 32-bit values on 64-bit systems.
+     * Outside users must use the different signed() and unsigned() methods to ensure proper expansion
+     * of 32-bit values on 64-bit systems.
      */
     @SuppressWarnings("unchecked")
     private static <T extends WordBase> T box(long val) {
@@ -140,21 +140,21 @@ public abstract class Word extends WordFactory implements SignedWord, UnsignedWo
 
     /**
      * Convert an {@link Object} to a {@link Pointer}, keeping the reference information. If the
-     * returned pointer or any value derived from it is alive across a safepoint, it will be
-     * tracked. Depending on the arithmetic on the pointer and the capabilities of the backend to
-     * deal with derived references, this may work correctly, or result in a compiler error.
+     * returned pointer or any value derived from it is alive across a safepoint, it will be tracked.
+     * Depending on the arithmetic on the pointer and the capabilities of the backend to deal with
+     * derived references, this may work correctly, or result in a compiler error.
      */
     @Operation(opcode = Opcode.OBJECT_TO_TRACKED)
     public static native Word objectToTrackedPointer(Object val);
 
     /**
      * Convert an {@link Object} to a {@link Pointer}, dropping the reference information. If the
-     * returned pointer or any value derived from it is alive across a safepoint, it will be treated
-     * as a simple integer and not tracked by the garbage collector.
+     * returned pointer or any value derived from it is alive across a safepoint, it will be treated as
+     * a simple integer and not tracked by the garbage collector.
      * <p>
      * This is a dangerous operation, the GC could move the object without updating the pointer! Use
-     * only in combination with some mechanism to prevent the GC from moving or freeing the object
-     * as long as the pointer is in use.
+     * only in combination with some mechanism to prevent the GC from moving or freeing the object as
+     * long as the pointer is in use.
      * <p>
      * If the result value should not be alive across a safepoint, it's better to use
      * {@link #objectToTrackedPointer(Object)} instead.
@@ -1173,9 +1173,9 @@ public abstract class Word extends WordFactory implements SignedWord, UnsignedWo
     }
 
     /**
-     * This is deprecated because of the easy to mistype name collision between {@link #equals} and
-     * the other equals routines like {@link #equal(Word)}. In general you should never be
-     * statically calling this method for Word types.
+     * This is deprecated because of the easy to mistype name collision between {@link #equals} and the
+     * other equals routines like {@link #equal(Word)}. In general you should never be statically
+     * calling this method for Word types.
      */
     @SuppressWarnings("deprecation")
     @Deprecated

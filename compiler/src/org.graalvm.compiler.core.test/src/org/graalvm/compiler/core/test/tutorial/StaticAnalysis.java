@@ -169,8 +169,8 @@ public class StaticAnalysis {
         }
 
         /**
-         * All {@link TypeFlow#getTypes() types} that the given field can have, i.e., all types
-         * assigned by the reachable field store bytecodes.
+         * All {@link TypeFlow#getTypes() types} that the given field can have, i.e., all types assigned by
+         * the reachable field store bytecodes.
          */
         public TypeFlow lookupField(ResolvedJavaField field) {
             TypeFlow result = fields.get(field);
@@ -182,9 +182,8 @@ public class StaticAnalysis {
         }
 
         /**
-         * All {@link TypeFlow#getTypes() types} that {@link MethodState#formalParameters
-         * parameters} and {@link MethodState#formalReturn return value} of the given method can
-         * have.
+         * All {@link TypeFlow#getTypes() types} that {@link MethodState#formalParameters parameters} and
+         * {@link MethodState#formalReturn return value} of the given method can have.
          */
         public MethodState lookupMethod(ResolvedJavaMethod method) {
             MethodState result = methods.get(method);
@@ -197,8 +196,8 @@ public class StaticAnalysis {
     }
 
     /**
-     * The {@link TypeFlow#getTypes() types} of the parameters and return value of a method. Also
-     * serves as the worklist element to parse the bytecodes of the method.
+     * The {@link TypeFlow#getTypes() types} of the parameters and return value of a method. Also serves
+     * as the worklist element to parse the bytecodes of the method.
      */
     public class MethodState extends WorklistEntry {
         private final ResolvedJavaMethod method;
@@ -245,29 +244,26 @@ public class StaticAnalysis {
                 DebugContext debug = DebugContext.create(options, DebugHandlersFactory.LOADER);
                 StructuredGraph graph = new StructuredGraph.Builder(options, debug).method(method).build();
                 /*
-                 * Support for graph dumping, IGV uses this information to show the method name of a
-                 * graph.
+                 * Support for graph dumping, IGV uses this information to show the method name of a graph.
                  */
                 try (DebugContext.Scope scope = debug.scope("graph building", graph)) {
                     /*
-                     * We want all types to be resolved by the graph builder, i.e., we want classes
-                     * referenced by the bytecodes to be loaded and initialized. Since we do not run
-                     * the code before static analysis, the classes would otherwise be not loaded
-                     * yet and the bytecode parser would only create a graph.
+                     * We want all types to be resolved by the graph builder, i.e., we want classes referenced by the
+                     * bytecodes to be loaded and initialized. Since we do not run the code before static analysis, the
+                     * classes would otherwise be not loaded yet and the bytecode parser would only create a graph.
                      */
                     Plugins plugins = new Plugins(new InvocationPlugins());
                     GraphBuilderConfiguration graphBuilderConfig = GraphBuilderConfiguration.getDefault(plugins).withEagerResolving(true).withUnresolvedIsError(true);
                     /*
-                     * For simplicity, we ignore all exception handling during the static analysis.
-                     * This is a constraint of this example code, a real static analysis needs to
-                     * handle the Graal nodes for throwing and handling exceptions.
+                     * For simplicity, we ignore all exception handling during the static analysis. This is a constraint
+                     * of this example code, a real static analysis needs to handle the Graal nodes for throwing and
+                     * handling exceptions.
                      */
                     graphBuilderConfig = graphBuilderConfig.withBytecodeExceptionMode(BytecodeExceptionMode.OmitAll);
                     /*
-                     * We do not want Graal to perform any speculative optimistic optimizations,
-                     * i.e., we do not want to use profiling information. Since we do not run the
-                     * code before static analysis, the profiling information is empty and therefore
-                     * wrong.
+                     * We do not want Graal to perform any speculative optimistic optimizations, i.e., we do not want to
+                     * use profiling information. Since we do not run the code before static analysis, the profiling
+                     * information is empty and therefore wrong.
                      */
                     OptimisticOptimizations optimisticOpts = OptimisticOptimizations.NONE;
 
@@ -278,8 +274,8 @@ public class StaticAnalysis {
                 }
 
                 /*
-                 * Build the type flow graph from the Graal graph, i.e., process all nodes that are
-                 * deal with objects.
+                 * Build the type flow graph from the Graal graph, i.e., process all nodes that are deal with
+                 * objects.
                  */
 
                 TypeFlowBuilder typeFlowBuilder = new TypeFlowBuilder(graph);
@@ -289,8 +285,8 @@ public class StaticAnalysis {
     }
 
     /**
-     * The active element during static analysis: types are added until a fixed point is reached.
-     * When a new type is added, it is propagated to all usages by putting this element on the
+     * The active element during static analysis: types are added until a fixed point is reached. When a
+     * new type is added, it is propagated to all usages by putting this element on the
      * {@link StaticAnalysis#addToWorklist worklist}.
      */
     public class TypeFlow extends WorklistEntry {
@@ -308,9 +304,9 @@ public class StaticAnalysis {
         }
 
         /**
-         * Adds new types to this element. If that changes the state of this element, it is added to
-         * the {@link StaticAnalysis#addToWorklist worklist} in order to propagate the added types
-         * to all usages.
+         * Adds new types to this element. If that changes the state of this element, it is added to the
+         * {@link StaticAnalysis#addToWorklist worklist} in order to propagate the added types to all
+         * usages.
          */
         protected void addTypes(Set<ResolvedJavaType> newTypes) {
             if (types.addAll(newTypes)) {
@@ -319,8 +315,7 @@ public class StaticAnalysis {
         }
 
         /**
-         * Adds a new use to this element. All types of this element are propagated to the new
-         * usage.
+         * Adds a new use to this element. All types of this element are propagated to the new usage.
          */
         protected void addUse(TypeFlow use) {
             if (uses.add(use)) {
@@ -329,8 +324,8 @@ public class StaticAnalysis {
         }
 
         /**
-         * Processing of the worklist element: propagate the types to all usages. That in turn can
-         * add the usages to the worklist (if the types of the usage are changed).
+         * Processing of the worklist element: propagate the types to all usages. That in turn can add the
+         * usages to the worklist (if the types of the usage are changed).
          */
         @Override
         protected void process() {
@@ -342,15 +337,13 @@ public class StaticAnalysis {
 
     /**
      * The active element for method invocations. For {@link InvokeKind#Virtual virtual} and
-     * {@link InvokeKind#Interface interface} calls, the {@link TypeFlow#getTypes() types} of this
-     * node are the receiver types. When a new receiver type is added, a new callee might be added.
-     * Adding a new callee means linking the type flow of the actual parameters with the formal
-     * parameters of the callee, and linking the return value of the callee with the return value
-     * state of the invocation.
+     * {@link InvokeKind#Interface interface} calls, the {@link TypeFlow#getTypes() types} of this node
+     * are the receiver types. When a new receiver type is added, a new callee might be added. Adding a
+     * new callee means linking the type flow of the actual parameters with the formal parameters of the
+     * callee, and linking the return value of the callee with the return value state of the invocation.
      *
-     * Statically bindable methods calls ({@link InvokeKind#Static static} and
-     * {@link InvokeKind#Special special} calls) have only one callee, but use the same code for
-     * simplicity.
+     * Statically bindable methods calls ({@link InvokeKind#Static static} and {@link InvokeKind#Special
+     * special} calls) have only one callee, but use the same code for simplicity.
      */
     class InvokeTypeFlow extends TypeFlow {
         private final MethodCallTargetNode callTarget;
@@ -370,8 +363,7 @@ public class StaticAnalysis {
                 /* We have added a new callee. */
 
                 /*
-                 * Connect the actual parameters of the invocation with the formal parameters of the
-                 * callee.
+                 * Connect the actual parameters of the invocation with the formal parameters of the callee.
                  */
                 MethodState calleeState = results.lookupMethod(callee);
                 for (int i = 0; i < actualParameters.length; i++) {
@@ -381,8 +373,7 @@ public class StaticAnalysis {
                 }
 
                 /*
-                 * Connect the formal return value of the callee with the actual return value of the
-                 * invocation.
+                 * Connect the formal return value of the callee with the actual return value of the invocation.
                  */
                 if (actualReturn != null) {
                     calleeState.formalReturn.addUse(actualReturn);
@@ -400,16 +391,15 @@ public class StaticAnalysis {
                 /* Virtual and interface call: Iterate all receiver types. */
                 for (ResolvedJavaType type : getTypes()) {
                     /*
-                     * Resolve the method call for one exact receiver type. The method linking
-                     * semantics of Java are complicated, but fortunatley we can use the linker of
-                     * the hosting Java VM. The Graal API exposes this functionality.
+                     * Resolve the method call for one exact receiver type. The method linking semantics of Java are
+                     * complicated, but fortunatley we can use the linker of the hosting Java VM. The Graal API exposes
+                     * this functionality.
                      */
                     ResolvedJavaMethod method = type.resolveConcreteMethod(callTarget.targetMethod(), callTarget.invoke().getContextType());
 
                     /*
-                     * Since the static analysis is conservative, the list of receiver types can
-                     * contain types that actually do not provide the method to be called. Ignore
-                     * these.
+                     * Since the static analysis is conservative, the list of receiver types can contain types that
+                     * actually do not provide the method to be called. Ignore these.
                      */
                     if (method != null && !method.isAbstract()) {
                         linkCallee(method);
@@ -421,16 +411,16 @@ public class StaticAnalysis {
     }
 
     /**
-     * Converts the Graal nodes of a method to a type flow graph. The main part of the algorithm is
-     * a reverse-postorder iteration of the Graal nodes, which is provided by the base class
+     * Converts the Graal nodes of a method to a type flow graph. The main part of the algorithm is a
+     * reverse-postorder iteration of the Graal nodes, which is provided by the base class
      * {@link StatelessPostOrderNodeIterator}.
      */
     class TypeFlowBuilder extends StatelessPostOrderNodeIterator {
         private final StructuredGraph graph;
         private final MethodState methodState;
         /**
-         * Mapping from Graal nodes to type flows. This uses an efficient Graal-provided
-         * {@link NodeMap collection class}.
+         * Mapping from Graal nodes to type flows. This uses an efficient Graal-provided {@link NodeMap
+         * collection class}.
          */
         private final NodeMap<TypeFlow> typeFlows;
 
@@ -447,8 +437,8 @@ public class StaticAnalysis {
          */
         private void registerFlow(ValueNode node, TypeFlow flow) {
             /*
-             * We ignore intermediate nodes used by Graal that, e.g., add more type information or
-             * encapsulate values flowing out of loops.
+             * We ignore intermediate nodes used by Graal that, e.g., add more type information or encapsulate
+             * values flowing out of loops.
              */
             ValueNode unproxiedNode = GraphUtil.unproxify(node);
 
@@ -464,8 +454,8 @@ public class StaticAnalysis {
             TypeFlow result = typeFlows.get(unproxiedNode);
             if (result == null) {
                 /*
-                 * This is only the prototype of a static analysis, the handling of many Graal nodes
-                 * (such as array accesses) is not implemented.
+                 * This is only the prototype of a static analysis, the handling of many Graal nodes (such as array
+                 * accesses) is not implemented.
                  */
                 throw error("Node is not supported yet by static analysis: " + node.getClass().getName());
             }
@@ -479,14 +469,12 @@ public class StaticAnalysis {
         @Override
         public void apply() {
             /*
-             * Before the reverse-postorder iteration of fixed nodes, we handle some classes of
-             * floating nodes.
+             * Before the reverse-postorder iteration of fixed nodes, we handle some classes of floating nodes.
              */
             for (Node n : graph.getNodes()) {
                 if (n instanceof ParameterNode) {
                     /*
-                     * Incoming method parameter already have a type flow created by the
-                     * MethodState.
+                     * Incoming method parameter already have a type flow created by the MethodState.
                      */
                     ParameterNode node = (ParameterNode) n;
                     if (isObject(node)) {
@@ -494,9 +482,8 @@ public class StaticAnalysis {
                     }
                 } else if (n instanceof ValuePhiNode) {
                     /*
-                     * Phi functions for loops are cyclic. We create the type flow here (before
-                     * processing any loop nodes), but link the phi values only later (after
-                     * processing of all loop nodes.
+                     * Phi functions for loops are cyclic. We create the type flow here (before processing any loop
+                     * nodes), but link the phi values only later (after processing of all loop nodes.
                      */
                     ValuePhiNode node = (ValuePhiNode) n;
                     if (isObject(node)) {
@@ -517,8 +504,8 @@ public class StaticAnalysis {
             for (Node n : graph.getNodes()) {
                 if (n instanceof ValuePhiNode) {
                     /*
-                     * Post-processing of phi functions. Now the type flow for all input values has
-                     * been created, so we can link the type flows together.
+                     * Post-processing of phi functions. Now the type flow for all input values has been created, so we
+                     * can link the type flows together.
                      */
                     ValuePhiNode node = (ValuePhiNode) n;
                     if (isObject(node)) {
@@ -533,8 +520,8 @@ public class StaticAnalysis {
 
         private void allocation(ValueNode node, ResolvedJavaType type) {
             /*
-             * The type flow of allocation nodes is one exact type. This is the source of the
-             * fixpoint iteration, the types are propagated downwards from these sources.
+             * The type flow of allocation nodes is one exact type. This is the source of the fixpoint
+             * iteration, the types are propagated downwards from these sources.
              */
             TypeFlow flow = new TypeFlow();
             flow.addTypes(Collections.singleton(type));
@@ -553,8 +540,8 @@ public class StaticAnalysis {
 
             } else if (n instanceof LoadFieldNode) {
                 /*
-                 * The type flow of a field load is the type flow of the field itself. It
-                 * accumulates all types ever stored to the field.
+                 * The type flow of a field load is the type flow of the field itself. It accumulates all types ever
+                 * stored to the field.
                  */
                 LoadFieldNode node = (LoadFieldNode) n;
                 if (isObject(node)) {
@@ -572,8 +559,7 @@ public class StaticAnalysis {
 
             } else if (n instanceof ReturnNode) {
                 /*
-                 * Connect the type flow of the returned value with the formal return type flow of
-                 * the MethodState.
+                 * Connect the type flow of the returned value with the formal return type flow of the MethodState.
                  */
                 ReturnNode node = (ReturnNode) n;
                 if (node.result() != null && isObject(node.result())) {
@@ -582,8 +568,8 @@ public class StaticAnalysis {
 
             } else if (n instanceof Invoke) {
                 /*
-                 * Create the InvokeTypeFlow, which performs all the linking of actual and formal
-                 * parameter values with all identified callees.
+                 * Create the InvokeTypeFlow, which performs all the linking of actual and formal parameter values
+                 * with all identified callees.
                  */
                 Invoke invoke = (Invoke) n;
                 MethodCallTargetNode callTarget = (MethodCallTargetNode) invoke.callTarget();
@@ -605,14 +591,14 @@ public class StaticAnalysis {
 
                 if (callTarget.invokeKind().isIndirect()) {
                     /*
-                     * For virtual and interface calls, new receiver types can lead to new callees.
-                     * Connect the type flow of the receiver with the invocation flow.
+                     * For virtual and interface calls, new receiver types can lead to new callees. Connect the type
+                     * flow of the receiver with the invocation flow.
                      */
                     lookupFlow(callTarget.arguments().get(0)).addUse(invokeFlow);
                 }
                 /*
-                 * Ensure the invocation is on the worklist at least once, even if it is a static
-                 * call with not parameters that does not involve any type flows.
+                 * Ensure the invocation is on the worklist at least once, even if it is a static call with not
+                 * parameters that does not involve any type flows.
                  */
                 addToWorklist(invokeFlow);
             }

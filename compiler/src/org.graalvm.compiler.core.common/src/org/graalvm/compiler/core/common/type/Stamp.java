@@ -40,8 +40,8 @@ public abstract class Stamp {
     }
 
     /**
-     * Returns the type of the stamp, guaranteed to be non-null. In some cases, this requires the
-     * lookup of class meta data, therefore the {@link MetaAccessProvider} is mandatory.
+     * Returns the type of the stamp, guaranteed to be non-null. In some cases, this requires the lookup
+     * of class meta data, therefore the {@link MetaAccessProvider} is mandatory.
      */
     public abstract ResolvedJavaType javaType(MetaAccessProvider metaAccess);
 
@@ -50,9 +50,9 @@ public abstract class Stamp {
     }
 
     /**
-     * Gets a Java {@link JavaKind} that can be used to store a value of this stamp on the Java
-     * bytecode stack. Returns {@link JavaKind#Illegal} if a value of this stamp can not be stored
-     * on the bytecode stack.
+     * Gets a Java {@link JavaKind} that can be used to store a value of this stamp on the Java bytecode
+     * stack. Returns {@link JavaKind#Illegal} if a value of this stamp can not be stored on the
+     * bytecode stack.
      */
     public abstract JavaKind getStackKind();
 
@@ -93,11 +93,11 @@ public abstract class Stamp {
     public abstract Stamp empty();
 
     /**
-     * If it is possible to represent single value stamps of this kind, this method returns the
-     * stamp representing the single value c. stamp.constant(c).asConstant() should be equal to c.
+     * If it is possible to represent single value stamps of this kind, this method returns the stamp
+     * representing the single value c. stamp.constant(c).asConstant() should be equal to c.
      * <p>
-     * If it is not possible to represent single value stamps, this method returns a stamp that
-     * includes c, and is otherwise as narrow as possible.
+     * If it is not possible to represent single value stamps, this method returns a stamp that includes
+     * c, and is otherwise as narrow as possible.
      */
     public abstract Stamp constant(Constant c, MetaAccessProvider meta);
 
@@ -133,11 +133,11 @@ public abstract class Stamp {
     }
 
     /**
-     * If this stamp represents a single value, the methods returns this single value. It returns
-     * null otherwise.
+     * If this stamp represents a single value, the methods returns this single value. It returns null
+     * otherwise.
      *
-     * @return the constant corresponding to the single value of this stamp and null if this stamp
-     *         can represent less or more than one value.
+     * @return the constant corresponding to the single value of this stamp and null if this stamp can
+     *         represent less or more than one value.
      */
     public Constant asConstant() {
         return null;

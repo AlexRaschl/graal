@@ -76,8 +76,8 @@ final class EconomicMapImpl<K, V> implements EconomicMap<K, V>, EconomicSet<K> {
     private static final int HASH_THRESHOLD = 4;
 
     /**
-     * Number of entries above which a hash table is created when equality can be checked with
-     * object identity.
+     * Number of entries above which a hash table is created when equality can be checked with object
+     * identity.
      */
     private static final int HASH_THRESHOLD_IDENTITY_COMPARE = 8;
 
@@ -112,8 +112,8 @@ final class EconomicMapImpl<K, V> implements EconomicMap<K, V>, EconomicSet<K> {
     private Object[] entries;
 
     /**
-     * Hash array that is interpreted either as byte or short or int array depending on number of
-     * map entries.
+     * Hash array that is interpreted either as byte or short or int array depending on number of map
+     * entries.
      */
     private byte[] hashArray;
 
@@ -203,8 +203,8 @@ final class EconomicMapImpl<K, V> implements EconomicMap<K, V>, EconomicSet<K> {
     }
 
     /**
-     * Links the collisions. Needs to be immutable class for allowing efficient shallow copy from
-     * other map on construction.
+     * Links the collisions. Needs to be immutable class for allowing efficient shallow copy from other
+     * map on construction.
      */
     private static final class CollisionLink {
 
@@ -468,8 +468,8 @@ final class EconomicMapImpl<K, V> implements EconomicMap<K, V>, EconomicSet<K> {
     }
 
     /**
-     * Compresses the graph if there is a large number of deleted entries and returns the translated
-     * new next index.
+     * Compresses the graph if there is a large number of deleted entries and returns the translated new
+     * next index.
      */
     private int maybeCompress(int nextIndex) {
         if (entries.length != INITIAL_CAPACITY << 1 && deletedEntries >= (totalEntries >> 1) + (totalEntries >> 2)) {
@@ -625,8 +625,8 @@ final class EconomicMapImpl<K, V> implements EconomicMap<K, V>, EconomicSet<K> {
     }
 
     /**
-     * Removes the element at the specific index and returns the index of the next element. This can
-     * be a different value if graph compression was triggered.
+     * Removes the element at the specific index and returns the index of the next element. This can be
+     * a different value if graph compression was triggered.
      */
     private int remove(int indexToRemove) {
         int index = indexToRemove;

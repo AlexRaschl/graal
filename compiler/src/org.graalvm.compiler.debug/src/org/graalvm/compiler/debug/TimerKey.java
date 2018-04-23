@@ -58,8 +58,8 @@ public interface TimerKey extends MetricKey {
     TimerKey doc(String string);
 
     /**
-     * Gets the timer recording the amount time spent within a timed scope minus the time spent in
-     * any nested timed scopes.
+     * Gets the timer recording the amount time spent within a timed scope minus the time spent in any
+     * nested timed scopes.
      *
      * @return null if this timer does not support flat timing
      */

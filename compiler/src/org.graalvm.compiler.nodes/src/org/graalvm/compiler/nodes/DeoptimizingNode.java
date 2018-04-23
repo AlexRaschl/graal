@@ -41,8 +41,7 @@ public interface DeoptimizingNode extends NodeWithState {
     public interface DeoptBefore extends DeoptimizingNode {
 
         /**
-         * Sets the {@link FrameState} describing the program state before the execution of this
-         * node.
+         * Sets the {@link FrameState} describing the program state before the execution of this node.
          */
         void setStateBefore(FrameState state);
 
@@ -65,15 +64,14 @@ public interface DeoptimizingNode extends NodeWithState {
         FrameState stateDuring();
 
         /**
-         * Sets the {@link FrameState} describing the program state during the execution of this
-         * node.
+         * Sets the {@link FrameState} describing the program state during the execution of this node.
          */
         void setStateDuring(FrameState state);
 
         /**
-         * Compute the {@link FrameState} describing the program state during the execution of this
-         * node from an input {@link FrameState} describing the program state after finishing the
-         * execution of this node.
+         * Compute the {@link FrameState} describing the program state during the execution of this node
+         * from an input {@link FrameState} describing the program state after finishing the execution of
+         * this node.
          */
         void computeStateDuring(FrameState stateAfter);
     }

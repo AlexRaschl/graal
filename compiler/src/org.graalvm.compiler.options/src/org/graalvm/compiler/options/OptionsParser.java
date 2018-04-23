@@ -49,10 +49,10 @@ public class OptionsParser {
             return graalLoader;
         } else {
             /*
-             * The Graal module (i.e., jdk.internal.vm.compiler) is loaded by the platform class
-             * loader on JDK 9. Other modules that extend Graal or are Graal dependencies (such as
-             * Truffle) are supplied via --module-path which means they are loaded by the app class
-             * loader. As such, we need to search the app class loader path as well.
+             * The Graal module (i.e., jdk.internal.vm.compiler) is loaded by the platform class loader on JDK
+             * 9. Other modules that extend Graal or are Graal dependencies (such as Truffle) are supplied via
+             * --module-path which means they are loaded by the app class loader. As such, we need to search the
+             * app class loader path as well.
              */
             ServiceLoader<OptionDescriptors> truffleLoader = ServiceLoader.load(OptionDescriptors.class, ClassLoader.getSystemClassLoader());
             return CollectionsUtil.concat(graalLoader, truffleLoader);

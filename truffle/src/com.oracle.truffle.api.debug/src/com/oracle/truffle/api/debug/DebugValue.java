@@ -61,9 +61,9 @@ public abstract class DebugValue {
     }
 
     /**
-     * Sets the value using another {@link DebugValue}. Throws an {@link IllegalStateException} if
-     * the value is not writable, the passed value is not readable, this value or the passed value
-     * is invalid, or the guest language of the values do not match. Use
+     * Sets the value using another {@link DebugValue}. Throws an {@link IllegalStateException} if the
+     * value is not writable, the passed value is not readable, this value or the passed value is
+     * invalid, or the guest language of the values do not match. Use
      * {@link DebugStackFrame#eval(String)} to evaluate values to be set.
      *
      * @param value the value to set
@@ -74,8 +74,7 @@ public abstract class DebugValue {
     /**
      * Converts the debug value into a Java type. Class conversions which are always supported:
      * <ul>
-     * <li>{@link String}.class converts the value to its language specific string representation.
-     * </li>
+     * <li>{@link String}.class converts the value to its language specific string representation.</li>
      * </ul>
      * No optional conversions are currently available. If a conversion is not supported then an
      * {@link UnsupportedOperationException} is thrown. If the value is not {@link #isReadable()
@@ -88,10 +87,10 @@ public abstract class DebugValue {
     public abstract <T> T as(Class<T> clazz);
 
     /**
-     * Returns the name of this value as it is referred to from its origin. If this value is
-     * originated from the stack it returns the name of the local variable. If the value was
-     * returned from another objects then it returns the name of the property or field it is
-     * contained in. If no name is available <code>null</code> is returned.
+     * Returns the name of this value as it is referred to from its origin. If this value is originated
+     * from the stack it returns the name of the local variable. If the value was returned from another
+     * objects then it returns the name of the property or field it is contained in. If no name is
+     * available <code>null</code> is returned.
      *
      * @since 0.17
      */
@@ -132,8 +131,8 @@ public abstract class DebugValue {
      * Languages might have extra object properties or extra scope variables that are a part of the
      * runtime, but do not correspond to anything what is an explicit part of the guest language
      * representation. They may represent additional language artifacts, providing more in-depth
-     * information that can be valuable during debugging. Language implementors mark these variables
-     * as <em>internal</em>. An example of such internal values are internal slots in ECMAScript.
+     * information that can be valuable during debugging. Language implementors mark these variables as
+     * <em>internal</em>. An example of such internal values are internal slots in ECMAScript.
      * </p>
      *
      * @since 0.26
@@ -141,8 +140,8 @@ public abstract class DebugValue {
     public abstract boolean isInternal();
 
     /**
-     * Get the scope where this value is declared in. It returns a non-null value for local
-     * variables declared on a stack. It's <code>null<code> for object properties and other heap
+     * Get the scope where this value is declared in. It returns a non-null value for local variables
+     * declared on a stack. It's <code>null<code> for object properties and other heap
      * values.
      *
      * @return the scope, or <code>null</code> when this value does not belong into any scope.
@@ -154,12 +153,12 @@ public abstract class DebugValue {
     }
 
     /**
-     * Provides properties representing an internal structure of this value. The returned collection
-     * is not thread-safe. If the value is not {@link #isReadable() readable} then an
+     * Provides properties representing an internal structure of this value. The returned collection is
+     * not thread-safe. If the value is not {@link #isReadable() readable} then an
      * {@link IllegalStateException} is thrown.
      *
-     * @return a collection of property values, or </code>null</code> when the value does not have
-     *         any concept of properties.
+     * @return a collection of property values, or </code>null</code> when the value does not have any
+     *         concept of properties.
      * @since 0.19
      */
     public final Collection<DebugValue> getProperties() {
@@ -183,9 +182,9 @@ public abstract class DebugValue {
     }
 
     /*
-     * TODO future API: Find a property value based on a String name. In general, not all properties
-     * may have String names. Use this for lookup of a value of some known String-based property.
-     * DebugValue findProperty(String name)
+     * TODO future API: Find a property value based on a String name. In general, not all properties may
+     * have String names. Use this for lookup of a value of some known String-based property. DebugValue
+     * findProperty(String name)
      */
 
     /**
@@ -204,8 +203,8 @@ public abstract class DebugValue {
     }
 
     /**
-     * Provides array elements when this value represents an array. To test if this value represents
-     * an array, check {@link #isArray()}.
+     * Provides array elements when this value represents an array. To test if this value represents an
+     * array, check {@link #isArray()}.
      *
      * @return a list of array elements, or <code>null</code> when the value does not represent an
      *         array.
@@ -237,8 +236,8 @@ public abstract class DebugValue {
     }
 
     /**
-     * Get a meta-object of this value, if any. The meta-object represents a description of the
-     * value, reveals it's kind and it's features.
+     * Get a meta-object of this value, if any. The meta-object represents a description of the value,
+     * reveals it's kind and it's features.
      *
      * @return a value representing the meta-object, or <code>null</code>
      * @since 0.22
@@ -281,11 +280,11 @@ public abstract class DebugValue {
 
     /**
      * Get the original language that created the value, if any. This method will return
-     * <code>null</code> for values representing a primitive value, or objects that are not
-     * associated with any language.
+     * <code>null</code> for values representing a primitive value, or objects that are not associated
+     * with any language.
      *
-     * @return the language, or <code>null</code> when no language can be identified as the creator
-     *         of the value.
+     * @return the language, or <code>null</code> when no language can be identified as the creator of
+     *         the value.
      * @since 0.27
      */
     public final LanguageInfo getOriginalLanguage() {
@@ -297,11 +296,11 @@ public abstract class DebugValue {
     }
 
     /**
-     * Returns a debug value that presents itself as seen by the provided language. The language
-     * affects the output of {@link #as(java.lang.Class)}, {@link #getMetaObject()} and
-     * {@link #getSourceLocation()}. Properties, array elements and other attributes are not
-     * affected by a language. The {@link #getOriginalLanguage() original language} of the returned
-     * value remains the same as of this value.
+     * Returns a debug value that presents itself as seen by the provided language. The language affects
+     * the output of {@link #as(java.lang.Class)}, {@link #getMetaObject()} and
+     * {@link #getSourceLocation()}. Properties, array elements and other attributes are not affected by
+     * a language. The {@link #getOriginalLanguage() original language} of the returned value remains
+     * the same as of this value.
      *
      * @param language a language to get the value representation of
      * @return the value as represented in the language

@@ -69,9 +69,9 @@ public enum NodeCost {
     POLYMORPHIC,
 
     /**
-     * This node represents a megamorphic version of an operation. This value should only be used if
-     * the operation implementation supports monomorphism and polymorphism otherwise
-     * {@link #MONOMORPHIC} should be used instead.
+     * This node represents a megamorphic version of an operation. This value should only be used if the
+     * operation implementation supports monomorphism and polymorphism otherwise {@link #MONOMORPHIC}
+     * should be used instead.
      * 
      * @since 0.8 or earlier
      */

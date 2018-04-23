@@ -52,8 +52,8 @@ public final class DontReuseArgumentSpaceTest extends GraalCompilerTest {
     @BytecodeParserNeverInline
     public static int callTwice(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j) {
         /*
-         * Call the same method twice so the arguments are in the same place each time and might
-         * appear to be redundant moves.
+         * Call the same method twice so the arguments are in the same place each time and might appear to
+         * be redundant moves.
          */
         killArguments(a, b, c, d, e, f, g, h, i, j);
         return killArguments(a, b, c, d, e, f, g, h, i, j);
@@ -67,8 +67,8 @@ public final class DontReuseArgumentSpaceTest extends GraalCompilerTest {
         callTwice(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         /*
-         * Create a standalone compile of killArguments. This test assumes that zapping of argument
-         * space is being performed by the backend.
+         * Create a standalone compile of killArguments. This test assumes that zapping of argument space is
+         * being performed by the backend.
          */
         ResolvedJavaMethod javaMethod = getResolvedJavaMethod("killArguments");
         StructuredGraph graph = parseEager(javaMethod, AllowAssumptions.YES);

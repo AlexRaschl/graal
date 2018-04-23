@@ -46,12 +46,10 @@ public class BridgeMethodUtils {
 
     /**
      * Gets the method bridged to by a {@linkplain ResolvedJavaMethod#isBridge() bridge} method. The
-     * value returned is the method called by {@code method} that has the same name as
-     * {@code bridge}.
+     * value returned is the method called by {@code method} that has the same name as {@code bridge}.
      *
      * @param bridge a bridge method
-     * @return the method called by {@code bridge} whose name is the same as
-     *         {@code bridge.getName()}
+     * @return the method called by {@code bridge} whose name is the same as {@code bridge.getName()}
      */
     public static ResolvedJavaMethod getBridgedMethod(ResolvedJavaMethod bridge) {
         assert bridge.isBridge();
@@ -122,8 +120,8 @@ public class BridgeMethodUtils {
     }
 
     /**
-     * A helper for {@link ResolvedJavaMethod#getAnnotations()} that handles the absence of
-     * annotations on bridge methods where the bridged method has annotations.
+     * A helper for {@link ResolvedJavaMethod#getAnnotations()} that handles the absence of annotations
+     * on bridge methods where the bridged method has annotations.
      */
     public static Annotation[] getAnnotations(ResolvedJavaMethod method) {
         Annotation[] a = method.getAnnotations();

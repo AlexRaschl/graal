@@ -171,8 +171,8 @@ public class SimplifyingGraphDecoder extends GraphDecoder {
     @Override
     protected boolean allowLazyPhis() {
         /*
-         * We do not need to exactly reproduce the encoded graph, so we want to avoid unnecessary
-         * phi functions.
+         * We do not need to exactly reproduce the encoded graph, so we want to avoid unnecessary phi
+         * functions.
          */
         return true;
     }
@@ -180,8 +180,8 @@ public class SimplifyingGraphDecoder extends GraphDecoder {
     @Override
     protected void handleMergeNode(MergeNode merge) {
         /*
-         * All inputs of non-loop phi nodes are known by now. We can infer the stamp for the phi, so
-         * that parsing continues with more precise type information.
+         * All inputs of non-loop phi nodes are known by now. We can infer the stamp for the phi, so that
+         * parsing continues with more precise type information.
          */
         for (ValuePhiNode phi : merge.valuePhis()) {
             phi.inferStamp();
@@ -266,9 +266,9 @@ public class SimplifyingGraphDecoder extends GraphDecoder {
 
     private static Node canonicalizeFixedNodeToNull(FixedNode node) {
         /*
-         * When a node is unnecessary, we must not remove it right away because there might be nodes
-         * that use it as a guard input. Therefore, we replace it with a more lightweight node
-         * (which is floating and has no inputs).
+         * When a node is unnecessary, we must not remove it right away because there might be nodes that
+         * use it as a guard input. Therefore, we replace it with a more lightweight node (which is floating
+         * and has no inputs).
          */
         return new CanonicalizeToNullNode(node.stamp);
     }
@@ -311,9 +311,9 @@ public class SimplifyingGraphDecoder extends GraphDecoder {
             Node canonical = ((Canonicalizable) node).canonical(canonicalizerTool);
             if (canonical == null) {
                 /*
-                 * This is a possible return value of canonicalization. However, we might need to
-                 * add additional usages later on for which we need a node. Therefore, we just do
-                 * nothing and leave the node in place.
+                 * This is a possible return value of canonicalization. However, we might need to add additional
+                 * usages later on for which we need a node. Therefore, we just do nothing and leave the node in
+                 * place.
                  */
             } else if (canonical != node) {
                 if (!canonical.isAlive()) {
@@ -330,8 +330,8 @@ public class SimplifyingGraphDecoder extends GraphDecoder {
     @Override
     protected Node addFloatingNode(MethodScope methodScope, Node node) {
         /*
-         * In contrast to the base class implementation, we do not need to exactly reproduce the
-         * encoded graph. Since we do canonicalization, we also want nodes to be unique.
+         * In contrast to the base class implementation, we do not need to exactly reproduce the encoded
+         * graph. Since we do canonicalization, we also want nodes to be unique.
          */
         return graph.addOrUnique(node);
     }

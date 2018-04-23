@@ -71,8 +71,8 @@ public final class PiArrayNode extends PiNode implements ArrayLengthProvider {
     public static native Object piArrayCastToSnippetReplaceeStamp(Object object, int length);
 
     /**
-     * A placeholder node in a snippet that will be replaced with a {@link PiArrayNode} when the
-     * snippet is instantiated.
+     * A placeholder node in a snippet that will be replaced with a {@link PiArrayNode} when the snippet
+     * is instantiated.
      */
     @NodeInfo(cycles = CYCLES_0, size = SIZE_0)
     public static class Placeholder extends PiNode.Placeholder {

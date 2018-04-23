@@ -88,9 +88,9 @@ public class CFGPrinterObserver implements DebugDumpHandler {
     }
 
     /**
-     * Looks for the outer most method and its {@link DebugDumpScope#decorator}s in the current
-     * debug scope and opens a new compilation scope if this pair does not match the current method
-     * and decorator pair.
+     * Looks for the outer most method and its {@link DebugDumpScope#decorator}s in the current debug
+     * scope and opens a new compilation scope if this pair does not match the current method and
+     * decorator pair.
      */
     private boolean checkMethodScope(DebugContext debug) {
         JavaMethod method = null;

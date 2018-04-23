@@ -79,19 +79,18 @@ public final class DebugStackFrame implements Iterable<DebugValue> {
      * during normal guest language debugging, for example in stack traces.
      * <p>
      * Language implementations sometimes create method calls internally that do not correspond to
-     * anything explicitly written by a programmer, for example when the body of a looping construct
-     * is implemented as callable block. Language implementors mark these methods as
-     * <em>internal</em>.
+     * anything explicitly written by a programmer, for example when the body of a looping construct is
+     * implemented as callable block. Language implementors mark these methods as <em>internal</em>.
      * </p>
      * <p>
-     * Clients of the debugging API should assume that displaying <em>internal</em> frames is
-     * unlikely to help programmers debug guest language programs and might possibly create
-     * confusion. However, clients may choose to display all frames, for example in a special mode
-     * to support development of programming language implementations.
+     * Clients of the debugging API should assume that displaying <em>internal</em> frames is unlikely
+     * to help programmers debug guest language programs and might possibly create confusion. However,
+     * clients may choose to display all frames, for example in a special mode to support development of
+     * programming language implementations.
      * </p>
      * <p>
-     * The decision to mark a method as <em>internal</em> is language-specific, reflects judgments
-     * about tool usability, and is subject to change.
+     * The decision to mark a method as <em>internal</em> is language-specific, reflects judgments about
+     * tool usability, and is subject to change.
      * <p>
      * This method is thread-safe.
      *
@@ -108,10 +107,9 @@ public final class DebugStackFrame implements Iterable<DebugValue> {
 
     /**
      * A description of the AST (expected to be a method or procedure name in most languages) that
-     * identifies the AST for the benefit of guest language programmers using tools; it might
-     * appear, for example in the context of a stack dump or trace and is not expected to be called
-     * often. If the language does not provide such a description then <code>null</code> is
-     * returned.
+     * identifies the AST for the benefit of guest language programmers using tools; it might appear,
+     * for example in the context of a stack dump or trace and is not expected to be called often. If
+     * the language does not provide such a description then <code>null</code> is returned.
      *
      * <p>
      * This method is thread-safe.
@@ -138,8 +136,8 @@ public final class DebugStackFrame implements Iterable<DebugValue> {
     }
 
     /**
-     * Returns the source section of the location where the debugging session was suspended. The
-     * source section is <code>null</code> if the source location is not available.
+     * Returns the source section of the location where the debugging session was suspended. The source
+     * section is <code>null</code> if the source location is not available.
      *
      * <p>
      * This method is thread-safe.
@@ -169,8 +167,8 @@ public final class DebugStackFrame implements Iterable<DebugValue> {
      * This method is not thread-safe and will throw an {@link IllegalStateException} if called on
      * another thread than it was created with.
      *
-     * @return the scope, or <code>null</code> when no language is associated with this frame
-     *         location, or when no local scope exists.
+     * @return the scope, or <code>null</code> when no language is associated with this frame location,
+     *         or when no local scope exists.
      * @since 0.26
      */
     public DebugScope getScope() {
@@ -201,10 +199,10 @@ public final class DebugStackFrame implements Iterable<DebugValue> {
     }
 
     /**
-     * Lookup a stack value with a given name. If no value is available in the current stack frame
-     * with that name <code>null</code> is returned. Stack values are only accessible as as long as
-     * the {@link DebugStackFrame debug stack frame} is valid. Debug stack frames are only valid as
-     * long as the source {@link SuspendedEvent suspended event} is valid.
+     * Lookup a stack value with a given name. If no value is available in the current stack frame with
+     * that name <code>null</code> is returned. Stack values are only accessible as as long as the
+     * {@link DebugStackFrame debug stack frame} is valid. Debug stack frames are only valid as long as
+     * the source {@link SuspendedEvent suspended event} is valid.
      * <p>
      * This method is not thread-safe and will throw an {@link IllegalStateException} if called on
      * another thread than it was created with.
@@ -212,8 +210,7 @@ public final class DebugStackFrame implements Iterable<DebugValue> {
      * @param name the name of the local variable to query.
      * @return the value from the stack
      * @since 0.17
-     * @deprecated Use {@link #getScope()} and {@link DebugScope#getDeclaredValue(java.lang.String)}
-     *             .
+     * @deprecated Use {@link #getScope()} and {@link DebugScope#getDeclaredValue(java.lang.String)} .
      */
     @Deprecated
     public DebugValue getValue(String name) {
@@ -244,9 +241,9 @@ public final class DebugStackFrame implements Iterable<DebugValue> {
     }
 
     /**
-     * Evaluates the given code in the state of the current execution and in the same guest language
-     * as the current language is defined in. Returns a heap value that remains valid even if this
-     * stack frame becomes invalid.
+     * Evaluates the given code in the state of the current execution and in the same guest language as
+     * the current language is defined in. Returns a heap value that remains valid even if this stack
+     * frame becomes invalid.
      *
      * <p>
      * This method is not thread-safe and will throw an {@link IllegalStateException} if called on
@@ -268,8 +265,8 @@ public final class DebugStackFrame implements Iterable<DebugValue> {
     }
 
     /**
-     * Returns an {@link Iterator iterator} for all stack values available in this frame. The
-     * returned stack values remain valid as long as the current stack frame remains valid.
+     * Returns an {@link Iterator iterator} for all stack values available in this frame. The returned
+     * stack values remain valid as long as the current stack frame remains valid.
      *
      * <p>
      * This method is not thread-safe and will throw an {@link IllegalStateException} if called on

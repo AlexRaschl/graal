@@ -39,8 +39,8 @@ public interface Frame {
     FrameDescriptor getFrameDescriptor();
 
     /**
-     * Retrieves the arguments object from this frame. The runtime assumes that the arguments object
-     * is never null.
+     * Retrieves the arguments object from this frame. The runtime assumes that the arguments object is
+     * never null.
      *
      * @return the arguments used when calling this method
      * @since 0.8 or earlier

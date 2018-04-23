@@ -74,8 +74,8 @@ public class NewInstanceNode extends AbstractNewObjectNode implements Virtualiza
     @Override
     public void virtualize(VirtualizerTool tool) {
         /*
-         * Reference objects can escape into their ReferenceQueue at any safepoint, therefore
-         * they're excluded from escape analysis.
+         * Reference objects can escape into their ReferenceQueue at any safepoint, therefore they're
+         * excluded from escape analysis.
          */
         if (!tool.getMetaAccessProvider().lookupJavaType(Reference.class).isAssignableFrom(instanceClass)) {
             VirtualInstanceNode virtualObject = createVirtualInstanceNode(true);

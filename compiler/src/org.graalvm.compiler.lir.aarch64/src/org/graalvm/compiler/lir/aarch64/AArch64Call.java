@@ -183,8 +183,8 @@ public class AArch64Call {
      * adequate.
      *
      * @param linkage Foreign call description
-     * @return true if foreign call can be called directly and does not need a scratch register to
-     *         load the address into.
+     * @return true if foreign call can be called directly and does not need a scratch register to load
+     *         the address into.
      */
     public static boolean isNearCall(ForeignCallLinkage linkage) {
         long maxOffset = linkage.getMaxCallTargetOffset();
@@ -199,8 +199,8 @@ public class AArch64Call {
         int before = masm.position();
         if (scratch != null) {
             /*
-             * Offset might not fit into a 28-bit immediate, generate an indirect call with a 64-bit
-             * immediate address which is fixed up by HotSpot.
+             * Offset might not fit into a 28-bit immediate, generate an indirect call with a 64-bit immediate
+             * address which is fixed up by HotSpot.
              */
             masm.movNativeAddress(scratch, 0L);
             masm.blr(scratch);

@@ -195,8 +195,8 @@ public class IndirectCallSiteTest extends TestWithSynchronousCompiling {
 
     /*
      * Tests that a CallTarget will not deoptimize if it calls (using an IndirectCallNode) a target
-     * previously compiled with a different argument assumption and also inlined into another
-     * compiled target.
+     * previously compiled with a different argument assumption and also inlined into another compiled
+     * target.
      */
     @Test
     public void testIndirectCallNodeDoesNotDeopOnTypeChangeWithInlining1() {

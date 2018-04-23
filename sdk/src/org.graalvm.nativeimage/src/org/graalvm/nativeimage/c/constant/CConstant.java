@@ -58,19 +58,17 @@ public @interface CConstant {
         }
 
         /**
-         * Returns the value of a {@link CConstant}, i.e., the same value that calling the annotated
-         * method would return.
+         * Returns the value of a {@link CConstant}, i.e., the same value that calling the annotated method
+         * would return.
          * <p>
-         * This method is useful during native image generation, when the annotated method cannot be
-         * called.
+         * This method is useful during native image generation, when the annotated method cannot be called.
          *
-         * @param declaringClass The class that contains the method annotated with {@link CConstant}
-         *            .
+         * @param declaringClass The class that contains the method annotated with {@link CConstant} .
          * @param methodName The name of the method annotated with {@link CConstant}.
          * @param returnType The desired type of the returned value. For integer-kind constants, the
-         *            supported types are {@link Long}, {@link Integer}, and {@link Boolean}. For
-         *            floating point constants, the only supported type is {@link Double}. For
-         *            string constants, the only supported type is {@link String}.
+         *            supported types are {@link Long}, {@link Integer}, and {@link Boolean}. For floating
+         *            point constants, the only supported type is {@link Double}. For string constants, the
+         *            only supported type is {@link String}.
          * @return The value of the C constant.
          */
         @Platforms(Platform.HOSTED_ONLY.class)

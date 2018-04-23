@@ -56,8 +56,8 @@ public interface TruffleRuntime {
      * Creates a new call target for a given root node.
      *
      * @param rootNode the root node whose
-     *            {@link RootNode#execute(com.oracle.truffle.api.frame.VirtualFrame)} method
-     *            represents the entry point
+     *            {@link RootNode#execute(com.oracle.truffle.api.frame.VirtualFrame)} method represents
+     *            the entry point
      * @return the new call target object
      * @since 0.8 or earlier
      */
@@ -125,8 +125,8 @@ public interface TruffleRuntime {
     MaterializedFrame createMaterializedFrame(Object[] arguments);
 
     /**
-     * Creates a new materialized frame object with the given frame descriptor that can be used to
-     * store values.
+     * Creates a new materialized frame object with the given frame descriptor that can be used to store
+     * values.
      *
      * @param frameDescriptor the frame descriptor describing this frame's values
      * @return the newly created materialized frame object
@@ -167,8 +167,8 @@ public interface TruffleRuntime {
     FrameInstance getCallerFrame();
 
     /**
-     * Accesses the current frame, i.e., the frame of the closest {@link CallTarget}. It is
-     * important to note that this {@link FrameInstance} supports only slow path access.
+     * Accesses the current frame, i.e., the frame of the closest {@link CallTarget}. It is important to
+     * note that this {@link FrameInstance} supports only slow path access.
      *
      * @since 0.8 or earlier
      */
@@ -191,11 +191,10 @@ public interface TruffleRuntime {
     void notifyTransferToInterpreter();
 
     /**
-     * Whether or not the {@link TruffleRuntime} implementation can or wants to use gathered
-     * profiling information Truffle compilation. If this method returns <code>false</code> then all
-     * profiles in the {@link com.oracle.truffle.api.utilities} package are returning void
-     * implementations. If it returns <code>true</code> then all implementations gather profilinig
-     * information.
+     * Whether or not the {@link TruffleRuntime} implementation can or wants to use gathered profiling
+     * information Truffle compilation. If this method returns <code>false</code> then all profiles in
+     * the {@link com.oracle.truffle.api.utilities} package are returning void implementations. If it
+     * returns <code>true</code> then all implementations gather profilinig information.
      *
      * @since 0.8 or earlier
      */

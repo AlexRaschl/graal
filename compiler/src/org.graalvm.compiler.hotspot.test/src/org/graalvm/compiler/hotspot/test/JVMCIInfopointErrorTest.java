@@ -273,8 +273,8 @@ public class JVMCIInfopointErrorTest extends GraalCompilerTest {
         DebugContext debug = DebugContext.create(getInitialOptions(), DebugHandlersFactory.LOADER);
         try (Scope s = debug.disable()) {
             /*
-             * Expected: either AssertionError or GraalError, depending on whether the unit test run
-             * is with assertions enabled or disabled.
+             * Expected: either AssertionError or GraalError, depending on whether the unit test run is with
+             * assertions enabled or disabled.
              */
             test(debug, (tool, state, safepoint) -> {
                 LIRFrameState newState = modifyTopFrame(state, new JavaValue[]{new UnknownJavaValue()}, new JavaKind[]{JavaKind.Int}, 1, 0, 0);
@@ -286,8 +286,8 @@ public class JVMCIInfopointErrorTest extends GraalCompilerTest {
     @Test(expected = Error.class)
     public void testMissingIllegalAfterDouble() {
         /*
-         * Expected: either AssertionError or GraalError, depending on whether the unit test run is
-         * with assertions enabled or disabled.
+         * Expected: either AssertionError or GraalError, depending on whether the unit test run is with
+         * assertions enabled or disabled.
          */
         test((tool, state, safepoint) -> {
             LIRFrameState newState = modifyTopFrame(state, new JavaValue[]{JavaConstant.DOUBLE_0, JavaConstant.INT_0}, new JavaKind[]{JavaKind.Double, JavaKind.Int}, 2, 0, 0);

@@ -74,8 +74,7 @@ public abstract class PhiNode extends FloatingNode implements Canonicalizable {
     }
 
     /**
-     * Get the instruction that produces the value associated with the i'th predecessor of the
-     * merge.
+     * Get the instruction that produces the value associated with the i'th predecessor of the merge.
      *
      * @param i the index of the predecessor
      * @return the instruction that produced the value in the i'th predecessor
@@ -166,8 +165,7 @@ public abstract class PhiNode extends FloatingNode implements Canonicalizable {
 
     /**
      * If all inputs are the same value, this value is returned, otherwise {@code this}. Note that
-     * {@code null} is a valid return value, since {@link GuardPhiNode}s can have {@code null}
-     * inputs.
+     * {@code null} is a valid return value, since {@link GuardPhiNode}s can have {@code null} inputs.
      */
     public ValueNode singleValueOrThis() {
         ValueNode singleValue = valueAt(0);

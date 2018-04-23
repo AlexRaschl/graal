@@ -72,8 +72,8 @@ public class PhaseSuite<C> extends BasePhase<C> {
     }
 
     /**
-     * Inserts a phase before the last phase in the suite. If the suite contains no phases the new
-     * phase will be inserted as the first phase.
+     * Inserts a phase before the last phase in the suite. If the suite contains no phases the new phase
+     * will be inserted as the first phase.
      */
     public final void addBeforeLast(BasePhase<? super C> phase) {
         ListIterator<BasePhase<? super C>> last = findLastPhase();
@@ -84,8 +84,8 @@ public class PhaseSuite<C> extends BasePhase<C> {
     }
 
     /**
-     * Returns a {@link ListIterator} at the position of the last phase in the suite. If the suite
-     * has no phases then it will return an empty iterator.
+     * Returns a {@link ListIterator} at the position of the last phase in the suite. If the suite has
+     * no phases then it will return an empty iterator.
      */
     private ListIterator<BasePhase<? super C>> findLastPhase() {
         ListIterator<BasePhase<? super C>> it = phases.listIterator();
@@ -109,9 +109,9 @@ public class PhaseSuite<C> extends BasePhase<C> {
 
     /**
      * Returns a {@link ListIterator} at the position of the first phase which is an instance of
-     * {@code phaseClass} or, if {@code recursive} is true, is a {@link PhaseSuite} containing a
-     * phase which is an instance of {@code phaseClass}. This method returns null if no such phase
-     * can be found.
+     * {@code phaseClass} or, if {@code recursive} is true, is a {@link PhaseSuite} containing a phase
+     * which is an instance of {@code phaseClass}. This method returns null if no such phase can be
+     * found.
      *
      * Calling {@link ListIterator#previous()} would return the phase or phase suite that was found.
      *
@@ -148,8 +148,7 @@ public class PhaseSuite<C> extends BasePhase<C> {
     }
 
     /**
-     * Removes the first instance of the given phase class, looking recursively into inner phase
-     * suites.
+     * Removes the first instance of the given phase class, looking recursively into inner phase suites.
      */
     @SuppressWarnings("unchecked")
     public boolean removePhase(Class<? extends BasePhase<? super C>> phaseClass) {
@@ -173,8 +172,7 @@ public class PhaseSuite<C> extends BasePhase<C> {
     }
 
     /**
-     * Removes the first instance of the given phase class, looking recursively into inner phase
-     * suites.
+     * Removes the first instance of the given phase class, looking recursively into inner phase suites.
      */
     @SuppressWarnings("unchecked")
     public boolean replacePhase(Class<? extends BasePhase<? super C>> phaseClass, BasePhase<? super C> newPhase) {

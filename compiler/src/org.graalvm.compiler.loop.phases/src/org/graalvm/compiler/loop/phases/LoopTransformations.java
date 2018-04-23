@@ -107,8 +107,8 @@ public abstract class LoopTransformations {
         originalLoop.entryPoint().replaceAtPredecessor(newControlSplit);
 
         /*
-         * The code below assumes that all of the control split nodes have the same successor
-         * structure, which should have been enforced by findUnswitchable.
+         * The code below assumes that all of the control split nodes have the same successor structure,
+         * which should have been enforced by findUnswitchable.
          */
         Iterator<Position> successors = firstNode.successorPositions().iterator();
         assert successors.hasNext();

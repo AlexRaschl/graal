@@ -153,8 +153,7 @@ public class ClassfileBytecodeProviderTest extends GraalCompilerTest {
                             String className = name.substring(0, name.length() - ".class".length()).replace('/', '.');
                             if (isInNativeImage(className)) {
                                 /*
-                                 * Native image requires non-graalsdk classes to be present in the
-                                 * classpath.
+                                 * Native image requires non-graalsdk classes to be present in the classpath.
                                  */
                                 continue;
                             }
@@ -432,8 +431,8 @@ public class ClassfileBytecodeProviderTest extends GraalCompilerTest {
         }
 
         /**
-         * The VM can resolve references to methods not available via reflection. For example, the
-         * javap output for {@link ProfiledMethod#toString()} includes:
+         * The VM can resolve references to methods not available via reflection. For example, the javap
+         * output for {@link ProfiledMethod#toString()} includes:
          *
          * <pre>
          *     16: invokeinterface #40, 1 // InterfaceMethod jdk/vm/ci/meta/ResolvedJavaMethod.getName:()Ljava/lang/String;
@@ -451,11 +450,11 @@ public class ClassfileBytecodeProviderTest extends GraalCompilerTest {
          *     16: invokeinterface#40, 1  // jdk.vm.ci.meta.JavaMethod.getName:()java.lang.String
          * </pre>
          *
-         * since the latter relies on {@link ResolvedJavaType#getDeclaredMethods()} which only
-         * returns methods originating from class files.
+         * since the latter relies on {@link ResolvedJavaType#getDeclaredMethods()} which only returns
+         * methods originating from class files.
          *
-         * We accept such differences for the purpose of this test if the declaring class of two
-         * otherwise similar methods are related (i.e. one is a subclass of the other).
+         * We accept such differences for the purpose of this test if the declaring class of two otherwise
+         * similar methods are related (i.e. one is a subclass of the other).
          */
         protected static boolean typesAreRelated(ResolvedJavaMethod e, ResolvedJavaMethod a) {
             return a.getDeclaringClass().isAssignableFrom(e.getDeclaringClass()) || e.getDeclaringClass().isAssignableFrom(a.getDeclaringClass());

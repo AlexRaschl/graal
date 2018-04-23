@@ -112,8 +112,8 @@ public class AMD64FrameMap extends FrameMap {
     }
 
     /**
-     * For non-leaf methods, RBP is preserved in the special stack slot required by the HotSpot
-     * runtime for walking/inspecting frames of such methods.
+     * For non-leaf methods, RBP is preserved in the special stack slot required by the HotSpot runtime
+     * for walking/inspecting frames of such methods.
      */
     StackSlot allocateRBPSpillSlot() {
         assert spillSize == initialSpillSize : "RBP spill slot must be the first allocated stack slots";

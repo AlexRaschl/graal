@@ -59,10 +59,10 @@ public class VerifyUpdateUsages extends VerifyPhase<PhaseContext> {
             return true;
         }
         /*
-         * There are only two acceptable patterns for methods which update Node inputs, either a
-         * single StoreField node and invoke of updateUsages or updateUsagesInterface, or 2
-         * StoreFields that come from LoadFields on the same object. Other patterns can be added as
-         * needed but it would be best to keep things simple so that verification can be simple.
+         * There are only two acceptable patterns for methods which update Node inputs, either a single
+         * StoreField node and invoke of updateUsages or updateUsagesInterface, or 2 StoreFields that come
+         * from LoadFields on the same object. Other patterns can be added as needed but it would be best to
+         * keep things simple so that verification can be simple.
          */
         List<StoreFieldNode> stores = graph.getNodes().filter(StoreFieldNode.class).snapshot();
         ResolvedJavaType declaringClass = graph.method().getDeclaringClass();

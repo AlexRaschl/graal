@@ -37,8 +37,8 @@ public interface MemoryCheckpoint extends MemoryNode, FixedNodeInterface {
     interface Single extends MemoryCheckpoint {
 
         /**
-         * This method is used to determine which memory location is killed by this node. Returning
-         * the special value {@link LocationIdentity#any()} will kill all memory locations.
+         * This method is used to determine which memory location is killed by this node. Returning the
+         * special value {@link LocationIdentity#any()} will kill all memory locations.
          *
          * @return the identity of the location killed by this node.
          */
@@ -49,9 +49,8 @@ public interface MemoryCheckpoint extends MemoryNode, FixedNodeInterface {
     interface Multi extends MemoryCheckpoint {
 
         /**
-         * This method is used to determine which set of memory locations is killed by this node.
-         * Returning the special value {@link LocationIdentity#any()} will kill all memory
-         * locations.
+         * This method is used to determine which set of memory locations is killed by this node. Returning
+         * the special value {@link LocationIdentity#any()} will kill all memory locations.
          *
          * @return the identities of all locations killed by this node.
          */

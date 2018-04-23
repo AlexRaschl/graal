@@ -164,8 +164,8 @@ public class SPARCSaveRegistersOp extends SPARCLIRInstruction implements SaveReg
     }
 
     /**
-     * Computes the index of a stack slot relative to slot 0. This is also the bit index of stack
-     * slots in the reference map.
+     * Computes the index of a stack slot relative to slot 0. This is also the bit index of stack slots
+     * in the reference map.
      *
      * @param slot a stack slot
      * @return the index of the stack slot

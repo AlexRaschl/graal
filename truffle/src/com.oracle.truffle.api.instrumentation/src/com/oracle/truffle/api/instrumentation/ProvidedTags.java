@@ -47,8 +47,7 @@ import com.oracle.truffle.api.nodes.Node;
 public @interface ProvidedTags {
 
     /**
-     * @return the set of tags that are provided by the {@link TruffleLanguage language}
-     *         implementation.
+     * @return the set of tags that are provided by the {@link TruffleLanguage language} implementation.
      * @see ProvidedTags class documentation for further details
      * @since 0.12
      */

@@ -48,8 +48,8 @@ public final class TruffleStackTraceElement {
     }
 
     /**
-     * Returns a node representing the callsite on the stack. Returns <code>null</code> if no
-     * detailed callsite information is available.
+     * Returns a node representing the callsite on the stack. Returns <code>null</code> if no detailed
+     * callsite information is available.
      *
      * @since 0.27
      **/
@@ -67,8 +67,8 @@ public final class TruffleStackTraceElement {
     }
 
     /**
-     * Returns the materialized frame. Returns <code>null</code> if the initial {@link RootNode}
-     * that filled in the stack trace did not request frames to be captured by overriding
+     * Returns the materialized frame. Returns <code>null</code> if the initial {@link RootNode} that
+     * filled in the stack trace did not request frames to be captured by overriding
      * {@link RootNode#isCaptureFramesForTrace()}.
      *
      * @since 0.31
@@ -78,12 +78,12 @@ public final class TruffleStackTraceElement {
     }
 
     /**
-     * Returns the guest language frames that are stored in this throwable or <code>null</code> if
-     * no guest language frames are available. Guest language frames are automatically added by the
-     * Truffle runtime the first time the exception is passed through a {@link CallTarget call
-     * target} and the frames are not yet set. Therefore no guest language frames are available
-     * immediately after the exception was constructed. The returned list is not modifiable. The
-     * number stack trace elements that are filled in can be customized by implementing
+     * Returns the guest language frames that are stored in this throwable or <code>null</code> if no
+     * guest language frames are available. Guest language frames are automatically added by the Truffle
+     * runtime the first time the exception is passed through a {@link CallTarget call target} and the
+     * frames are not yet set. Therefore no guest language frames are available immediately after the
+     * exception was constructed. The returned list is not modifiable. The number stack trace elements
+     * that are filled in can be customized by implementing
      * {@link TruffleException#getStackTraceElementLimit()} .
      *
      * @param throwable the throwable instance to look for guest language frames
@@ -95,11 +95,11 @@ public final class TruffleStackTraceElement {
     }
 
     /**
-     * Fills in the guest language stack frames from the current frames on the stack. If the stack
-     * was already filled before then this method has no effect. The implementation attaches a
-     * lightweight exception object to the last location in the {@link Throwable#getCause() cause}
-     * chain of the exception. The number stack trace elements that are filled in can be customized
-     * by implementing {@link TruffleException#getStackTraceElementLimit()} .
+     * Fills in the guest language stack frames from the current frames on the stack. If the stack was
+     * already filled before then this method has no effect. The implementation attaches a lightweight
+     * exception object to the last location in the {@link Throwable#getCause() cause} chain of the
+     * exception. The number stack trace elements that are filled in can be customized by implementing
+     * {@link TruffleException#getStackTraceElementLimit()} .
      *
      * @param throwable the throwable to fill
      * @since 0.27

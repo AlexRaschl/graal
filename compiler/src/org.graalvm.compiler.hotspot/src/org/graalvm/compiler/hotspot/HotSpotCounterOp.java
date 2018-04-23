@@ -89,8 +89,8 @@ public abstract class HotSpotCounterOp extends LIRInstruction {
     }
 
     /**
-     * Calls the {@link CounterProcedure} for each counter in ascending order of their displacement
-     * in the counter array.
+     * Calls the {@link CounterProcedure} for each counter in ascending order of their displacement in
+     * the counter array.
      *
      * @param proc The procedure to be called
      * @param target Target architecture (used to calculate the array displacements)
@@ -128,8 +128,8 @@ public abstract class HotSpotCounterOp extends LIRInstruction {
     }
 
     /**
-     * Patches the increment value in the instruction emitted by this instruction. Use only, if
-     * patching is needed after assembly.
+     * Patches the increment value in the instruction emitted by this instruction. Use only, if patching
+     * is needed after assembly.
      *
      * @param asm
      * @param increment

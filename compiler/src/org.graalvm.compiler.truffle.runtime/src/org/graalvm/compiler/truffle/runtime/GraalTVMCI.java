@@ -63,8 +63,8 @@ final class GraalTVMCI extends TVMCI {
 
     /**
      * Initializes the argument profile with a custom profile without calling it. A call target must
-     * never be called prior initialization of argument types. Also the argument types must be final
-     * if used in combination with {@link #callProfiled(CallTarget, Object...)}.
+     * never be called prior initialization of argument types. Also the argument types must be final if
+     * used in combination with {@link #callProfiled(CallTarget, Object...)}.
      */
     @Override
     protected void initializeProfile(CallTarget target, Class<?>[] argumentTypes) {
@@ -133,8 +133,8 @@ final class GraalTVMCI extends TVMCI {
     }
 
     /**
-     * Class used to store data used by the compiler in the Engine. Enables "global" compiler state
-     * per engine.
+     * Class used to store data used by the compiler in the Engine. Enables "global" compiler state per
+     * engine.
      */
     static class EngineData {
         int splitLimit;

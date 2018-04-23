@@ -102,8 +102,8 @@ public final class DebugScope {
 
     /**
      * Test if this scope represents the function scope at the frame it was
-     * {@link DebugStackFrame#getScope() obtained from}. {@link #getArguments() arguments} of
-     * function scope represent arguments of the appropriate function.
+     * {@link DebugStackFrame#getScope() obtained from}. {@link #getArguments() arguments} of function
+     * scope represent arguments of the appropriate function.
      *
      * @since 0.26
      */
@@ -112,9 +112,9 @@ public final class DebugScope {
     }
 
     /**
-     * Get a source section representing this scope. Please note that while this scope does not
-     * provide variables that are valid only after the suspension point, the source section can
-     * actually span after the suspension point.
+     * Get a source section representing this scope. Please note that while this scope does not provide
+     * variables that are valid only after the suspension point, the source section can actually span
+     * after the suspension point.
      *
      * @return the source section, or <code>null</code> when not available.
      * @since 0.29
@@ -135,8 +135,8 @@ public final class DebugScope {
      * This method is not thread-safe and will throw an {@link IllegalStateException} if called on
      * another thread than it was created with.
      *
-     * @return an iterable of arguments, or <code>null</code> when this scope does not have a
-     *         concept of arguments.
+     * @return an iterable of arguments, or <code>null</code> when this scope does not have a concept of
+     *         arguments.
      * @since 0.26
      */
     public Iterable<DebugValue> getArguments() {
@@ -156,8 +156,8 @@ public final class DebugScope {
 
     /**
      * Get local variables declared in this scope, valid at the current suspension point. Call this
-     * method on {@link #getParent() parent}, to get values of variables declared in parent scope,
-     * if any.
+     * method on {@link #getParent() parent}, to get values of variables declared in parent scope, if
+     * any.
      * <p>
      * This method is not thread-safe and will throw an {@link IllegalStateException} if called on
      * another thread than it was created with.

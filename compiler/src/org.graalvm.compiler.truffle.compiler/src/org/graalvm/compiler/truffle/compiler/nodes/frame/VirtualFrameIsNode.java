@@ -70,8 +70,8 @@ public final class VirtualFrameIsNode extends VirtualFrameAccessorNode implement
         }
 
         /*
-         * We could "virtualize" to a UnsafeLoadNode here that remains a memory access. But it is
-         * simpler, and consistent with the get and set intrinsification, to deoptimize.
+         * We could "virtualize" to a UnsafeLoadNode here that remains a memory access. But it is simpler,
+         * and consistent with the get and set intrinsification, to deoptimize.
          */
         insertDeoptimization(tool);
     }

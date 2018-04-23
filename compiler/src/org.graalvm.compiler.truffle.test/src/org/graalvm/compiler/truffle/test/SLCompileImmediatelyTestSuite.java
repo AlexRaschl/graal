@@ -46,12 +46,12 @@ public class SLCompileImmediatelyTestSuite {
         assert overrideScope == null;
 
         /*
-         * We turn on the flag to compile every Truffle function immediately, on its first execution
-         * in the interpreter. And we wait until compilation finishes so that we really execute the
-         * compiled method. This leads to a lot of compilation, but that is the purpose of this
-         * test. It also leads to a lot of deoptimization, since the first time a method is compiled
-         * it has all nodes in the uninitialized specialization. This means that most methods are
-         * compiled multiple times, in different specialization states.
+         * We turn on the flag to compile every Truffle function immediately, on its first execution in the
+         * interpreter. And we wait until compilation finishes so that we really execute the compiled
+         * method. This leads to a lot of compilation, but that is the purpose of this test. It also leads
+         * to a lot of deoptimization, since the first time a method is compiled it has all nodes in the
+         * uninitialized specialization. This means that most methods are compiled multiple times, in
+         * different specialization states.
          */
         overrideScope = TruffleCompilerOptions.overrideOptions(TruffleCompileImmediately, true, TruffleBackgroundCompilation, false);
     }
@@ -63,8 +63,8 @@ public class SLCompileImmediatelyTestSuite {
     }
 
     /*
-     * Our "mx unittest" command looks for methods that are annotated with @Test. By just defining
-     * an empty method, this class gets included and the test suite is properly executed.
+     * Our "mx unittest" command looks for methods that are annotated with @Test. By just defining an
+     * empty method, this class gets included and the test suite is properly executed.
      */
     @Test
     public void unittest() {

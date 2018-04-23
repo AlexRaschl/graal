@@ -37,8 +37,8 @@ public class ExplodeLoopUntilReturnWithThrowNode extends AbstractTestNode {
     public ExplodeLoopUntilReturnWithThrowNode() {
         try {
             /*
-             * Execute code so that all classes are loaded, since execute() does not actually call
-             * this method due to the 0-iteration loop.
+             * Execute code so that all classes are loaded, since execute() does not actually call this method
+             * due to the 0-iteration loop.
              */
             doSearch();
         } catch (Throwable ex) {
@@ -49,8 +49,7 @@ public class ExplodeLoopUntilReturnWithThrowNode extends AbstractTestNode {
     public int execute(VirtualFrame frame) {
         for (int i = 0; i < zero; i++) {
             /*
-             * Loop unrolling will remove the code later on, but the partial evaluator still
-             * processes it.
+             * Loop unrolling will remove the code later on, but the partial evaluator still processes it.
              */
             doSearch();
         }
@@ -62,8 +61,7 @@ public class ExplodeLoopUntilReturnWithThrowNode extends AbstractTestNode {
         for (int i = 0; i < 3; i++) {
             if (i == search) {
                 /*
-                 * Test that the partial evaluator can handle exception throws in
-                 * FULL_EXPLODE_UNTIL_RETURN loops.
+                 * Test that the partial evaluator can handle exception throws in FULL_EXPLODE_UNTIL_RETURN loops.
                  */
                 throw new ControlFlowException();
             }

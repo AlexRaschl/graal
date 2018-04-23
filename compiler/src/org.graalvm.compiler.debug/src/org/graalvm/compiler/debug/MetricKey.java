@@ -32,9 +32,9 @@ import org.graalvm.collections.Pair;
 public interface MetricKey {
 
     /**
-     * Converts a given value for this key to a string, scaling it to a more useful unit of
-     * measurement and appending a suffix indicating the unit where applicable. This representation
-     * is intended for human consumption.
+     * Converts a given value for this key to a string, scaling it to a more useful unit of measurement
+     * and appending a suffix indicating the unit where applicable. This representation is intended for
+     * human consumption.
      */
     String toHumanReadableFormat(long value);
 
@@ -42,9 +42,9 @@ public interface MetricKey {
      * Converts a given value for this key to a CSV format intended for automated data processing.
      *
      * @param value
-     * @return a pair where first is the {@code value} with any scaling conversion applied and
-     *         second is the unit of measurement used for the first component (this will be the
-     *         empty string for a simple counter)
+     * @return a pair where first is the {@code value} with any scaling conversion applied and second is
+     *         the unit of measurement used for the first component (this will be the empty string for a
+     *         simple counter)
      */
     Pair<String, String> toCSVFormat(long value);
 
@@ -71,8 +71,7 @@ public interface MetricKey {
     MetricKey doc(String string);
 
     /**
-     * Gets the name to use when listing keys. Note that this may be different from
-     * {@link #getName()}.
+     * Gets the name to use when listing keys. Note that this may be different from {@link #getName()}.
      *
      * @return {@code null} if this key is derived from another key and so should not be listed
      */

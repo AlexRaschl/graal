@@ -64,26 +64,26 @@ public abstract class LocationIdentity {
     public static final LocationIdentity INIT_LOCATION = new InitLocationIdentity();
 
     /**
-     * Indicates that the given location is the union of all possible mutable locations. A write to
-     * such a location kill all reads from mutable locations and a read from this location is killed
-     * by any write (except for initialization writes).
+     * Indicates that the given location is the union of all possible mutable locations. A write to such
+     * a location kill all reads from mutable locations and a read from this location is killed by any
+     * write (except for initialization writes).
      */
     public static LocationIdentity any() {
         return ANY_LOCATION;
     }
 
     /**
-     * Location only allowed to be used for writes. Indicates that a completely new memory location
-     * is written. Kills no read. The previous value at the given location must be either
-     * uninitialized or null. Writes to this location do not need a GC pre-barrier.
+     * Location only allowed to be used for writes. Indicates that a completely new memory location is
+     * written. Kills no read. The previous value at the given location must be either uninitialized or
+     * null. Writes to this location do not need a GC pre-barrier.
      */
     public static LocationIdentity init() {
         return INIT_LOCATION;
     }
 
     /**
-     * Denotes a location is unchanging in all cases. Not that this is different than the Java
-     * notion of final which only requires definite assignment.
+     * Denotes a location is unchanging in all cases. Not that this is different than the Java notion of
+     * final which only requires definite assignment.
      */
     public abstract boolean isImmutable();
 

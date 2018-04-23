@@ -53,8 +53,8 @@ import com.oracle.truffle.sl.nodes.expression.SLUnboxNodeGen;
 public final class SLIfNode extends SLStatementNode {
 
     /**
-     * The condition of the {@code if}. This in a {@link SLExpressionNode} because we require a
-     * result value. We do not have a node type that can only return a {@code boolean} value, so
+     * The condition of the {@code if}. This in a {@link SLExpressionNode} because we require a result
+     * value. We do not have a node type that can only return a {@code boolean} value, so
      * {@link #evaluateCondition executing the condition} can lead to a type error.
      */
     @Child private SLExpressionNode conditionNode;
@@ -66,11 +66,11 @@ public final class SLIfNode extends SLStatementNode {
     @Child private SLStatementNode elsePartNode;
 
     /**
-     * Profiling information, collected by the interpreter, capturing the profiling information of
-     * the condition. This allows the compiler to generate better code for conditions that are
-     * always true or always false. Additionally the {@link CountingConditionProfile} implementation
-     * (as opposed to {@link BinaryConditionProfile} implementation) transmits the probability of
-     * the condition to be true to the compiler.
+     * Profiling information, collected by the interpreter, capturing the profiling information of the
+     * condition. This allows the compiler to generate better code for conditions that are always true
+     * or always false. Additionally the {@link CountingConditionProfile} implementation (as opposed to
+     * {@link BinaryConditionProfile} implementation) transmits the probability of the condition to be
+     * true to the compiler.
      */
     private final ConditionProfile condition = ConditionProfile.createCountingProfile();
 
@@ -83,8 +83,8 @@ public final class SLIfNode extends SLStatementNode {
     @Override
     public void executeVoid(VirtualFrame frame) {
         /*
-         * In the interpreter, record profiling information that the condition was executed and with
-         * which outcome.
+         * In the interpreter, record profiling information that the condition was executed and with which
+         * outcome.
          */
         if (condition.profile(evaluateCondition(frame))) {
             /* Execute the then-branch. */
@@ -100,14 +100,13 @@ public final class SLIfNode extends SLStatementNode {
     private boolean evaluateCondition(VirtualFrame frame) {
         try {
             /*
-             * The condition must evaluate to a boolean value, so we call the boolean-specialized
-             * execute method.
+             * The condition must evaluate to a boolean value, so we call the boolean-specialized execute
+             * method.
              */
             return conditionNode.executeBoolean(frame);
         } catch (UnexpectedResultException ex) {
             /*
-             * The condition evaluated to a non-boolean result. This is a type error in the SL
-             * program.
+             * The condition evaluated to a non-boolean result. This is a type error in the SL program.
              */
             throw SLException.typeError(this, ex.getResult());
         }

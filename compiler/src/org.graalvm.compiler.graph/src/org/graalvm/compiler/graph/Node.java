@@ -94,10 +94,10 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     // of this file works around a problem javac has resolving symbols
 
     /**
-     * Denotes a non-optional (non-null) node input. This should be applied to exactly the fields of
-     * a node that are of type {@link Node} or {@link NodeInputList}. Nodes that update fields of
-     * type {@link Node} outside of their constructor should call
-     * {@link Node#updateUsages(Node, Node)} just prior to doing the update of the input.
+     * Denotes a non-optional (non-null) node input. This should be applied to exactly the fields of a
+     * node that are of type {@link Node} or {@link NodeInputList}. Nodes that update fields of type
+     * {@link Node} outside of their constructor should call {@link Node#updateUsages(Node, Node)} just
+     * prior to doing the update of the input.
      */
     @java.lang.annotation.Retention(RetentionPolicy.RUNTIME)
     @java.lang.annotation.Target(ElementType.FIELD)
@@ -106,10 +106,10 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Denotes an optional (nullable) node input. This should be applied to exactly the fields of a
-     * node that are of type {@link Node} or {@link NodeInputList}. Nodes that update fields of type
-     * {@link Node} outside of their constructor should call {@link Node#updateUsages(Node, Node)}
-     * just prior to doing the update of the input.
+     * Denotes an optional (nullable) node input. This should be applied to exactly the fields of a node
+     * that are of type {@link Node} or {@link NodeInputList}. Nodes that update fields of type
+     * {@link Node} outside of their constructor should call {@link Node#updateUsages(Node, Node)} just
+     * prior to doing the update of the input.
      */
     @java.lang.annotation.Retention(RetentionPolicy.RUNTIME)
     @java.lang.annotation.Target(ElementType.FIELD)
@@ -123,8 +123,8 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Denotes that a parameter of an {@linkplain NodeIntrinsic intrinsic} method must be a compile
-     * time constant at all call sites to the intrinsic method.
+     * Denotes that a parameter of an {@linkplain NodeIntrinsic intrinsic} method must be a compile time
+     * constant at all call sites to the intrinsic method.
      */
     @java.lang.annotation.Retention(RetentionPolicy.RUNTIME)
     @java.lang.annotation.Target(ElementType.PARAMETER)
@@ -132,12 +132,12 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Denotes an injected parameter in a {@linkplain NodeIntrinsic node intrinsic} constructor. If
-     * the constructor is called as part of node intrinsification, the node intrinsifier will inject
-     * an argument for the annotated parameter. Injected parameters must precede all non-injected
+     * Denotes an injected parameter in a {@linkplain NodeIntrinsic node intrinsic} constructor. If the
+     * constructor is called as part of node intrinsification, the node intrinsifier will inject an
+     * argument for the annotated parameter. Injected parameters must precede all non-injected
      * parameters in a constructor. If the type of the annotated parameter is {@link Stamp}, the
-     * {@linkplain Stamp#javaType type} of the injected stamp is the return type of the annotated
-     * method (which cannot be {@code void}).
+     * {@linkplain Stamp#javaType type} of the injected stamp is the return type of the annotated method
+     * (which cannot be {@code void}).
      */
     @java.lang.annotation.Retention(RetentionPolicy.RUNTIME)
     @java.lang.annotation.Target(ElementType.PARAMETER)
@@ -146,12 +146,11 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
 
     /**
      * Annotates a method that can be replaced by a compiler intrinsic. A (resolved) call to the
-     * annotated method will be processed by a generated {@code InvocationPlugin} that calls either
-     * a factory method or a constructor corresponding with the annotated method.
+     * annotated method will be processed by a generated {@code InvocationPlugin} that calls either a
+     * factory method or a constructor corresponding with the annotated method.
      * <p>
-     * A factory method corresponding to an annotated method is a static method named
-     * {@code intrinsify} defined in the class denoted by {@link #value()}. In order, its signature
-     * is as follows:
+     * A factory method corresponding to an annotated method is a static method named {@code intrinsify}
+     * defined in the class denoted by {@link #value()}. In order, its signature is as follows:
      * <ol>
      * <li>A {@code GraphBuilderContext} parameter.</li>
      * <li>A {@code ResolvedJavaMethod} parameter.</li>
@@ -172,15 +171,15 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     public static @interface NodeIntrinsic {
 
         /**
-         * The class declaring the factory method or {@link Node} subclass declaring the constructor
-         * used to intrinsify a call to the annotated method. The default value is the class in
-         * which the annotated method is declared.
+         * The class declaring the factory method or {@link Node} subclass declaring the constructor used to
+         * intrinsify a call to the annotated method. The default value is the class in which the annotated
+         * method is declared.
          */
         Class<?> value() default NodeIntrinsic.class;
 
         /**
-         * If {@code true}, the factory method or constructor selected by the annotation must have
-         * an {@linkplain InjectedNodeParameter injected} {@link Stamp} parameter. Calling
+         * If {@code true}, the factory method or constructor selected by the annotation must have an
+         * {@linkplain InjectedNodeParameter injected} {@link Stamp} parameter. Calling
          * {@link AbstractPointerStamp#nonNull()} on the injected stamp is guaranteed to return
          * {@code true}.
          */
@@ -189,18 +188,17 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
 
     /**
      * Marker for a node that can be replaced by another node via global value numbering. A
-     * {@linkplain NodeClass#isLeafNode() leaf} node can be replaced by another node of the same
-     * type that has exactly the same {@linkplain NodeClass#getData() data} values. A non-leaf node
-     * can be replaced by another node of the same type that has exactly the same data values as
-     * well as the same {@linkplain Node#inputs() inputs} and {@linkplain Node#successors()
-     * successors}.
+     * {@linkplain NodeClass#isLeafNode() leaf} node can be replaced by another node of the same type
+     * that has exactly the same {@linkplain NodeClass#getData() data} values. A non-leaf node can be
+     * replaced by another node of the same type that has exactly the same data values as well as the
+     * same {@linkplain Node#inputs() inputs} and {@linkplain Node#successors() successors}.
      */
     public interface ValueNumberable {
     }
 
     /**
-     * Marker interface for nodes that contains other nodes. When the inputs to this node changes,
-     * users of this node should also be placed on the work list for canonicalization.
+     * Marker interface for nodes that contains other nodes. When the inputs to this node changes, users
+     * of this node should also be placed on the work list for canonicalization.
      */
     public interface IndirectCanonicalization {
     }
@@ -216,8 +214,8 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     private static final Node[] NO_NODES = {};
 
     /**
-     * Head of usage list. The elements of the usage list in order are {@link #usage0},
-     * {@link #usage1} and {@link #extraUsages}. The first null entry terminates the list.
+     * Head of usage list. The elements of the usage list in order are {@link #usage0}, {@link #usage1}
+     * and {@link #extraUsages}. The first null entry terminates the list.
      */
     Node usage0;
     Node usage1;
@@ -272,8 +270,8 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Returns an {@link NodeIterable iterable} which can be used to traverse all non-null input
-     * edges of this node.
+     * Returns an {@link NodeIterable iterable} which can be used to traverse all non-null input edges
+     * of this node.
      *
      * @return an {@link NodeIterable iterable} for all non-null input edges.
      */
@@ -282,8 +280,8 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Returns an {@link Iterable iterable} which can be used to traverse all non-null input edges
-     * of this node.
+     * Returns an {@link Iterable iterable} which can be used to traverse all non-null input edges of
+     * this node.
      *
      * @return an {@link Iterable iterable} for all non-null input edges.
      */
@@ -327,8 +325,8 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Returns an {@link Iterable iterable} which can be used to traverse all successor edge
-     * positions of this node.
+     * Returns an {@link Iterable iterable} which can be used to traverse all successor edge positions
+     * of this node.
      *
      * @return an {@link Iterable iterable} for all successor edge positoins.
      */
@@ -522,9 +520,9 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Updates the usages sets of the given nodes after an input slot is changed from
-     * {@code oldInput} to {@code newInput} by removing this node from {@code oldInput}'s usages and
-     * adds this node to {@code newInput}'s usages.
+     * Updates the usages sets of the given nodes after an input slot is changed from {@code oldInput}
+     * to {@code newInput} by removing this node from {@code oldInput}'s usages and adds this node to
+     * {@code newInput}'s usages.
      */
     protected void updateUsages(Node oldInput, Node newInput) {
         assert isAlive() && (newInput == null || newInput.isAlive()) : "adding " + newInput + " to " + this + " instead of " + oldInput;
@@ -548,9 +546,9 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Updates the predecessor of the given nodes after a successor slot is changed from
-     * oldSuccessor to newSuccessor: removes this node from oldSuccessor's predecessors and adds
-     * this node to newSuccessor's predecessors.
+     * Updates the predecessor of the given nodes after a successor slot is changed from oldSuccessor to
+     * newSuccessor: removes this node from oldSuccessor's predecessors and adds this node to
+     * newSuccessor's predecessors.
      */
     protected void updatePredecessor(Node oldSuccessor, Node newSuccessor) {
         assert isAlive() && (newSuccessor == null || newSuccessor.isAlive()) || newSuccessor == null && !isAlive() : "adding " + newSuccessor + " to " + this + " instead of " + oldSuccessor;
@@ -822,8 +820,8 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Removes this node from its graph. This node must have no {@linkplain Node#usages() usages}
-     * and no {@linkplain #predecessor() predecessor}.
+     * Removes this node from its graph. This node must have no {@linkplain Node#usages() usages} and no
+     * {@linkplain #predecessor() predecessor}.
      */
     public void safeDelete() {
         assert checkDeletion();
@@ -887,8 +885,8 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     /**
      * Makes a copy of this node in(to) a given graph.
      *
-     * @param into the graph in which the copy will be registered (which may be this node's graph)
-     *            or null if the copy should not be registered in a graph
+     * @param into the graph in which the copy will be registered (which may be this node's graph) or
+     *            null if the copy should not be registered in a graph
      * @param edgesToCopy specifies the edges to be copied. The edges not specified in this set are
      *            initialized to their default value (i.e., {@code null} for a direct edge, an empty
      *            list for an edge list)
@@ -1027,17 +1025,17 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
 
     /**
      * Returns an iterator that will provide all control-flow successors of this node. Normally this
-     * will be the contents of all fields annotated with {@link Successor}, but some node classes
-     * (like EndNode) may return different nodes.
+     * will be the contents of all fields annotated with {@link Successor}, but some node classes (like
+     * EndNode) may return different nodes.
      */
     public Iterable<? extends Node> cfgSuccessors() {
         return successors();
     }
 
     /**
-     * Nodes using their {@link #id} as the hash code. This works very well when nodes of the same
-     * graph are stored in sets. It can give bad behavior when storing nodes of different graphs in
-     * the same set.
+     * Nodes using their {@link #id} as the hash code. This works very well when nodes of the same graph
+     * are stored in sets. It can give bad behavior when storing nodes of different graphs in the same
+     * set.
      */
     @Override
     public final int hashCode() {
@@ -1049,8 +1047,8 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Do not overwrite the equality test of a node in subclasses. Equality tests must rely solely
-     * on identity.
+     * Do not overwrite the equality test of a node in subclasses. Equality tests must rely solely on
+     * identity.
      */
 
     /**
@@ -1062,9 +1060,9 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Fills a {@link Map} with properties of this node for use in debugging (e.g., to view in the
-     * ideal graph visualizer). Subclasses overriding this method should also fill the map using
-     * their superclass.
+     * Fills a {@link Map} with properties of this node for use in debugging (e.g., to view in the ideal
+     * graph visualizer). Subclasses overriding this method should also fill the map using their
+     * superclass.
      *
      * @param map
      */
@@ -1181,9 +1179,9 @@ public abstract class Node implements Cloneable, Formattable, NodeInterface {
     }
 
     /**
-     * Determines if this node's {@link NodeClass#getData() data} fields are equal to the data
-     * fields of another node of the same type. Primitive fields are compared by value and
-     * non-primitive fields are compared by {@link Objects#equals(Object, Object)}.
+     * Determines if this node's {@link NodeClass#getData() data} fields are equal to the data fields of
+     * another node of the same type. Primitive fields are compared by value and non-primitive fields
+     * are compared by {@link Objects#equals(Object, Object)}.
      *
      * The result of this method undefined if {@code other.getClass() != this.getClass()}.
      *

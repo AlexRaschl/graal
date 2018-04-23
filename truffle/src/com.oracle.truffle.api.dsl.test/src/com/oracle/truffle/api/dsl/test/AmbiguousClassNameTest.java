@@ -35,9 +35,9 @@ import com.oracle.truffle.api.nodes.Node;
 public class AmbiguousClassNameTest {
 
     /*
-     * Tests that ambiguous inner class simple names use more qualified names for the generated
-     * code. Also tests that type checks and casts are not mixed up if dynamic value type simple
-     * names are ambiguous.
+     * Tests that ambiguous inner class simple names use more qualified names for the generated code.
+     * Also tests that type checks and casts are not mixed up if dynamic value type simple names are
+     * ambiguous.
      */
     @Test
     public void testInnerClassReferences() {

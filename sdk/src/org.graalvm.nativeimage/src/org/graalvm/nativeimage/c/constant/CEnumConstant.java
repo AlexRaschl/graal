@@ -43,8 +43,8 @@ public @interface CEnumConstant {
     String value() default "";
 
     /**
-     * Specifies whether the annotated enumeration value is returned by the lookup method annotated
-     * with {@link CEnumLookup}.
+     * Specifies whether the annotated enumeration value is returned by the lookup method annotated with
+     * {@link CEnumLookup}.
      */
     boolean includeInLookup() default true;
 }

@@ -53,8 +53,8 @@ public class ClassCastBytecodeExceptionTest extends BytecodeExceptionTest {
 
         public static void throwClassCast(Object obj, Class<?> cls) {
             /*
-             * We don't use cls.cast(obj) here because that gives a different exception message than
-             * the checkcast bytecode.
+             * We don't use cls.cast(obj) here because that gives a different exception message than the
+             * checkcast bytecode.
              */
             if (cls == Double.class) {
                 Double cast = (Double) obj;

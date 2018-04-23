@@ -70,9 +70,9 @@ public class ExceptionHandlerStub extends SnippetStub {
     }
 
     /**
-     * This stub is called when returning to a method to handle an exception thrown by a callee. It
-     * is not used for routing implicit exceptions. Therefore, it does not need to save any
-     * registers as HotSpot uses a caller save convention.
+     * This stub is called when returning to a method to handle an exception thrown by a callee. It is
+     * not used for routing implicit exceptions. Therefore, it does not need to save any registers as
+     * HotSpot uses a caller save convention.
      */
     @Override
     public boolean preservesRegisters() {
@@ -147,8 +147,8 @@ public class ExceptionHandlerStub extends SnippetStub {
     }
 
     /**
-     * Determines if either Java assertions are enabled for Graal or if this is a HotSpot build
-     * where the ASSERT mechanism is enabled.
+     * Determines if either Java assertions are enabled for Graal or if this is a HotSpot build where
+     * the ASSERT mechanism is enabled.
      */
     @Fold
     @SuppressWarnings("all")

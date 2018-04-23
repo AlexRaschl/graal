@@ -60,10 +60,10 @@ public final class UnsupportedTypeException extends InteropException {
     }
 
     /**
-     * Raises an {@link UnsupportedTypeException}, hidden as a {@link RuntimeException}, which
-     * allows throwing it without an explicit throws declaration. The {@link ForeignAccess} methods
-     * (e.g. <code> ForeignAccess.sendRead </code>) catch the exceptions and re-throw them as
-     * checked exceptions.
+     * Raises an {@link UnsupportedTypeException}, hidden as a {@link RuntimeException}, which allows
+     * throwing it without an explicit throws declaration. The {@link ForeignAccess} methods (e.g.
+     * <code> ForeignAccess.sendRead </code>) catch the exceptions and re-throw them as checked
+     * exceptions.
      *
      * @param suppliedValues values that were not supported
      *
@@ -75,10 +75,10 @@ public final class UnsupportedTypeException extends InteropException {
     }
 
     /**
-     * Raises an {@link UnsupportedTypeException}, hidden as a {@link RuntimeException}, which
-     * allows throwing it without an explicit throws declaration. The {@link ForeignAccess} methods
-     * (e.g. <code> ForeignAccess.sendRead </code>) catch the exceptions and re-throw them as
-     * checked exceptions.
+     * Raises an {@link UnsupportedTypeException}, hidden as a {@link RuntimeException}, which allows
+     * throwing it without an explicit throws declaration. The {@link ForeignAccess} methods (e.g.
+     * <code> ForeignAccess.sendRead </code>) catch the exceptions and re-throw them as checked
+     * exceptions.
      *
      * @param cause cause of this exception
      * @param suppliedValues values that were not supported

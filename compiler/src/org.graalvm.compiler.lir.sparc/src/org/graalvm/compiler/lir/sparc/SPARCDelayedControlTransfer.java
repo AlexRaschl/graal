@@ -51,8 +51,8 @@ public interface SPARCDelayedControlTransfer {
     };
 
     /**
-     * This method must be called, to generate the control transfer, but without any Nop in the
-     * delay slot.
+     * This method must be called, to generate the control transfer, but without any Nop in the delay
+     * slot.
      *
      * @param crb
      * @param masm

@@ -204,8 +204,8 @@ public abstract class LocationImpl extends Location {
      *
      * The first parameter should be the one with the more precise type information.
      *
-     * For sets to final locations, otherValue.equals(thisValue) seems more beneficial, since we
-     * usually know more about the value to be set.
+     * For sets to final locations, otherValue.equals(thisValue) seems more beneficial, since we usually
+     * know more about the value to be set.
      * 
      * @since 0.17 or earlier
      */

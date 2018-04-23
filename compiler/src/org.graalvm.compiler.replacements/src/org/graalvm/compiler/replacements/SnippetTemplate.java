@@ -158,8 +158,8 @@ public class SnippetTemplate {
 
     /**
      * Holds the {@link ResolvedJavaMethod} of the snippet, together with some information about the
-     * method that needs to be computed only once. The {@link SnippetInfo} should be created once
-     * per snippet and then cached.
+     * method that needs to be computed only once. The {@link SnippetInfo} should be created once per
+     * snippet and then cached.
      */
     public abstract static class SnippetInfo {
 
@@ -194,8 +194,8 @@ public class SnippetTemplate {
             final boolean[] nonNullParameters;
 
             /**
-             * The parameter names, taken from the local variables table. Only used for assertion
-             * checking, so use only within an assert statement.
+             * The parameter names, taken from the local variables table. Only used for assertion checking, so
+             * use only within an assert statement.
              */
             String[] names;
 
@@ -316,15 +316,15 @@ public class SnippetTemplate {
 
     /**
      * Values that are bound to the snippet method parameters. The methods {@link #add},
-     * {@link #addConst}, and {@link #addVarargs} must be called in the same order as in the
-     * signature of the snippet method. The parameter name is passed to the add methods for
-     * assertion checking, i.e., to enforce that the order matches. Which method needs to be called
-     * depends on the annotation of the snippet method parameter:
+     * {@link #addConst}, and {@link #addVarargs} must be called in the same order as in the signature
+     * of the snippet method. The parameter name is passed to the add methods for assertion checking,
+     * i.e., to enforce that the order matches. Which method needs to be called depends on the
+     * annotation of the snippet method parameter:
      * <ul>
      * <li>Use {@link #add} for a parameter without an annotation. The value is bound when the
      * {@link SnippetTemplate} is {@link SnippetTemplate#instantiate instantiated}.
-     * <li>Use {@link #addConst} for a parameter annotated with {@link ConstantParameter}. The value
-     * is bound when the {@link SnippetTemplate} is {@link SnippetTemplate#SnippetTemplate created}.
+     * <li>Use {@link #addConst} for a parameter annotated with {@link ConstantParameter}. The value is
+     * bound when the {@link SnippetTemplate} is {@link SnippetTemplate#SnippetTemplate created}.
      * <li>Use {@link #addVarargs} for an array parameter annotated with {@link VarargsParameter}. A
      * separate {@link SnippetTemplate} is {@link SnippetTemplate#SnippetTemplate created} for every
      * distinct array length. The actual values are bound when the {@link SnippetTemplate} is
@@ -610,8 +610,8 @@ public class SnippetTemplate {
 
         /**
          * Finds the unique method in {@code declaringClass} named {@code methodName} annotated by
-         * {@link Snippet} and returns a {@link SnippetInfo} value describing it. There must be
-         * exactly one snippet method in {@code declaringClass}.
+         * {@link Snippet} and returns a {@link SnippetInfo} value describing it. There must be exactly one
+         * snippet method in {@code declaringClass}.
          */
         protected SnippetInfo snippet(Class<? extends Snippets> declaringClass, String methodName, LocationIdentity... initialPrivateLocations) {
             assert methodName != null;
@@ -805,9 +805,8 @@ public class SnippetTemplate {
                                 debug.dump(DebugContext.INFO_LEVEL, snippetCopy, "After replacing %s", loadIndexed);
                             } else if (usage instanceof StoreIndexedNode) {
                                 /*
-                                 * The template lowering doesn't really treat this as an array so
-                                 * you can't store back into the varargs. Allocate your own array if
-                                 * you really need this and EA should eliminate it.
+                                 * The template lowering doesn't really treat this as an array so you can't store back into the
+                                 * varargs. Allocate your own array if you really need this and EA should eliminate it.
                                  */
                                 throw new GraalError("Can't store into VarargsParameter array");
                             }
@@ -1047,10 +1046,10 @@ public class SnippetTemplate {
     private final SnippetInfo info;
 
     /**
-     * The named parameters of this template that must be bound to values during instantiation. For
-     * a parameter that is still live after specialization, the value in this map is either a
-     * {@link ParameterNode} instance or a {@link ParameterNode} array. For an eliminated parameter,
-     * the value is identical to the key.
+     * The named parameters of this template that must be bound to values during instantiation. For a
+     * parameter that is still live after specialization, the value in this map is either a
+     * {@link ParameterNode} instance or a {@link ParameterNode} array. For an eliminated parameter, the
+     * value is identical to the key.
      */
     private final Object[] parameters;
 
@@ -1065,14 +1064,12 @@ public class SnippetTemplate {
     private final MemoryAnchorNode memoryAnchor;
 
     /**
-     * Nodes that inherit the {@link StateSplit#stateAfter()} from the replacee during
-     * instantiation.
+     * Nodes that inherit the {@link StateSplit#stateAfter()} from the replacee during instantiation.
      */
     private final ArrayList<StateSplit> sideEffectNodes;
 
     /**
-     * Nodes that inherit a deoptimization {@link FrameState} from the replacee during
-     * instantiation.
+     * Nodes that inherit a deoptimization {@link FrameState} from the replacee during instantiation.
      */
     private final ArrayList<DeoptimizingNode> deoptNodes;
 
@@ -1143,8 +1140,8 @@ public class SnippetTemplate {
 
     /**
      * Converts a Java boxed value to a {@link JavaConstant} of the right kind. This adjusts for the
-     * limitation that a {@link Local}'s kind is a {@linkplain JavaKind#getStackKind() stack kind}
-     * and so cannot be used for re-boxing primitives smaller than an int.
+     * limitation that a {@link Local}'s kind is a {@linkplain JavaKind#getStackKind() stack kind} and
+     * so cannot be used for re-boxing primitives smaller than an int.
      *
      * @param argument a Java boxed value
      * @param localKind the kind of the {@link Local} to which {@code argument} will be bound
@@ -1158,10 +1155,10 @@ public class SnippetTemplate {
     }
 
     /**
-     * Logic for replacing a snippet-lowered node at its usages with the return value of the
-     * snippet. An alternative to the {@linkplain SnippetTemplate#DEFAULT_REPLACER default}
-     * replacement logic can be used to handle mismatches between the stamp of the node being
-     * lowered and the stamp of the snippet's return value.
+     * Logic for replacing a snippet-lowered node at its usages with the return value of the snippet. An
+     * alternative to the {@linkplain SnippetTemplate#DEFAULT_REPLACER default} replacement logic can be
+     * used to handle mismatches between the stamp of the node being lowered and the stamp of the
+     * snippet's return value.
      */
     public interface UsageReplacer {
         /**
@@ -1226,11 +1223,10 @@ public class SnippetTemplate {
         assert !kills.contains(any()) : "snippet graph contains a kill to ANY_LOCATION, but replacee (" + replacee + ") doesn't kill ANY_LOCATION.  kills: " + kills;
 
         /*
-         * Kills to private locations are safe, since there can be no floating read to these
-         * locations except reads that are introduced by the snippet itself or related snippets in
-         * the same lowering round. These reads are anchored to a MemoryAnchor at the beginning of
-         * their snippet, so they can not float above a kill in another instance of the same
-         * snippet.
+         * Kills to private locations are safe, since there can be no floating read to these locations
+         * except reads that are introduced by the snippet itself or related snippets in the same lowering
+         * round. These reads are anchored to a MemoryAnchor at the beginning of their snippet, so they can
+         * not float above a kill in another instance of the same snippet.
          */
         for (LocationIdentity p : this.info.privateLocations) {
             kills.remove(p);

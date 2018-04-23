@@ -64,8 +64,8 @@ public final class Scope {
     /**
      * Create a new Scope builder.
      * <p>
-     * The properties representing the variables needs to have deterministic iteration order,
-     * variable declaration order is recommended.
+     * The properties representing the variables needs to have deterministic iteration order, variable
+     * declaration order is recommended.
      *
      * @param name name of the scope, a name description like block, name of a function, closure,
      *            script, module, etc.
@@ -77,8 +77,8 @@ public final class Scope {
     }
 
     /**
-     * Human readable name of this scope. A name description like block, name of a function,
-     * closure, script, module, etc.
+     * Human readable name of this scope. A name description like block, name of a function, closure,
+     * script, module, etc.
      *
      * @since 0.30
      */
@@ -87,8 +87,8 @@ public final class Scope {
     }
 
     /**
-     * Get a node representing this scope. Functional scopes return the appropriate {@link RootNode}
-     * , top scopes do not have a node associated.
+     * Get a node representing this scope. Functional scopes return the appropriate {@link RootNode} ,
+     * top scopes do not have a node associated.
      *
      * @return the node, or <code>null<code> when no node is associated.
      * @since 0.30
@@ -98,15 +98,14 @@ public final class Scope {
     }
 
     /**
-     * Get variables declared in this scope. When a {@link Node} (and a {@link Frame}) was provided
-     * when this scope was obtained, variables are valid at that specified {@link Node} (and
-     * {@link Frame}).
+     * Get variables declared in this scope. When a {@link Node} (and a {@link Frame}) was provided when
+     * this scope was obtained, variables are valid at that specified {@link Node} (and {@link Frame}).
      * <p>
      * The properties representing the variables have deterministic iteration order, variable
      * declaration order is preferred.
      *
-     * @return A {@link com.oracle.truffle.api.interop.TruffleObject} containing the variables as
-     *         its properties, never <code>null</code>.
+     * @return A {@link com.oracle.truffle.api.interop.TruffleObject} containing the variables as its
+     *         properties, never <code>null</code>.
      * @since 0.30
      */
     public Object getVariables() {
@@ -120,11 +119,11 @@ public final class Scope {
      * The properties representing the arguments have deterministic iteration order, argument
      * declaration order is preferred.
      *
-     * @return A {@link com.oracle.truffle.api.interop.TruffleObject} containing the arguments as
-     *         its properties for named arguments, or as its array for unnamed arguments. A
-     *         <code>null</code> is returned when this scope does not have a concept of arguments.
-     *         An empty TruffleObject is provided when it has a sense to have arguments (e.g.
-     *         function scope), but there are none.
+     * @return A {@link com.oracle.truffle.api.interop.TruffleObject} containing the arguments as its
+     *         properties for named arguments, or as its array for unnamed arguments. A
+     *         <code>null</code> is returned when this scope does not have a concept of arguments. An
+     *         empty TruffleObject is provided when it has a sense to have arguments (e.g. function
+     *         scope), but there are none.
      * @since 0.30
      */
     public Object getArguments() {
@@ -151,8 +150,8 @@ public final class Scope {
         }
 
         /**
-         * Set node representing the scope. It is expected that the appropriate
-         * block/function/closure/etc. node is provided.
+         * Set node representing the scope. It is expected that the appropriate block/function/closure/etc.
+         * node is provided.
          *
          * @param node the scope's node
          * @since 0.30
@@ -166,8 +165,8 @@ public final class Scope {
         /**
          * Set arguments of the scope.
          * <p>
-         * The properties representing the arguments needs to have deterministic iteration order,
-         * argument declaration order is recommended.
+         * The properties representing the arguments needs to have deterministic iteration order, argument
+         * declaration order is recommended.
          *
          * @param arguments arguments of the scope
          * @since 0.30

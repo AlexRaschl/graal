@@ -96,8 +96,8 @@ public abstract class LoopConditionProfile extends ConditionProfile {
     public abstract boolean profile(boolean value);
 
     /**
-     * Provides an alternative way to profile counted loops with less interpreter footprint. Please
-     * see {@link LoopConditionProfile} for an usage example.
+     * Provides an alternative way to profile counted loops with less interpreter footprint. Please see
+     * {@link LoopConditionProfile} for an usage example.
      *
      * @see #inject(boolean)
      * @since 0.10
@@ -105,8 +105,8 @@ public abstract class LoopConditionProfile extends ConditionProfile {
     public abstract void profileCounted(long length);
 
     /**
-     * Provides an alternative way to profile counted loops with less interpreter footprint. Please
-     * see {@link LoopConditionProfile} for an usage example.
+     * Provides an alternative way to profile counted loops with less interpreter footprint. Please see
+     * {@link LoopConditionProfile} for an usage example.
      *
      * @see #inject(boolean)
      * @since 0.10
@@ -115,8 +115,8 @@ public abstract class LoopConditionProfile extends ConditionProfile {
 
     /**
      * Returns a {@link LoopConditionProfile} that speculates on loop conditions to be never
-     * <code>true</code>. It also captures loop probabilities for the compiler. Loop condition
-     * profiles are intended to be used for loop conditions.
+     * <code>true</code>. It also captures loop probabilities for the compiler. Loop condition profiles
+     * are intended to be used for loop conditions.
      *
      * @see LoopConditionProfile
      * @since 0.10

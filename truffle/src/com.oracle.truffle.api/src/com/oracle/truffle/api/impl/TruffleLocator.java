@@ -64,8 +64,8 @@ public abstract class TruffleLocator {
     }
 
     /**
-     * Utility method to load a class from one of the located classloaders. Please note that this
-     * method is used in tests using reflection. Do not remove.
+     * Utility method to load a class from one of the located classloaders. Please note that this method
+     * is used in tests using reflection. Do not remove.
      *
      * @param name class to search for
      * @return the class or <code>null</code> if none of the loaders knows the class

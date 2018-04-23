@@ -222,8 +222,8 @@ public class ArrayCopySnippets implements Snippets {
                 int copiedElements = CheckcastArrayCopyCallNode.checkcastArraycopy(nonNullSrc, srcPos, nonNullDest, destPos, length, superCheckOffset, destElemKlass, false);
                 if (probability(SLOW_PATH_PROBABILITY, copiedElements != 0)) {
                     /*
-                     * the stub doesn't throw the ArrayStoreException, but returns the number of
-                     * copied elements (xor'd with -1).
+                     * the stub doesn't throw the ArrayStoreException, but returns the number of copied elements (xor'd
+                     * with -1).
                      */
                     copiedElements ^= -1;
                     System.arraycopy(nonNullSrc, srcPos + copiedElements, nonNullDest, destPos + copiedElements, length - copiedElements);
@@ -241,8 +241,8 @@ public class ArrayCopySnippets implements Snippets {
         int copiedElements = GenericArrayCopyCallNode.genericArraycopy(src, srcPos, dest, destPos, length);
         if (probability(SLOW_PATH_PROBABILITY, copiedElements != 0)) {
             /*
-             * the stub doesn't throw the ArrayStoreException, but returns the number of copied
-             * elements (xor'd with -1).
+             * the stub doesn't throw the ArrayStoreException, but returns the number of copied elements (xor'd
+             * with -1).
              */
             copiedElements ^= -1;
             System.arraycopy(src, srcPos + copiedElements, dest, destPos + copiedElements, length - copiedElements);
@@ -516,8 +516,8 @@ public class ArrayCopySnippets implements Snippets {
         }
 
         /**
-         * Instantiate the snippet template and fix up the FrameState of any Invokes of
-         * System.arraycopy and propagate the captured bci in the ArrayCopySlowPathNode.
+         * Instantiate the snippet template and fix up the FrameState of any Invokes of System.arraycopy and
+         * propagate the captured bci in the ArrayCopySlowPathNode.
          *
          * @param args
          * @param arraycopy

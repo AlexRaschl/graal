@@ -48,8 +48,8 @@ public enum InputType {
      */
     Anchor,
     /**
-     * Inputs that represent an association between nodes, e.g., a phi and the merge or a loop begin
-     * and loop exits and ends.
+     * Inputs that represent an association between nodes, e.g., a phi and the merge or a loop begin and
+     * loop exits and ends.
      */
     Association,
     /**

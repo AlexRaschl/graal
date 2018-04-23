@@ -94,8 +94,8 @@ public final class BranchProbabilityNode extends FloatingNode implements Simplif
                 throw new GraalError("A probability of more than 1.0 (" + probabilityValue + ") is not allowed!");
             } else if (Double.isNaN(probabilityValue)) {
                 /*
-                 * We allow NaN if the node is in unreachable code that will eventually fall away,
-                 * or else an error will be thrown during lowering since we keep the node around.
+                 * We allow NaN if the node is in unreachable code that will eventually fall away, or else an error
+                 * will be thrown during lowering since we keep the node around.
                  */
                 return;
             }
@@ -139,13 +139,12 @@ public final class BranchProbabilityNode extends FloatingNode implements Simplif
     }
 
     /**
-     * This intrinsic should only be used for the condition of an if statement. The parameter
-     * condition should also only denote a simple condition and not a combined condition involving
-     * &amp;&amp; or || operators. It injects the probability of the condition into the if
-     * statement.
+     * This intrinsic should only be used for the condition of an if statement. The parameter condition
+     * should also only denote a simple condition and not a combined condition involving &amp;&amp; or
+     * || operators. It injects the probability of the condition into the if statement.
      *
-     * @param probability the probability that the given condition is true as a double value between
-     *            0.0 and 1.0.
+     * @param probability the probability that the given condition is true as a double value between 0.0
+     *            and 1.0.
      * @param condition the simple condition without any &amp;&amp; or || operators
      * @return the condition
      */

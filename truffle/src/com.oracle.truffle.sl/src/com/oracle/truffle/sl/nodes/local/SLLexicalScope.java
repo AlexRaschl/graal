@@ -208,8 +208,8 @@ public final class SLLexicalScope {
     }
 
     /**
-     * @return the node representing the scope, the block node for block scopes and the
-     *         {@link RootNode} for functional scope.
+     * @return the node representing the scope, the block node for block scopes and the {@link RootNode}
+     *         for functional scope.
      */
     public Node getNode() {
         if (root != null) {

@@ -41,8 +41,8 @@ public interface TruffleCompiler {
     CompilationIdentifier getCompilationIdentifier(CompilableTruffleAST compilable);
 
     /**
-     * Opens a debug context for compiling {@code compilable}. The {@link DebugContext#close()}
-     * method should be called on the returned object once the compilation is finished.
+     * Opens a debug context for compiling {@code compilable}. The {@link DebugContext#close()} method
+     * should be called on the returned object once the compilation is finished.
      *
      * @return {@code null} if a {@link DebugContext} cannot be shared across the Truffle
      *         runtime/compiler boundary represented by this object
@@ -52,8 +52,8 @@ public interface TruffleCompiler {
     /**
      * Compiles {@code compilable} to machine code.
      *
-     * @param debug a debug context to use or {@code null} if a {@link DebugContext} cannot cross
-     *            the Truffle runtime/compiler boundary represented by this object
+     * @param debug a debug context to use or {@code null} if a {@link DebugContext} cannot cross the
+     *            Truffle runtime/compiler boundary represented by this object
      * @param compilationId an identifier to be used for the compilation or {@code null} if a
      *            {@link CompilationIdentifier} cannot cross the Truffle runtime/compiler boundary
      *            represented by this object

@@ -423,8 +423,8 @@ public class AArch64ArithmeticLIRGenerator extends ArithmeticLIRGenerator implem
     }
 
     /**
-     * If val denotes the stackpointer, move it to another location. This is necessary since most
-     * ops cannot handle the stackpointer as input or output.
+     * If val denotes the stackpointer, move it to another location. This is necessary since most ops
+     * cannot handle the stackpointer as input or output.
      */
     private AllocatableValue moveSp(AllocatableValue val) {
         if (val instanceof RegisterValue && ((RegisterValue) val).getRegister().equals(sp)) {

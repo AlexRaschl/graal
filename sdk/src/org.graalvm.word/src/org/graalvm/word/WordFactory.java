@@ -56,8 +56,8 @@ public abstract class WordFactory {
     protected static BoxFactory boxFactory;
 
     /**
-     * We allow subclassing, because only subclasses can access the protected inner classes that we
-     * use to mark the operations.
+     * We allow subclassing, because only subclasses can access the protected inner classes that we use
+     * to mark the operations.
      */
     protected WordFactory() {
     }
@@ -109,8 +109,8 @@ public abstract class WordFactory {
     }
 
     /**
-     * Unsafe conversion from a Java int value to a Word. The parameter is treated as an unsigned
-     * 32-bit value (in contrast to the semantics of a Java int).
+     * Unsafe conversion from a Java int value to a Word. The parameter is treated as an unsigned 32-bit
+     * value (in contrast to the semantics of a Java int).
      *
      * @param val a 32 bit unsigned value
      * @return the value cast to Word
@@ -121,8 +121,8 @@ public abstract class WordFactory {
     }
 
     /**
-     * Unsafe conversion from a Java long value to a Word. The parameter is treated as a signed
-     * 64-bit value (unchanged semantics of a Java long).
+     * Unsafe conversion from a Java long value to a Word. The parameter is treated as a signed 64-bit
+     * value (unchanged semantics of a Java long).
      *
      * @param val a 64 bit signed value
      * @return the value cast to Word
@@ -133,8 +133,8 @@ public abstract class WordFactory {
     }
 
     /**
-     * Unsafe conversion from a Java int value to a Word. The parameter is treated as a signed
-     * 32-bit value (unchanged semantics of a Java int).
+     * Unsafe conversion from a Java int value to a Word. The parameter is treated as a signed 32-bit
+     * value (unchanged semantics of a Java int).
      *
      * @param val a 32 bit signed value
      * @return the value cast to Word

@@ -102,11 +102,11 @@ public final class SuspensionFilter {
         }
 
         /**
-         * Set to ignore language initialization code. The language initialization code is not
-         * ignored by default.
+         * Set to ignore language initialization code. The language initialization code is not ignored by
+         * default.
          *
-         * @param ignore <code>true</code> to ignore execution of language context initialization
-         *            code, <code>false</code> not to ignore it.
+         * @param ignore <code>true</code> to ignore execution of language context initialization code,
+         *            <code>false</code> not to ignore it.
          * @since 0.26
          */
         public Builder ignoreLanguageContextInitialization(boolean ignore) {
@@ -115,11 +115,11 @@ public final class SuspensionFilter {
         }
 
         /**
-         * Set to include or exclude {@link RootNode#isInternal() internal code} in the filter.
-         * Internal code is excluded by default.
+         * Set to include or exclude {@link RootNode#isInternal() internal code} in the filter. Internal
+         * code is excluded by default.
          *
-         * @param internal <code>true</code> to include execution of internal code,
-         *            <code>false</code> to exclude it.
+         * @param internal <code>true</code> to include execution of internal code, <code>false</code> to
+         *            exclude it.
          * @since 0.29
          */
         public Builder includeInternal(boolean internal) {
@@ -128,9 +128,9 @@ public final class SuspensionFilter {
         }
 
         /**
-         * Set a {@link Predicate} that filters based on a {@link Source}. The predicate must always
-         * return the same result for a source instance otherwise the behavior is undefined. The
-         * predicate should be able run on multiple threads at the same time.
+         * Set a {@link Predicate} that filters based on a {@link Source}. The predicate must always return
+         * the same result for a source instance otherwise the behavior is undefined. The predicate should
+         * be able run on multiple threads at the same time.
          *
          * @param filter a source section filter
          * @since 0.29

@@ -104,10 +104,10 @@ public class NodeCostUtil {
     }
 
     /**
-     * Factor to control the "imprecision" of the before - after relation when verifying phase
-     * effects. If the cost model is perfect the best theoretical value is 0.0D (Ignoring the fact
-     * that profiling information is not reliable and thus the, probability based, profiling view on
-     * a graph is different than the reality).
+     * Factor to control the "imprecision" of the before - after relation when verifying phase effects.
+     * If the cost model is perfect the best theoretical value is 0.0D (Ignoring the fact that profiling
+     * information is not reliable and thus the, probability based, profiling view on a graph is
+     * different than the reality).
      */
     private static final double DELTA = 0.001D;
 

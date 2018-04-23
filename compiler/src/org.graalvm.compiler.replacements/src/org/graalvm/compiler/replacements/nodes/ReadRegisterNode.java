@@ -53,15 +53,15 @@ public final class ReadRegisterNode extends FixedWithNextNode implements LIRLowe
     protected final Register register;
 
     /**
-     * When true, subsequent uses of this node use the fixed register; when false, the value is
-     * moved into a new virtual register so that the fixed register is not seen by uses.
+     * When true, subsequent uses of this node use the fixed register; when false, the value is moved
+     * into a new virtual register so that the fixed register is not seen by uses.
      */
     protected final boolean directUse;
 
     /**
      * When true, this node is also an implicit definition of the value for the register allocator,
-     * i.e., the register is an implicit incoming value; when false, the register must be defined in
-     * the same method or must be an register excluded from register allocation.
+     * i.e., the register is an implicit incoming value; when false, the register must be defined in the
+     * same method or must be an register excluded from register allocation.
      */
     protected final boolean incoming;
 

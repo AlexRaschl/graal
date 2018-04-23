@@ -258,14 +258,13 @@ public class LoweringPhase extends BasePhase<PhaseContext> {
     }
 
     /**
-     * Checks that lowering of a given node did not introduce any new {@link Lowerable} nodes that
-     * could be lowered in the current {@link LoweringPhase}. Such nodes must be recursively lowered
-     * as part of lowering {@code node}.
+     * Checks that lowering of a given node did not introduce any new {@link Lowerable} nodes that could
+     * be lowered in the current {@link LoweringPhase}. Such nodes must be recursively lowered as part
+     * of lowering {@code node}.
      *
      * @param node a node that was just lowered
      * @param preLoweringMark the graph mark before {@code node} was lowered
-     * @param unscheduledUsages set of {@code node}'s usages that were unscheduled before it was
-     *            lowered
+     * @param unscheduledUsages set of {@code node}'s usages that were unscheduled before it was lowered
      * @throws AssertionError if the check fails
      */
     private static boolean checkPostNodeLowering(Node node, LoweringToolImpl loweringTool, Mark preLoweringMark, Collection<Node> unscheduledUsages) {
@@ -289,9 +288,9 @@ public class LoweringPhase extends BasePhase<PhaseContext> {
             }
             if (graph.isAfterFloatingReadPhase() && n instanceof MemoryCheckpoint && !(node instanceof MemoryCheckpoint) && !(node instanceof ControlSinkNode)) {
                 /*
-                 * The lowering introduced a MemoryCheckpoint but the current node isn't a
-                 * checkpoint. This is only OK if the locations involved don't affect the memory
-                 * graph or if the new kill location doesn't connect into the existing graph.
+                 * The lowering introduced a MemoryCheckpoint but the current node isn't a checkpoint. This is only
+                 * OK if the locations involved don't affect the memory graph or if the new kill location doesn't
+                 * connect into the existing graph.
                  */
                 boolean isAny = false;
                 if (n instanceof MemoryCheckpoint.Single) {
@@ -305,9 +304,8 @@ public class LoweringPhase extends BasePhase<PhaseContext> {
                 }
                 if (isAny && n instanceof FixedWithNextNode) {
                     /*
-                     * Check if the next kill location leads directly to a ControlSinkNode in the
-                     * new part of the graph. This is a fairly conservative test that could be made
-                     * more general if required.
+                     * Check if the next kill location leads directly to a ControlSinkNode in the new part of the graph.
+                     * This is a fairly conservative test that could be made more general if required.
                      */
                     FixedWithNextNode cur = (FixedWithNextNode) n;
                     while (cur != null && graph.isNew(preLoweringMark, cur)) {
@@ -345,9 +343,8 @@ public class LoweringPhase extends BasePhase<PhaseContext> {
             this.mode = mode;
 
             /*
-             * In VERIFY_LOWERING, we want to verify whether the lowering itself changes the graph.
-             * Make sure we're not detecting spurious changes because the SchedulePhase modifies the
-             * graph.
+             * In VERIFY_LOWERING, we want to verify whether the lowering itself changes the graph. Make sure
+             * we're not detecting spurious changes because the SchedulePhase modifies the graph.
              */
             boolean immutableSchedule = mode == LoweringMode.VERIFY_LOWERING;
 
@@ -369,8 +366,7 @@ public class LoweringPhase extends BasePhase<PhaseContext> {
         @Override
         public boolean checkContract() {
             /*
-             * lowering with snippets cannot be fully built in the node costs of all high level
-             * nodes
+             * lowering with snippets cannot be fully built in the node costs of all high level nodes
              */
             return false;
         }
@@ -493,10 +489,10 @@ public class LoweringPhase extends BasePhase<PhaseContext> {
         /**
          * Gets all usages of a floating, lowerable node that are unscheduled.
          * <p>
-         * Given that the lowering of such nodes may introduce fixed nodes, they must be lowered in
-         * the context of a usage that dominates all other usages. The fixed nodes resulting from
-         * lowering are attached to the fixed node context of the dominating usage. This ensures the
-         * post-lowering graph still has a valid schedule.
+         * Given that the lowering of such nodes may introduce fixed nodes, they must be lowered in the
+         * context of a usage that dominates all other usages. The fixed nodes resulting from lowering are
+         * attached to the fixed node context of the dominating usage. This ensures the post-lowering graph
+         * still has a valid schedule.
          *
          * @param node a {@link Lowerable} node
          */

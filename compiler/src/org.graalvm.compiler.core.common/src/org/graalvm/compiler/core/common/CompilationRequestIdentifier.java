@@ -33,8 +33,8 @@ public interface CompilationRequestIdentifier extends CompilationIdentifier {
 
     /**
      * Returns the {@link CompilationRequestIdentifier#getRequest() request} from a
-     * {@link CompilationRequestIdentifier}. Returns {@code null} if the
-     * {@link CompilationIdentifier identifier} does not have one.
+     * {@link CompilationRequestIdentifier}. Returns {@code null} if the {@link CompilationIdentifier
+     * identifier} does not have one.
      */
     static CompilationRequest asCompilationRequest(CompilationIdentifier compilationId) {
         if (compilationId instanceof CompilationRequestIdentifier) {

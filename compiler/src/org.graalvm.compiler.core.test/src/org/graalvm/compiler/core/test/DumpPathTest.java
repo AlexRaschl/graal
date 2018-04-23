@@ -63,8 +63,7 @@ public class DumpPathTest extends GraalCompilerTest {
     }
 
     /**
-     * Check that the given directory contains file or directory names with all the given
-     * extensions.
+     * Check that the given directory contains file or directory names with all the given extensions.
      */
     private static void checkForFiles(Path directoryPath, String[] extensions) throws IOException {
         String[] paths = new String[extensions.length];

@@ -34,9 +34,9 @@ import com.oracle.truffle.api.nodes.Node;
 public interface ReplaceObserver {
 
     /**
-     * Returns <code>true</code> if the event is consumed and no parent nodes should be notified by
-     * for replaces. Returns <code>false</code> if the parent {@link Node} or {@link CallTarget}
-     * should get notified.
+     * Returns <code>true</code> if the event is consumed and no parent nodes should be notified by for
+     * replaces. Returns <code>false</code> if the parent {@link Node} or {@link CallTarget} should get
+     * notified.
      * 
      * @since 0.8 or earlier
      */

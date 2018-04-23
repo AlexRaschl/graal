@@ -70,13 +70,13 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
     protected final ScheduleResult schedule;
 
     /**
-     * If a node has an alias, this means that it was replaced with another node during analysis.
-     * Nodes can be replaced by normal ("scalar") nodes, e.g., a LoadIndexedNode with a
-     * ConstantNode, or by virtual nodes, e.g., a NewInstanceNode with a VirtualInstanceNode. A node
-     * was replaced with a virtual value iff the alias is a subclass of VirtualObjectNode.
+     * If a node has an alias, this means that it was replaced with another node during analysis. Nodes
+     * can be replaced by normal ("scalar") nodes, e.g., a LoadIndexedNode with a ConstantNode, or by
+     * virtual nodes, e.g., a NewInstanceNode with a VirtualInstanceNode. A node was replaced with a
+     * virtual value iff the alias is a subclass of VirtualObjectNode.
      *
-     * This alias map exists only once and is not part of the block state, so that during iterative
-     * loop processing the alias of a node may be changed to another value.
+     * This alias map exists only once and is not part of the block state, so that during iterative loop
+     * processing the alias of a node may be changed to another value.
      */
     protected final NodeMap<ValueNode> aliases;
 
@@ -87,8 +87,8 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
     private final NodeBitMap hasScalarReplacedInputs;
 
     /*
-     * TODO: if it was possible to introduce your own subclasses of Block and Loop, these maps would
-     * not be necessary. We could merge the GraphEffectsList logic into them.
+     * TODO: if it was possible to introduce your own subclasses of Block and Loop, these maps would not
+     * be necessary. We could merge the GraphEffectsList logic into them.
      */
 
     /**
@@ -142,9 +142,8 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
         final ArrayList<Node> obsoleteNodes = new ArrayList<>(0);
         final ArrayList<GraphEffectList> effectList = new ArrayList<>();
         /*
-         * Effects are applied during a ordered iteration over the blocks to apply them in the
-         * correct order, e.g., apply the effect that adds a node to the graph before the node is
-         * used.
+         * Effects are applied during a ordered iteration over the blocks to apply them in the correct
+         * order, e.g., apply the effect that adds a node to the graph before the node is used.
          */
         BlockIteratorClosure<Void> closure = new BlockIteratorClosure<Void>() {
 
@@ -187,9 +186,8 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
             effects.apply(graph, obsoleteNodes, false);
         }
         /*
-         * Effects that modify the cfg (e.g., removing a branch for an if that got a constant
-         * condition) need to be performed after all other effects, because they change phi value
-         * indexes.
+         * Effects that modify the cfg (e.g., removing a branch for an if that got a constant condition)
+         * need to be performed after all other effects, because they change phi value indexes.
          */
         for (GraphEffectList effects : effectList) {
             effects.apply(graph, obsoleteNodes, true);
@@ -213,8 +211,8 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
             GraphEffectList effects = blockEffects.get(block);
 
             /*
-             * If we enter an if branch that is known to be unreachable, we mark it as dead and
-             * cease to do any more analysis on it. At merges, these dead branches will be ignored.
+             * If we enter an if branch that is known to be unreachable, we mark it as dead and cease to do any
+             * more analysis on it. At merges, these dead branches will be ignored.
              */
             if (block.getBeginNode().predecessor() instanceof IfNode) {
                 IfNode ifNode = (IfNode) block.getBeginNode().predecessor();
@@ -263,9 +261,9 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
     }
 
     /**
-     * Changes to {@link CommitAllocationNode}s, {@link AllocatedObjectNode}s and {@link BoxNode}s
-     * are not considered to be "important". If only changes to those nodes are discovered during
-     * analysis, the effects need not be applied.
+     * Changes to {@link CommitAllocationNode}s, {@link AllocatedObjectNode}s and {@link BoxNode}s are
+     * not considered to be "important". If only changes to those nodes are discovered during analysis,
+     * the effects need not be applied.
      */
     private static boolean isSignificantNode(Node node) {
         return !(node instanceof CommitAllocationNode || node instanceof AllocatedObjectNode || node instanceof BoxNode);
@@ -299,19 +297,19 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
             return states;
         }
         /*
-         * Special case nested loops: To avoid an exponential runtime for nested loops we try to
-         * only process them as little times as possible.
+         * Special case nested loops: To avoid an exponential runtime for nested loops we try to only
+         * process them as little times as possible.
          *
-         * In the first iteration of an outer most loop we go into the inner most loop(s). We run
-         * the first iteration of the inner most loop and then, if necessary, a second iteration.
+         * In the first iteration of an outer most loop we go into the inner most loop(s). We run the first
+         * iteration of the inner most loop and then, if necessary, a second iteration.
          *
-         * We return from the recursion and finish the first iteration of the outermost loop. If we
-         * have to do a second iteration in the outer most loop we go again into the inner most
-         * loop(s) but this time we already know all states that are killed by the loop so inside
-         * the loop we will only have those changes that propagate from the first iteration of the
-         * outer most loop into the current loop. We strip the initial loop state for the inner most
-         * loops and do the first iteration with the (possible) changes from outer loops. If there
-         * are no changes we only have to do 1 iteration and are done.
+         * We return from the recursion and finish the first iteration of the outermost loop. If we have to
+         * do a second iteration in the outer most loop we go again into the inner most loop(s) but this
+         * time we already know all states that are killed by the loop so inside the loop we will only have
+         * those changes that propagate from the first iteration of the outer most loop into the current
+         * loop. We strip the initial loop state for the inner most loops and do the first iteration with
+         * the (possible) changes from outer loops. If there are no changes we only have to do 1 iteration
+         * and are done.
          *
          */
         BlockT initialStateRemovedKilledLocations = stripKilledLoopLocations(loop, cloneState(initialState));
@@ -320,13 +318,13 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
         processInitialLoopState(loop, lastMergedState);
         MergeProcessor mergeProcessor = createMergeProcessor(loop.getHeader());
         /*
-         * Iterative loop processing: we take the predecessor state as the loop's starting state,
-         * processing the loop contents, merge the states of all loop ends, and check whether the
-         * resulting state is equal to the starting state. If it is, the loop processing has
-         * finished, if not, another iteration is needed.
+         * Iterative loop processing: we take the predecessor state as the loop's starting state, processing
+         * the loop contents, merge the states of all loop ends, and check whether the resulting state is
+         * equal to the starting state. If it is, the loop processing has finished, if not, another
+         * iteration is needed.
          *
-         * This processing converges because the merge processing always makes the starting state
-         * more generic, e.g., adding phis instead of non-phi values.
+         * This processing converges because the merge processing always makes the starting state more
+         * generic, e.g., adding phis instead of non-phi values.
          */
         for (int iteration = 0; iteration < 10; iteration++) {
             try (Indent i = debug.logAndIndent("================== Process Loop Effects Closure: block:%s begin node:%s", loop.getHeader(), loop.getHeader().getBeginNode())) {
@@ -432,8 +430,8 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
         protected final GraphEffectList afterMergeEffects;
 
         /**
-         * The indexes are used to map from an index in the list of active (non-dead) predecessors
-         * to an index in the list of all predecessors (the latter may be larger).
+         * The indexes are used to map from an index in the list of active (non-dead) predecessors to an
+         * index in the list of all predecessors (the latter may be larger).
          */
         private int[] stateIndexes;
         protected BlockT newState;

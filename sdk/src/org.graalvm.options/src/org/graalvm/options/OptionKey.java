@@ -37,9 +37,9 @@ public final class OptionKey<T> {
     private final T defaultValue;
 
     /**
-     * Constructs a new option key given a default value. Throws {@link IllegalArgumentException} if
-     * no default {@link OptionType} could be {@link OptionType#defaultType(Object) resolved} for
-     * the given type. The default value must not be <code>null</code>.
+     * Constructs a new option key given a default value. Throws {@link IllegalArgumentException} if no
+     * default {@link OptionType} could be {@link OptionType#defaultType(Object) resolved} for the given
+     * type. The default value must not be <code>null</code>.
      *
      * @since 1.0
      */

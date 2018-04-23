@@ -121,9 +121,9 @@ public @interface Specialization {
     /**
      * References a specialization of a super class by its method name where this specialization is
      * inserted before. The declaration order of a specialization is not usable for nodes where
-     * specializations are partly declared in the super class and partly declared in a derived
-     * class. By default all specializations declared in the derived class are appended to those in
-     * the super class. This attribute can be used to override the default behavior.
+     * specializations are partly declared in the super class and partly declared in a derived class. By
+     * default all specializations declared in the derived class are appended to those in the super
+     * class. This attribute can be used to override the default behavior.
      *
      * @since 0.8 or earlier
      */
@@ -132,9 +132,9 @@ public @interface Specialization {
     /**
      * <p>
      * Declares an event guards that trigger re-specialization in case an exception is thrown in the
-     * specialization body. This attribute can be used to declare a list of such exceptions. Guards
-     * of this kind are useful to avoid calculating a value twice when it is used in the guard and
-     * its specialization.
+     * specialization body. This attribute can be used to declare a list of such exceptions. Guards of
+     * this kind are useful to avoid calculating a value twice when it is used in the guard and its
+     * specialization.
      * </p>
      *
      * <p>
@@ -174,13 +174,13 @@ public @interface Specialization {
 
     /**
      * <p>
-     * Declares other specializations of the same operation to be replaced by this specialization.
-     * Other specializations are referenced using their unique method name. If this specialization
-     * is instantiated then all replaced specialization instances are removed and never instantiated
-     * again for this node instance. Therefore this specialization should handle strictly more
-     * inputs than which were handled by the replaced specialization, otherwise the removal of the
-     * replaced specialization will lead to unspecialized types of input values. The replaces
-     * declaration is transitive for multiple involved specializations.
+     * Declares other specializations of the same operation to be replaced by this specialization. Other
+     * specializations are referenced using their unique method name. If this specialization is
+     * instantiated then all replaced specialization instances are removed and never instantiated again
+     * for this node instance. Therefore this specialization should handle strictly more inputs than
+     * which were handled by the replaced specialization, otherwise the removal of the replaced
+     * specialization will lead to unspecialized types of input values. The replaces declaration is
+     * transitive for multiple involved specializations.
      * </p>
      * <b>Example usage:</b>
      *
@@ -213,27 +213,25 @@ public @interface Specialization {
 
     /**
      * <p>
-     * Declares <code>boolean</code> expressions that define whether or not input values are
-     * applicable to this specialization instance. Guard expressions must always return the same
-     * result for each combination of the enclosing node instance and the bound input values.
+     * Declares <code>boolean</code> expressions that define whether or not input values are applicable
+     * to this specialization instance. Guard expressions must always return the same result for each
+     * combination of the enclosing node instance and the bound input values.
      * </p>
      * <p>
-     * If a guard expression does not bind any dynamic input parameters then the DSL assumes that
-     * the result will not change for this node after specialization instantiation. The DSL asserts
-     * this assumption if assertions are enabled (-ea).
+     * If a guard expression does not bind any dynamic input parameters then the DSL assumes that the
+     * result will not change for this node after specialization instantiation. The DSL asserts this
+     * assumption if assertions are enabled (-ea).
      * </p>
      * <p>
      * Guard expressions are defined using a subset of Java. This subset includes field/parameter
-     * accesses, function calls, type exact infix comparisons (==, !=, <, <=, >, >=), logical
-     * negation (!), logical disjunction (||) and integer literals. The return type of guard
-     * expressions must be <code>boolean</code>. Bound elements without receivers are resolved using
-     * the following order:
+     * accesses, function calls, type exact infix comparisons (==, !=, <, <=, >, >=), logical negation
+     * (!), logical disjunction (||) and integer literals. The return type of guard expressions must be
+     * <code>boolean</code>. Bound elements without receivers are resolved using the following order:
      * <ol>
      * <li>Dynamic and cached parameters of the enclosing specialization.</li>
      * <li>Fields defined using {@link NodeField} for the enclosing node.</li>
      * <li>Non-private, static or virtual methods or fields of enclosing node.</li>
-     * <li>Non-private, static or virtual methods or fields of super types of the enclosing node.
-     * </li>
+     * <li>Non-private, static or virtual methods or fields of super types of the enclosing node.</li>
      * <li>Public and static methods or fields imported using {@link ImportStatic}.</li>
      * </ol>
      * </p>
@@ -257,24 +255,23 @@ public @interface Specialization {
     /**
      * <p>
      * Declares assumption guards that optimistically assume that the state of an {@link Assumption}
-     * remains valid. Assumption expressions are cached once per specialization instantiation. If
-     * one of the returned assumptions gets invalidated then the specialization instance is removed.
-     * If the assumption expression returns an array of assumptions then all assumptions of the
-     * array are checked. This is limited to one-dimensional arrays.
+     * remains valid. Assumption expressions are cached once per specialization instantiation. If one of
+     * the returned assumptions gets invalidated then the specialization instance is removed. If the
+     * assumption expression returns an array of assumptions then all assumptions of the array are
+     * checked. This is limited to one-dimensional arrays.
      * </p>
      * <p>
-     * Assumption expressions are defined using a subset of Java. This subset includes
-     * field/parameter accesses, function calls, type exact infix comparisons (==, !=, <, <=, >,
-     * >=), logical negation (!), logical disjunction (||) and integer literals. The return type of
-     * the expression must be {@link Assumption} or an array of {@link Assumption} instances.
-     * Assumption expressions are not allowed to bind to dynamic parameter values of the
-     * specialization. Bound elements without receivers are resolved using the following order:
+     * Assumption expressions are defined using a subset of Java. This subset includes field/parameter
+     * accesses, function calls, type exact infix comparisons (==, !=, <, <=, >, >=), logical negation
+     * (!), logical disjunction (||) and integer literals. The return type of the expression must be
+     * {@link Assumption} or an array of {@link Assumption} instances. Assumption expressions are not
+     * allowed to bind to dynamic parameter values of the specialization. Bound elements without
+     * receivers are resolved using the following order:
      * <ol>
      * <li>Cached parameters of the enclosing specialization.</li>
      * <li>Fields defined using {@link NodeField} for the enclosing node.</li>
      * <li>Non-private, static or virtual methods or fields of enclosing node.</li>
-     * <li>Non-private, static or virtual methods or fields of super types of the enclosing node.
-     * </li>
+     * <li>Non-private, static or virtual methods or fields of super types of the enclosing node.</li>
      * <li>Public and static methods or fields imported using {@link ImportStatic}.</li>
      * </ol>
      * </p>
@@ -301,25 +298,22 @@ public @interface Specialization {
     /**
      * <p>
      * Declares the expression that limits the number of specialization instantiations. The default
-     * limit for specialization instantiations is defined as <code>"3"</code>. If the limit is
-     * exceeded no more instantiations of the enclosing specialization method are created. Please
-     * note that the existing specialization instantiations are <b>not</b> removed from the
-     * specialization chain. You can use {@link #replaces()} to remove unnecessary specializations
-     * instances.
+     * limit for specialization instantiations is defined as <code>"3"</code>. If the limit is exceeded
+     * no more instantiations of the enclosing specialization method are created. Please note that the
+     * existing specialization instantiations are <b>not</b> removed from the specialization chain. You
+     * can use {@link #replaces()} to remove unnecessary specializations instances.
      * </p>
      * <p>
      * The limit expression is defined using a subset of Java. This subset includes field/parameter
-     * accesses, function calls, type exact infix comparisons (==, !=, <, <=, >, >=), logical
-     * negation (!), logical disjunction (||) and integer literals. The return type of the limit
-     * expression must be <code>int</code>. Limit expressions are not allowed to bind to dynamic
-     * parameter values of the specialization. Bound elements without receivers are resolved using
-     * the following order:
+     * accesses, function calls, type exact infix comparisons (==, !=, <, <=, >, >=), logical negation
+     * (!), logical disjunction (||) and integer literals. The return type of the limit expression must
+     * be <code>int</code>. Limit expressions are not allowed to bind to dynamic parameter values of the
+     * specialization. Bound elements without receivers are resolved using the following order:
      * <ol>
      * <li>Cached parameters of the enclosing specialization.</li>
      * <li>Fields defined using {@link NodeField} for the enclosing node.</li>
      * <li>Non-private, static or virtual methods or fields of enclosing node.</li>
-     * <li>Non-private, static or virtual methods or fields of super types of the enclosing node.
-     * </li>
+     * <li>Non-private, static or virtual methods or fields of super types of the enclosing node.</li>
      * <li>Public and static methods or fields imported using {@link ImportStatic}.</li>
      * </ol>
      * </p>

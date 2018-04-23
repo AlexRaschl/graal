@@ -41,8 +41,8 @@ public final class LoopExitNode extends BeginStateSplitNode implements IterableN
 
     /*
      * The declared type of the field cannot be LoopBeginNode, because loop explosion during partial
-     * evaluation can temporarily assign a non-loop begin. This node will then be deleted shortly
-     * after - but we still must not have type system violations for that short amount of time.
+     * evaluation can temporarily assign a non-loop begin. This node will then be deleted shortly after
+     * - but we still must not have type system violations for that short amount of time.
      */
     @Input(Association) AbstractBeginNode loopBegin;
 

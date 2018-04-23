@@ -52,8 +52,8 @@ public class IfNodeCanonicalizationTest extends GraalCompilerTest {
     @Test
     public void test1() {
         /*
-         * exercise conversion of x - y < 0 into x < y, both by checking expected graph shape and
-         * that the transformed code produces the right answer.
+         * exercise conversion of x - y < 0 into x < y, both by checking expected graph shape and that the
+         * transformed code produces the right answer.
          */
         test("testSnippet1", SubNode.class, 0);
         byte[] values = new byte[4];

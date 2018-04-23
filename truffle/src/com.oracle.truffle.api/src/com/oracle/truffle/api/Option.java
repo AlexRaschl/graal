@@ -68,16 +68,15 @@ import org.graalvm.options.OptionKey;
 public @interface Option {
 
     /**
-     * Returns a custom name for the option. If not specified then the name of the annotated field
-     * is used.
+     * Returns a custom name for the option. If not specified then the name of the annotated field is
+     * used.
      * <p>
      * The {@link OptionDescriptor#getName() option descriptor name} is generated from the
      * {@link Group#value() group name} and the {@link Option#name() option name} separated by
-     * {@code '.'}. If the option name is an empty {@link String} then the trailing {@code '.'} will
-     * be removed from the descriptor name such that it exactly matches the group name. If, for
-     * example, the option group is {@code 'js'} and the option name is inherited from the field
-     * name {@code 'ECMACompatibility'} then the full descriptor name is
-     * {@code 'js.ECMACompatibility'}.
+     * {@code '.'}. If the option name is an empty {@link String} then the trailing {@code '.'} will be
+     * removed from the descriptor name such that it exactly matches the group name. If, for example,
+     * the option group is {@code 'js'} and the option name is inherited from the field name
+     * {@code 'ECMACompatibility'} then the full descriptor name is {@code 'js.ECMACompatibility'}.
      *
      * @since 0.27
      */
@@ -93,8 +92,8 @@ public @interface Option {
     String help();
 
     /**
-     * Returns <code>true</code> if this option is deprecated. The generated option descriptor
-     * returns this value as result of {@link OptionDescriptor#isDeprecated()}.
+     * Returns <code>true</code> if this option is deprecated. The generated option descriptor returns
+     * this value as result of {@link OptionDescriptor#isDeprecated()}.
      *
      * @since 0.27
      */
@@ -109,13 +108,13 @@ public @interface Option {
     OptionCategory category();
 
     /**
-     * Must be applied on classes containing {@link Option option} fields to specify a name prefix
-     * if the prefix cannot be inferred by language or instrument.
+     * Must be applied on classes containing {@link Option option} fields to specify a name prefix if
+     * the prefix cannot be inferred by language or instrument.
      * <p>
      * The {@link OptionDescriptor#getName() option descriptor name} is generated from the
-     * {@link Group#value() option name prefix} and the {@link Option#name() option name} separated
-     * by {@code '.'}. If the option name is an empty {@link String} then the trailing {@code '.'}
-     * will be removed from the descriptor name.
+     * {@link Group#value() option name prefix} and the {@link Option#name() option name} separated by
+     * {@code '.'}. If the option name is an empty {@link String} then the trailing {@code '.'} will be
+     * removed from the descriptor name.
      *
      * @since 0.27
      */
@@ -124,17 +123,16 @@ public @interface Option {
     public @interface Group {
 
         /**
-         * A set of group names that are used as prefix for all options of the annotated class. If
-         * multiple group anmes are specified then descriptors for each combination of group and
-         * option name is generated.
+         * A set of group names that are used as prefix for all options of the annotated class. If multiple
+         * group anmes are specified then descriptors for each combination of group and option name is
+         * generated.
          * <p>
          * The {@link OptionDescriptor#getName() option descriptor name} is generated from the
          * {@link Group#value() group name} and the {@link Option#name() option name} separated by
-         * {@code '.'}. If the option name is an empty {@link String} then the trailing {@code '.'}
-         * will be removed from the descriptor name such that it exactly matches the group name. If,
-         * for example, the option group is {@code 'js'} and the option name is inherited from the
-         * field name {@code 'ECMACompatibility'} then the full descriptor name is
-         * {@code 'js.ECMACompatibility'}.
+         * {@code '.'}. If the option name is an empty {@link String} then the trailing {@code '.'} will be
+         * removed from the descriptor name such that it exactly matches the group name. If, for example,
+         * the option group is {@code 'js'} and the option name is inherited from the field name
+         * {@code 'ECMACompatibility'} then the full descriptor name is {@code 'js.ECMACompatibility'}.
          *
          * @since 0.27
          */

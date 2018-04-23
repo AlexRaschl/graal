@@ -46,8 +46,8 @@ public interface SnippetReflectionProvider {
     JavaConstant forObject(Object object);
 
     /**
-     * Gets the object reference a given constant represents if it is of a given type. The constant
-     * must have kind {@link JavaKind#Object}.
+     * Gets the object reference a given constant represents if it is of a given type. The constant must
+     * have kind {@link JavaKind#Object}.
      *
      * @param type the expected type of the object represented by {@code constant}. If the object is
      *            required to be of this type, then wrap the call to this method in
@@ -59,8 +59,8 @@ public interface SnippetReflectionProvider {
     <T> T asObject(Class<T> type, JavaConstant constant);
 
     /**
-     * Gets the object reference a given constant represents if it is of a given type. The constant
-     * must have kind {@link JavaKind#Object}.
+     * Gets the object reference a given constant represents if it is of a given type. The constant must
+     * have kind {@link JavaKind#Object}.
      *
      * @param type the expected type of the object represented by {@code constant}. If the object is
      *            required to be of this type, then wrap the call to this method in
@@ -73,8 +73,8 @@ public interface SnippetReflectionProvider {
     Object asObject(ResolvedJavaType type, JavaConstant constant);
 
     /**
-     * Creates a boxed constant for the given kind from an Object. The object needs to be of the
-     * Java boxed type corresponding to the kind.
+     * Creates a boxed constant for the given kind from an Object. The object needs to be of the Java
+     * boxed type corresponding to the kind.
      *
      * @param kind the kind of the constant to create
      * @param value the Java boxed value: a {@link Byte} instance for {@link JavaKind#Byte}, etc.
@@ -86,8 +86,8 @@ public interface SnippetReflectionProvider {
      * Gets the value to bind to an injected parameter in a node intrinsic.
      *
      * @param type the type of a parameter in a node intrinsic constructor
-     * @return the value that should be bound to the parameter when invoking the constructor or null
-     *         if this provider cannot provide a value of the requested type
+     * @return the value that should be bound to the parameter when invoking the constructor or null if
+     *         this provider cannot provide a value of the requested type
      */
     <T> T getInjectedNodeIntrinsicParameter(Class<T> type);
 

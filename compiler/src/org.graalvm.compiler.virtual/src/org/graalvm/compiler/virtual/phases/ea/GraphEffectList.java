@@ -49,8 +49,7 @@ public final class GraphEffectList extends EffectList {
     }
 
     /**
-     * Determines how many objects are virtualized (positive) or materialized (negative) by this
-     * effect.
+     * Determines how many objects are virtualized (positive) or materialized (negative) by this effect.
      */
     private int virtualizationDelta;
 
@@ -120,8 +119,7 @@ public final class GraphEffectList extends EffectList {
     }
 
     /**
-     * Sets the phi node's input at the given index to the given value, adding new phi inputs as
-     * needed.
+     * Sets the phi node's input at the given index to the given value, adding new phi inputs as needed.
      *
      * @param node The phi node whose input should be changed.
      * @param index The index of the phi input to be changed.
@@ -209,9 +207,9 @@ public final class GraphEffectList extends EffectList {
     }
 
     /**
-     * Replaces the given node at its usages without deleting it. If the current node is a fixed
-     * node it will be disconnected from the control flow, so that it will be deleted by a
-     * subsequent {@link DeadCodeEliminationPhase}
+     * Replaces the given node at its usages without deleting it. If the current node is a fixed node it
+     * will be disconnected from the control flow, so that it will be deleted by a subsequent
+     * {@link DeadCodeEliminationPhase}
      *
      * @param node The node to be replaced.
      * @param replacement The node that should replace the original value. If the replacement is a
@@ -232,11 +230,10 @@ public final class GraphEffectList extends EffectList {
                 graph.addBeforeFixed(insertBefore, (FixedWithNextNode) replacementNode);
             }
             /*
-             * Keep the (better) stamp information when replacing a node with another one if the
-             * replacement has a less precise stamp than the original node. This can happen for
-             * example in the context of read nodes and unguarded pi nodes where the pi will be used
-             * to improve the stamp information of the read. Such a read might later be replaced
-             * with a read with a less precise stamp.
+             * Keep the (better) stamp information when replacing a node with another one if the replacement has
+             * a less precise stamp than the original node. This can happen for example in the context of read
+             * nodes and unguarded pi nodes where the pi will be used to improve the stamp information of the
+             * read. Such a read might later be replaced with a read with a less precise stamp.
              */
             if (!node.stamp(NodeView.DEFAULT).equals(replacementNode.stamp(NodeView.DEFAULT))) {
                 replacementNode = graph.unique(new PiNode(replacementNode, node.stamp(NodeView.DEFAULT)));

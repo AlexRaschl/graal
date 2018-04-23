@@ -38,8 +38,8 @@ import com.oracle.truffle.api.nodes.RootNode;
 public class ExplodeLoopBlockDuplicationTest extends TestWithSynchronousCompiling {
 
     /*
-     * Test that polymorphic caches duplicate the cached block and can therefore resolve the
-     * abstract method call and resolve the result to a constant.
+     * Test that polymorphic caches duplicate the cached block and can therefore resolve the abstract
+     * method call and resolve the result to a constant.
      */
     @Test
     public void testBlockDuplication() {

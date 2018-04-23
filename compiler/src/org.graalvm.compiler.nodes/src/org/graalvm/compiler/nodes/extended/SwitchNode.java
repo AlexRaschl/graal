@@ -240,8 +240,7 @@ public abstract class SwitchNode extends ControlSplitNode {
     protected void killOtherSuccessors(SimplifierTool tool, int survivingEdge) {
         for (Node successor : successors()) {
             /*
-             * Deleting a branch change change the successors so reload the surviving successor each
-             * time.
+             * Deleting a branch change change the successors so reload the surviving successor each time.
              */
             if (successor != blockSuccessor(survivingEdge)) {
                 tool.deleteBranch(successor);

@@ -54,8 +54,8 @@ import com.oracle.truffle.api.nodes.LanguageInfo;
 public final class AllocationReporter {
 
     /**
-     * Constant specifying an unknown size. Use it when it's not possible to estimate size of the
-     * memory being allocated.
+     * Constant specifying an unknown size. Use it when it's not possible to estimate size of the memory
+     * being allocated.
      *
      * @since 0.27
      */
@@ -86,8 +86,8 @@ public final class AllocationReporter {
     }
 
     /**
-     * Add a property change listener that is notified when a property of this reporter changes. Use
-     * it to get notified when {@link #isActive()} changes.
+     * Add a property change listener that is notified when a property of this reporter changes. Use it
+     * to get notified when {@link #isActive()} changes.
      *
      * @since 0.27
      * @see #PROPERTY_ACTIVE
@@ -109,12 +109,12 @@ public final class AllocationReporter {
     }
 
     /**
-     * Test if the reporter instance is actually doing some reporting when notify methods are
-     * called. Methods {@link #onEnter(java.lang.Object, long, long)} and
+     * Test if the reporter instance is actually doing some reporting when notify methods are called.
+     * Methods {@link #onEnter(java.lang.Object, long, long)} and
      * {@link #onReturnValue(java.lang.Object, long, long)} have no effect when this method returns
      * false. A {@link java.beans.PropertyChangeListener} can be
-     * {@link #addPropertyChangeListener(java.beans.PropertyChangeListener) added} to listen on
-     * changes of this property.
+     * {@link #addPropertyChangeListener(java.beans.PropertyChangeListener) added} to listen on changes
+     * of this property.
      *
      * @return <code>true</code> when there are some {@link AllocationListener}s attached,
      *         <code>false</code> otherwise.
@@ -189,26 +189,25 @@ public final class AllocationReporter {
     /**
      * Report an intent to allocate a new guest language value, or re-allocate an existing one. This
      * method delegates to all registered listeners
-     * {@link AllocationListener#onEnter(com.oracle.truffle.api.instrumentation.AllocationEvent)}.
-     * Only primitive types, String and {@link com.oracle.truffle.api.interop.TruffleObject} are
-     * accepted value types. The change in memory consumption caused by the allocation is going to
-     * be <code>newSizeEstimate - oldSize</code> when both old size and new size are known. The
-     * change can be either positive or negative.
+     * {@link AllocationListener#onEnter(com.oracle.truffle.api.instrumentation.AllocationEvent)}. Only
+     * primitive types, String and {@link com.oracle.truffle.api.interop.TruffleObject} are accepted
+     * value types. The change in memory consumption caused by the allocation is going to be
+     * <code>newSizeEstimate - oldSize</code> when both old size and new size are known. The change can
+     * be either positive or negative.
      * <p>
      * A call to this method needs to be followed by a call to
-     * {@link #onReturnValue(java.lang.Object, long, long)} with the actual allocated value, or with
-     * the same (re-allocated) value. Nested allocations are supported, several calls to
-     * <code>onEnter</code> prior every sub-value allocation can be followed by the appropriate
-     * number of <code>onReturnValue</code> calls after the sub-values are allocated, in the
-     * opposite order.
+     * {@link #onReturnValue(java.lang.Object, long, long)} with the actual allocated value, or with the
+     * same (re-allocated) value. Nested allocations are supported, several calls to
+     * <code>onEnter</code> prior every sub-value allocation can be followed by the appropriate number
+     * of <code>onReturnValue</code> calls after the sub-values are allocated, in the opposite order.
      *
-     * @param valueToReallocate <code>null</code> in case of a new allocation, or the value that is
-     *            to be re-allocated.
-     * @param oldSize <code>0</code> in case of a new allocation, or the size in bytes of value to
-     *            be re-allocated. Can be {@link #SIZE_UNKNOWN} when the value size is not known.
-     * @param newSizeEstimate an estimate of the allocation size of the value which is to be created
-     *            or re-allocated, in bytes. Can be {@link #SIZE_UNKNOWN} when the allocation size
-     *            is not known.
+     * @param valueToReallocate <code>null</code> in case of a new allocation, or the value that is to
+     *            be re-allocated.
+     * @param oldSize <code>0</code> in case of a new allocation, or the size in bytes of value to be
+     *            re-allocated. Can be {@link #SIZE_UNKNOWN} when the value size is not known.
+     * @param newSizeEstimate an estimate of the allocation size of the value which is to be created or
+     *            re-allocated, in bytes. Can be {@link #SIZE_UNKNOWN} when the allocation size is not
+     *            known.
      * @since 0.27
      */
     public void onEnter(Object valueToReallocate, long oldSize, long newSizeEstimate) {
@@ -249,18 +248,18 @@ public final class AllocationReporter {
      * either positive or negative.
      * <p>
      * A call to {@link #onEnter(java.lang.Object, long, long)} must precede this call. In case of
-     * re-allocation, the value object passed to {@link #onEnter(java.lang.Object, long, long)} must
-     * be the same instance as the value passed to this method.
+     * re-allocation, the value object passed to {@link #onEnter(java.lang.Object, long, long)} must be
+     * the same instance as the value passed to this method.
      *
      * @param value the value that was newly allocated, or the re-allocated value. Must not be
      *            <code>null</code>.
-     * @param oldSize size in bytes of an old value, if any. Must be <code>0</code> for newly
-     *            allocated values. In case of re-allocation it's the size of the original value
-     *            before re-allocation. Can be {@link #SIZE_UNKNOWN} when not known.
-     * @param newSize the size of the allocated value in bytes. In case of re-allocation, it's the
-     *            size of the object after re-allocation. The <code>newSize</code> may be less than
-     *            <code>oldSize</code> when the object size shrinks. Can be {@link #SIZE_UNKNOWN}
-     *            when not known.
+     * @param oldSize size in bytes of an old value, if any. Must be <code>0</code> for newly allocated
+     *            values. In case of re-allocation it's the size of the original value before
+     *            re-allocation. Can be {@link #SIZE_UNKNOWN} when not known.
+     * @param newSize the size of the allocated value in bytes. In case of re-allocation, it's the size
+     *            of the object after re-allocation. The <code>newSize</code> may be less than
+     *            <code>oldSize</code> when the object size shrinks. Can be {@link #SIZE_UNKNOWN} when
+     *            not known.
      * @since 0.27
      */
     public void onReturnValue(Object value, long oldSize, long newSize) {

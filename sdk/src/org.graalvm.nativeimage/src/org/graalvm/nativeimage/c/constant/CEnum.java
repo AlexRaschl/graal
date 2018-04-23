@@ -59,8 +59,8 @@ import org.graalvm.nativeimage.c.CContext;
 public @interface CEnum {
 
     /**
-     * Specifies the name of the imported C enum type. If no name is provided, <code>int</code> is
-     * used instead.
+     * Specifies the name of the imported C enum type. If no name is provided, <code>int</code> is used
+     * instead.
      */
     String value() default "";
 

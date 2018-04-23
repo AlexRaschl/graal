@@ -60,8 +60,8 @@ public final class NativeLibraryDescriptor {
 
     /**
      * An optional array of implementation dependent flags. Implementors of the TruffleNFI backends
-     * should ignore unknown flags, and should always provide sensible default behavior if no flags
-     * are specified.
+     * should ignore unknown flags, and should always provide sensible default behavior if no flags are
+     * specified.
      *
      * This can for example be used to specify the {@code RTLD_*} flags on posix compliant systems.
      */

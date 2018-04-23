@@ -203,8 +203,7 @@ public class PiNode extends FloatingGuardedNode implements LIRLowerable, Virtual
                     PiNode otherPi = (PiNode) n;
                     if (object == otherPi.object() && computedStamp.equals(otherPi.stamp(NodeView.DEFAULT))) {
                         /*
-                         * Two PiNodes with the same guard and same result, so return the one with
-                         * the more precise piStamp.
+                         * Two PiNodes with the same guard and same result, so return the one with the more precise piStamp.
                          */
                         Stamp newStamp = stamp.join(otherPi.piStamp);
                         if (newStamp.equals(otherPi.piStamp)) {
@@ -262,22 +261,22 @@ public class PiNode extends FloatingGuardedNode implements LIRLowerable, Virtual
     public static native Object piCastToSnippetReplaceeStamp(Object object);
 
     /**
-     * Changes the stamp of an object and ensures the newly stamped value is non-null and does not
-     * float above a given guard.
+     * Changes the stamp of an object and ensures the newly stamped value is non-null and does not float
+     * above a given guard.
      */
     @NodeIntrinsic
     public static native Object piCastNonNull(Object object, GuardingNode guard);
 
     /**
-     * Changes the stamp of an object and ensures the newly stamped value is non-null and does not
-     * float above a given guard.
+     * Changes the stamp of an object and ensures the newly stamped value is non-null and does not float
+     * above a given guard.
      */
     @NodeIntrinsic
     public static native Class<?> piCastNonNullClass(Class<?> type, GuardingNode guard);
 
     /**
-     * Changes the stamp of an object to represent a given type and to indicate that the object is
-     * not null.
+     * Changes the stamp of an object to represent a given type and to indicate that the object is not
+     * null.
      */
     public static Object piCastNonNull(Object object, @ConstantNodeParameter Class<?> toType) {
         return piCast(object, toType, false, true);
@@ -287,8 +286,8 @@ public class PiNode extends FloatingGuardedNode implements LIRLowerable, Virtual
     public static native Object piCast(Object object, @ConstantNodeParameter Class<?> toType, @ConstantNodeParameter boolean exactType, @ConstantNodeParameter boolean nonNull);
 
     /**
-     * A placeholder node in a snippet that will be replaced with a {@link PiNode} when the snippet
-     * is instantiated.
+     * A placeholder node in a snippet that will be replaced with a {@link PiNode} when the snippet is
+     * instantiated.
      */
     @NodeInfo(cycles = CYCLES_0, size = SIZE_0)
     public static class Placeholder extends FloatingGuardedNode {

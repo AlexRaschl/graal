@@ -33,9 +33,9 @@ package org.graalvm.collections;
 public abstract class Equivalence {
 
     /**
-     * Default equivalence calling {@link #equals(Object)} to check equality and {@link #hashCode()}
-     * for obtaining hash values. Do not change the logic of this class as it may be inlined in
-     * other places.
+     * Default equivalence calling {@link #equals(Object)} to check equality and {@link #hashCode()} for
+     * obtaining hash values. Do not change the logic of this class as it may be inlined in other
+     * places.
      *
      * @since 1.0
      */
@@ -100,8 +100,8 @@ public abstract class Equivalence {
     }
 
     /**
-     * Returns {@code true} if the non-{@code null} arguments are equal to each other and
-     * {@code false} otherwise.
+     * Returns {@code true} if the non-{@code null} arguments are equal to each other and {@code false}
+     * otherwise.
      *
      * @since 1.0
      */

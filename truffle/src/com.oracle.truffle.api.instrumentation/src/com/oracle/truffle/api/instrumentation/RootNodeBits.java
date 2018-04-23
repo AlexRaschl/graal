@@ -36,8 +36,8 @@ final class RootNodeBits {
     private static final int ALL = INITIALIZED | SAME_SOURCE | NO_SOURCE_SECTION | SOURCE_SECTION_HIERARCHICAL;
 
     /**
-     * Returns true if source the source sections of the root node are all contained within the
-     * bounds of the root source section.
+     * Returns true if source the source sections of the root node are all contained within the bounds
+     * of the root source section.
      *
      */
     static boolean isSourceSectionsHierachical(int bits) {

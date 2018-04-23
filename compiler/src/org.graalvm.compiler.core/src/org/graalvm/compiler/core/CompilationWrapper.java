@@ -58,8 +58,8 @@ public abstract class CompilationWrapper<T> {
 
     /**
      * Actions to take upon an exception being raised during compilation performed via
-     * {@link CompilationWrapper}. The actions are with respect to what the user sees on the
-     * console. The compilation requester determines what ultimate action is taken in
+     * {@link CompilationWrapper}. The actions are with respect to what the user sees on the console.
+     * The compilation requester determines what ultimate action is taken in
      * {@link CompilationWrapper#handleException(Throwable)}.
      *
      * The actions are in ascending order of verbosity.
@@ -83,8 +83,8 @@ public abstract class CompilationWrapper<T> {
         ExitVM;
 
         /**
-         * Gets the action that is one level less verbose than this action, bottoming out at the
-         * least verbose action.
+         * Gets the action that is one level less verbose than this action, bottoming out at the least
+         * verbose action.
          */
         ExceptionAction quieter() {
             assert ExceptionAction.Silent.ordinal() == 0;
@@ -100,9 +100,9 @@ public abstract class CompilationWrapper<T> {
     /**
      * @param outputDirectory object used to access a directory for dumping if the compilation is
      *            re-executed
-     * @param problemsHandledPerAction map used to count the number of compilation failures or
-     *            bailouts handled by each action. This is provided by the caller as it is expected
-     *            to be shared between instances of {@link CompilationWrapper}.
+     * @param problemsHandledPerAction map used to count the number of compilation failures or bailouts
+     *            handled by each action. This is provided by the caller as it is expected to be shared
+     *            between instances of {@link CompilationWrapper}.
      */
     public CompilationWrapper(DiagnosticsOutputDirectory outputDirectory, Map<ExceptionAction, Integer> problemsHandledPerAction) {
         this.outputDirectory = outputDirectory;

@@ -182,10 +182,10 @@ public abstract class TruffleTCK {
     /**
      * This methods is called before each test is executed. It's purpose is to set a
      * {@link PolyglotEngine} with your language up, so it is ready for testing.
-     * {@link PolyglotEngine#eval(com.oracle.truffle.api.source.Source) Execute} any scripts you
-     * need, and prepare global symbols with proper names. The symbols will then be looked up by the
-     * infrastructure (using the names provided by you from methods like {@link #plusInt()}) and
-     * used for internal testing.
+     * {@link PolyglotEngine#eval(com.oracle.truffle.api.source.Source) Execute} any scripts you need,
+     * and prepare global symbols with proper names. The symbols will then be looked up by the
+     * infrastructure (using the names provided by you from methods like {@link #plusInt()}) and used
+     * for internal testing.
      *
      * @return initialized Truffle virtual machine
      * @throws java.lang.Exception thrown when the VM preparation fails
@@ -196,12 +196,11 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Configure your language inside of provided builder. The method should do the same operations
-     * like {@link #prepareVM()}, but rather than doing them from scratch, it is supposed to do the
-     * changes in provided builder. The builder may be pre-configured by the TCK - for example
+     * Configure your language inside of provided builder. The method should do the same operations like
+     * {@link #prepareVM()}, but rather than doing them from scratch, it is supposed to do the changes
+     * in provided builder. The builder may be pre-configured by the TCK - for example
      * {@link Builder#executor(java.util.concurrent.Executor)} may be provided or
-     * {@link Builder#globalSymbol(java.lang.String, java.lang.Object) global symbols} specified,
-     * etc.
+     * {@link Builder#globalSymbol(java.lang.String, java.lang.Object) global symbols} specified, etc.
      *
      * @param preparedBuilder the builder to use to construct the engine
      * @return initialized Truffle virtual machine
@@ -223,9 +222,8 @@ public abstract class TruffleTCK {
     protected abstract String mimeType();
 
     /**
-     * Name of function which will return value 42 as a number. The return value of the method
-     * should be instance of {@link Number} and its {@link Number#intValue()} should return
-     * <code>42</code>.
+     * Name of function which will return value 42 as a number. The return value of the method should be
+     * instance of {@link Number} and its {@link Number#intValue()} should return <code>42</code>.
      *
      * @return name of globally exported symbol
      * @since 0.8 or earlier
@@ -233,11 +231,10 @@ public abstract class TruffleTCK {
     protected abstract String fourtyTwo();
 
     /**
-     * Name of a function that returns <code>null</code>. Truffle languages are encouraged to have
-     * their own type representing <code>null</code>, but when such value is returned from
-     * {@link PolyglotEngine#eval}, it needs to be converted to real Java <code>null</code> by
-     * sending a foreign access <em>isNull</em> message. There is a test to verify it is really
-     * true.
+     * Name of a function that returns <code>null</code>. Truffle languages are encouraged to have their
+     * own type representing <code>null</code>, but when such value is returned from
+     * {@link PolyglotEngine#eval}, it needs to be converted to real Java <code>null</code> by sending a
+     * foreign access <em>isNull</em> message. There is a test to verify it is really true.
      *
      * @return name of globally exported symbol
      * @since 0.8 or earlier
@@ -257,12 +254,11 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of function to add two numbers together. The symbol will be invoked with two parameters
-     * of <code>type1</code> and <code>type2</code> and expects result of type {@link Number}
-     * which's {@link Number#intValue()} is equivalent of <code>param1 + param2</code>. As some
-     * languages may have different operations for different types of numbers, the actual types are
-     * passed to the method and the implementation can decide to return different symbol based on
-     * the parameters.
+     * Name of function to add two numbers together. The symbol will be invoked with two parameters of
+     * <code>type1</code> and <code>type2</code> and expects result of type {@link Number} which's
+     * {@link Number#intValue()} is equivalent of <code>param1 + param2</code>. As some languages may
+     * have different operations for different types of numbers, the actual types are passed to the
+     * method and the implementation can decide to return different symbol based on the parameters.
      *
      * @param type1 one of byte, short, int, long, float, double class
      * @param type2 one of byte, short, int, long, float, double class
@@ -275,9 +271,9 @@ public abstract class TruffleTCK {
 
     /**
      * Name of a function in your language to perform a callback to foreign function. Your function
-     * should prepare two numbers (18 and 32) and apply them to the function passed in as an
-     * argument of your function. It should then add 10 to the returned value and return the result
-     * back to its caller.
+     * should prepare two numbers (18 and 32) and apply them to the function passed in as an argument of
+     * your function. It should then add 10 to the returned value and return the result back to its
+     * caller.
      *
      * @return name of globally exported symbol
      * @since 0.8 or earlier
@@ -286,8 +282,8 @@ public abstract class TruffleTCK {
 
     /**
      * Name of identity function. The identity function accepts one argument and returns it. The
-     * argument should go through without any modification, e.g. the input should result in
-     * identical output.
+     * argument should go through without any modification, e.g. the input should result in identical
+     * output.
      *
      * @return name of globally exported symbol
      * @since 0.8 or earlier
@@ -311,8 +307,8 @@ public abstract class TruffleTCK {
     /**
      * Name of a function that adds up two complex numbers using an add method of the first complex
      * number. The function accepts two arguments and provides no return value. The arguments are
-     * complex numbers with members called real and imaginary. The first argument contains the
-     * result of the addition.
+     * complex numbers with members called real and imaginary. The first argument contains the result of
+     * the addition.
      *
      * @return name of globally exported symbol
      * @since 0.8 or earlier
@@ -334,10 +330,9 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that copies a list of complex numbers. The function accepts two arguments
-     * and provides no return value. The arguments are two lists of complex numbers with members
-     * called real and imaginary. The first argument is the destination, the second argument is the
-     * source.
+     * Name of a function that copies a list of complex numbers. The function accepts two arguments and
+     * provides no return value. The arguments are two lists of complex numbers with members called real
+     * and imaginary. The first argument is the destination, the second argument is the source.
      *
      * @return name of globally exported symbol, <code>null</code> if the test should be skipped
      * @since 0.8 or earlier
@@ -347,10 +342,9 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function to return global object. The function can be executed without providing
-     * any arguments and should return global object of the language, if the language supports it.
-     * Global object is the one accessible via
-     * {@link TruffleLanguage#getLanguageGlobal(java.lang.Object)}.
+     * Name of a function to return global object. The function can be executed without providing any
+     * arguments and should return global object of the language, if the language supports it. Global
+     * object is the one accessible via {@link TruffleLanguage#getLanguageGlobal(java.lang.Object)}.
      *
      * @return name of globally exported symbol, return <code>null</code> if the language doesn't
      *         support the concept of global object
@@ -361,10 +355,10 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function to parse source written in some other language. When the function is
-     * executed, it expects two arguments. First one is MIME type identifying
-     * {@link TruffleLanguage} and the second one is the source code to parse in that language and
-     * execute it. The result of the execution is then returned back to the caller.
+     * Name of a function to parse source written in some other language. When the function is executed,
+     * it expects two arguments. First one is MIME type identifying {@link TruffleLanguage} and the
+     * second one is the source code to parse in that language and execute it. The result of the
+     * execution is then returned back to the caller.
      *
      * @return name of globally exported symbol to invoke when one wants to execute some code
      * @since 0.8 or earlier
@@ -375,8 +369,8 @@ public abstract class TruffleTCK {
 
     /**
      * Code snippet to multiply two variables. The test uses the snippet as a parameter to your
-     * language' s
-     * {@link TruffleLanguage#parse(com.oracle.truffle.api.TruffleLanguage.ParsingRequest)} method.
+     * language' s {@link TruffleLanguage#parse(com.oracle.truffle.api.TruffleLanguage.ParsingRequest)}
+     * method.
      *
      * @param firstName name of the first variable to multiplyCode
      * @param secondName name of the second variable to multiplyCode
@@ -388,10 +382,10 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function to manipulate with an array. The function should take three parameters:
-     * the array, index into the array (expected to be an instance of {@link Number}) and another
-     * number to add to value already present at the index-location in the array. The first element
-     * in the array has index zero.
+     * Name of a function to manipulate with an array. The function should take three parameters: the
+     * array, index into the array (expected to be an instance of {@link Number}) and another number to
+     * add to value already present at the index-location in the array. The first element in the array
+     * has index zero.
      *
      * @since 0.14
      */
@@ -400,8 +394,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that returns an object with a numeric property called "value". The
-     * property must contain 42.0;
+     * Name of a function that returns an object with a numeric property called "value". The property
+     * must contain 42.0;
      *
      * @since 0.16
      */
@@ -420,8 +414,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that returns an array-like object with a numeric property as its 3rd
-     * element. The element must be 42.0. The array-like object must have a length 4;
+     * Name of a function that returns an array-like object with a numeric property as its 3rd element.
+     * The element must be 42.0. The array-like object must have a length 4;
      *
      * @since 0.16
      */
@@ -431,15 +425,14 @@ public abstract class TruffleTCK {
 
     /**
      * Name of a function that returns an object supporting {@link Message#KEY_INFO} and having six
-     * properties named "ro", "wo", "rw", "rm", "invocable" and "intern". The "ro" property should
-     * be read-only (readable and not writable), the "wo" property should be write-only (writable
-     * and not readable), "rw" property readable and writable, "rm" property should be removable,
-     * "invocable" property should return an "invoked" String on {@link Message#createInvoke(int)
-     * invoke message} and the "intern" property should be internal. The object should support
-     * {@link Message#KEYS KEYS message} as well and it should provide the "intern" property iff it
-     * gets a boolean true as an argument. When the language does not support some attribute, it can
-     * skip the appropriate property (that should result in returning <code>0</code> as the key info
-     * of such skipped property).
+     * properties named "ro", "wo", "rw", "rm", "invocable" and "intern". The "ro" property should be
+     * read-only (readable and not writable), the "wo" property should be write-only (writable and not
+     * readable), "rw" property readable and writable, "rm" property should be removable, "invocable"
+     * property should return an "invoked" String on {@link Message#createInvoke(int) invoke message}
+     * and the "intern" property should be internal. The object should support {@link Message#KEYS KEYS
+     * message} as well and it should provide the "intern" property iff it gets a boolean true as an
+     * argument. When the language does not support some attribute, it can skip the appropriate property
+     * (that should result in returning <code>0</code> as the key info of such skipped property).
      *
      * @since 0.26
      */
@@ -457,8 +450,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. This function needs to read
-     * the "value" property of this object and needs to return it.
+     * Name of a function that receives a foreign object as an argument. This function needs to read the
+     * "value" property of this object and needs to return it.
      *
      * @since 0.16
      */
@@ -467,8 +460,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. This function needs to read
-     * the 3rd element of this array-object and needs to return it.
+     * Name of a function that receives a foreign object as an argument. This function needs to read the
+     * 3rd element of this array-object and needs to return it.
      *
      * @since 0.16
      */
@@ -477,8 +470,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. This function needs to
-     * write 42.0 to the "value" property of this object.
+     * Name of a function that receives a foreign object as an argument. This function needs to write
+     * 42.0 to the "value" property of this object.
      *
      * @since 0.16
      */
@@ -487,8 +480,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. This function needs to
-     * write 42.0 to the 3rd element of this array-object.
+     * Name of a function that receives a foreign object as an argument. This function needs to write
+     * 42.0 to the 3rd element of this array-object.
      *
      * @since 0.16
      */
@@ -497,8 +490,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. This function needs to
-     * return the size of this array-like object.
+     * Name of a function that receives a foreign object as an argument. This function needs to return
+     * the size of this array-like object.
      *
      * @since 0.16
      */
@@ -507,8 +500,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. This function needs to
-     * check if the foreign object has a size.
+     * Name of a function that receives a foreign object as an argument. This function needs to check if
+     * the foreign object has a size.
      *
      * @since 0.16
      */
@@ -517,8 +510,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. This function needs to
-     * check if the foreign object is a null value.
+     * Name of a function that receives a foreign object as an argument. This function needs to check if
+     * the foreign object is a null value.
      *
      * @since 0.16
      */
@@ -527,8 +520,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. This function needs to
-     * check if the foreign object is an executable function.
+     * Name of a function that receives a foreign object as an argument. This function needs to check if
+     * the foreign object is an executable function.
      *
      * @since 0.16
      */
@@ -547,8 +540,8 @@ public abstract class TruffleTCK {
     }
 
     /**
-     * Name of a function that receives a foreign object as an argument. You need to call method
-     * "foo" on this object and pass arguments [41.0, 42.0]
+     * Name of a function that receives a foreign object as an argument. You need to call method "foo"
+     * on this object and pass arguments [41.0, 42.0]
      *
      * @since 0.16
      */
@@ -558,12 +551,12 @@ public abstract class TruffleTCK {
 
     /**
      * Name of a function that counts number of its invocations in current {@link PolyglotEngine}
-     * context. Your function should somehow keep a counter to remember number of its invocations
-     * and always increment it. The first invocation should return <code>1</code>, the second
-     * <code>2</code> and so on. The returned values are expected to be instances of {@link Number}.
+     * context. Your function should somehow keep a counter to remember number of its invocations and
+     * always increment it. The first invocation should return <code>1</code>, the second <code>2</code>
+     * and so on. The returned values are expected to be instances of {@link Number}.
      * <p>
-     * The function will be used to test that two instances of your language can co-exist next to
-     * each other. Without being mutually influenced.
+     * The function will be used to test that two instances of your language can co-exist next to each
+     * other. Without being mutually influenced.
      *
      * @return name of globally expected symbol
      * @since 0.8 or earlier
@@ -581,8 +574,8 @@ public abstract class TruffleTCK {
     protected abstract String invalidCode();
 
     /**
-     * Name of a function that returns a compound object with members representing certain
-     * operations. In the JavaScript the object should look like:
+     * Name of a function that returns a compound object with members representing certain operations.
+     * In the JavaScript the object should look like:
      *
      * <pre>
      * <b>var</b> obj = {
@@ -596,8 +589,8 @@ public abstract class TruffleTCK {
      *
      * The returned object shall have three functions that will be obtained and used exactly as
      * described in their Javadoc - e.g. {@link #fourtyTwo()}, {@link #plusInt()} and
-     * {@link #returnsNull()}. In addition to that there should be one more function
-     * <b>returnsThis</b> that will return the object itself again.
+     * {@link #returnsNull()}. In addition to that there should be one more function <b>returnsThis</b>
+     * that will return the object itself again.
      *
      * @return name of a function that returns such compound object
      * @since 0.8 or earlier
@@ -625,9 +618,9 @@ public abstract class TruffleTCK {
      * <b>return</b> obj;
      * </pre>
      *
-     * The returned object shall have slots for these values that can be read and written to.
-     * Various test methods try to read and modify the values. Each invocation of the function
-     * should yield new object.
+     * The returned object shall have slots for these values that can be read and written to. Various
+     * test methods try to read and modify the values. Each invocation of the function should yield new
+     * object.
      *
      * @return name of a function that returns such values object
      * @since 0.8 or earlier
@@ -638,10 +631,10 @@ public abstract class TruffleTCK {
 
     /**
      * Create a <code>while-loop</code> execution in your language. Create a function that takes one
-     * parameter - another function and then repeatly counts from zero to infinity calling the
-     * provided function with a single argument - the value of the counter: 0, 1, 2, 3, etc. The
-     * execution is stopped while the value returned from the provided function isn't
-     * <code>true</code>. The code in JavaScript would look like:
+     * parameter - another function and then repeatly counts from zero to infinity calling the provided
+     * function with a single argument - the value of the counter: 0, 1, 2, 3, etc. The execution is
+     * stopped while the value returned from the provided function isn't <code>true</code>. The code in
+     * JavaScript would look like:
      *
      * <pre>
      * function countUpWhile(fn) {
@@ -686,11 +679,11 @@ public abstract class TruffleTCK {
     /**
      * Provide at least one pair of functions that return a value and its meta-object converted to a
      * String representation. The value's meta-object is found using
-     * {@link TruffleLanguage#findMetaObject(java.lang.Object, java.lang.Object)}, converted to a
-     * String by {@link TruffleLanguage#toString(java.lang.Object, java.lang.Object)} and compared
-     * to the provided String representation. Provide names of an even number of functions, which
-     * return a value and value's meta-object converted to a String, respectively. The code in
-     * JavaScript could look like:
+     * {@link TruffleLanguage#findMetaObject(java.lang.Object, java.lang.Object)}, converted to a String
+     * by {@link TruffleLanguage#toString(java.lang.Object, java.lang.Object)} and compared to the
+     * provided String representation. Provide names of an even number of functions, which return a
+     * value and value's meta-object converted to a String, respectively. The code in JavaScript could
+     * look like:
      *
      * <pre>
      * function numberValue() {
@@ -719,10 +712,9 @@ public abstract class TruffleTCK {
 
     /**
      * Name of a function that returns a value for which a source location can be found using
-     * {@link TruffleLanguage#findSourceLocation(java.lang.Object, java.lang.Object)}. It needs to
-     * be possible to find the source location among currently loaded sources for verification. The
-     * code in JavaScript could look like (returns a function object, which should have a source
-     * associated):
+     * {@link TruffleLanguage#findSourceLocation(java.lang.Object, java.lang.Object)}. It needs to be
+     * possible to find the source location among currently loaded sources for verification. The code in
+     * JavaScript could look like (returns a function object, which should have a source associated):
      *
      * <pre>
      * function foo() {

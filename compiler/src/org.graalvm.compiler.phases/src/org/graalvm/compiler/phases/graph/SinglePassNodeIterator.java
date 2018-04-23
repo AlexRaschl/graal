@@ -88,19 +88,18 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
      * </ul>
      *
      * <p>
-     * It's tricky to answer whether the state an entry contains is the pre-state or the post-state
-     * for the key in question, because states are mutable. Thus an entry may be created to contain
-     * a pre-state (at the time, as done for a loop-begin in {@link #apply()}) only to make it a
-     * post-state soon after (continuing with the loop-begin example, also in {@link #apply()}). In
-     * any case, given that keys are limited to the nodes mentioned in the previous paragraph, in
-     * all cases an entry can be considered to hold a post-state by the time such entry is
-     * retrieved.
+     * It's tricky to answer whether the state an entry contains is the pre-state or the post-state for
+     * the key in question, because states are mutable. Thus an entry may be created to contain a
+     * pre-state (at the time, as done for a loop-begin in {@link #apply()}) only to make it a
+     * post-state soon after (continuing with the loop-begin example, also in {@link #apply()}). In any
+     * case, given that keys are limited to the nodes mentioned in the previous paragraph, in all cases
+     * an entry can be considered to hold a post-state by the time such entry is retrieved.
      * </p>
      *
      * <p>
-     * The only method that makes this map grow is {@link #keepForLater(FixedNode, MergeableState)}
-     * and the only one that shrinks it is {@link #pruneEntry(FixedNode)}. To make sure no entry is
-     * left behind inadvertently, asserts in {@link #finished()} are in place.
+     * The only method that makes this map grow is {@link #keepForLater(FixedNode, MergeableState)} and
+     * the only one that shrinks it is {@link #pruneEntry(FixedNode)}. To make sure no entry is left
+     * behind inadvertently, asserts in {@link #finished()} are in place.
      * </p>
      */
     private final EconomicMap<FixedNode, T> nodeStates;
@@ -110,8 +109,8 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
     protected T state;
 
     /**
-     * An item queued in {@link #nodeQueue} can be used to continue with the single-pass visit after
-     * the previous path can't be followed anymore. Such items are:
+     * An item queued in {@link #nodeQueue} can be used to continue with the single-pass visit after the
+     * previous path can't be followed anymore. Such items are:
      * <ul>
      * <li>de-queued via {@link #nextQueuedNode()}</li>
      * <li>en-queued via {@link #queueMerge(EndNode)} and {@link #queueSuccessors(FixedNode)}</li>
@@ -120,10 +119,10 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
      * <p>
      * Correspondingly each item may stand for:
      * <ul>
-     * <li>a {@link AbstractMergeNode} whose pre-state results from merging those of its
-     * forward-ends, see {@link #nextQueuedNode()}</li>
-     * <li>a successor of a control-split node, in which case the state on entry to it (the
-     * successor) is also stored in the item, see {@link #nextQueuedNode()}</li>
+     * <li>a {@link AbstractMergeNode} whose pre-state results from merging those of its forward-ends,
+     * see {@link #nextQueuedNode()}</li>
+     * <li>a successor of a control-split node, in which case the state on entry to it (the successor)
+     * is also stored in the item, see {@link #nextQueuedNode()}</li>
      * </ul>
      * </p>
      */
@@ -216,14 +215,14 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
     }
 
     /**
-     * Two methods enqueue items in {@link #nodeQueue}. Of them, only this method enqueues items
-     * with non-null state (the other method being {@link #queueMerge(EndNode)}).
+     * Two methods enqueue items in {@link #nodeQueue}. Of them, only this method enqueues items with
+     * non-null state (the other method being {@link #queueMerge(EndNode)}).
      *
      * <p>
-     * A space optimization is made: the state is cloned for all successors except the first. Given
-     * that right after invoking this method, {@link #nextQueuedNode()} is invoked, that single
-     * non-cloned state instance is in effect "handed over" to its next owner (thus realizing an
-     * owner-is-mutator access protocol).
+     * A space optimization is made: the state is cloned for all successors except the first. Given that
+     * right after invoking this method, {@link #nextQueuedNode()} is invoked, that single non-cloned
+     * state instance is in effect "handed over" to its next owner (thus realizing an owner-is-mutator
+     * access protocol).
      * </p>
      */
     private void queueSuccessors(FixedNode x) {
@@ -243,13 +242,13 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
     }
 
     /**
-     * This method is invoked upon not having a (single) next {@link FixedNode} to visit. This
-     * method picks such next-node-to-visit from {@link #nodeQueue} and updates {@link #state} with
-     * the pre-state for that node.
+     * This method is invoked upon not having a (single) next {@link FixedNode} to visit. This method
+     * picks such next-node-to-visit from {@link #nodeQueue} and updates {@link #state} with the
+     * pre-state for that node.
      *
      * <p>
-     * Upon reaching a {@link AbstractMergeNode}, some entries are pruned from {@link #nodeStates}
-     * (ie, the entries associated to forward-ends for that merge-node).
+     * Upon reaching a {@link AbstractMergeNode}, some entries are pruned from {@link #nodeStates} (ie,
+     * the entries associated to forward-ends for that merge-node).
      * </p>
      */
     private FixedNode nextQueuedNode() {
@@ -321,8 +320,8 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
      * {@link #nodeQueue}
      *
      * <p>
-     * {@link #nextQueuedNode()} is in charge of pruning entries (held by {@link #nodeStates}) for
-     * the forward-ends inserted by this method.
+     * {@link #nextQueuedNode()} is in charge of pruning entries (held by {@link #nodeStates}) for the
+     * forward-ends inserted by this method.
      * </p>
      */
     private void queueMerge(EndNode end) {
@@ -372,8 +371,8 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
      * The lifecycle that single-pass node iterators go through is described in {@link #apply()}
      *
      * <p>
-     * When overriding this method don't forget to invoke this implementation, otherwise the
-     * assertions will be skipped.
+     * When overriding this method don't forget to invoke this implementation, otherwise the assertions
+     * will be skipped.
      * </p>
      */
     protected void finished() {

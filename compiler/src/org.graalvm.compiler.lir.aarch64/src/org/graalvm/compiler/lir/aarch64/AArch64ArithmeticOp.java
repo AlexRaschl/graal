@@ -77,8 +77,8 @@ public enum AArch64ArithmeticOp {
     SQRT;
 
     /**
-     * Specifies what constants can be used directly without having to be loaded into a register
-     * with the given instruction.
+     * Specifies what constants can be used directly without having to be loaded into a register with
+     * the given instruction.
      */
     public enum ARMv8ConstantCategory {
         NONE,
@@ -310,8 +310,8 @@ public enum AArch64ArithmeticOp {
     }
 
     /**
-     * Class used for instructions that have to reuse one of their arguments. This only applies to
-     * the remainder instructions at the moment, since we have to compute n % d using rem = n -
+     * Class used for instructions that have to reuse one of their arguments. This only applies to the
+     * remainder instructions at the moment, since we have to compute n % d using rem = n -
      * TruncatingDivision(n, d) * d
      *
      * TODO (das) Replace the remainder nodes in the LIR.

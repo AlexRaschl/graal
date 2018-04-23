@@ -208,8 +208,8 @@ public class DebugInfoBuilder {
 
     /*
      * Customization point for subclasses. For example, Word types have a kind Object, but are
-     * internally stored as a primitive value. We do not know about Word types here, but subclasses
-     * do know.
+     * internally stored as a primitive value. We do not know about Word types here, but subclasses do
+     * know.
      */
     protected JavaKind storageKind(JavaType type) {
         return type.getJavaKind();

@@ -78,8 +78,8 @@ public abstract class BasicObjectCloneNode extends MacroStateSplitNode implement
     }
 
     /*
-     * Looks at the given stamp and determines if it is an exact type (or can be assumed to be an
-     * exact type) and if it is a cloneable type.
+     * Looks at the given stamp and determines if it is an exact type (or can be assumed to be an exact
+     * type) and if it is a cloneable type.
      *
      * If yes, then the exact type is returned, otherwise it returns null.
      */

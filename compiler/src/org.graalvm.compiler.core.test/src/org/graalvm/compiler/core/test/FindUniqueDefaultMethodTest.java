@@ -56,9 +56,9 @@ public class FindUniqueDefaultMethodTest extends GraalCompilerTest {
     }
 
     /**
-     * HotSpot has an internal mismatch with CHA and default methods. The initial query says that
-     * it's a unique method but the verification code that ensures that a dependence of this kind
-     * would pass will fail an assert in debug mode.
+     * HotSpot has an internal mismatch with CHA and default methods. The initial query says that it's a
+     * unique method but the verification code that ensures that a dependence of this kind would pass
+     * will fail an assert in debug mode.
      */
     @Test
     public void testFindUnique() {
@@ -107,8 +107,8 @@ public class FindUniqueDefaultMethodTest extends GraalCompilerTest {
     }
 
     /**
-     * Test same pattern as above but using default methods instead. HotSpot doesn't allow this
-     * version to be optimized.
+     * Test same pattern as above but using default methods instead. HotSpot doesn't allow this version
+     * to be optimized.
      */
     @SuppressWarnings("unused")
     @Test

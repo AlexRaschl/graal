@@ -141,10 +141,9 @@ public final class TruffleRunner extends BlockJUnit4ClassRunner {
      * <p>
      * {@codesnippet TruffleRunnerSnippets#warmupTest}
      * <p>
-     * In this example, the test code will in total be run 6 times. The first 5 iterations are
-     * warmup. The {@link CallTarget#call} invocation will run in the interpreter, simply calling
-     * the {@link RootNode#execute} method. This allows the AST to specialize itself before it is
-     * compiled.
+     * In this example, the test code will in total be run 6 times. The first 5 iterations are warmup.
+     * The {@link CallTarget#call} invocation will run in the interpreter, simply calling the
+     * {@link RootNode#execute} method. This allows the AST to specialize itself before it is compiled.
      * <p>
      * After warmup, the resulting specialized AST is compiled, and in the final iteration the
      * {@link CallTarget} represents the resulting compiled code.
@@ -166,10 +165,10 @@ public final class TruffleRunner extends BlockJUnit4ClassRunner {
     }
 
     /**
-     * {@link ParametersRunnerFactory} for testing Truffle AST interpreters using
-     * {@link Parameterized} unit tests. To use the parameters for constructing the test AST, the
-     * test {@link RootNode} constructor may take the test class as single argument, or
-     * alternatively the test {@link RootNode} can be a non-static inner class of the test class.
+     * {@link ParametersRunnerFactory} for testing Truffle AST interpreters using {@link Parameterized}
+     * unit tests. To use the parameters for constructing the test AST, the test {@link RootNode}
+     * constructor may take the test class as single argument, or alternatively the test
+     * {@link RootNode} can be a non-static inner class of the test class.
      * <p>
      * {@codesnippet TruffleRunnerSnippets#ParameterizedTest}
      *
@@ -205,9 +204,9 @@ public final class TruffleRunner extends BlockJUnit4ClassRunner {
      * JUnit rule to run the tests in the context of a polyglot engine. This can be used as a
      * {@link ClassRule} or as a {@link Rule}.
      * <p>
-     * If used as {@link ClassRule}, a single context is created for all unit tests in this class,
-     * and all tests (and also other methods like {@link BeforeClass}, {@link Before} {@link After}
-     * and {@link AfterClass}) are executed in this context.
+     * If used as {@link ClassRule}, a single context is created for all unit tests in this class, and
+     * all tests (and also other methods like {@link BeforeClass}, {@link Before} {@link After} and
+     * {@link AfterClass}) are executed in this context.
      * <p>
      * If used as {@link Rule}, a new context is created for each unit test. The {@link Before} and
      * {@link After} actions are also executed in this context. No context is available in the
@@ -237,11 +236,10 @@ public final class TruffleRunner extends BlockJUnit4ClassRunner {
         }
 
         /**
-         * Get the current {@link Context}. This should only be called from code that is executed by
-         * the {@link TruffleRunner}. In particular, this method can not be called from static
-         * initializers and constructors of test classes. Use {@link Before} or {@link BeforeClass}
-         * methods instead, or put the initialization code into the constructor of the
-         * {@link RootNode} of the test.
+         * Get the current {@link Context}. This should only be called from code that is executed by the
+         * {@link TruffleRunner}. In particular, this method can not be called from static initializers and
+         * constructors of test classes. Use {@link Before} or {@link BeforeClass} methods instead, or put
+         * the initialization code into the constructor of the {@link RootNode} of the test.
          *
          * @since 0.27
          */
@@ -251,12 +249,12 @@ public final class TruffleRunner extends BlockJUnit4ClassRunner {
         }
 
         /**
-         * Get an environment to access the polyglot engine using interop. This can be used to run
-         * setup tasks, and to do mock interop access into the polyglot engine. This should only be
-         * called from code that is executed by the {@link TruffleRunner}. In particular, this
-         * method can not be called from static initializers and constructors of test classes. Use
-         * {@link Before} or {@link BeforeClass} methods instead, or put the initialization code
-         * into the constructor of the {@link RootNode} of the test.
+         * Get an environment to access the polyglot engine using interop. This can be used to run setup
+         * tasks, and to do mock interop access into the polyglot engine. This should only be called from
+         * code that is executed by the {@link TruffleRunner}. In particular, this method can not be called
+         * from static initializers and constructors of test classes. Use {@link Before} or
+         * {@link BeforeClass} methods instead, or put the initialization code into the constructor of the
+         * {@link RootNode} of the test.
          *
          * @since 0.27
          */

@@ -63,8 +63,8 @@ public class GraphChangeMonitoringPhase<C extends PhaseContext> extends PhaseSui
     @SuppressWarnings("try")
     protected void run(StructuredGraph graph, C context) {
         /*
-         * Phase may add nodes but not end up using them so ignore additions. Nodes going dead and
-         * having their inputs change are the main interesting differences.
+         * Phase may add nodes but not end up using them so ignore additions. Nodes going dead and having
+         * their inputs change are the main interesting differences.
          */
         HashSetNodeEventListener listener = new HashSetNodeEventListener().exclude(NodeEvent.NODE_ADDED);
         StructuredGraph graphCopy = (StructuredGraph) graph.copy(graph.getDebug());

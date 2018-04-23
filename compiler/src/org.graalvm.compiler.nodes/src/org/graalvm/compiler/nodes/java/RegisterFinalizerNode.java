@@ -84,8 +84,8 @@ public final class RegisterFinalizerNode extends AbstractStateSplit implements C
     }
 
     /**
-     * Determines if the compiler should emit code to test whether a given object has a finalizer
-     * that must be registered with the runtime upon object initialization.
+     * Determines if the compiler should emit code to test whether a given object has a finalizer that
+     * must be registered with the runtime upon object initialization.
      */
     public static boolean mayHaveFinalizer(ValueNode object, Assumptions assumptions) {
         ObjectStamp objectStamp = (ObjectStamp) object.stamp(NodeView.DEFAULT);

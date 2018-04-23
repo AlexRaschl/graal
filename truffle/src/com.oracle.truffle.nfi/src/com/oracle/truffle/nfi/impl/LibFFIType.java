@@ -200,10 +200,9 @@ abstract class LibFFIType {
                     int ret;
                     if (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN) {
                         /*
-                         * This isn't really a long, but a float stored in an 8-byte container. We
-                         * want to get the first 4 byte out of it. On a little-endian machine that's
-                         * just a cast to int, but on a big-endian machine we additionally need a
-                         * shift.
+                         * This isn't really a long, but a float stored in an 8-byte container. We want to get the first 4
+                         * byte out of it. On a little-endian machine that's just a cast to int, but on a big-endian machine
+                         * we additionally need a shift.
                          */
                         ret = (int) (primitive >>> 32);
                     } else {
@@ -584,8 +583,8 @@ abstract class LibFFIType {
                     closure = (LibFFIClosure) value;
                 } else if (value instanceof TruffleObject) {
                     /*
-                     * If we enter this branch, that means the LibFFIClosure was not cached. This
-                     * should only happen on the slow-path.
+                     * If we enter this branch, that means the LibFFIClosure was not cached. This should only happen on
+                     * the slow-path.
                      */
                     if (CompilerDirectives.inCompiledCode()) {
                         throw shouldNotReachHere();
@@ -597,16 +596,15 @@ abstract class LibFFIType {
 
                 if (asRetType) {
                     /*
-                     * The closure is passed as return type from a callback down to native code. In
-                     * that case we transfer ownership of the native pointer to the caller, so we
-                     * have to increase the reference count.
+                     * The closure is passed as return type from a callback down to native code. In that case we
+                     * transfer ownership of the native pointer to the caller, so we have to increase the reference
+                     * count.
                      */
                     closure.nativePointer.addRef();
                 } else {
                     /*
-                     * The closure is passed as argument down to native code. Keep it alive for the
-                     * duration of the call by storing it in the object arguments array. The native
-                     * code will ignore this entry in the array.
+                     * The closure is passed as argument down to native code. Keep it alive for the duration of the call
+                     * by storing it in the object arguments array. The native code will ignore this entry in the array.
                      */
                     buffer.putObject(TypeTag.CLOSURE, closure, 0);
                 }
@@ -746,26 +744,26 @@ abstract class LibFFIType {
          */
         UNBOX,
         /**
-         * If the {@link TruffleObject} is a pointer ({@link Message#IS_POINTER}, it should be sent
-         * the {@link Message#AS_POINTER} message, and the result passed on. Otherwise, the object
-         * should be transformed to a pointer with {@link Message#TO_NATIVE}.
+         * If the {@link TruffleObject} is a pointer ({@link Message#IS_POINTER}, it should be sent the
+         * {@link Message#AS_POINTER} message, and the result passed on. Otherwise, the object should be
+         * transformed to a pointer with {@link Message#TO_NATIVE}.
          */
         POINTER,
         /**
-         * The caller should check whether the object is {@link Message#IS_EXECUTABLE}. If it is, it
-         * should be directly passed to the {@link #serialize} method. Otherwise, it should be
-         * treated as {@link #POINTER}.
+         * The caller should check whether the object is {@link Message#IS_EXECUTABLE}. If it is, it should
+         * be directly passed to the {@link #serialize} method. Otherwise, it should be treated as
+         * {@link #POINTER}.
          */
         EXECUTABLE
     }
 
     /**
-     * Prepare the argument so it can be passed to the {@link #serialize} method. This should only
-     * be called from the slow-path, on the fast-path the node created by
+     * Prepare the argument so it can be passed to the {@link #serialize} method. This should only be
+     * called from the slow-path, on the fast-path the node created by
      * {@link #createSerializeArgumentNode()} will do this already in a more efficient way. If this
      * returns one of the {@link PrepareArgument} enum values, special handling is required (see
-     * documentation of {@link PrepareArgument}). Otherwise, the return value of this function
-     * should be passed directly to the {@link #serialize} method.
+     * documentation of {@link PrepareArgument}). Otherwise, the return value of this function should be
+     * passed directly to the {@link #serialize} method.
      */
     @TruffleBoundary
     public abstract Object slowpathPrepareArgument(TruffleObject value);

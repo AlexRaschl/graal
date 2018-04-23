@@ -580,8 +580,8 @@ public final class ArithmeticOpTable {
         /**
          * Applies this operation to {@code a} and {@code b}.
          *
-         * @return the result of applying this operation or {@code null} if applying it would raise
-         *         an exception (e.g., {@link ArithmeticException} for dividing by 0)
+         * @return the result of applying this operation or {@code null} if applying it would raise an
+         *         exception (e.g., {@link ArithmeticException} for dividing by 0)
          */
         public abstract Constant foldConstant(Constant a, Constant b);
 
@@ -592,10 +592,9 @@ public final class ArithmeticOpTable {
 
         /**
          * Checks whether this operation is associative. An operation is associative when
-         * {@code (a . b) . c == a . (b . c)} for all a, b, c. Note that you still have to be
-         * careful with inverses. For example the integer subtraction operation will report
-         * {@code true} here, since you can still reassociate as long as the correct negations are
-         * inserted.
+         * {@code (a . b) . c == a . (b . c)} for all a, b, c. Note that you still have to be careful with
+         * inverses. For example the integer subtraction operation will report {@code true} here, since you
+         * can still reassociate as long as the correct negations are inserted.
          */
         public final boolean isAssociative() {
             return associative;
@@ -610,8 +609,8 @@ public final class ArithmeticOpTable {
         }
 
         /**
-         * Check whether a {@link Constant} is a neutral element for this operation. A neutral
-         * element is any element {@code n} where {@code a . n == a} for all a.
+         * Check whether a {@link Constant} is a neutral element for this operation. A neutral element is
+         * any element {@code n} where {@code a . n == a} for all a.
          *
          * @param n the {@link Constant} that should be tested
          * @return true iff for all {@code a}: {@code a . n == a}
@@ -621,13 +620,13 @@ public final class ArithmeticOpTable {
         }
 
         /**
-         * Check whether this operation has a zero {@code z == a . a} for each a. Examples of
-         * operations having such an element are subtraction and exclusive-or. Note that this may be
-         * different from the numbers tested by {@link #isNeutral}.
+         * Check whether this operation has a zero {@code z == a . a} for each a. Examples of operations
+         * having such an element are subtraction and exclusive-or. Note that this may be different from the
+         * numbers tested by {@link #isNeutral}.
          *
          * @param stamp a {@link Stamp}
-         * @return a unique {@code z} such that {@code z == a . a} for each {@code a} in
-         *         {@code stamp} if it exists, otherwise {@code null}
+         * @return a unique {@code z} such that {@code z == a . a} for each {@code a} in {@code stamp} if it
+         *         exists, otherwise {@code null}
          */
         public Constant getZero(Stamp stamp) {
             return null;

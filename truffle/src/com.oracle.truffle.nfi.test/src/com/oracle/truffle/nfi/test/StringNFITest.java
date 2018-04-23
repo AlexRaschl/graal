@@ -127,8 +127,8 @@ public class StringNFITest extends NFITest {
             checkRet(ret);
 
             /*
-             * Normally here we'd just call "free" from libc. We're using a wrapper to be able to
-             * reliably test whether it was called with the correct argument.
+             * Normally here we'd just call "free" from libc. We're using a wrapper to be able to reliably test
+             * whether it was called with the correct argument.
              */
             Object magic = ForeignAccess.sendExecute(executeFree, free, ret);
             assertEquals(42, magic);

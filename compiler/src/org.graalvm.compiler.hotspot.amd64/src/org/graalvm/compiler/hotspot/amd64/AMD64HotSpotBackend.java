@@ -124,10 +124,10 @@ public class AMD64HotSpotBackend extends HotSpotHostBackend {
     }
 
     /**
-     * The size of the instruction used to patch the verified entry point of an nmethod when the
-     * nmethod is made non-entrant or a zombie (e.g. during deopt or class unloading). The first
-     * instruction emitted at an nmethod's verified entry point must be at least this length to
-     * ensure mt-safe patching.
+     * The size of the instruction used to patch the verified entry point of an nmethod when the nmethod
+     * is made non-entrant or a zombie (e.g. during deopt or class unloading). The first instruction
+     * emitted at an nmethod's verified entry point must be at least this length to ensure mt-safe
+     * patching.
      */
     public static final int PATCHED_VERIFIED_ENTRY_POINT_INSTRUCTION_SIZE = 5;
 

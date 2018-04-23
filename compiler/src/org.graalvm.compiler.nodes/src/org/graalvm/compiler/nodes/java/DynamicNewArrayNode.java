@@ -51,15 +51,14 @@ public class DynamicNewArrayNode extends AbstractNewArrayNode implements Canonic
     @Input ValueNode elementType;
 
     /**
-     * Class pointer to void.class needs to be exposed earlier than this node is lowered so that it
-     * can be replaced by the AOT machinery. If it's not needed for lowering this input can be
-     * ignored.
+     * Class pointer to void.class needs to be exposed earlier than this node is lowered so that it can
+     * be replaced by the AOT machinery. If it's not needed for lowering this input can be ignored.
      */
     @OptionalInput ValueNode voidClass;
 
     /**
-     * A non-null value indicating the worst case element type. Mainly useful for distinguishing
-     * Object arrays from primitive arrays.
+     * A non-null value indicating the worst case element type. Mainly useful for distinguishing Object
+     * arrays from primitive arrays.
      */
     protected final JavaKind knownElementKind;
 

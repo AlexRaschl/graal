@@ -70,8 +70,8 @@ public final class ShortCircuitOrNode extends LogicNode implements IterableNodeT
     }
 
     /**
-     * Gets the probability that the {@link #getY() y} part of this binary node is <b>not</b>
-     * evaluated. This is the probability that this operator will short-circuit its execution.
+     * Gets the probability that the {@link #getY() y} part of this binary node is <b>not</b> evaluated.
+     * This is the probability that this operator will short-circuit its execution.
      */
     public double getShortCircuitProbability() {
         return shortCircuitProbability;

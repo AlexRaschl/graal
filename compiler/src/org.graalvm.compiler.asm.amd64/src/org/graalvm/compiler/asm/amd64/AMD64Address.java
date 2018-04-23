@@ -39,9 +39,8 @@ public final class AMD64Address extends AbstractAddress {
     private final int displacement;
 
     /**
-     * The start of the instruction, i.e., the value that is used as the key for looking up
-     * placeholder patching information. Only used for {@link AMD64Assembler#getPlaceholder
-     * placeholder addresses}.
+     * The start of the instruction, i.e., the value that is used as the key for looking up placeholder
+     * patching information. Only used for {@link AMD64Assembler#getPlaceholder placeholder addresses}.
      */
     final int instructionStartPosition;
 
@@ -55,8 +54,7 @@ public final class AMD64Address extends AbstractAddress {
     }
 
     /**
-     * Creates an {@link AMD64Address} with given base register, no scaling and a given
-     * displacement.
+     * Creates an {@link AMD64Address} with given base register, no scaling and a given displacement.
      *
      * @param base the base register
      * @param displacement the displacement
@@ -66,8 +64,7 @@ public final class AMD64Address extends AbstractAddress {
     }
 
     /**
-     * Creates an {@link AMD64Address} with given base and index registers, scaling and 0
-     * displacement.
+     * Creates an {@link AMD64Address} with given base and index registers, scaling and 0 displacement.
      *
      * @param base the base register
      * @param index the index register
@@ -78,8 +75,8 @@ public final class AMD64Address extends AbstractAddress {
     }
 
     /**
-     * Creates an {@link AMD64Address} with given base and index registers, scaling and
-     * displacement. This is the most general constructor.
+     * Creates an {@link AMD64Address} with given base and index registers, scaling and displacement.
+     * This is the most general constructor.
      *
      * @param base the base register
      * @param index the index register

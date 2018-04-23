@@ -145,8 +145,7 @@ public class MethodCallTargetNode extends CallTargetNode implements IterableNode
 
         if (type != null) {
             /*
-             * either the holder class is exact, or the receiver object has an exact type, or it's
-             * an array type
+             * either the holder class is exact, or the receiver object has an exact type, or it's an array type
              */
             ResolvedJavaMethod resolvedMethod = type.getType().resolveConcreteMethod(targetMethod, contextType);
             if (resolvedMethod != null && (resolvedMethod.canBeStaticallyBound() || type.isExact() || type.getType().isArray())) {
@@ -180,8 +179,8 @@ public class MethodCallTargetNode extends CallTargetNode implements IterableNode
 
         Assumptions assumptions = graph().getAssumptions();
         /*
-         * Even though we are not registering an assumption (see comment below), the optimization is
-         * only valid when speculative optimizations are enabled.
+         * Even though we are not registering an assumption (see comment below), the optimization is only
+         * valid when speculative optimizations are enabled.
          */
         if (invokeKind().isIndirect() && invokeKind().isInterface() && assumptions != null) {
 
@@ -192,8 +191,8 @@ public class MethodCallTargetNode extends CallTargetNode implements IterableNode
             ResolvedJavaType declaredReceiverType = targetMethod().getDeclaringClass();
 
             /*
-             * We need to check the invoke kind to avoid recursive simplification for virtual
-             * interface methods calls.
+             * We need to check the invoke kind to avoid recursive simplification for virtual interface methods
+             * calls.
              */
             if (declaredReceiverType.isInterface()) {
                 ResolvedJavaType singleImplementor = declaredReceiverType.getSingleImplementor();
@@ -224,15 +223,15 @@ public class MethodCallTargetNode extends CallTargetNode implements IterableNode
             ResolvedJavaMethod singleImplementorMethod = singleImplementor.resolveConcreteMethod(targetMethod(), invoke().getContextType());
             if (singleImplementorMethod != null) {
                 /**
-                 * We have an invoke on an interface with a single implementor. We can replace this
-                 * with an invoke virtual.
+                 * We have an invoke on an interface with a single implementor. We can replace this with an invoke
+                 * virtual.
                  *
-                 * To do so we need to ensure two properties: 1) the receiver must implement the
-                 * interface (declaredReceiverType). The verifier does not prove this so we need a
-                 * dynamic check. 2) we need to ensure that there is still only one implementor of
-                 * this interface, i.e. that we are calling the right method. We could do this with
-                 * an assumption but as we need an instanceof check anyway we can verify both
-                 * properties by checking of the receiver is an instance of the single implementor.
+                 * To do so we need to ensure two properties: 1) the receiver must implement the interface
+                 * (declaredReceiverType). The verifier does not prove this so we need a dynamic check. 2) we need
+                 * to ensure that there is still only one implementor of this interface, i.e. that we are calling
+                 * the right method. We could do this with an assumption but as we need an instanceof check anyway
+                 * we can verify both properties by checking of the receiver is an instance of the single
+                 * implementor.
                  */
                 ValueAnchorNode anchor = new ValueAnchorNode(null);
                 if (anchor != null) {

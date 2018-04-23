@@ -40,8 +40,8 @@ public class PhiStampInferencePartialEvaluationTest extends PartialEvaluationTes
     @Test
     public void ifPhiStamp() {
         /*
-         * The stamp of a phi should be inferred during partial evaluation so that its type
-         * information can be used to devirtualize method calls.
+         * The stamp of a phi should be inferred during partial evaluation so that its type information can
+         * be used to devirtualize method calls.
          */
         FrameDescriptor fd = new FrameDescriptor();
         AbstractTestNode result = new IfPhiStampTestNode();

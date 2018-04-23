@@ -135,20 +135,18 @@ public final class NewFrameNode extends FixedWithNextNode implements IterableNod
         JavaConstant frameDescriptor = frameDescriptorNode.asJavaConstant();
 
         /*
-         * We access the FrameDescriptor only here and copy out all relevant data. So later
-         * modifications to the FrameDescriptor by the running Truffle thread do not interfere. The
-         * frame version assumption is registered first, so that we get invalidated in case the
-         * FrameDescriptor changes.
+         * We access the FrameDescriptor only here and copy out all relevant data. So later modifications to
+         * the FrameDescriptor by the running Truffle thread do not interfere. The frame version assumption
+         * is registered first, so that we get invalidated in case the FrameDescriptor changes.
          */
         JavaConstant version = constantReflection.readFieldValue(types.fieldFrameDescriptorVersion, frameDescriptor);
         graph.getAssumptions().record(new TruffleAssumption(version));
 
         /*
-         * We only want to intrinsify get/set/is accessor methods of a virtual frame when we expect
-         * that the frame is not going to be materialized. Materialization results in heap-based
-         * data arrays, which means that set-methods need a FrameState. Most of the benefit of
-         * accessor method intrinsification is avoiding the FrameState creation during partial
-         * evaluation.
+         * We only want to intrinsify get/set/is accessor methods of a virtual frame when we expect that the
+         * frame is not going to be materialized. Materialization results in heap-based data arrays, which
+         * means that set-methods need a FrameState. Most of the benefit of accessor method intrinsification
+         * is avoiding the FrameState creation during partial evaluation.
          */
         this.intrinsifyAccessorsSpeculation = new IntrinsifyFrameAccessorsSpeculationReason(frameDescriptor);
 
@@ -282,9 +280,9 @@ public final class NewFrameNode extends FixedWithNextNode implements IterableNod
             frameEntryState[frameFieldList.indexOf(tagsField)] = virtualFrameTagArray;
         }
         /*
-         * The new frame is created with "ensureVirtualized" enabled, so that it cannot be
-         * materialized. This can only be lifted by a AllowMaterializeNode, which corresponds to a
-         * frame.materialize() call.
+         * The new frame is created with "ensureVirtualized" enabled, so that it cannot be materialized.
+         * This can only be lifted by a AllowMaterializeNode, which corresponds to a frame.materialize()
+         * call.
          */
         tool.createVirtualObject(virtualFrame, frameEntryState, Collections.<MonitorIdNode> emptyList(), true);
         tool.replaceWithVirtual(virtualFrame);

@@ -112,8 +112,8 @@ public final class ProfilerNode<T> {
     }
 
     /**
-     * @return The name of the {@linkplain com.oracle.truffle.api.nodes.RootNode root node} in which
-     *         the {@link SourceLocation} associated with this {@link ProfilerNode} appears
+     * @return The name of the {@linkplain com.oracle.truffle.api.nodes.RootNode root node} in which the
+     *         {@link SourceLocation} associated with this {@link ProfilerNode} appears
      * @since 0.30
      */
     public String getRootName() {

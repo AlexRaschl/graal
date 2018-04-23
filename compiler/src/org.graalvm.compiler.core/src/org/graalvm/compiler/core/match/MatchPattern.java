@@ -46,8 +46,8 @@ public class MatchPattern {
     }
 
     /**
-     * A descriptive result for match failures. This can be helpful for debugging why a match
-     * doesn't work as expected.
+     * A descriptive result for match failures. This can be helpful for debugging why a match doesn't
+     * work as expected.
      */
     static class Result {
         final MatchResultCode code;
@@ -235,8 +235,8 @@ public class MatchPattern {
     }
 
     /**
-     * Recursively match the shape of the tree without worry about named values. Most matches fail
-     * at this point so it's performed first.
+     * Recursively match the shape of the tree without worry about named values. Most matches fail at
+     * this point so it's performed first.
      *
      * @param node
      * @param statement
@@ -294,9 +294,9 @@ public class MatchPattern {
     }
 
     /**
-     * For a node starting at root, produce a String showing the inputs that matched against this
-     * rule. It's assumed that a match has already succeeded against this rule, otherwise the
-     * printing may produce exceptions.
+     * For a node starting at root, produce a String showing the inputs that matched against this rule.
+     * It's assumed that a match has already succeeded against this rule, otherwise the printing may
+     * produce exceptions.
      */
     public String formatMatch(Node root) {
         String result = String.format("%s", root);

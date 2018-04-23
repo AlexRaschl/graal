@@ -66,9 +66,9 @@ public final class SLFunctionLiteralNode extends SLExpressionNode {
 
     /**
      * The resolved function. During parsing (in the constructor of this node), we do not have the
-     * {@link SLContext} available yet, so the lookup can only be done at {@link #executeGeneric
-     * first execution}. The {@link CompilationFinal} annotation ensures that the function can still
-     * be constant folded during compilation.
+     * {@link SLContext} available yet, so the lookup can only be done at {@link #executeGeneric first
+     * execution}. The {@link CompilationFinal} annotation ensures that the function can still be
+     * constant folded during compilation.
      */
     @CompilationFinal private SLFunction cachedFunction;
 

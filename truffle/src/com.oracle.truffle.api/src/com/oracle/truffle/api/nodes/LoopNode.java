@@ -117,12 +117,11 @@ public abstract class LoopNode extends Node {
 
     /**
      * Invokes one loop invocation by repeatedly call
-     * {@link RepeatingNode#executeRepeating(VirtualFrame) execute)} on the repeating node the loop
-     * was initialized with. Any exceptions that occur in the execution of the repeating node will
-     * just be forwarded to this method and will cancel the current loop invocation.
+     * {@link RepeatingNode#executeRepeating(VirtualFrame) execute)} on the repeating node the loop was
+     * initialized with. Any exceptions that occur in the execution of the repeating node will just be
+     * forwarded to this method and will cancel the current loop invocation.
      *
-     * @param frame the current execution frame or null if the repeating node does not require a
-     *            frame
+     * @param frame the current execution frame or null if the repeating node does not require a frame
      * @since 0.8 or earlier
      */
     public abstract void executeLoop(VirtualFrame frame);
@@ -136,10 +135,10 @@ public abstract class LoopNode extends Node {
 
     /**
      * <p>
-     * Reports the execution count of a loop for which a no {@link LoopNode} was used. The
-     * optimization heuristics can use the loop count from non Truffle loops to guide compilation
-     * and inlining better. Do not use {@link LoopNode} and {@link #reportLoopCount(Node, int)} at
-     * the same time for one loop.
+     * Reports the execution count of a loop for which a no {@link LoopNode} was used. The optimization
+     * heuristics can use the loop count from non Truffle loops to guide compilation and inlining
+     * better. Do not use {@link LoopNode} and {@link #reportLoopCount(Node, int)} at the same time for
+     * one loop.
      * </p>
      *
      * <p>

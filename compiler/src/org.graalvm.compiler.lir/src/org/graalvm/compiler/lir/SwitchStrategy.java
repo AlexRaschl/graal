@@ -45,24 +45,24 @@ public abstract class SwitchStrategy {
 
     private interface SwitchClosure {
         /**
-         * Generates a conditional or unconditional jump. The jump will be unconditional if
-         * condition is null. If defaultTarget is true, then the jump will go the default.
+         * Generates a conditional or unconditional jump. The jump will be unconditional if condition is
+         * null. If defaultTarget is true, then the jump will go the default.
          *
          * @param index Index of the value and the jump target (only used if defaultTarget == false)
          * @param condition The condition on which to jump (can be null)
-         * @param defaultTarget true if the jump should go to the default target, false if index
-         *            should be used.
+         * @param defaultTarget true if the jump should go to the default target, false if index should be
+         *            used.
          */
         void conditionalJump(int index, Condition condition, boolean defaultTarget);
 
         /**
-         * Generates a conditional jump to the target with the specified index. The fall through
-         * should go to the default target.
+         * Generates a conditional jump to the target with the specified index. The fall through should go
+         * to the default target.
          *
          * @param index Index of the value and the jump target
          * @param condition The condition on which to jump
-         * @param canFallThrough true if this is the last instruction in the switch statement, to
-         *            allow for fall-through optimizations.
+         * @param canFallThrough true if this is the last instruction in the switch statement, to allow for
+         *            fall-through optimizations.
          */
         void conditionalJumpOrDefault(int index, Condition condition, boolean canFallThrough);
 
@@ -87,8 +87,8 @@ public abstract class SwitchStrategy {
     }
 
     /**
-     * Backends can subclass this abstract class and generate code for switch strategies by
-     * implementing the {@link #conditionalJump(int, Condition, Label)} method.
+     * Backends can subclass this abstract class and generate code for switch strategies by implementing
+     * the {@link #conditionalJump(int, Condition, Label)} method.
      */
     public abstract static class BaseSwitchClosure implements SwitchClosure {
 
@@ -105,8 +105,8 @@ public abstract class SwitchStrategy {
         }
 
         /**
-         * This method generates code for a comparison between the actual value and the constant at
-         * the given index and a condition jump to target.
+         * This method generates code for a comparison between the actual value and the constant at the
+         * given index and a condition jump to target.
          */
         protected abstract void conditionalJump(int index, Condition condition, Label target);
 
@@ -152,8 +152,8 @@ public abstract class SwitchStrategy {
     }
 
     /**
-     * This closure is used internally to determine the average effort for a certain strategy on a
-     * given switch instruction.
+     * This closure is used internally to determine the average effort for a certain strategy on a given
+     * switch instruction.
      */
     private class EffortClosure implements SwitchClosure {
 
@@ -234,8 +234,8 @@ public abstract class SwitchStrategy {
     }
 
     /**
-     * Tells the system that the default successor is reached after depth number of comparisons,
-     * which is used to calculate average effort.
+     * Tells the system that the default successor is reached after depth number of comparisons, which
+     * is used to calculate average effort.
      */
     protected void registerDefaultEffort(int depth) {
         if (effortClosure != null) {
@@ -250,8 +250,8 @@ public abstract class SwitchStrategy {
     }
 
     /**
-     * This strategy orders the keys according to their probability and creates one equality
-     * comparison per key.
+     * This strategy orders the keys according to their probability and creates one equality comparison
+     * per key.
      */
     public static class SequentialStrategy extends SwitchStrategy {
         private final Integer[] indexes;
@@ -310,8 +310,8 @@ public abstract class SwitchStrategy {
         }
 
         /**
-         * Looks for the end of a stretch of key constants that are successive numbers and have the
-         * same target.
+         * Looks for the end of a stretch of key constants that are successive numbers and have the same
+         * target.
          */
         protected int getSliceEnd(SwitchClosure closure, int pos) {
             int slice = pos;
@@ -323,8 +323,8 @@ public abstract class SwitchStrategy {
     }
 
     /**
-     * This strategy divides the keys into ranges of successive keys with the same target and
-     * creates comparisons for these ranges.
+     * This strategy divides the keys into ranges of successive keys with the same target and creates
+     * comparisons for these ranges.
      */
     public static class RangesStrategy extends PrimitiveStrategy {
         private final Integer[] indexes;
@@ -410,9 +410,9 @@ public abstract class SwitchStrategy {
 
         /**
          * Recursively generate a list of comparisons that always subdivides the keys in the given
-         * (inclusive) range in the middle (in terms of probability, not index). If left is bigger
-         * than zero, then we always know that the value is equal to or bigger than the left key.
-         * This does not hold for the right key, as there may be a gap afterwards.
+         * (inclusive) range in the middle (in terms of probability, not index). If left is bigger than
+         * zero, then we always know that the value is equal to or bigger than the left key. This does not
+         * hold for the right key, as there may be a gap afterwards.
          */
         private void recurseBinarySwitch(SwitchClosure closure, int left, int right, int startDepth) {
             assert startDepth < keyConstants.length * 3 : "runaway recursion in binary switch";
@@ -510,8 +510,8 @@ public abstract class SwitchStrategy {
     }
 
     /**
-     * Creates all switch strategies for the given switch, evaluates them (based on average effort)
-     * and returns the best one.
+     * Creates all switch strategies for the given switch, evaluates them (based on average effort) and
+     * returns the best one.
      */
     public static SwitchStrategy getBestStrategy(double[] keyProbabilities, JavaConstant[] keyConstants, LabelRef[] keyTargets) {
         SwitchStrategy[] strategies = getStrategies(keyProbabilities, keyConstants, keyTargets);

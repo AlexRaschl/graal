@@ -435,9 +435,9 @@ public class InliningData {
      *
      * This method attempts:
      * <ol>
-     * <li>to inline at the callsite given by <code>calleeInvocation</code>, where that callsite
-     * belongs to the {@link CallsiteHolderExplorable} at the top of the {@link #graphQueue}
-     * maintained in this class.</li>
+     * <li>to inline at the callsite given by <code>calleeInvocation</code>, where that callsite belongs
+     * to the {@link CallsiteHolderExplorable} at the top of the {@link #graphQueue} maintained in this
+     * class.</li>
      * <li>otherwise, to devirtualize the callsite in question.</li>
      * </ol>
      *
@@ -462,10 +462,9 @@ public class InliningData {
     }
 
     /**
-     * This method picks one of the callsites belonging to the current
-     * {@link CallsiteHolderExplorable}. Provided the callsite qualifies to be analyzed for
-     * inlining, this method prepares a new stack top in {@link InliningData} for such callsite,
-     * which comprises:
+     * This method picks one of the callsites belonging to the current {@link CallsiteHolderExplorable}.
+     * Provided the callsite qualifies to be analyzed for inlining, this method prepares a new stack top
+     * in {@link InliningData} for such callsite, which comprises:
      * <ul>
      * <li>preparing a summary of feasible targets, ie preparing an {@link InlineInfo}</li>
      * <li>based on it, preparing the stack top proper which consists of:</li>
@@ -481,9 +480,8 @@ public class InliningData {
      * </p>
      *
      * <p>
-     * The {@link InlineInfo} used to get things rolling is kept around in the
-     * {@link MethodInvocation}, it will be needed in case of inlining, see
-     * {@link InlineInfo#inline(Providers)}
+     * The {@link InlineInfo} used to get things rolling is kept around in the {@link MethodInvocation},
+     * it will be needed in case of inlining, see {@link InlineInfo#inline(Providers)}
      * </p>
      */
     private void processNextInvoke() {
@@ -682,10 +680,10 @@ public class InliningData {
      * <li>{@link #tryToInline(MethodInvocation, int) try to inline}: move past the current graph
      * (remove it from the topmost element).
      * <ul>
-     * <li>If that was the last one then {@link #tryToInline(MethodInvocation, int) try to inline}
-     * the callsite under consideration (ie, the "current invocation").</li>
-     * <li>Whether inlining occurs or not, that callsite is removed from the top of
-     * {@link InliningData} .</li>
+     * <li>If that was the last one then {@link #tryToInline(MethodInvocation, int) try to inline} the
+     * callsite under consideration (ie, the "current invocation").</li>
+     * <li>Whether inlining occurs or not, that callsite is removed from the top of {@link InliningData}
+     * .</li>
      * </ul>
      * </li>
      * </ol>
@@ -753,9 +751,9 @@ public class InliningData {
     }
 
     /**
-     * Checks an invariant that {@link #moveForward()} must maintain: "the top invocation records
-     * how many concrete target methods (for it) remain on the {@link #graphQueue}; those targets
-     * 'belong' to the current invocation in question.
+     * Checks an invariant that {@link #moveForward()} must maintain: "the top invocation records how
+     * many concrete target methods (for it) remain on the {@link #graphQueue}; those targets 'belong'
+     * to the current invocation in question.
      */
     private boolean topGraphsForTopInvocation() {
         if (invocationQueue.isEmpty()) {
@@ -784,8 +782,8 @@ public class InliningData {
     }
 
     /**
-     * This method checks invariants for this class. Named after shorthand for "internal
-     * representation is ok".
+     * This method checks invariants for this class. Named after shorthand for "internal representation
+     * is ok".
      */
     public boolean repOK() {
         assert topGraphsForTopInvocation();

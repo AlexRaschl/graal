@@ -155,8 +155,8 @@ public class AMD64NodeMatchRules extends NodeMatchRules {
         boolean matchedAsConstantFinal = matchedAsConstant;
 
         /*
-         * emitCompareBranchMemory expects the memory on the right, so mirror the condition if
-         * that's not true. It might be mirrored again the actual compare is emitted but that's ok.
+         * emitCompareBranchMemory expects the memory on the right, so mirror the condition if that's not
+         * true. It might be mirrored again the actual compare is emitted but that's ok.
          */
         Condition finalCondition = GraphUtil.unproxify(compare.getX()) == access ? cond.mirror() : cond;
         return new ComplexMatchResult() {
@@ -168,8 +168,8 @@ public class AMD64NodeMatchRules extends NodeMatchRules {
                 double trueLabelProbability = ifNode.probability(ifNode.trueSuccessor());
                 Value other = operand(value);
                 /*
-                 * Check that patterns which were matched as a constant actually end up seeing a
-                 * constant in the LIR.
+                 * Check that patterns which were matched as a constant actually end up seeing a constant in the
+                 * LIR.
                  */
                 assert !matchedAsConstantFinal || !LIRValueUtil.isVariable(other) : "expected constant value " + value;
                 AMD64AddressValue address = (AMD64AddressValue) operand(access.getAddress());

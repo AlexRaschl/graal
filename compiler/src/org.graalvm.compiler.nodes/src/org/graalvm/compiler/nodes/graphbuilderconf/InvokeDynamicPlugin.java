@@ -36,8 +36,8 @@ public interface InvokeDynamicPlugin extends GraphBuilderPlugin {
 
     /**
      * Checks for a resolved dynamic adapter method at the specified index, resulting from either a
-     * resolved invokedynamic or invokevirtual on a signature polymorphic MethodHandle method
-     * (HotSpot invokehandle).
+     * resolved invokedynamic or invokevirtual on a signature polymorphic MethodHandle method (HotSpot
+     * invokehandle).
      *
      * @param builder context for the invoke
      * @param cpi the constant pool index

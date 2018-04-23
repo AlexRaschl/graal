@@ -246,8 +246,8 @@ public class RedefineIntrinsicTest extends ReplacementsTest {
     }
 
     /**
-     * This transformer replaces the first instance of the constant "intrinsic" in the class file
-     * for {@link Intrinsic} with "redefined".
+     * This transformer replaces the first instance of the constant "intrinsic" in the class file for
+     * {@link Intrinsic} with "redefined".
      */
     static class Redefiner implements ClassFileTransformer {
 

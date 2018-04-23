@@ -53,8 +53,8 @@ public interface DebugThreadsListener {
     void threadInitialized(DebugContext context, Thread thread);
 
     /**
-     * Notifies about disposal of thread-related resources that were used for a guest language
-     * execution in a {@link DebugContext}.
+     * Notifies about disposal of thread-related resources that were used for a guest language execution
+     * in a {@link DebugContext}.
      *
      * @param context the context the thread is disposed from
      * @param thread the thread

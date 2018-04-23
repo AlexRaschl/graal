@@ -36,9 +36,9 @@ import java.util.List;
 public interface NodeFactory<T> {
 
     /**
-     * Instantiates the node using the arguments array. The arguments length and types must suffice
-     * one of the returned signatures in {@link #getNodeSignatures()}. If the arguments array does
-     * not suffice one of the node signatures an {@link IllegalArgumentException} is thrown.
+     * Instantiates the node using the arguments array. The arguments length and types must suffice one
+     * of the returned signatures in {@link #getNodeSignatures()}. If the arguments array does not
+     * suffice one of the node signatures an {@link IllegalArgumentException} is thrown.
      *
      * @param arguments the argument values
      * @return the instantiated node
@@ -48,9 +48,8 @@ public interface NodeFactory<T> {
     T createNode(Object... arguments);
 
     /**
-     * Returns the node class that will get created by {@link #createNode(Object...)}. The node
-     * class does not match exactly to the instantiated object but they are guaranteed to be
-     * assignable.
+     * Returns the node class that will get created by {@link #createNode(Object...)}. The node class
+     * does not match exactly to the instantiated object but they are guaranteed to be assignable.
      * 
      * @since 0.8 or earlier
      */

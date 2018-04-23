@@ -52,10 +52,9 @@ public class CompiledMethodTest extends GraalCompilerTest {
     }
 
     /**
-     * Usages of the constant {@code " "} are replaced with the constant {@code "-"} and it is
-     * verified that executing the compiled code produces a result that the preserves the node
-     * replacement unless deoptimization occurs (e.g., due to -Xcomp causing profiles to be
-     * missing).
+     * Usages of the constant {@code " "} are replaced with the constant {@code "-"} and it is verified
+     * that executing the compiled code produces a result that the preserves the node replacement unless
+     * deoptimization occurs (e.g., due to -Xcomp causing profiles to be missing).
      */
     @Test
     public void test1() {

@@ -72,8 +72,8 @@ public interface GraphBuilderTool {
     }
 
     /**
-     * Determines if this parsing context is within the bytecode of an intrinsic or a method inlined
-     * by an intrinsic.
+     * Determines if this parsing context is within the bytecode of an intrinsic or a method inlined by
+     * an intrinsic.
      */
     boolean parsingIntrinsic();
 }

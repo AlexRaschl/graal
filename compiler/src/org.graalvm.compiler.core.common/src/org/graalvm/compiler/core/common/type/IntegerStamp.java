@@ -423,11 +423,10 @@ public final class IntegerStamp extends PrimitiveStamp {
     }
 
     /**
-     * Checks if the 2 stamps represent values of the same sign. Returns true if the two stamps are
-     * both positive of null or if they are both strictly negative
+     * Checks if the 2 stamps represent values of the same sign. Returns true if the two stamps are both
+     * positive of null or if they are both strictly negative
      *
-     * @return true if the two stamps are both positive of null or if they are both strictly
-     *         negative
+     * @return true if the two stamps are both positive of null or if they are both strictly negative
      */
     public static boolean sameSign(IntegerStamp s1, IntegerStamp s2) {
         return s1.isPositive() && s2.isPositive() || s1.isStrictlyNegative() && s2.isStrictlyNegative();
@@ -996,9 +995,8 @@ public final class IntegerStamp extends PrimitiveStamp {
                         private long[] getUnsignedExtremes(IntegerStamp stamp) {
                             if (stamp.lowerBound() < 0 && stamp.upperBound() >= 0) {
                                 /*
-                                 * If -1 and 0 are both in the signed range, then we can't say
-                                 * anything about the unsigned range, so we have to return [0,
-                                 * MAX_UNSIGNED].
+                                 * If -1 and 0 are both in the signed range, then we can't say anything about the unsigned range, so
+                                 * we have to return [0, MAX_UNSIGNED].
                                  */
                                 return new long[]{0, -1L};
                             } else {
@@ -1253,8 +1251,7 @@ public final class IntegerStamp extends PrimitiveStamp {
                                 long removedBits = -1L << (bits - shiftAmount - 1);
                                 if ((value.lowerBound() & removedBits) == 0 && (value.upperBound() & removedBits) == 0) {
                                     /*
-                                     * use a better stamp if neither lower nor upper bound can lose
-                                     * bits
+                                     * use a better stamp if neither lower nor upper bound can lose bits
                                      */
                                     return new IntegerStamp(bits, value.lowerBound() << shiftAmount, value.upperBound() << shiftAmount, value.downMask() << shiftAmount, value.upMask() << shiftAmount);
                                 }

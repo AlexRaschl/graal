@@ -572,10 +572,10 @@ public class WriteBarrierSnippets implements Snippets {
     }
 
     /**
-     * Validation helper method which performs sanity checks on write operations. The addresses of
-     * both the object and the value being written are checked in order to determine if they reside
-     * in a valid heap region. If an object is stale, an invalid access is performed in order to
-     * prematurely crash the VM and debug the stack trace of the faulty method.
+     * Validation helper method which performs sanity checks on write operations. The addresses of both
+     * the object and the value being written are checked in order to determine if they reside in a
+     * valid heap region. If an object is stale, an invalid access is performed in order to prematurely
+     * crash the VM and debug the stack trace of the faulty method.
      */
     public static void validateObject(Object parent, Object child) {
         if (verifyOops(INJECTED_VMCONFIG) && child != null && !validateOop(VALIDATE_OBJECT, parent, child)) {

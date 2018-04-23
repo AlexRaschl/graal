@@ -184,14 +184,12 @@ public abstract class AArch64LIRGenerator extends LIRGenerator {
      *
      * @param left Arbitrary value. Has to have same type as right. Non null.
      * @param right Arbitrary value. Has to have same type as left. Non null.
-     * @param cond condition that decides whether to move trueValue or falseValue into result. Non
-     *            null.
-     * @param unorderedIsTrue defines whether floating-point comparisons consider unordered true or
-     *            not. Ignored for integer comparisons.
+     * @param cond condition that decides whether to move trueValue or falseValue into result. Non null.
+     * @param unorderedIsTrue defines whether floating-point comparisons consider unordered true or not.
+     *            Ignored for integer comparisons.
      * @param trueValue arbitrary value same type as falseValue. Non null.
      * @param falseValue arbitrary value same type as trueValue. Non null.
-     * @return value containing trueValue if cond + unorderedIsTrue is true, else falseValue. Non
-     *         null.
+     * @return value containing trueValue if cond + unorderedIsTrue is true, else falseValue. Non null.
      */
     @Override
     public Variable emitConditionalMove(PlatformKind cmpKind, Value left, Value right, Condition cond, boolean unorderedIsTrue, Value trueValue, Value falseValue) {
@@ -273,8 +271,8 @@ public abstract class AArch64LIRGenerator extends LIRGenerator {
     }
 
     /**
-     * This method emits the compare instruction, and may reorder the operands. It returns true if
-     * it did so.
+     * This method emits the compare instruction, and may reorder the operands. It returns true if it
+     * did so.
      *
      * @param a the left operand of the comparison. Has to have same type as b. Non null.
      * @param b the right operand of the comparison. Has to have same type as a. Non null.
@@ -330,8 +328,8 @@ public abstract class AArch64LIRGenerator extends LIRGenerator {
     }
 
     /**
-     * If value is a constant that cannot be used directly with a gpCompare instruction load it into
-     * a register and return the register, otherwise return constant value unchanged.
+     * If value is a constant that cannot be used directly with a gpCompare instruction load it into a
+     * register and return the register, otherwise return constant value unchanged.
      */
     protected Value loadNonCompareConst(Value value) {
         if (!isCompareConstant(value)) {
@@ -341,10 +339,9 @@ public abstract class AArch64LIRGenerator extends LIRGenerator {
     }
 
     /**
-     * Checks whether value can be used directly with a gpCompare instruction. This is <b>not</b>
-     * the same as {@link AArch64ArithmeticLIRGenerator#isArithmeticConstant(JavaConstant)}, because
-     * 0.0 is a valid compare constant for floats, while there are no arithmetic constants for
-     * floats.
+     * Checks whether value can be used directly with a gpCompare instruction. This is <b>not</b> the
+     * same as {@link AArch64ArithmeticLIRGenerator#isArithmeticConstant(JavaConstant)}, because 0.0 is
+     * a valid compare constant for floats, while there are no arithmetic constants for floats.
      *
      * @param value any type. Non null.
      * @return true if value can be used directly in comparison instruction, false otherwise.
@@ -451,9 +448,9 @@ public abstract class AArch64LIRGenerator extends LIRGenerator {
     }
 
     /**
-     * Loads value into virtual register. Contrary to {@link #load(Value)} this handles
-     * RegisterValues (i.e. values corresponding to fixed physical registers) correctly, by not
-     * creating an unnecessary move into a virtual register.
+     * Loads value into virtual register. Contrary to {@link #load(Value)} this handles RegisterValues
+     * (i.e. values corresponding to fixed physical registers) correctly, by not creating an unnecessary
+     * move into a virtual register.
      *
      * This avoids generating the following code: mov x0, x19 # x19 is fixed thread register ldr x0,
      * [x0] instead of: ldr x0, [x19].

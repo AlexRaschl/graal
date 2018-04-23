@@ -65,8 +65,8 @@ public final class CPUSampler implements Closeable {
 
     /**
      * Wrapper for information on how many times an element was seen on the shadow stack. Used as a
-     * template parameter of {@link ProfilerNode}. Differentiates between an execution in compiled
-     * code and in the interpreter.
+     * template parameter of {@link ProfilerNode}. Differentiates between an execution in compiled code
+     * and in the interpreter.
      *
      * @since 0.30
      */
@@ -84,8 +84,8 @@ public final class CPUSampler implements Closeable {
         final List<Long> selfHitTimes = new ArrayList<>();
 
         /**
-         * @return The number of times the element was found bellow the top of the shadow stack as
-         *         compiled code
+         * @return The number of times the element was found bellow the top of the shadow stack as compiled
+         *         code
          * @since 0.30
          */
         public int getCompiledHitCount() {
@@ -102,8 +102,7 @@ public final class CPUSampler implements Closeable {
         }
 
         /**
-         * @return The number of times the element was found on the top of the shadow stack as
-         *         compiled code
+         * @return The number of times the element was found on the top of the shadow stack as compiled code
          * @since 0.30
          */
         public int getSelfCompiledHitCount() {
@@ -111,8 +110,8 @@ public final class CPUSampler implements Closeable {
         }
 
         /**
-         * @return The number of times the element was found on the top of the shadow stack as
-         *         interpreted code
+         * @return The number of times the element was found on the top of the shadow stack as interpreted
+         *         code
          * @since 0.30
          */
         public int getSelfInterpretedHitCount() {
@@ -136,8 +135,8 @@ public final class CPUSampler implements Closeable {
         }
 
         /**
-         * @return An immutable list of time stamps for the times that the element was on the top of
-         *         the stack
+         * @return An immutable list of time stamps for the times that the element was on the top of the
+         *         stack
          * @since 0.30
          */
         public List<Long> getSelfHitTimes() {
@@ -152,23 +151,21 @@ public final class CPUSampler implements Closeable {
      */
     public enum Mode {
         /**
-         * Sample {@link RootTag Roots} <b>excluding</b> the ones that get inlined during
-         * compilation. This mode is the default and has the least amount of impact on peak
-         * performance.
+         * Sample {@link RootTag Roots} <b>excluding</b> the ones that get inlined during compilation. This
+         * mode is the default and has the least amount of impact on peak performance.
          *
          * @since 0.30
          */
         EXCLUDE_INLINED_ROOTS,
         /**
-         * Sample {@link RootTag Roots} <b>including</b> the ones that get inlined during
-         * compilation.
+         * Sample {@link RootTag Roots} <b>including</b> the ones that get inlined during compilation.
          *
          * @since 0.30
          */
         ROOTS,
         /**
-         * Sample all {@link com.oracle.truffle.api.instrumentation.StandardTags.StatementTag
-         * Statements}. This mode has serious impact on peek performance.
+         * Sample all {@link com.oracle.truffle.api.instrumentation.StandardTags.StatementTag Statements}.
+         * This mode has serious impact on peek performance.
          *
          * @since 0.30
          */
@@ -316,8 +313,8 @@ public final class CPUSampler implements Closeable {
     }
 
     /**
-     * Sets the delay period i.e. the time that is allowed to pass between when the first sample
-     * would have been taken and when the sampler actually starts taking samples.
+     * Sets the delay period i.e. the time that is allowed to pass between when the first sample would
+     * have been taken and when the sampler actually starts taking samples.
      *
      * @param delay the delay period.
      * @since 0.30
@@ -328,8 +325,8 @@ public final class CPUSampler implements Closeable {
     }
 
     /**
-     * Sets the maximum amount of stack frames that are sampled. Whether or not the stack grew more
-     * than the provided size during execution can be checked with {@linkplain #hasStackOverflowed}
+     * Sets the maximum amount of stack frames that are sampled. Whether or not the stack grew more than
+     * the provided size during execution can be checked with {@linkplain #hasStackOverflowed}
      *
      * @param stackLimit the new size of the shadow stack
      * @since 0.30
@@ -351,8 +348,8 @@ public final class CPUSampler implements Closeable {
     }
 
     /**
-     * Sets the {@link SourceSectionFilter filter} for the sampler. The sampler will only observe
-     * parts of the executed source code that is specified by the filter.
+     * Sets the {@link SourceSectionFilter filter} for the sampler. The sampler will only observe parts
+     * of the executed source code that is specified by the filter.
      *
      * @param filter The new filter describing which part of the source code to sample
      * @since 0.30
@@ -363,8 +360,8 @@ public final class CPUSampler implements Closeable {
     }
 
     /**
-     * Sets the option to delay sampling until a non-internal language is initialized. Useful to
-     * avoid internal language initialisation code in the samples.
+     * Sets the option to delay sampling until a non-internal language is initialized. Useful to avoid
+     * internal language initialisation code in the samples.
      *
      * @param delaySamplingUntilNonInternalLangInit Enable or disable this option.
      * @since 0.31
@@ -451,8 +448,8 @@ public final class CPUSampler implements Closeable {
     }
 
     /**
-     * Sets whether or not to gather timestamp information for the element at the top of the stack
-     * for each sample.
+     * Sets whether or not to gather timestamp information for the element at the top of the stack for
+     * each sample.
      *
      * @param gatherSelfHitTimes new value for whether or not to gather timestamps
      *

@@ -136,8 +136,8 @@ public interface TruffleCompilerRuntime {
     LoopExplosionPlugin.LoopExplosionKind getLoopExplosionKind(ResolvedJavaMethod method);
 
     /**
-     * Gets the primary {@link TruffleCompiler} instance associated with this runtime, creating it
-     * in a thread-safe manner first if necessary.
+     * Gets the primary {@link TruffleCompiler} instance associated with this runtime, creating it in a
+     * thread-safe manner first if necessary.
      */
     TruffleCompiler getTruffleCompiler();
 
@@ -252,8 +252,8 @@ public interface TruffleCompilerRuntime {
      * Looks up a type in this runtime.
      *
      * @param className name of the type to lookup (same format as {@link Class#forName(String)}
-     * @param required specifies if {@link NoClassDefFoundError} should be thrown or {@code null}
-     *            should be returned if resolution fails
+     * @param required specifies if {@link NoClassDefFoundError} should be thrown or {@code null} should
+     *            be returned if resolution fails
      * @return the resolved type or {@code null} if resolution fails and {@code required == false}
      * @throws NoClassDefFoundError if resolution fails and {@code required == true}
      */
@@ -265,8 +265,7 @@ public interface TruffleCompilerRuntime {
     OptionValues getInitialOptions();
 
     /**
-     * Gets an object describing whether and how a method can be inlined based on Truffle
-     * directives.
+     * Gets an object describing whether and how a method can be inlined based on Truffle directives.
      */
     InlineInfo getInlineInfo(ResolvedJavaMethod original);
 
@@ -287,8 +286,8 @@ public interface TruffleCompilerRuntime {
     int getFrameSlotKindTagForJavaKind(JavaKind kind);
 
     /**
-     * Gets the number of valid {@code FrameSlotKind.tag} values. The valid values are contiguous
-     * from 0 up to but not including the return value.
+     * Gets the number of valid {@code FrameSlotKind.tag} values. The valid values are contiguous from 0
+     * up to but not including the return value.
      */
     int getFrameSlotKindTagsCount();
 

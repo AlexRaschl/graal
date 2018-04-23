@@ -232,8 +232,8 @@ public class OptimizedOSRLoopNodeTest extends TestWithSynchronousCompiling {
     }
 
     /*
-     * Test that OSR compilation also works if the loop node is not embedded in a CallTarget, but
-     * just called directly with the node's execute method.
+     * Test that OSR compilation also works if the loop node is not embedded in a CallTarget, but just
+     * called directly with the node's execute method.
      */
     @Theory
     public void testExecutionWithoutCallTarget(OSRLoopFactory factory) {
@@ -267,8 +267,8 @@ public class OptimizedOSRLoopNodeTest extends TestWithSynchronousCompiling {
     }
 
     /*
-     * Test behavior of OSR compile loops if the invalidate internally during loop execution. Also
-     * test that it respects the invalidation reprofile count.
+     * Test behavior of OSR compile loops if the invalidate internally during loop execution. Also test
+     * that it respects the invalidation reprofile count.
      */
     @Theory
     public void testInternalInvalidations(OSRLoopFactory factory) {
@@ -332,8 +332,8 @@ public class OptimizedOSRLoopNodeTest extends TestWithSynchronousCompiling {
     }
 
     /*
-     * Test that if a call target is called a min invocation theshold times it is unlikely that it
-     * needs OSR at all.
+     * Test that if a call target is called a min invocation theshold times it is unlikely that it needs
+     * OSR at all.
      */
     @Theory
     public void testNoOSRAfterMinInvocationThreshold(OSRLoopFactory factory) {
@@ -368,8 +368,7 @@ public class OptimizedOSRLoopNodeTest extends TestWithSynchronousCompiling {
         }
         assertNotCompiled(target);
         /*
-         * This should trigger OSR, but since the parent is compiling/compiled already we won't do
-         * OSR.
+         * This should trigger OSR, but since the parent is compiling/compiled already we won't do OSR.
          */
         target.call(invokesleft + 1);
         assertNotCompiled(rootNode.getOSRTarget());
@@ -569,8 +568,8 @@ public class OptimizedOSRLoopNodeTest extends TestWithSynchronousCompiling {
     }
 
     /**
-     * Test that graal stack frame instances have call nodes associated even when there are OSR
-     * frames on the stack.
+     * Test that graal stack frame instances have call nodes associated even when there are OSR frames
+     * on the stack.
      */
     @Theory
     public void testStackFrameNodes(OSRLoopFactory factory) {

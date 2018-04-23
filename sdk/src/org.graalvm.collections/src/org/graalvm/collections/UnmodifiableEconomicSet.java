@@ -58,8 +58,8 @@ public interface UnmodifiableEconomicSet<E> extends Iterable<E> {
      * match the size of this set.
      *
      * @return an array containing all the elements in this set.
-     * @throws UnsupportedOperationException if the length of {@code target} does not equal the size
-     *             of this set.
+     * @throws UnsupportedOperationException if the length of {@code target} does not equal the size of
+     *             this set.
      * @since 1.0
      */
     default E[] toArray(E[] target) {

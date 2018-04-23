@@ -42,8 +42,8 @@ public abstract class ExecutableNode extends Node {
     final LanguageInfo languageInfo;
 
     /**
-     * Creates new executable node with a given language instance. The language instance is
-     * obtainable while {@link TruffleLanguage#parse(InlineParsingRequest)} is executed.
+     * Creates new executable node with a given language instance. The language instance is obtainable
+     * while {@link TruffleLanguage#parse(InlineParsingRequest)} is executed.
      *
      * @param language the language this executable node is associated with
      * @since 0.31
@@ -70,9 +70,9 @@ public abstract class ExecutableNode extends Node {
     public abstract Object execute(VirtualFrame frame);
 
     /**
-     * Returns public information about the language. The language can be assumed equal if the
-     * instances of the language info instance are the same. To access internal details of the
-     * language within the language implementation use {@link #getLanguage(Class)}.
+     * Returns public information about the language. The language can be assumed equal if the instances
+     * of the language info instance are the same. To access internal details of the language within the
+     * language implementation use {@link #getLanguage(Class)}.
      *
      * @since 0.31
      */

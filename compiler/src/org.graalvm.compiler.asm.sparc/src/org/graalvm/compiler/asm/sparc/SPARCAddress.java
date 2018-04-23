@@ -37,8 +37,7 @@ public class SPARCAddress extends AbstractAddress {
     private final int displacement;
 
     /**
-     * Creates an {@link SPARCAddress} with given base register, no scaling and a given
-     * displacement.
+     * Creates an {@link SPARCAddress} with given base register, no scaling and a given displacement.
      *
      * @param base the base register
      * @param displacement the displacement

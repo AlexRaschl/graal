@@ -48,8 +48,8 @@ import org.graalvm.word.PointerBase;
 public @interface CStruct {
 
     /**
-     * Specifies the name of the imported C struct type. If no name is provided, the type name is
-     * used as the struct name.
+     * Specifies the name of the imported C struct type. If no name is provided, the type name is used
+     * as the struct name.
      */
     String value() default "";
 

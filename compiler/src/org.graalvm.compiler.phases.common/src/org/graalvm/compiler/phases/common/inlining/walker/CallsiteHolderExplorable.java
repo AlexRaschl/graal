@@ -116,13 +116,13 @@ public final class CallsiteHolderExplorable extends CallsiteHolder {
      * </p>
      *
      * <p>
-     * Constant arguments don't contribute to fixed-params: those params have been removed already,
-     * see {@link org.graalvm.compiler.phases.common.inlining.info.elem.InlineableGraph}.
+     * Constant arguments don't contribute to fixed-params: those params have been removed already, see
+     * {@link org.graalvm.compiler.phases.common.inlining.info.elem.InlineableGraph}.
      * </p>
      *
      * <p>
-     * Instead, fixed-params are those receiving freshly instantiated arguments (possibly
-     * instantiated several levels up in the call-hierarchy)
+     * Instead, fixed-params are those receiving freshly instantiated arguments (possibly instantiated
+     * several levels up in the call-hierarchy)
      * </p>
      */
     public EconomicSet<ParameterNode> getFixedParams() {

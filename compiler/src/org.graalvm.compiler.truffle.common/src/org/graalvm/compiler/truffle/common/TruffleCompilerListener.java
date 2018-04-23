@@ -63,8 +63,8 @@ public interface TruffleCompilerListener {
         int getTargetCodeSize();
 
         /**
-         * Gets the total frame size of compiled code in bytes. This includes the return address
-         * pushed onto the stack, if any.
+         * Gets the total frame size of compiled code in bytes. This includes the return address pushed onto
+         * the stack, if any.
          */
         int getTotalFrameSize();
 
@@ -95,8 +95,8 @@ public interface TruffleCompilerListener {
     }
 
     /**
-     * Notifies this object when Graal IR compilation {@code compilable} completes. Graal
-     * compilation occurs between {@link #onTruffleTierFinished} and code installation.
+     * Notifies this object when Graal IR compilation {@code compilable} completes. Graal compilation
+     * occurs between {@link #onTruffleTierFinished} and code installation.
      *
      * @param compilable the call target that was compiled
      * @param graph the graph representing {@code compilable}
@@ -104,8 +104,8 @@ public interface TruffleCompilerListener {
     void onGraalTierFinished(CompilableTruffleAST compilable, GraphInfo graph);
 
     /**
-     * Notifies this object when compilation of {@code compilable} has completed partial evaluation
-     * and is about to perform compilation of the graph produced by partial evaluation.
+     * Notifies this object when compilation of {@code compilable} has completed partial evaluation and
+     * is about to perform compilation of the graph produced by partial evaluation.
      *
      * @param compilable the call target being compiled
      * @param inliningPlan the inlining plan used during partial evaluation
@@ -125,12 +125,11 @@ public interface TruffleCompilerListener {
      *
      * @param compilable the Truffle AST whose compilation failed
      * @param reason the reason compilation failed
-     * @param bailout specifies whether the failure was a bailout or an error in the compiler. A
-     *            bailout means the compiler aborted the compilation based on some of property of
-     *            {@code target} (e.g., too big). A non-bailout means an unexpected error in the
-     *            compiler itself.
-     * @param permanentBailout specifies if a bailout is due to a condition that probably won't
-     *            change if the {@code target} is compiled again. This value is meaningless if
+     * @param bailout specifies whether the failure was a bailout or an error in the compiler. A bailout
+     *            means the compiler aborted the compilation based on some of property of {@code target}
+     *            (e.g., too big). A non-bailout means an unexpected error in the compiler itself.
+     * @param permanentBailout specifies if a bailout is due to a condition that probably won't change
+     *            if the {@code target} is compiled again. This value is meaningless if
      *            {@code bailout == false}.
      */
     void onFailure(CompilableTruffleAST compilable, String reason, boolean bailout, boolean permanentBailout);

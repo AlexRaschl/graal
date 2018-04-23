@@ -47,8 +47,8 @@ public abstract class PartialEscapeBlockState<T extends PartialEscapeBlockState<
 
     /**
      * This array contains the state of all virtual objects, indexed by
-     * {@link VirtualObjectNode#getObjectId()}. Entries in this array may be null if the
-     * corresponding virtual object is not alive or reachable currently.
+     * {@link VirtualObjectNode#getObjectId()}. Entries in this array may be null if the corresponding
+     * virtual object is not alive or reachable currently.
      */
     private ObjectState[] objectStates;
 
@@ -78,8 +78,8 @@ public abstract class PartialEscapeBlockState<T extends PartialEscapeBlockState<
     private final DebugContext debug;
 
     /**
-     * Final subclass of PartialEscapeBlockState, for performance and to make everything behave
-     * nicely with generics.
+     * Final subclass of PartialEscapeBlockState, for performance and to make everything behave nicely
+     * with generics.
      */
     public static final class Final extends PartialEscapeBlockState<Final> {
 

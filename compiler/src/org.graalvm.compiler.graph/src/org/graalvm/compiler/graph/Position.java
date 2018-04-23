@@ -131,8 +131,8 @@ public final class Position {
     }
 
     /**
-     * Gets the index within a {@link NodeList} if {@link #getIndex()} denotes a {@link NodeList}
-     * field otherwise {@link Node#NOT_ITERABLE}.
+     * Gets the index within a {@link NodeList} if {@link #getIndex()} denotes a {@link NodeList} field
+     * otherwise {@link Node#NOT_ITERABLE}.
      */
     public int getSubIndex() {
         return subIndex;

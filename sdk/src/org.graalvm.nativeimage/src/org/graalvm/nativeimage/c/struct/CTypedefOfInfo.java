@@ -39,8 +39,8 @@ import java.lang.annotation.Target;
 public @interface CTypedefOfInfo {
 
     /**
-     * Specifies the base type the C type of this annotated System Java class is a typedef of.
-     * (i.e., typedef a1 a0; typedef a2 a1; => base type of a2 is a0)
+     * Specifies the base type the C type of this annotated System Java class is a typedef of. (i.e.,
+     * typedef a1 a0; typedef a2 a1; => base type of a2 is a0)
      */
     String value() default "";
 }

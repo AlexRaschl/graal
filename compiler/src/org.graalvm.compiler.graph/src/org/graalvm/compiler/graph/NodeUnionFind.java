@@ -34,8 +34,8 @@ public class NodeUnionFind extends NodeIdAccessor {
     private int[] parent;
 
     /**
-     * Create a new union-find data structure for a {@link Graph}. Initially, all nodes are in their
-     * own equivalence set.
+     * Create a new union-find data structure for a {@link Graph}. Initially, all nodes are in their own
+     * equivalence set.
      */
     public NodeUnionFind(Graph graph) {
         super(graph);

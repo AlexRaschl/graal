@@ -270,21 +270,21 @@ public class Bytecodes {
     static class Flags {
 
         /**
-         * Denotes an instruction that ends a basic block and does not let control flow fall through
-         * to its lexical successor.
+         * Denotes an instruction that ends a basic block and does not let control flow fall through to its
+         * lexical successor.
          */
         static final int STOP = 0x00000001;
 
         /**
-         * Denotes an instruction that ends a basic block and may let control flow fall through to
-         * its lexical successor. In practice this means it is a conditional branch.
+         * Denotes an instruction that ends a basic block and may let control flow fall through to its
+         * lexical successor. In practice this means it is a conditional branch.
          */
         static final int FALL_THROUGH = 0x00000002;
 
         /**
-         * Denotes an instruction that has a 2 or 4 byte operand that is an offset to another
-         * instruction in the same method. This does not include the {@link Bytecodes#TABLESWITCH}
-         * or {@link Bytecodes#LOOKUPSWITCH} instructions.
+         * Denotes an instruction that has a 2 or 4 byte operand that is an offset to another instruction in
+         * the same method. This does not include the {@link Bytecodes#TABLESWITCH} or
+         * {@link Bytecodes#LOOKUPSWITCH} instructions.
          */
         static final int BRANCH = 0x00000004;
 
@@ -344,8 +344,8 @@ public class Bytecodes {
     }
 
     /**
-     * An array that maps from a bytecode value to a {@link String} for the corresponding
-     * instruction mnemonic.
+     * An array that maps from a bytecode value to a {@link String} for the corresponding instruction
+     * mnemonic.
      */
     private static final String[] nameArray = new String[256];
 
@@ -591,17 +591,16 @@ public class Bytecodes {
      * Gets the length of an instruction denoted by a given opcode.
      *
      * @param opcode an instruction opcode
-     * @return the length of the instruction denoted by {@code opcode}. If {@code opcode} is an
-     *         illegal instruction or denotes a variable length instruction (e.g.
-     *         {@link #TABLESWITCH}), then 0 is returned.
+     * @return the length of the instruction denoted by {@code opcode}. If {@code opcode} is an illegal
+     *         instruction or denotes a variable length instruction (e.g. {@link #TABLESWITCH}), then 0
+     *         is returned.
      */
     public static int lengthOf(int opcode) {
         return lengthArray[opcode & 0xff];
     }
 
     /**
-     * Gets the effect on the depth of the expression stack of an instruction denoted by a given
-     * opcode.
+     * Gets the effect on the depth of the expression stack of an instruction denoted by a given opcode.
      *
      * @param opcode an instruction opcode
      * @return the change in the stack caused by the instruction denoted by {@code opcode}. If
@@ -631,8 +630,8 @@ public class Bytecodes {
      * Allocation-free version of {@linkplain #nameOf(int)}.
      *
      * @param opcode an opcode.
-     * @return the mnemonic for {@code opcode} or {@code "<illegal opcode>"} if {@code opcode} is
-     *         not a legal opcode.
+     * @return the mnemonic for {@code opcode} or {@code "<illegal opcode>"} if {@code opcode} is not a
+     *         legal opcode.
      */
     public static String baseNameOf(int opcode) {
         String name = nameArray[opcode & 0xff];
@@ -662,16 +661,15 @@ public class Bytecodes {
      * Determines if a given opcode denotes an instruction that can cause an implicit exception.
      *
      * @param opcode an opcode to test
-     * @return {@code true} iff {@code opcode} can cause an implicit exception, {@code false}
-     *         otherwise
+     * @return {@code true} iff {@code opcode} can cause an implicit exception, {@code false} otherwise
      */
     public static boolean canTrap(int opcode) {
         return (flagsArray[opcode & 0xff] & TRAP) != 0;
     }
 
     /**
-     * Determines if a given opcode denotes an instruction that loads a local variable to the
-     * operand stack.
+     * Determines if a given opcode denotes an instruction that loads a local variable to the operand
+     * stack.
      *
      * @param opcode an opcode to test
      * @return {@code true} iff {@code opcode} loads a local variable to the operand stack,
@@ -693,8 +691,8 @@ public class Bytecodes {
     }
 
     /**
-     * Determines if a given opcode denotes an instruction that stores a value to a local variable
-     * after popping it from the operand stack.
+     * Determines if a given opcode denotes an instruction that stores a value to a local variable after
+     * popping it from the operand stack.
      *
      * @param opcode an opcode to test
      * @return {@code true} iff {@code opcode} stores a value to a local variable, {@code false}
@@ -705,8 +703,8 @@ public class Bytecodes {
     }
 
     /**
-     * Determines if a given opcode denotes an instruction that stores a value to a local variable
-     * after popping it from the operand stack.
+     * Determines if a given opcode denotes an instruction that stores a value to a local variable after
+     * popping it from the operand stack.
      *
      * @param opcode an opcode to test
      * @return {@code true} iff {@code opcode} stores a value to a local variable, {@code false}
@@ -727,9 +725,9 @@ public class Bytecodes {
     }
 
     /**
-     * Determines if a given opcode is an instruction that has a 2 or 4 byte operand that is an
-     * offset to another instruction in the same method. This does not include the
-     * {@linkplain #TABLESWITCH switch} instructions.
+     * Determines if a given opcode is an instruction that has a 2 or 4 byte operand that is an offset
+     * to another instruction in the same method. This does not include the {@linkplain #TABLESWITCH
+     * switch} instructions.
      *
      * @param opcode an opcode to test
      * @return {@code true} iff {@code opcode} is a branch instruction with a single operand

@@ -48,8 +48,8 @@ public class InstalledCodeInvalidationTest extends GraalCompilerTest {
         }
         if (GraalDirectives.inCompiledCode()) {
             /*
-             * If this still in compiled code then the deoptimizeAndInvalidate call above didn't
-             * remove all existing activations.
+             * If this still in compiled code then the deoptimizeAndInvalidate call above didn't remove all
+             * existing activations.
              */
             throw new InternalError();
         }

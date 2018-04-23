@@ -99,8 +99,8 @@ public class GraalUtil {
     }
 
     /**
-     * Gets the graph for the method specified by the first {@link MethodSpec} annotation
-     * encountered in the class hierarchy terminated by {@code startClass}.
+     * Gets the graph for the method specified by the first {@link MethodSpec} annotation encountered in
+     * the class hierarchy terminated by {@code startClass}.
      */
     public static StructuredGraph getGraphFromMethodSpec(Class<?> startClass) {
         MethodSpec methodSpec = getMethodSpec(startClass);

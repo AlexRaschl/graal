@@ -96,9 +96,9 @@ public class OptimizedCallTarget extends InstalledCode implements CompilableTruf
     private volatile int callSitesKnown;
     private volatile CancellableCompileTask compilationTask;
     /**
-     * When this call target is inlined, the inlining {@link InstalledCode} registers this
-     * assumption. It gets invalidated when a node rewrite in this call target is performed. This
-     * ensures that all compiled methods that inline this call target are properly invalidated.
+     * When this call target is inlined, the inlining {@link InstalledCode} registers this assumption.
+     * It gets invalidated when a node rewrite in this call target is performed. This ensures that all
+     * compiled methods that inline this call target are properly invalidated.
      */
     private volatile Assumption nodeRewritingAssumption;
     private static final AtomicReferenceFieldUpdater<OptimizedCallTarget, Assumption> NODE_REWRITING_ASSUMPTION_UPDATER = AtomicReferenceFieldUpdater.newUpdater(OptimizedCallTarget.class,
@@ -386,10 +386,9 @@ public class OptimizedCallTarget extends InstalledCode implements CompilableTruf
     public void onCompilationFailed(Supplier<String> reasonAndStackTrace, boolean bailout, boolean permanentBailout) {
         if (bailout && !permanentBailout) {
             /*
-             * Non-permanent bailouts are expected cases. A non-permanent bailout would be for
-             * example class redefinition during code installation. As opposed to permanent
-             * bailouts, non-permanent bailouts will trigger recompilation and are not considered a
-             * failure state.
+             * Non-permanent bailouts are expected cases. A non-permanent bailout would be for example class
+             * redefinition during code installation. As opposed to permanent bailouts, non-permanent bailouts
+             * will trigger recompilation and are not considered a failure state.
              */
         } else {
             compilationProfile.reportCompilationFailure();
@@ -398,8 +397,8 @@ public class OptimizedCallTarget extends InstalledCode implements CompilableTruf
                 throw new OptimizationFailedException(error, this);
             }
             /*
-             * Automatically enable TruffleCompilationExceptionsAreFatal when asserts are enabled
-             * but respect TruffleCompilationExceptionsAreFatal if it's been explicitly set.
+             * Automatically enable TruffleCompilationExceptionsAreFatal when asserts are enabled but respect
+             * TruffleCompilationExceptionsAreFatal if it's been explicitly set.
              */
             boolean truffleCompilationExceptionsAreFatal = TruffleCompilerOptions.getValue(TruffleCompilationExceptionsAreFatal);
             assert TruffleCompilationExceptionsAreFatal.hasBeenSet(TruffleCompilerOptions.getOptions()) || (truffleCompilationExceptionsAreFatal = true) == true;

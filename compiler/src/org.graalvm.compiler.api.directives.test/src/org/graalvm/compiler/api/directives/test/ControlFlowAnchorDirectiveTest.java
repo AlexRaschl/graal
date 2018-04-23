@@ -217,8 +217,7 @@ public class ControlFlowAnchorDirectiveTest extends GraalCompilerTest {
     }
 
     /**
-     * Cloning a ControlFlowAnchorNode is not allowed but cloning a whole graph containing one is
-     * ok.
+     * Cloning a ControlFlowAnchorNode is not allowed but cloning a whole graph containing one is ok.
      */
     @Test
     public void testClone() {
