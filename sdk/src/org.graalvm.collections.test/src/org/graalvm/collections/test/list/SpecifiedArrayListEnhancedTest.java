@@ -3,21 +3,16 @@ package org.graalvm.collections.test.list;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-import org.graalvm.collections.list.ComparisonSpecifiedArrayList;
 import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.sun.org.apache.xpath.internal.axes.SubContextList;
 
 public class SpecifiedArrayListEnhancedTest {
     private static String[] testData;
@@ -207,32 +202,6 @@ public class SpecifiedArrayListEnhancedTest {
         }
         String res = list.get(0);
         System.out.println(res);
-
-    }
-
-    @Test
-    public void testComparisonSpecifiedArrayList() {
-        ComparisonSpecifiedArrayList<Integer> list = new ComparisonSpecifiedArrayList<>();
-        for (int i = 0; i < TEST_SIZE; i++) {
-            list.add(i);
-            list.add(new Integer(i / 10), i);
-        }
-
-        for (int i = 0; i < TEST_SIZE; i += 10) {
-            list.remove(i);
-        }
-
-        ListIterator<Integer> listItr = list.listIterator(TEST_SIZE / 100);
-
-        while (listItr.hasNext()) {
-            listItr.next();
-            listItr.set(3);
-        }
-        List<Integer> subList = list.subList(0, TEST_SIZE / 100);
-        subList.add(10, 1);
-        subList.clear();
-
-        System.out.println(list.size());
 
     }
 

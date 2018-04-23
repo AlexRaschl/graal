@@ -44,7 +44,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * Factory methods
      */
 
-// TODO If only one occurrence is replaced with SSAR only these instances will be tracked
+// If only one occurrence is replaced with SSAR only these instances will be tracked
 //
 // public static <E> SpecifiedArrayList<E> createNew() {
 // return new ArrayListClone<>();
@@ -69,34 +69,32 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
 // return new StatisticalArrayListClone<>(c);
 // }
-
-    public static <E> SpecifiedArrayList<E> createNew() {
-        return new StatisticalSpecifiedArrayListImpl<>();
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new StatisticalSpecifiedArrayListImpl<>(c);
-    }
-
+//
 // public static <E> SpecifiedArrayList<E> createNew() {
-// return new SpecifiedArrayList<>();
+// return new StatisticalSpecifiedArrayListImpl<>();
 // }
 //
 // public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-// return new SpecifiedArrayList<>(initalCapacity);
+// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
 // }
 //
 // public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-// return new SpecifiedArrayList<>(c);
+// return new StatisticalSpecifiedArrayListImpl<>(c);
 // }
 
-    // -------------------------FIELDS-------------------------------------------------
+    public static <E> SpecifiedArrayList<E> createNew() {
+        return new SpecifiedArrayList<>();
+    }
 
-    // TODO SPLIT IMITATION FROM REPLACE
+    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+        return new SpecifiedArrayList<>(initalCapacity);
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+        return new SpecifiedArrayList<>(c);
+    }
+
+    // -------------------------FIELDS-------------------------------------------------
 
     private static final long serialVersionUID = 9130616599645229594L;
 
@@ -955,7 +953,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public List<E> subList(int fromIndex, int toIndex) {
         subListRangeCheck(fromIndex, toIndex, size);
         // return super.subList(fromIndex, toIndex);
-        // TODO Replace
         return new SubList(this, 0, fromIndex, toIndex);
     }
 

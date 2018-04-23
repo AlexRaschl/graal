@@ -8,7 +8,6 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

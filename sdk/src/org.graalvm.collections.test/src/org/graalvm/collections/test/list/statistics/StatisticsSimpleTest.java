@@ -78,6 +78,17 @@ public class StatisticsSimpleTest {
         testList8.add(null);
         testList8.add(null);
 
+        // To force execution of finalize method
+        testList = null;
+        testList2 = null;
+        testList3 = null;
+        testList4 = null;
+        testList5 = null;
+        testList6 = null;
+        testList7 = null;
+        testList8 = null;
+        System.gc();
+
         Statistics.printGlobalInformation();
 
         String[] data = Statistics.getOpDataLines(DATA_SEPARATOR);

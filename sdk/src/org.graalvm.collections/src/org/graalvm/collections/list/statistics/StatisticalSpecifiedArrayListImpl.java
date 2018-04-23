@@ -35,9 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.graalvm.collections.list.ArrayListClone;
 import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
 
 /**
@@ -61,7 +59,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     private static final long serialVersionUID = 2325200269334451909L;
 
-    final static boolean TRACKS_ALL = false;
+    final static boolean TRACKS_ALL = true;
     final static HashSet<String> trackedSites = new HashSet<>(10);
 
     /** Static block to set up Tracked Classes */
@@ -105,7 +103,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     public StatisticalSpecifiedArrayListImpl(int initialCapacity) {
         super(initialCapacity);
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl(this);
+            tracker = new StatisticTrackerImpl();
             setAllocationSite();
             tracker.countOP(CSTR_CAP);
         }
@@ -118,7 +116,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     public StatisticalSpecifiedArrayListImpl() {
         super();
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl(this);
+            tracker = new StatisticTrackerImpl();
             tracker.countOP(CSTR_STD);
             setAllocationSite();
         }
@@ -133,7 +131,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     public StatisticalSpecifiedArrayListImpl(Collection<E> collection) {
         super(collection);
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl(this);
+            tracker = new StatisticTrackerImpl();
             if (collection.size() != 0)
                 tracker.setType(checkNull(collection.iterator().next()));
             tracker.countOP(CSTR_COLL);
@@ -421,6 +419,17 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     private void countIfTracked(Operation op) {
         if (tracker != null)
             tracker.countOP(op);
+    }
+
+    // TODO implement better solution than finalize
+    @Override
+    protected void finalize() throws Throwable {
+        if (tracker != null) {
+            tracker.setCurrentCapacity(getCapacity());
+            tracker.setCurrentSize(size());
+            tracker.setCurrentLoadFactor(getLoadFactor());
+        }
+        super.finalize();
     }
     /*
      * TODO check if setType also needed in ListIterator/Iterator funcitons

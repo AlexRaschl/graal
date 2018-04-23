@@ -32,11 +32,27 @@ interface StatisticTracker {
     int getCurrentCapacity();
 
     /**
+     * Sets the capacity of the list. Need this method to not save the reference to the tracked list and
+     * thus prevent it to get freed by the gc
+     *
+     * @param capacity The capacity of the list
+     */
+    public void setCurrentCapacity(int capacity);
+
+    /**
      * Returns the current size of the tracked list
      *
      * @return size of list
      */
     int getCurrentSize();
+
+    /**
+     * Sets the size of the list. Need this method to not save the reference to the tracked list and
+     * thus prevent it to get freed by the gc
+     *
+     * @param size The size of the list
+     */
+    void setCurrentSize(int size);
 
     /**
      * Returns the StackTraceElement that describes the allocation site of the List tracked by the
@@ -52,6 +68,13 @@ interface StatisticTracker {
      * @return load factor of list
      */
     double getCurrentLoadFactor();
+
+    /**
+     * Sets the current LoadFactor
+     * 
+     * @param loadFactor
+     */
+    void setCurrentLoadFactor(double loadFactor);
 
     /**
      * Returns the ID of the tracker

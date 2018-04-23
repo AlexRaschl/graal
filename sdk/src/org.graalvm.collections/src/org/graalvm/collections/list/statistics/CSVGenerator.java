@@ -140,7 +140,7 @@ public class CSVGenerator {
 
         int length = StatisticTrackerImpl.getNextID();
         String[] trackerInfo;
-        for (int i = 1; i < length; i++) { // TODO Bottleneck
+        for (int i = 1; i < length; i++) { // TODO Fix Bottleneck
             trackerInfo = Statistics.getTrackerByID(i).getOpDataLines(DATA_SEPARATOR);
             writeToFile(file, "TRACKER_" + i + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, true);
             writeToFile(file, trackerInfo, true);

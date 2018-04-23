@@ -50,7 +50,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
         GROW
     }
 
-    // Operations that are tracked more precisely
+    // Operations that are tracked more precisely for each Type in the list
     private static final EnumSet<Operation> SPECIAL_OPS = EnumSet.of(Operation.ADD_OBJ, Operation.REMOVE_OBJ, Operation.GET_INDEXED, Operation.SET_INDEXED);
 
     // _____LOCAL FIELDS______
@@ -73,16 +73,19 @@ public class StatisticTrackerImpl implements StatisticTracker {
     private int modifications;
 
     // TODO dont save reference to lists
-    private final StatisticalCollection list;
+    // private final StatisticalCollection list;
+    private int size = 0;
+    private int capacity = 0;
+    private double loadFactor;
 
-    public StatisticTrackerImpl(StatisticalCollection list) {
+    public StatisticTrackerImpl(/* StatisticalCollection list */) {
         ID = nextID++;
         this.localOpMap = new HashMap<>(Operation.values().length);
         this.localTypeOpMap = new HashMap<>();
         this.modifications = 0;
-        this.list = list;
+        // this.list = list;
 
-        Statistics.addTracker(this); // TODO Synchronize
+        Statistics.addTracker(this);
     }
 
     public void countOP(Operation op) {
@@ -97,15 +100,30 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     public int getCurrentCapacity() {
-        return list.getCurrentCapacity();
+        // return list.getCurrentCapacity();
+        return capacity;
+    }
+
+    public void setCurrentCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public int getCurrentSize() {
-        return list.getCurrentSize();
+        return size;
+        // return list.getCurrentSize();
+    }
+
+    public void setCurrentSize(int size) {
+        this.size = size;
     }
 
     public double getCurrentLoadFactor() {
-        return list.getCurrentLoadFactor();
+        return loadFactor;
+        // return list.getCurrentLoadFactor();
+    }
+
+    public void setCurrentLoadFactor(double loadFactor) {
+        this.loadFactor = loadFactor;
     }
 
     public int getID() {
@@ -208,13 +226,16 @@ public class StatisticTrackerImpl implements StatisticTracker {
         sb.append(this.type.getTypeName());
         sb.append('\n');
         sb.append("Current used Size: ");
-        sb.append(list.getCurrentSize());
+        // sb.append(list.getCurrentSize());
+        sb.append(size);
         sb.append('\n');
         sb.append("Current Capacity: ");
-        sb.append(list.getCurrentCapacity());
+        // sb.append(list.getCurrentCapacity());
+        sb.append(capacity);
         sb.append('\n');
         sb.append("Current load factor: ");
-        sb.append(list.getCurrentLoadFactor());
+        // sb.append(list.getCurrentLoadFactor());
+        sb.append(loadFactor);
         sb.append('\n');
         sb.append("Allocation Site: ");
         sb.append(allocSiteElem.getClassName());
@@ -232,6 +253,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
         return nextID;
     }
 
+    // TODO check if i need to change the type if it is a superclass of the currently added one
     void setType(Class<?> c) {
         if (!isAdded) {
             synchronized (Statistics.globalTypeMap) {

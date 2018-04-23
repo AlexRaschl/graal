@@ -50,7 +50,7 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
     public StatisticalArrayListClone(int initialCapacity) {
         super(initialCapacity);
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl(this);
+            tracker = new StatisticTrackerImpl();
             setAllocationSite();
             tracker.countOP(CSTR_CAP);
         }
@@ -63,7 +63,7 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
     public StatisticalArrayListClone() {
         super();
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl(this);
+            tracker = new StatisticTrackerImpl();
             tracker.countOP(CSTR_STD);
             setAllocationSite();
         }
@@ -78,7 +78,7 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
     public StatisticalArrayListClone(Collection<E> collection) {
         super(collection);
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl(this);
+            tracker = new StatisticTrackerImpl();
             if (collection.size() != 0)
                 tracker.setType(checkNull(collection.iterator().next()));
             tracker.countOP(CSTR_COLL);
@@ -368,4 +368,14 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
             tracker.countOP(op);
     }
 
+    // TODO implement better solution than finalize
+    @Override
+    protected void finalize() throws Throwable {
+        if (tracker != null) {
+            tracker.setCurrentCapacity(getCapacity());
+            tracker.setCurrentSize(size());
+            tracker.setCurrentLoadFactor(getLoadFactor());
+        }
+        super.finalize();
+    }
 }
