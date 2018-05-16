@@ -28,12 +28,10 @@ import static jdk.vm.ci.code.ValueUtil.isRegister;
 import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.SpecifiedArrayListImpl;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig.AllocatableRegisters;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.util.Util;

@@ -28,9 +28,6 @@ import static org.graalvm.compiler.truffle.common.TruffleCompilerOptions.getValu
 import java.lang.invoke.MethodHandle;
 import java.util.ArrayList;
 
-import org.graalvm.collections.list.SpecifiedArrayList;
-import org.graalvm.collections.list.SpecifiedArrayListImpl;
-
 import jdk.vm.ci.meta.MetaAccessProvider;
 import jdk.vm.ci.meta.ResolvedJavaField;
 import jdk.vm.ci.meta.ResolvedJavaType;
