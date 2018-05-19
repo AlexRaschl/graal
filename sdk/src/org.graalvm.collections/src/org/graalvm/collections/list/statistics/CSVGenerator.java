@@ -16,15 +16,18 @@ import java.util.NoSuchElementException;
  */
 public class CSVGenerator {
 
-    private final static String dirPath = "/home/urzidil/Programming/CSV/";
-    private final static File mainDir;
+    private final static String MAIN_DIR_PATH = "/home/urzidil/Programming/CSV/";
+    private final static String FOLDER_NAME = "DacapoStatistics";
 
-    private final static String NAME_ALL = "all.csv";
-    private final static String NAME_GBL = "gbl.csv";
-    private final static String TR_PREFIX = "TR";
-    private final static String NAME_OP_DISTR = "OpDistr.csv";
-    private final static String NAME_TYPE_OP_DISTR = "TypeOpDistr.csv";
-    private final static String ALLOC_SITE = "AllocSites.csv";
+    private final static File mainDir;
+    private final static File FOLDER;
+
+    private final static String NAME_ALL = "_ALL.csv";
+    private final static String NAME_GBL = "_GLOBAL.csv";
+    private final static String TR_PREFIX = "_TR";
+    private final static String NAME_OP_DISTR = "_OP_DISTR.csv";
+    private final static String NAME_TYPE_OP_DISTR = "_TYPE_OP_DISTR.csv";
+    private final static String ALLOC_SITE = "_ALLOC_SITES.csv";
 
     // Some Constants for writing
     private final static boolean APPEND_MODE = false;
@@ -37,9 +40,17 @@ public class CSVGenerator {
     private final static char LINE_SEPARATOR = '\n';
 
     static {
-        mainDir = new File(dirPath);
-        if (mainDir.exists() && mainDir.isDirectory())
-            initialized = true;
+        mainDir = new File(MAIN_DIR_PATH);
+        FOLDER = new File(MAIN_DIR_PATH + FOLDER_NAME);
+        if (mainDir.exists() && mainDir.isDirectory()) {
+            if (FOLDER.exists() && FOLDER.isDirectory()) {
+                initialized = true;
+            } else if (!FOLDER.exists()) {
+                FOLDER.mkdir();
+                initialized = true;
+            }
+        }
+
     }
 
     public static synchronized void createFileOfAllocationSites(String namePrefix) {
@@ -151,7 +162,7 @@ public class CSVGenerator {
     private static File createFile(String name) {
         File file = null;
         try {
-            file = new File(mainDir, name);
+            file = new File(FOLDER, name);
 
             if (!file.exists()) {
                 file.createNewFile();

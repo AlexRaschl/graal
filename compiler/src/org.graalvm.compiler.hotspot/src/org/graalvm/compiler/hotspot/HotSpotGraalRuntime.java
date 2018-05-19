@@ -36,6 +36,7 @@ import java.util.Map;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.statistics.CSVGenerator;
 import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.api.runtime.GraalRuntime;
@@ -317,9 +318,11 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
 // System.out.println(s);
 // System.out.println();
 
-        // CSVGenerator.createFileOfOperationDistributions(this.getClass().getSimpleName());
+        CSVGenerator.createFileOfGlobalInfo(this.getClass().getSimpleName());
+        CSVGenerator.createFileOfOperationDistributions(this.getClass().getSimpleName());
         // CSVGenerator.createFileOfTypeOperationDistributions(this.getClass().getSimpleName());
-        // CSVGenerator.createFileOfAllocationSites(this.getClass().getSimpleName());
+        CSVGenerator.createFileOfAllocationSites(this.getClass().getSimpleName());
+
     }
 
     void clearMetrics() {
