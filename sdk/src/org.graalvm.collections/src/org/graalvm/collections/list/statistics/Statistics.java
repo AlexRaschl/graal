@@ -15,6 +15,7 @@ public class Statistics {
     static final LinkedList<StatisticTracker> trackers = new LinkedList<>();
 
     // Map of all Operations performed
+    // TODO check if synchronization needed
     static final HashMap<Operation, AtomicInteger> globalOpMap = new HashMap<>(Operation.values().length);
 
     // Type Distribution
@@ -28,7 +29,7 @@ public class Statistics {
     }
 
     static synchronized StatisticTracker getTrackerByID(int id) {
-        Iterator<StatisticTracker> itr = trackers.iterator();
+        final Iterator<StatisticTracker> itr = trackers.iterator();
         while (itr.hasNext()) {
             StatisticTracker t = itr.next();
             if (t.getID() == id)
@@ -74,7 +75,7 @@ public class Statistics {
      * Data Lines for CSV Generator
      */
     public static synchronized String[] getOpDataLines(final char dataSeparator) {
-        String[] dataArr = new String[globalOpMap.size()];
+        final String[] dataArr = new String[globalOpMap.size()];
         Iterator<Entry<Operation, AtomicInteger>> itr = globalOpMap.entrySet().iterator();
         StringBuilder sb = new StringBuilder(50);
 
@@ -98,6 +99,8 @@ public class Statistics {
         StringBuilder sb = new StringBuilder(50);
 
         int i = 0;
+        // sb.append("Trackers allocated: " + (StatisticTrackerImpl.getNextID() - 1));
+        // sb.append("trackerList size: " + trackers.size());
         for (StatisticTracker t : trackers) {
             sb.append(t.getID());
             sb.append(dataSeparator);
@@ -110,11 +113,11 @@ public class Statistics {
     }
 
     /*
-     * Data Lines for CSV Generator
+     * Returns an Overview of the used Types that the tracked lists are storing
      */
     public static synchronized String[] getTypeDataLines(final char dataSeparator) {
-        String[] dataArr = new String[globalTypeMap.size()];
-        Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
+        final String[] dataArr = new String[globalTypeMap.size()];
+        final Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
 
         int n = 0;
         StringBuilder sb = new StringBuilder(30);
@@ -127,6 +130,29 @@ public class Statistics {
             sb.append(' ');
             sb.append(entry.getValue().get());
             dataArr[n++] = sb.toString();
+            sb = new StringBuilder();
+        }
+        return dataArr;
+    }
+
+    /**
+     * Returns a sequence of trackerIds and their Types.
+     *
+     * @param dataSeparator
+     * @return
+     */
+    public static synchronized String[] getTypesForAllTrackers(final char dataSeparator) {
+        final String[] dataArr = new String[trackers.size()];
+
+        StringBuilder sb = new StringBuilder(40);
+        int n;// TrackerId
+
+        for (StatisticTracker tracker : trackers) {
+            n = tracker.getID();
+            sb.append(n);
+            sb.append(dataSeparator);
+            sb.append(tracker.getType());
+            dataArr[n - 1] = sb.toString();
             sb = new StringBuilder();
         }
         return dataArr;

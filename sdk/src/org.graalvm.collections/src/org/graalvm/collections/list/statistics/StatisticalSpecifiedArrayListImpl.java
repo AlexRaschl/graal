@@ -59,20 +59,21 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     private static final long serialVersionUID = 2325200269334451909L;
 
+    public final static boolean TRACKING_ENABLED = true;
     final static boolean TRACKS_ALL = true;
     final static HashSet<String> trackedSites = new HashSet<>(10);
 
     /** Static block to set up Tracked Classes */
     static {
-        trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
-        trackedSites.add("org.graalvm.collections.test.list.statistics.ReplacementTest");
+        // trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
+        // trackedSites.add("org.graalvm.collections.test.list.statistics.ReplacementTest");
         //
         trackedSites.add("org.graalvm.compiler.asm.Label");
-        trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
-        trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
+        // trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
+        // trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
         //
-        trackedSites.add("org.graalvm.compiler.nodes.IfNode");
-        trackedSites.add("org.graalvm.compiler.nodes.InliningLog");
+        // trackedSites.add("org.graalvm.compiler.nodes.IfNode");
+        // trackedSites.add("org.graalvm.compiler.nodes.InliningLog");
     }
 
     /**
@@ -104,8 +105,8 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
         super(initialCapacity);
         if (isTracked()) {
             tracker = new StatisticTrackerImpl();
-            setAllocationSite();
             tracker.countOP(CSTR_CAP);
+            setAllocationSite();
         }
     }
 

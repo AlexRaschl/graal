@@ -78,6 +78,9 @@ public class StatisticsSimpleTest {
         testList8.add(null);
         testList8.add(null);
 
+        SpecifiedArrayList<Object> testList9 = SpecifiedArrayList.createNew();
+        testList9.add(null);
+
         // To force execution of finalize method
         testList = null;
         testList2 = null;
@@ -117,6 +120,8 @@ public class StatisticsSimpleTest {
         CSVGenerator.createFileOfTypeOperationDistributions(StatisticsSimpleTest.class.getSimpleName());
 
         CSVGenerator.createFileOfAllocationSites(StatisticsSimpleTest.class.getSimpleName());
+
+        CSVGenerator.createFileOfTrackerTypes(StatisticsSimpleTest.class.getSimpleName());
 
     }
 }

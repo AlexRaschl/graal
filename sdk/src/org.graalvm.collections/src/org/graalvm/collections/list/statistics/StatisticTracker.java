@@ -1,5 +1,7 @@
 package org.graalvm.collections.list.statistics;
 
+import java.lang.reflect.Type;
+
 import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
 
 /**
@@ -71,7 +73,7 @@ interface StatisticTracker {
 
     /**
      * Sets the current LoadFactor
-     * 
+     *
      * @param loadFactor
      */
     void setCurrentLoadFactor(double loadFactor);
@@ -82,6 +84,14 @@ interface StatisticTracker {
      * @return ID
      */
     int getID();
+
+    /**
+     * Get the main type that the tracked list stores. Main type is the type of the element that is
+     * first added to the list
+     * 
+     * @return the main type that the tracked list stores.
+     */
+    Type getType();
 
     /**
      * Creates a String Array that containing the gathered information about the operation distribution

@@ -122,6 +122,10 @@ public class StatisticTrackerImpl implements StatisticTracker {
         // return list.getCurrentLoadFactor();
     }
 
+    public Type getType() {
+        return this.type;
+    }
+
     public void setCurrentLoadFactor(double loadFactor) {
         this.loadFactor = loadFactor;
     }
@@ -254,7 +258,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     // TODO check if i need to change the type if it is a superclass of the currently added one
-    void setType(Class<?> c) {
+    synchronized void setType(Class<?> c) {
         if (!isAdded) {
             synchronized (Statistics.globalTypeMap) {
                 this.type = c;

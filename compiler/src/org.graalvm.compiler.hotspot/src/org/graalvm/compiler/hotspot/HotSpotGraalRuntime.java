@@ -37,6 +37,8 @@ import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.statistics.CSVGenerator;
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayList;
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.api.runtime.GraalRuntime;
@@ -291,37 +293,52 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
          * TODO Remember CSVGenerator
          */
 
-        Statistics.printGlobalInformation();
+        if (StatisticalSpecifiedArrayListImpl.TRACKING_ENABLED) {
+            // For some reason not synchronizing this leads to inconistent data
+            synchronized (this) {
 
-// System.out.println("SPECIAL INFO");
-// System.out.println("OP data lines");
-// String[] data = Statistics.getOpDataLines(';');
-// for (String s : data)
-// System.out.println(s);
-// System.out.println();
+                // Wait for other threads to generate all Lists before printing results
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Statistics.printGlobalInformation();
 
-// System.out.println("Type Data lines");
-// data = Statistics.getTypeDataLines(';');
-// for (String s : data)
-// System.out.println(s);
-// System.out.println();
-//
-        System.out.println("Load Factor lines");
-        String data[] = Statistics.getLoadFactorDataLines(';');
-        for (String s : data)
-            System.out.println(s);
-        System.out.println();
-//
-// System.out.println("Allocation Site lines");
-// data = Statistics.getAllocSiteLines(';');
-// for (String s : data)
-// System.out.println(s);
-// System.out.println();
+                // System.out.println("SPECIAL INFO");
+                // System.out.println("OP data lines");
+                // String[] data = Statistics.getOpDataLines(';');
+                // for (String s : data)
+                // System.out.println(s);
+                // System.out.println();
 
-        CSVGenerator.createFileOfGlobalInfo(this.getClass().getSimpleName());
-        CSVGenerator.createFileOfOperationDistributions(this.getClass().getSimpleName());
-        // CSVGenerator.createFileOfTypeOperationDistributions(this.getClass().getSimpleName());
-        CSVGenerator.createFileOfAllocationSites(this.getClass().getSimpleName());
+                // System.out.println("Type Data lines");
+                // data = Statistics.getTypeDataLines(';');
+                // for (String s : data)
+                // System.out.println(s);
+                // System.out.println();
+                //
+                System.out.println("Load Factor lines");
+                String data[] = Statistics.getLoadFactorDataLines(';');
+                for (String s : data)
+                    System.out.println(s);
+                System.out.println();
+                //
+                // System.out.println("Allocation Site lines");
+                // data = Statistics.getAllocSiteLines(';');
+                // for (String s : data)
+                // System.out.println(s);
+                // System.out.println();
+
+                final String prefix = this.getClass().getSimpleName();
+                CSVGenerator.createFileOfAllocationSites(prefix);
+                CSVGenerator.createFileOfGlobalInfo(prefix);
+                CSVGenerator.createFileOfOperationDistributions(prefix);
+                CSVGenerator.createFileOfTrackerTypes(prefix);
+                // CSVGenerator.createFileOfTypeOperationDistributions(prefix);
+                // CSVGenerator.createFileOfAllocationSites(prefix);
+            }
+        }
 
     }
 

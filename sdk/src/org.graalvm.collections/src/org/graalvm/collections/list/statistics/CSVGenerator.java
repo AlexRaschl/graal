@@ -28,6 +28,7 @@ public class CSVGenerator {
     private final static String NAME_OP_DISTR = "_OP_DISTR.csv";
     private final static String NAME_TYPE_OP_DISTR = "_TYPE_OP_DISTR.csv";
     private final static String ALLOC_SITE = "_ALLOC_SITES.csv";
+    private final static String MAIN_TYPES = "_MAIN_TYPES.csv";
 
     // Some Constants for writing
     private final static boolean APPEND_MODE = false;
@@ -60,6 +61,15 @@ public class CSVGenerator {
             return;
         writeToFile(file, "Tracker" + DATA_SEPARATOR + "Allocation Sites" + LINE_SEPARATOR, APPEND_MODE);
         writeToFile(file, allocSites, true);
+    }
+
+    public static synchronized void createFileOfTrackerTypes(String namePrefix) {
+        final String[] types = Statistics.getTypesForAllTrackers(DATA_SEPARATOR);
+        final File file = createFile(namePrefix + MAIN_TYPES);
+        if (file == null)
+            return;
+        writeToFile(file, "Tracker" + DATA_SEPARATOR + "Main Type" + LINE_SEPARATOR, APPEND_MODE);
+        writeToFile(file, types, true);
     }
 
     public static synchronized void createFileOfOperationDistributions(String namePrefix) {
