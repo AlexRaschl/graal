@@ -59,7 +59,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     private static final long serialVersionUID = 2325200269334451909L;
 
-    public final static boolean TRACKING_ENABLED = true;
+    public final static boolean TRACKING_ENABLED = false;
     final static boolean TRACKS_ALL = true;
     final static HashSet<String> trackedSites = new HashSet<>(10);
 

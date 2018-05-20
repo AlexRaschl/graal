@@ -1,5 +1,6 @@
 package org.graalvm.collections.list.statistics;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -140,6 +141,7 @@ public class CSVGenerator {
 
     }
 
+    @Deprecated
     public static synchronized void createFileOfEverything(String namePrefix) {
         if (!initialized)
             return;
@@ -185,18 +187,20 @@ public class CSVGenerator {
 
     private static synchronized void writeToFile(File file, String[] lines, boolean append) {
 
+        // TODO change to Try with resources
         try {
-            final BufferedWriter out = new BufferedWriter(new FileWriter(file, append), BUF_SIZE);
-            // FileOutputStream w = new FileOutputStream(file, append);
+            // final BufferedWriter out = new BufferedWriter(new FileWriter(file, append), BUF_SIZE);
+            final BufferedOutputStream w = new BufferedOutputStream(new FileOutputStream(file, append), BUF_SIZE);
 
             for (String s : lines) {
-                out.write(s);
-                out.write(LINE_SEPARATOR);
-                // w.write(s.getBytes());
-                // w.write(LINE_SEPARATOR);
+                // out.write(s);
+                // out.write(LINE_SEPARATOR);
+                w.write(s.getBytes());
+                w.write(LINE_SEPARATOR);
+
             }
-            out.close();
-            // w.close();
+            // out.close();
+            w.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

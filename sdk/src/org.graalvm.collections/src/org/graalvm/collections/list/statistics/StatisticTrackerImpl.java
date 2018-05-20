@@ -81,6 +81,8 @@ public class StatisticTrackerImpl implements StatisticTracker {
     public StatisticTrackerImpl(/* StatisticalCollection list */) {
         ID = nextID++;
         this.localOpMap = new HashMap<>(Operation.values().length);
+        // Easy filtering 0 grows
+        this.localOpMap.put(Operation.GROW, new AtomicInteger(0));
         this.localTypeOpMap = new HashMap<>();
         this.modifications = 0;
         // this.list = list;
