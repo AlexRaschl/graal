@@ -260,7 +260,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     }
 
-    // TODO Could only set size to 0 for fast clear
     @Override
     public void clear() {
         modCount++;
@@ -694,8 +693,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     // ---------------------------SERIALIZATION METHODS------------------------------
 
-    // TODO CHECK SERIALIZATION
-
     /**
      * Save the state of the <tt>ArrayList</tt> instance to a stream (that is, serialize it).
      *
@@ -856,16 +853,16 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
 // TODO I actually have no Idea why this commenting this stuff raises the loadFactor by 10 Percent
 
-        if (elementData == EMPTY_ELEMENTDATA) {
-            elementData = new Object[calculateCapacity(INITIAL_CAPACITY, minCapacity)];
-
-        } else
-        //
+// if (elementData == EMPTY_ELEMENTDATA) {
+// elementData = new Object[calculateCapacity(INITIAL_CAPACITY, minCapacity)];
+//
+// } else
+//
         if (curCapacity == INITIAL_CAPACITY) {
             elementData = Arrays.copyOf(elementData, calculateCapacity(NEXT_CAPACITY, minCapacity));
         } else {
-            // final int newLength = curCapacity + (curCapacity >> 1);
-            final int newLength = curCapacity + curCapacity;
+            final int newLength = curCapacity + (curCapacity >> 1);
+            // final int newLength = curCapacity + curCapacity;
             elementData = Arrays.copyOf(elementData, calculateCapacity(newLength, minCapacity));
         }
     }
