@@ -113,7 +113,7 @@ public class StatisticsSimpleTest {
 
         CSVGenerator.createFileOfTracker(1, StatisticsSimpleTest.class.getSimpleName());
 
-        CSVGenerator.createFileOfEverything(StatisticsSimpleTest.class.getSimpleName());
+        // CSVGenerator.createFileOfEverything(StatisticsSimpleTest.class.getSimpleName());
 
         CSVGenerator.createFileOfOperationDistributions(StatisticsSimpleTest.class.getSimpleName());
 

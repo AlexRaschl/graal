@@ -15,7 +15,6 @@ public class Statistics {
     static final LinkedList<StatisticTracker> trackers = new LinkedList<>();
 
     // Map of all Operations performed
-    // TODO check if synchronization needed
     static final HashMap<Operation, AtomicInteger> globalOpMap = new HashMap<>(Operation.values().length);
 
     // Type Distribution
@@ -154,6 +153,23 @@ public class Statistics {
             sb.append(tracker.getType());
             dataArr[n - 1] = sb.toString();
             sb = new StringBuilder();
+        }
+        return dataArr;
+    }
+
+    public static String[] getCapacityAndSizes(final char dataSeparator) {
+        StringBuilder sb = new StringBuilder();
+        final String[] dataArr = new String[trackers.size()];
+
+        int n = 0;
+        for (StatisticTracker tracker : trackers) {
+            n = tracker.getID();
+            sb.append(n);
+            sb.append(dataSeparator);
+            sb.append(tracker.getCurrentSize());
+            sb.append(dataSeparator);
+            sb.append(tracker.getCurrentCapacity());
+            dataArr[n - 1] = sb.toString();
         }
         return dataArr;
     }

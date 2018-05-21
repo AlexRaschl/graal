@@ -335,6 +335,7 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
                 CSVGenerator.createFileOfGlobalInfo(prefix);
                 CSVGenerator.createFileOfOperationDistributions(prefix);
                 CSVGenerator.createFileOfTrackerTypes(prefix);
+                CSVGenerator.createFileOfTrackerSizes(prefix);
                 // CSVGenerator.createFileOfTypeOperationDistributions(prefix);
                 // CSVGenerator.createFileOfAllocationSites(prefix);
             }

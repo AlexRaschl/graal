@@ -102,7 +102,6 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     public int getCurrentCapacity() {
-        // return list.getCurrentCapacity();
         return capacity;
     }
 
@@ -112,7 +111,6 @@ public class StatisticTrackerImpl implements StatisticTracker {
 
     public int getCurrentSize() {
         return size;
-        // return list.getCurrentSize();
     }
 
     public void setCurrentSize(int size) {
@@ -121,7 +119,6 @@ public class StatisticTrackerImpl implements StatisticTracker {
 
     public double getCurrentLoadFactor() {
         return loadFactor;
-        // return list.getCurrentLoadFactor();
     }
 
     public Type getType() {
