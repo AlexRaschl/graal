@@ -90,6 +90,7 @@ public class StatisticsSimpleTest {
         testList6 = null;
         testList7 = null;
         testList8 = null;
+        testList9 = null;
         System.gc();
 
         Statistics.printGlobalInformation();
@@ -123,5 +124,6 @@ public class StatisticsSimpleTest {
 
         CSVGenerator.createFileOfTrackerTypes(StatisticsSimpleTest.class.getSimpleName());
 
+        CSVGenerator.createFileOfTrackerSizes(StatisticsSimpleTest.class.getSimpleName());
     }
 }

@@ -7,7 +7,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 /**
  * Class to generate CSV files containing the informations gathered by the StatisticTrackers
@@ -18,7 +26,7 @@ import java.util.NoSuchElementException;
 public class CSVGenerator {
 
     private final static String MAIN_DIR_PATH = "/home/urzidil/Programming/CSV/";
-    private final static String FOLDER_NAME = "DacapoStatistics";
+    private final static String FOLDER_NAME = "JYTHON_BENCH";
 
     private final static File mainDir;
     private final static File FOLDER;
@@ -34,7 +42,7 @@ public class CSVGenerator {
 
     // Some Constants for writing
     private final static boolean APPEND_MODE = false;
-    private final static int BUF_SIZE = 256000;
+    private final static int BUF_SIZE = 512000;
 
     private static boolean initialized = false;
 
@@ -75,7 +83,7 @@ public class CSVGenerator {
     }
 
     public static synchronized void createFileOfTrackerSizes(String namePrefix) {
-        final String[] sizes = Statistics.getTypesForAllTrackers(DATA_SEPARATOR);
+        final String[] sizes = Statistics.getCapacityAndSizes(DATA_SEPARATOR);
         final File file = createFile(namePrefix + SIZE_N_CAPS);
         if (file == null)
             return;
@@ -89,14 +97,22 @@ public class CSVGenerator {
         if (file == null)
             return; // TODO Exception
         writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
-        writeToFile(file, opLines, true);
+        // writeToFile(file, opLines, true);
 
         int length = StatisticTrackerImpl.getNextID();
-        String[] trackerInfo;
+        List<String[]> arrays = new ArrayList<>(10002);
+        arrays.add(opLines);
+
         for (int i = 1; i < length; i++) {
-            trackerInfo = Statistics.getTrackerByID(i).getOpDataLines(DATA_SEPARATOR);
-            writeToFile(file, trackerInfo, true);
+
+            arrays.add(Statistics.getTrackerByID(i).getOpDataLines(DATA_SEPARATOR));
+            if (i % 25000 == 0) {// TODO REMOVE
+                writeToFile(file, arrays, true);
+                arrays = new ArrayList<>(25005);
+                System.out.println("working... " + i);
+            }
         }
+        writeToFile(file, arrays, true);
     }
 
     public static synchronized void createFileOfTypeOperationDistributions(String namePrefix) {
@@ -195,22 +211,32 @@ public class CSVGenerator {
         return file;
     }
 
+    private static void writeToFile(File file, List<String[]> arrays, boolean append) {
+
+        final byte[] bytes = arrays.stream().flatMap(arr -> Arrays.stream(arr)).map(string -> string.concat("\n")).reduce("", (a, b) -> a.concat(b)).getBytes();
+        // final byte[] bytes = arrays.stream().flatMap(arr -> Arrays.stream(arr)).reduce("", (a, b) ->
+        // a.concat(b)).getBytes();
+        try {
+            Files.write(Paths.get(file.getPath()), bytes, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private static synchronized void writeToFile(File file, String[] lines, boolean append) {
 
         // TODO change to Try with resources
         try {
-            // final BufferedWriter out = new BufferedWriter(new FileWriter(file, append), BUF_SIZE);
-            final BufferedOutputStream w = new BufferedOutputStream(new FileOutputStream(file, append), BUF_SIZE);
+            final BufferedWriter out = new BufferedWriter(new FileWriter(file, append), BUF_SIZE);
+            // final PrintWriter w = new PrintWriter(new FileOutputStream(file, append), false);
 
+            int i = 0;
             for (String s : lines) {
-                // out.write(s);
-                // out.write(LINE_SEPARATOR);
-                w.write(s.getBytes());
-                w.write(LINE_SEPARATOR);
-
+                out.write(s);
+                out.write(LINE_SEPARATOR);
             }
-            // out.close();
-            w.close();
+            out.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

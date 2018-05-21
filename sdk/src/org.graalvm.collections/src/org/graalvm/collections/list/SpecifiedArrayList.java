@@ -70,29 +70,29 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // return new StatisticalArrayListClone<>(c);
 // }
 //
-// public static <E> SpecifiedArrayList<E> createNew() {
-// return new StatisticalSpecifiedArrayListImpl<>();
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-// return new StatisticalSpecifiedArrayListImpl<>(c);
-// }
-
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayList<>();
+        return new StatisticalSpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayList<>(initalCapacity);
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayList<>(c);
+        return new StatisticalSpecifiedArrayListImpl<>(c);
     }
+
+// public static <E> SpecifiedArrayList<E> createNew() {
+// return new SpecifiedArrayList<>();
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+// return new SpecifiedArrayList<>(initalCapacity);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+// return new SpecifiedArrayList<>(c);
+// }
 
     // -------------------------FIELDS-------------------------------------------------
 
@@ -853,12 +853,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
 // TODO I actually have no Idea why this commenting this stuff raises the loadFactor by 10 Percent
 
-// if (elementData == EMPTY_ELEMENTDATA) {
-// elementData = new Object[calculateCapacity(INITIAL_CAPACITY, minCapacity)];
-//
-// } else
-//
-        if (curCapacity == INITIAL_CAPACITY) {
+        if (elementData == EMPTY_ELEMENTDATA) {
+            elementData = new Object[calculateCapacity(INITIAL_CAPACITY, minCapacity)];
+
+        } else if (curCapacity == INITIAL_CAPACITY) {
             elementData = Arrays.copyOf(elementData, calculateCapacity(NEXT_CAPACITY, minCapacity));
         } else {
             final int newLength = curCapacity + (curCapacity >> 1);

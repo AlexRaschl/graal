@@ -133,6 +133,26 @@ public class StatisticTrackerImpl implements StatisticTracker {
         return ID;
     }
 
+// public String[] getOpDataLines(final char dataSeparator) {
+// final String[] dataArr = new String[localOpMap.size()];
+// final Iterator<Entry<Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
+// StringBuilder sb = new StringBuilder(50);
+//
+// int n = 0;
+// while (itr.hasNext()) {
+// Entry<Operation, AtomicInteger> entry = itr.next();
+// sb.append(this.ID);
+// sb.append(dataSeparator);
+// sb.append(entry.getKey().name());
+// sb.append(dataSeparator);
+// sb.append(entry.getValue().get());
+//
+// dataArr[n++] = sb.toString();
+// sb = new StringBuilder(50);
+// }
+// return dataArr;
+// }
+
     public String[] getOpDataLines(final char dataSeparator) {
         final String[] dataArr = new String[localOpMap.size()];
         final Iterator<Entry<Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
@@ -145,7 +165,6 @@ public class StatisticTrackerImpl implements StatisticTracker {
             sb.append(dataSeparator);
             sb.append(entry.getKey().name());
             sb.append(dataSeparator);
-            sb.append(' ');
             sb.append(entry.getValue().get());
             dataArr[n++] = sb.toString();
             sb = new StringBuilder(50);

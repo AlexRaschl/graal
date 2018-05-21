@@ -170,6 +170,7 @@ public class Statistics {
             sb.append(dataSeparator);
             sb.append(tracker.getCurrentCapacity());
             dataArr[n - 1] = sb.toString();
+            sb = new StringBuilder();
         }
         return dataArr;
     }
