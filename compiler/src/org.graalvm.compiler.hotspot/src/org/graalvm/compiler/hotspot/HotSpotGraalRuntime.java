@@ -299,7 +299,7 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
 
                 // Wait for other threads to generate all Lists before printing results
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
