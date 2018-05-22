@@ -22,7 +22,6 @@
  */
 package org.graalvm.compiler.nodes.extended;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -257,7 +256,7 @@ public final class IntegerSwitchNode extends SwitchNode implements LIRLowerable,
              * The value loaded from the array is the old switch key, the index into the array is the new switch
              * key. We build a mapping from the old switch key to new keys.
              */
-            reverseArrayMapping.computeIfAbsent(element, e -> new ArrayList<>()).add(i);
+            reverseArrayMapping.computeIfAbsent(element, e -> SpecifiedArrayList.createNew()).add(i);
         }
 
         /* Build high-level representation of new switch keys. */

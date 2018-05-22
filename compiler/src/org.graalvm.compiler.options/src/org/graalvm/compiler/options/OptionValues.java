@@ -23,7 +23,6 @@
 package org.graalvm.compiler.options;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +33,7 @@ import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.UnmodifiableEconomicMap;
 import org.graalvm.collections.UnmodifiableMapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * A context for obtaining values for {@link OptionKey}s.
@@ -162,7 +162,7 @@ public class OptionValues {
      * @return {@code text} broken into lines
      */
     private static List<String> wrap(String text, int width) {
-        List<String> lines = new ArrayList<>();
+        List<String> lines = SpecifiedArrayList.createNew();
         if (text.length() > width) {
             String[] chunks = text.split("\\s+");
             StringBuilder line = new StringBuilder();
