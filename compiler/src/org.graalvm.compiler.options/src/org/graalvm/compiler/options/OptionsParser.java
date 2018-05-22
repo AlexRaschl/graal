@@ -22,7 +22,6 @@
  */
 package org.graalvm.compiler.options;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Formatter;
 import java.util.List;
@@ -30,6 +29,7 @@ import java.util.ServiceLoader;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.MapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.util.CollectionsUtil;
 
 /**
@@ -224,7 +224,7 @@ public class OptionsParser {
      * Returns the set of options that fuzzy match a given option name.
      */
     private static List<OptionDescriptor> fuzzyMatch(Iterable<OptionDescriptors> loader, String optionName) {
-        List<OptionDescriptor> matches = new ArrayList<>();
+        List<OptionDescriptor> matches = SpecifiedArrayList.createNew();
         for (OptionDescriptors options : loader) {
             collectFuzzyMatches(options, optionName, matches);
         }
