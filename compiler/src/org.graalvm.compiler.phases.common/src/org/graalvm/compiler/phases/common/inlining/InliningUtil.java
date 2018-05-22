@@ -28,7 +28,6 @@ import static org.graalvm.compiler.core.common.GraalOptions.HotSpotPrintInlining
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -38,6 +37,7 @@ import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.UnmodifiableEconomicMap;
 import org.graalvm.collections.UnmodifiableMapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.MethodSubstitution;
 import org.graalvm.compiler.api.replacements.Snippet;
 import org.graalvm.compiler.core.common.GraalOptions;
@@ -310,9 +310,9 @@ public class InliningUtil extends ValueMergeUtil {
             nonNullReceiver(invoke);
         }
 
-        ArrayList<Node> nodes = new ArrayList<>(inlineGraph.getNodes().count());
-        ArrayList<ReturnNode> returnNodes = new ArrayList<>(4);
-        ArrayList<Invoke> partialIntrinsicExits = new ArrayList<>();
+        SpecifiedArrayList<Node> nodes = SpecifiedArrayList.createNew(inlineGraph.getNodes().count());
+        SpecifiedArrayList<ReturnNode> returnNodes = SpecifiedArrayList.createNew(4);
+        SpecifiedArrayList<Invoke> partialIntrinsicExits = SpecifiedArrayList.createNew();
         UnwindNode unwindNode = null;
         final StartNode entryPointNode = inlineGraph.start();
         FixedNode firstCFGNode = entryPointNode.next();

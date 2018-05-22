@@ -24,9 +24,9 @@ package org.graalvm.compiler.phases.common.inlining.info.elem;
 
 import static org.graalvm.compiler.phases.common.DeadCodeEliminationPhase.Optionality.Optional;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.Stamp;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.graph.Node;
@@ -95,7 +95,7 @@ public class InlineableGraph implements Inlineable {
         DebugContext debug = graph.getDebug();
         try (DebugContext.Scope s = debug.scope("InlineGraph", graph)) {
 
-            ArrayList<Node> parameterUsages = replaceParamsWithMoreInformativeArguments(invoke, context);
+            SpecifiedArrayList<Node> parameterUsages = replaceParamsWithMoreInformativeArguments(invoke, context);
             if (parameterUsages != null) {
                 assert !parameterUsages.isEmpty() : "The caller didn't have more information about arguments after all";
                 canonicalizer.applyIncremental(graph, context, parameterUsages);
@@ -143,9 +143,9 @@ public class InlineableGraph implements Inlineable {
      * @return null if no incremental canonicalization is need, a list of nodes for such
      *         canonicalization otherwise.
      */
-    private ArrayList<Node> replaceParamsWithMoreInformativeArguments(final Invoke invoke, final HighTierContext context) {
+    private SpecifiedArrayList<Node> replaceParamsWithMoreInformativeArguments(final Invoke invoke, final HighTierContext context) {
         NodeInputList<ValueNode> args = invoke.callTarget().arguments();
-        ArrayList<Node> parameterUsages = null;
+        SpecifiedArrayList<Node> parameterUsages = null;
         List<ParameterNode> params = graph.getNodes(ParameterNode.TYPE).snapshot();
         assert params.size() <= args.size();
         /*
@@ -178,8 +178,8 @@ public class InlineableGraph implements Inlineable {
         return parameterUsages;
     }
 
-    private static ArrayList<Node> trackParameterUsages(ParameterNode param, ArrayList<Node> parameterUsages) {
-        ArrayList<Node> result = (parameterUsages == null) ? new ArrayList<>() : parameterUsages;
+    private static SpecifiedArrayList<Node> trackParameterUsages(ParameterNode param, SpecifiedArrayList<Node> parameterUsages) {
+        SpecifiedArrayList<Node> result = (parameterUsages == null) ? SpecifiedArrayList.createNew() : parameterUsages;
         param.usages().snapshotTo(result);
         return result;
     }

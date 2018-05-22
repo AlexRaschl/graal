@@ -27,7 +27,6 @@ import static org.graalvm.compiler.core.common.GraalOptions.MaximumRecursiveInli
 import static org.graalvm.compiler.core.common.GraalOptions.MegamorphicInliningMinMethodProbability;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,6 +35,7 @@ import java.util.List;
 
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.ObjectStamp;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -299,8 +299,8 @@ public class InliningData {
             }
 
             // Find unique methods and their probabilities.
-            ArrayList<ResolvedJavaMethod> concreteMethods = new ArrayList<>();
-            ArrayList<Double> concreteMethodsProbabilities = new ArrayList<>();
+            SpecifiedArrayList<ResolvedJavaMethod> concreteMethods = SpecifiedArrayList.createNew();
+            SpecifiedArrayList<Double> concreteMethodsProbabilities = SpecifiedArrayList.createNew();
             for (int i = 0; i < ptypes.length; i++) {
                 ResolvedJavaMethod concrete = ptypes[i].getType().resolveConcreteMethod(targetMethod, contextType);
                 if (concrete == null) {
@@ -320,8 +320,8 @@ public class InliningData {
 
             // Clear methods that fall below the threshold.
             if (notRecordedTypeProbability > 0) {
-                ArrayList<ResolvedJavaMethod> newConcreteMethods = new ArrayList<>();
-                ArrayList<Double> newConcreteMethodsProbabilities = new ArrayList<>();
+                SpecifiedArrayList<ResolvedJavaMethod> newConcreteMethods = SpecifiedArrayList.createNew();
+                SpecifiedArrayList<Double> newConcreteMethodsProbabilities = SpecifiedArrayList.createNew();
                 for (int i = 0; i < concreteMethods.size(); ++i) {
                     if (concreteMethodsProbabilities.get(i) >= MegamorphicInliningMinMethodProbability.getValue(options)) {
                         newConcreteMethods.add(concreteMethods.get(i));
@@ -346,8 +346,8 @@ public class InliningData {
             }
 
             // Clean out types whose methods are no longer available.
-            ArrayList<JavaTypeProfile.ProfiledType> usedTypes = new ArrayList<>();
-            ArrayList<Integer> typesToConcretes = new ArrayList<>();
+            SpecifiedArrayList<JavaTypeProfile.ProfiledType> usedTypes = SpecifiedArrayList.createNew();
+            SpecifiedArrayList<Integer> typesToConcretes = SpecifiedArrayList.createNew();
             for (JavaTypeProfile.ProfiledType type : ptypes) {
                 ResolvedJavaMethod concrete = type.getType().resolveConcreteMethod(targetMethod, contextType);
                 int index = concreteMethods.indexOf(concrete);
@@ -646,7 +646,7 @@ public class InliningData {
      * Gets a stack trace representing the current inlining stack represented by this object.
      */
     public Collection<StackTraceElement> getInvocationStackTrace() {
-        List<StackTraceElement> result = new ArrayList<>();
+        List<StackTraceElement> result = SpecifiedArrayList.createNew();
         for (CallsiteHolder graph : graphQueue) {
             result.add(graph.method().asStackTraceElement(0));
         }

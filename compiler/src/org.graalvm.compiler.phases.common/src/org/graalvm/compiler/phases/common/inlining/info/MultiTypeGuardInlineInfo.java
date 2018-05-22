@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.phases.common.inlining.info;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.nodes.AbstractBeginNode;
@@ -75,12 +75,13 @@ public class MultiTypeGuardInlineInfo extends AbstractInlineInfo {
     private final List<ResolvedJavaMethod> concretes;
     private final double[] methodProbabilities;
     private final double maximumMethodProbability;
-    private final ArrayList<Integer> typesToConcretes;
-    private final ArrayList<ProfiledType> ptypes;
+    private final SpecifiedArrayList<Integer> typesToConcretes;
+    private final SpecifiedArrayList<ProfiledType> ptypes;
     private final double notRecordedTypeProbability;
     private final Inlineable[] inlineableElements;
 
-    public MultiTypeGuardInlineInfo(Invoke invoke, ArrayList<ResolvedJavaMethod> concretes, ArrayList<ProfiledType> ptypes, ArrayList<Integer> typesToConcretes, double notRecordedTypeProbability) {
+    public MultiTypeGuardInlineInfo(Invoke invoke, SpecifiedArrayList<ResolvedJavaMethod> concretes, SpecifiedArrayList<ProfiledType> ptypes, SpecifiedArrayList<Integer> typesToConcretes,
+                    double notRecordedTypeProbability) {
         super(invoke);
         assert concretes.size() > 0 : "must have at least one method";
         assert ptypes.size() == typesToConcretes.size() : "array lengths must match";
@@ -96,7 +97,7 @@ public class MultiTypeGuardInlineInfo extends AbstractInlineInfo {
         assert assertUniqueTypes(ptypes);
     }
 
-    private static boolean assertUniqueTypes(ArrayList<ProfiledType> ptypes) {
+    private static boolean assertUniqueTypes(SpecifiedArrayList<ProfiledType> ptypes) {
         EconomicSet<ResolvedJavaType> set = EconomicSet.create(Equivalence.DEFAULT);
         for (ProfiledType ptype : ptypes) {
             set.add(ptype.getType());
@@ -247,7 +248,7 @@ public class MultiTypeGuardInlineInfo extends AbstractInlineInfo {
         }
         invoke.asNode().safeDelete();
 
-        ArrayList<PiNode> replacementNodes = new ArrayList<>();
+        SpecifiedArrayList<PiNode> replacementNodes = SpecifiedArrayList.createNew();
 
         // prepare the anchors for the invokes
         for (int i = 0; i < numberOfMethods; i++) {

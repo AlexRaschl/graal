@@ -31,10 +31,10 @@ import static org.graalvm.compiler.phases.common.LoweringPhase.ProcessBlockState
 import static org.graalvm.compiler.phases.common.LoweringPhase.ProcessBlockState.ST_PROCESS;
 import static org.graalvm.compiler.phases.common.LoweringPhase.ProcessBlockState.ST_PROCESS_ALWAYS_REACHED;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.spi.ConstantFieldProvider;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.debug.DebugCloseable;
@@ -497,7 +497,7 @@ public class LoweringPhase extends BasePhase<PhaseContext> {
          * @param node a {@link Lowerable} node
          */
         private Collection<Node> getUnscheduledUsages(Node node) {
-            List<Node> unscheduledUsages = new ArrayList<>();
+            List<Node> unscheduledUsages = SpecifiedArrayList.createNew();
             if (node instanceof FloatingNode) {
                 for (Node usage : node.usages()) {
                     if (usage instanceof ValueNode && !(usage instanceof PhiNode) && !(usage instanceof ProxyNode)) {
