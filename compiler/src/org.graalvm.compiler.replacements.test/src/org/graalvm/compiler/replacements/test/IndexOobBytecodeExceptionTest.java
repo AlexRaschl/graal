@@ -22,20 +22,19 @@
  */
 package org.graalvm.compiler.replacements.test;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.directives.GraalDirectives;
 import org.graalvm.compiler.nodes.ValueNode;
 import org.graalvm.compiler.nodes.graphbuilderconf.GraphBuilderContext;
 import org.graalvm.compiler.nodes.graphbuilderconf.InvocationPlugin;
 import org.graalvm.compiler.nodes.graphbuilderconf.InvocationPlugins;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
 import jdk.vm.ci.meta.ResolvedJavaMethod;
 
@@ -72,7 +71,7 @@ public class IndexOobBytecodeExceptionTest extends BytecodeExceptionTest {
     public static Collection<Object[]> data() {
         int[] values = {Integer.MIN_VALUE, -42, -1, 0, 1, 42, Integer.MAX_VALUE};
 
-        ArrayList<Object[]> ret = new ArrayList<>(values.length);
+        SpecifiedArrayList<Object[]> ret = SpecifiedArrayList.createNew(values.length);
         for (int i : values) {
             ret.add(new Object[]{i});
         }

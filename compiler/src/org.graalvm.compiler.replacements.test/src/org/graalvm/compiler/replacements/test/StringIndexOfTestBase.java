@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.replacements.test;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,7 @@ public abstract class StringIndexOfTestBase extends GraalCompilerTest {
 
     @Parameterized.Parameters(name = "{0},{1}")
     public static Collection<Object[]> data() {
-        ArrayList<Object[]> tests = new ArrayList<>();
+        SpecifiedArrayList<Object[]> tests = SpecifiedArrayList.createNew();
         String[] targets = new String[]{"foobar", "foo", "bar"};
         for (String source : targets) {
             for (String target : targets) {

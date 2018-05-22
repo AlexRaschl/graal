@@ -28,11 +28,11 @@ import static org.graalvm.compiler.nodeinfo.InputType.Memory;
 import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_UNKNOWN;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_UNKNOWN;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.graph.NodeClass;
@@ -72,8 +72,8 @@ public final class CommitAllocationNode extends FixedWithNextNode implements Vir
     @Input NodeInputList<VirtualObjectNode> virtualObjects = new NodeInputList<>(this);
     @Input NodeInputList<ValueNode> values = new NodeInputList<>(this);
     @Input(Association) NodeInputList<MonitorIdNode> locks = new NodeInputList<>(this);
-    protected ArrayList<Integer> lockIndexes = new ArrayList<>(Arrays.asList(0));
-    protected ArrayList<Boolean> ensureVirtual = new ArrayList<>();
+    protected SpecifiedArrayList<Integer> lockIndexes = SpecifiedArrayList.createNew(Arrays.asList(0));
+    protected SpecifiedArrayList<Boolean> ensureVirtual = SpecifiedArrayList.createNew();
 
     public CommitAllocationNode() {
         super(TYPE, StampFactory.forVoid());
@@ -125,7 +125,7 @@ public final class CommitAllocationNode extends FixedWithNextNode implements Vir
 
     @Override
     public void afterClone(Node other) {
-        lockIndexes = new ArrayList<>(lockIndexes);
+        lockIndexes = SpecifiedArrayList.createNew(lockIndexes);
     }
 
     public void addLocks(List<MonitorIdNode> monitorIds) {
@@ -211,12 +211,12 @@ public final class CommitAllocationNode extends FixedWithNextNode implements Vir
         } while (progress);
 
         if (usedCount < virtualObjects.size()) {
-            List<VirtualObjectNode> newVirtualObjects = new ArrayList<>(usedCount);
-            List<MonitorIdNode> newLocks = new ArrayList<>(usedCount);
-            ArrayList<Integer> newLockIndexes = new ArrayList<>(usedCount + 1);
-            ArrayList<Boolean> newEnsureVirtual = new ArrayList<>(usedCount);
+            List<VirtualObjectNode> newVirtualObjects = SpecifiedArrayList.createNew(usedCount);
+            List<MonitorIdNode> newLocks = SpecifiedArrayList.createNew(usedCount);
+            SpecifiedArrayList<Integer> newLockIndexes = SpecifiedArrayList.createNew(usedCount + 1);
+            SpecifiedArrayList<Boolean> newEnsureVirtual = SpecifiedArrayList.createNew(usedCount);
             newLockIndexes.add(0);
-            List<ValueNode> newValues = new ArrayList<>();
+            List<ValueNode> newValues = SpecifiedArrayList.createNew();
             int valuePos = 0;
             for (int objIndex = 0; objIndex < virtualObjects.size(); objIndex++) {
                 VirtualObjectNode virtualObject = virtualObjects.get(objIndex);
