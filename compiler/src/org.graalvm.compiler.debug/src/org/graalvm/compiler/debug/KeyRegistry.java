@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.debug;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * Registry for allocating a globally unique integer id to each {@link AbstractKey}.
@@ -33,7 +33,7 @@ import org.graalvm.collections.EconomicMap;
 public class KeyRegistry {
 
     private static final EconomicMap<String, Integer> keyMap = EconomicMap.create();
-    private static final List<AbstractKey> keys = new ArrayList<>();
+    private static final List<AbstractKey> keys = SpecifiedArrayList.createNew();
 
     /**
      * Ensures a given metric key is registered.
@@ -55,6 +55,7 @@ public class KeyRegistry {
      * @return a list where {@code get(i).getIndex() == i}
      */
     public static synchronized List<MetricKey> getKeys() {
-        return new ArrayList<>(keys);
+        return SpecifiedArrayList.createNew(new SpecifiedArrayList<>(keys)); // TODO Optimize
+        // return SpecifiedArrayList.createNew(keys);
     }
 }
