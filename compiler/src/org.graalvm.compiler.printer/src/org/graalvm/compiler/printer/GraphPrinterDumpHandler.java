@@ -26,7 +26,6 @@ import static org.graalvm.compiler.debug.DebugConfig.asJavaMethod;
 
 import java.io.IOException;
 import java.nio.channels.ClosedByInterruptException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -35,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.DebugDumpHandler;
 import org.graalvm.compiler.debug.DebugDumpScope;
@@ -98,7 +98,7 @@ public class GraphPrinterDumpHandler implements DebugDumpHandler {
             if (failuresCount >= FAILURE_LIMIT) {
                 return;
             }
-            previousInlineContext = new ArrayList<>();
+            previousInlineContext = SpecifiedArrayList.createNew();
             inlineContextMap = new WeakHashMap<>();
             DebugContext debug = graph.getDebug();
             try {
@@ -221,7 +221,7 @@ public class GraphPrinterDumpHandler implements DebugDumpHandler {
     private List<String> getInlineContext(Graph graph) {
         List<String> result = inlineContextMap.get(graph);
         if (result == null) {
-            result = new ArrayList<>();
+            result = SpecifiedArrayList.createNew();
             Object lastMethodOrGraph = null;
             boolean graphSeen = false;
             DebugContext debug = graph.getDebug();

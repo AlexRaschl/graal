@@ -25,7 +25,6 @@ package org.graalvm.compiler.printer;
 import static java.lang.Character.toLowerCase;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Iterator;
@@ -809,7 +808,7 @@ class CFGPrinter extends CompilationPrinter {
                 }
             }
         }
-        List<Trace> succ = new ArrayList<>();
+        List<Trace> succ = SpecifiedArrayList.createNew();
         for (int i = bs.nextSetBit(0); i >= 0; i = bs.nextSetBit(i + 1)) {
             succ.add(traceBuilderResult.getTraces().get(i));
         }
@@ -827,7 +826,7 @@ class CFGPrinter extends CompilationPrinter {
                 }
             }
         }
-        List<Trace> pred = new ArrayList<>();
+        List<Trace> pred = SpecifiedArrayList.createNew();
         for (int i = bs.nextSetBit(0); i >= 0; i = bs.nextSetBit(i + 1)) {
             pred.add(traceBuilderResult.getTraces().get(i));
         }

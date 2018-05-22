@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.printer;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.DebugDumpHandler;
@@ -53,7 +53,7 @@ public class GraalDebugHandlersFactory implements DebugHandlersFactory {
 
     @Override
     public List<DebugHandler> createHandlers(OptionValues options) {
-        List<DebugHandler> handlers = new ArrayList<>();
+        List<DebugHandler> handlers = SpecifiedArrayList.createNew();
         handlers.add(new GraphPrinterDumpHandler((debug, graph) -> new BinaryGraphPrinter(debug, snippetReflection)));
         if (DebugOptions.PrintCanonicalGraphStrings.getValue(options)) {
             handlers.add(new GraphPrinterDumpHandler((debug, graph) -> createStringPrinter(snippetReflection)));

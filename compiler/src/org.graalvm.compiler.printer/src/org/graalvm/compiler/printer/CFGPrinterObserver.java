@@ -30,10 +30,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.bytecode.BytecodeDisassembler;
 import org.graalvm.compiler.code.CompilationResult;
 import org.graalvm.compiler.code.DisassemblerProvider;
@@ -95,7 +95,7 @@ public class CFGPrinterObserver implements DebugDumpHandler {
     private boolean checkMethodScope(DebugContext debug) {
         JavaMethod method = null;
         CompilationIdentifier compilation = null;
-        ArrayList<String> decorators = new ArrayList<>();
+        SpecifiedArrayList<String> decorators = SpecifiedArrayList.createNew();
         for (Object o : debug.context()) {
             if (o instanceof JavaMethod) {
                 method = (JavaMethod) o;
