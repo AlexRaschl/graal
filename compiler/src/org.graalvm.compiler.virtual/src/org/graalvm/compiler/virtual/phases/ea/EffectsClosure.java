@@ -22,12 +22,12 @@
  */
 package org.graalvm.compiler.virtual.phases.ea;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
 import org.graalvm.compiler.core.common.cfg.Loop;
 import org.graalvm.compiler.core.common.type.Stamp;
@@ -139,8 +139,8 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
     @Override
     public void applyEffects() {
         final StructuredGraph graph = cfg.graph;
-        final ArrayList<Node> obsoleteNodes = new ArrayList<>(0);
-        final ArrayList<GraphEffectList> effectList = new ArrayList<>();
+        final SpecifiedArrayList<Node> obsoleteNodes = SpecifiedArrayList.createNew(0);
+        final SpecifiedArrayList<GraphEffectList> effectList = SpecifiedArrayList.createNew();
         /*
          * Effects are applied during a ordered iteration over the blocks to apply them in the correct
          * order, e.g., apply the effect that adds a node to the graph before the node is used.
@@ -290,7 +290,7 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
     @SuppressWarnings("try")
     protected final List<BlockT> processLoop(Loop<Block> loop, BlockT initialState) {
         if (initialState.isDead()) {
-            ArrayList<BlockT> states = new ArrayList<>();
+            SpecifiedArrayList<BlockT> states = SpecifiedArrayList.createNew();
             for (int i = 0; i < loop.getExits().size(); i++) {
                 states.add(initialState);
             }
@@ -330,7 +330,7 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
             try (Indent i = debug.logAndIndent("================== Process Loop Effects Closure: block:%s begin node:%s", loop.getHeader(), loop.getHeader().getBeginNode())) {
                 LoopInfo<BlockT> info = ReentrantBlockIterator.processLoop(this, loop, cloneState(lastMergedState));
 
-                List<BlockT> states = new ArrayList<>();
+                List<BlockT> states = SpecifiedArrayList.createNew();
                 states.add(initialStateRemovedKilledLocations);
                 states.addAll(info.endStates);
                 doMergeWithoutDead(mergeProcessor, states);
@@ -393,7 +393,7 @@ public abstract class EffectsClosure<BlockT extends EffectsBlockState<BlockT>> e
             mergeProcessor.setNewState(getInitialState());
             mergeProcessor.merge(states);
         } else {
-            ArrayList<BlockT> aliveStates = new ArrayList<>(alive);
+            SpecifiedArrayList<BlockT> aliveStates = SpecifiedArrayList.createNew(alive);
             int[] stateIndexes = new int[alive];
             for (int i = 0; i < states.size(); i++) {
                 if (!states.get(i).isDead()) {

@@ -22,7 +22,6 @@
  */
 package org.graalvm.compiler.virtual.phases.ea;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +30,7 @@ import java.util.function.IntUnaryOperator;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.GraalOptions;
 import org.graalvm.compiler.core.common.cfg.Loop;
 import org.graalvm.compiler.core.common.spi.ConstantFieldProvider;
@@ -102,7 +102,7 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
     /**
      * The indexes into this array correspond to {@link VirtualObjectNode#getObjectId()}.
      */
-    public final ArrayList<VirtualObjectNode> virtualObjects = new ArrayList<>();
+    public final SpecifiedArrayList<VirtualObjectNode> virtualObjects = new SpecifiedArrayList<>();
     public final DebugContext debug;
 
     @Override

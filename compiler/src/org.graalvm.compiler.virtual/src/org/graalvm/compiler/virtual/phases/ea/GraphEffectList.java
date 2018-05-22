@@ -22,8 +22,7 @@
  */
 package org.graalvm.compiler.virtual.phases.ea;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.nodes.ControlSinkNode;
@@ -142,7 +141,7 @@ public final class GraphEffectList extends EffectList {
     public void addVirtualMapping(FrameState node, EscapeObjectState state) {
         add("add virtual mapping", new Effect() {
             @Override
-            public void apply(StructuredGraph graph, ArrayList<Node> obsoleteNodes) {
+            public void apply(StructuredGraph graph, SpecifiedArrayList<Node> obsoleteNodes) {
                 if (node.isAlive()) {
                     assert !state.isDeleted();
                     FrameState stateAfter = node;
@@ -179,7 +178,7 @@ public final class GraphEffectList extends EffectList {
     public void killIfBranch(IfNode ifNode, boolean constantCondition) {
         add("kill if branch", new Effect() {
             @Override
-            public void apply(StructuredGraph graph, ArrayList<Node> obsoleteNodes) {
+            public void apply(StructuredGraph graph, SpecifiedArrayList<Node> obsoleteNodes) {
                 graph.removeSplitPropagate(ifNode, ifNode.getSuccessor(constantCondition));
             }
 
@@ -193,7 +192,7 @@ public final class GraphEffectList extends EffectList {
     public void replaceWithSink(FixedWithNextNode node, ControlSinkNode sink) {
         add("kill if branch", new Effect() {
             @Override
-            public void apply(StructuredGraph graph, ArrayList<Node> obsoleteNodes) {
+            public void apply(StructuredGraph graph, SpecifiedArrayList<Node> obsoleteNodes) {
                 graph.addWithoutUnique(sink);
                 node.replaceAtPredecessor(sink);
                 GraphUtil.killCFG(node);
@@ -257,7 +256,7 @@ public final class GraphEffectList extends EffectList {
         assert node.isAlive() && oldInput.isAlive() && !newInput.isDeleted();
         add("replace first input", new Effect() {
             @Override
-            public void apply(StructuredGraph graph, ArrayList<Node> obsoleteNodes) {
+            public void apply(StructuredGraph graph, SpecifiedArrayList<Node> obsoleteNodes) {
                 if (node.isAlive()) {
                     assert oldInput.isAlive() && newInput.isAlive();
                     node.replaceFirstInput(oldInput, newInput);
