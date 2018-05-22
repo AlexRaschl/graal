@@ -41,6 +41,7 @@ import org.graalvm.collections.MapCursor;
 import org.graalvm.collections.Pair;
 import org.graalvm.collections.UnmodifiableEconomicMap;
 import org.graalvm.collections.UnmodifiableMapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.MethodSubstitution;
 import org.graalvm.compiler.api.replacements.MethodSubstitutionRegistry;
 import org.graalvm.compiler.bytecode.BytecodeProvider;
@@ -539,7 +540,7 @@ public class InvocationPlugins {
      * Deferred registrations as well as the guard for delimiting the initial registration phase. The
      * guard uses double-checked locking which is why this field is {@code volatile}.
      */
-    private volatile List<Runnable> deferredRegistrations = new ArrayList<>();
+    private volatile List<Runnable> deferredRegistrations = SpecifiedArrayList.createNew();
 
     /**
      * Adds a {@link Runnable} for doing registration deferred until the first time
