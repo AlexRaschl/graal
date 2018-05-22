@@ -24,12 +24,12 @@ package org.graalvm.compiler.phases.verify;
 
 import static org.graalvm.compiler.debug.DebugContext.BASIC_LEVEL;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.ObjectStamp;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.GraalError;
@@ -112,7 +112,7 @@ public class VerifyDebugUsage extends VerifyPhase<PhaseContext> {
     private void verifyParameters(MethodCallTargetNode callTarget, StructuredGraph callerGraph, NodeInputList<? extends ValueNode> args, ResolvedJavaType stringType, int startArgIdx) {
         if (callTarget.targetMethod().isVarArgs() && args.get(args.count() - 1) instanceof NewArrayNode) {
             // unpack the arguments to the var args
-            List<ValueNode> unpacked = new ArrayList<>(args.snapshot());
+            List<ValueNode> unpacked = new SpecifiedArrayList<>(args.snapshot());
             NewArrayNode varArgParameter = (NewArrayNode) unpacked.remove(unpacked.size() - 1);
             int firstVarArg = unpacked.size();
             for (Node usage : varArgParameter.usages()) {

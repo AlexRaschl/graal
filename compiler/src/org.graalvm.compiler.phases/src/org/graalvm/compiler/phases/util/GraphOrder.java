@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.phases.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.Loop;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.graph.GraalGraphError;
@@ -96,7 +96,7 @@ public final class GraphOrder {
     }
 
     private static List<Node> createOrder(StructuredGraph graph) {
-        final ArrayList<Node> nodes = new ArrayList<>();
+        final SpecifiedArrayList<Node> nodes = SpecifiedArrayList.createNew();
         final NodeBitMap visited = graph.createNodeBitMap();
 
         new StatelessPostOrderNodeIterator(graph.start()) {
@@ -108,7 +108,7 @@ public final class GraphOrder {
         return nodes;
     }
 
-    private static void visitForward(ArrayList<Node> nodes, NodeBitMap visited, Node node, boolean floatingOnly) {
+    private static void visitForward(SpecifiedArrayList<Node> nodes, NodeBitMap visited, Node node, boolean floatingOnly) {
         try {
             assert node == null || node.isAlive() : node + " not alive";
             if (node != null && !visited.isMarked(node)) {
