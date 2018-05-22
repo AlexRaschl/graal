@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.replacements;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.GraalOptions;
 
 /**
@@ -61,7 +61,7 @@ public final class SnippetCounter implements Comparable<SnippetCounter> {
 
         public Group(String name) {
             this.name = name;
-            this.counters = new ArrayList<>();
+            this.counters = SpecifiedArrayList.createNew();
         }
 
         @Override

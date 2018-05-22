@@ -26,7 +26,6 @@ import static org.graalvm.compiler.debug.GraalError.unimplemented;
 import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_IGNORED;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_IGNORED;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +33,7 @@ import java.util.Map;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.BytecodeProvider;
 import org.graalvm.compiler.core.common.PermanentBailoutException;
@@ -875,7 +875,7 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
             return (List<T>) returnAndUnwindNodes;
         }
 
-        List<T> result = new ArrayList<>(resultCount);
+        List<T> result = SpecifiedArrayList.createNew(resultCount);
         for (int i = 0; i < returnAndUnwindNodes.size(); i++) {
             ControlSinkNode node = returnAndUnwindNodes.get(i);
             if (clazz.isInstance(node)) {
@@ -893,7 +893,7 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
             methodCounts.put(cur.method, oldCount == null ? 1 : oldCount + 1);
         }
 
-        List<Map.Entry<ResolvedJavaMethod, Integer>> methods = new ArrayList<>(methodCounts.entrySet());
+        List<Map.Entry<ResolvedJavaMethod, Integer>> methods = SpecifiedArrayList.createNew(methodCounts.entrySet());
         methods.sort((e1, e2) -> -Integer.compare(e1.getValue(), e2.getValue()));
 
         StringBuilder msg = new StringBuilder("Too deep inlining, probably caused by recursive inlining.").append(System.lineSeparator()).append("== Inlined methods ordered by inlining frequency:");

@@ -34,7 +34,6 @@ import static org.graalvm.word.LocationIdentity.any;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -51,6 +50,7 @@ import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.UnmodifiableEconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.Snippet;
 import org.graalvm.compiler.api.replacements.Snippet.ConstantParameter;
 import org.graalvm.compiler.api.replacements.Snippet.NonNullParameter;
@@ -837,9 +837,9 @@ public class SnippetTemplate {
                 throw debug.handle(e);
             }
 
-            ArrayList<StateSplit> curSideEffectNodes = new ArrayList<>();
-            ArrayList<DeoptimizingNode> curDeoptNodes = new ArrayList<>();
-            ArrayList<ValueNode> curPlaceholderStampedNodes = new ArrayList<>();
+            SpecifiedArrayList<StateSplit> curSideEffectNodes = SpecifiedArrayList.createNew();
+            SpecifiedArrayList<DeoptimizingNode> curDeoptNodes = SpecifiedArrayList.createNew();
+            SpecifiedArrayList<ValueNode> curPlaceholderStampedNodes = SpecifiedArrayList.createNew();
             for (Node node : snippetCopy.getNodes()) {
                 if (node instanceof ValueNode) {
                     ValueNode valueNode = (ValueNode) node;
@@ -928,7 +928,7 @@ public class SnippetTemplate {
                 this.returnNode = returnNodes.get(0);
             } else {
                 AbstractMergeNode merge = snippet.add(new MergeNode());
-                List<MemoryMapNode> memMaps = new ArrayList<>();
+                List<MemoryMapNode> memMaps = SpecifiedArrayList.createNew();
                 for (ReturnNode retNode : returnNodes) {
                     MemoryMapNode memoryMapNode = retNode.getMemoryMap();
                     if (memoryMapNode != null) {
@@ -956,7 +956,7 @@ public class SnippetTemplate {
             this.deoptNodes = curDeoptNodes;
             this.placeholderStampedNodes = curPlaceholderStampedNodes;
 
-            nodes = new ArrayList<>(snippet.getNodeCount());
+            nodes = SpecifiedArrayList.createNew(snippet.getNodeCount());
             for (Node node : snippet.getNodes()) {
                 if (node != entryPointNode && node != entryPointNode.stateAfter()) {
                     nodes.add(node);
@@ -1066,22 +1066,22 @@ public class SnippetTemplate {
     /**
      * Nodes that inherit the {@link StateSplit#stateAfter()} from the replacee during instantiation.
      */
-    private final ArrayList<StateSplit> sideEffectNodes;
+    private final SpecifiedArrayList<StateSplit> sideEffectNodes;
 
     /**
      * Nodes that inherit a deoptimization {@link FrameState} from the replacee during instantiation.
      */
-    private final ArrayList<DeoptimizingNode> deoptNodes;
+    private final SpecifiedArrayList<DeoptimizingNode> deoptNodes;
 
     /**
      * Nodes that have a stamp originating from a {@link Placeholder}.
      */
-    private final ArrayList<ValueNode> placeholderStampedNodes;
+    private final SpecifiedArrayList<ValueNode> placeholderStampedNodes;
 
     /**
      * The nodes to be inlined when this specialization is instantiated.
      */
-    private final ArrayList<Node> nodes;
+    private final SpecifiedArrayList<Node> nodes;
 
     /**
      * Gets the instantiation-time bindings to this template's parameters.
@@ -1633,7 +1633,7 @@ public class SnippetTemplate {
                 anchorDuplicate = replaceeGraph.add(new MemoryAnchorNode());
                 replacements.put(memoryAnchor, anchorDuplicate);
             }
-            List<Node> floatingNodes = new ArrayList<>(nodes.size() - 2);
+            List<Node> floatingNodes = SpecifiedArrayList.createNew(nodes.size() - 2);
             for (Node n : nodes) {
                 if (n != entryPointNode && n != returnNode) {
                     floatingNodes.add(n);

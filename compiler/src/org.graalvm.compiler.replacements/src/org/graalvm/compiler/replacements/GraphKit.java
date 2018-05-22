@@ -26,9 +26,9 @@ import static org.graalvm.compiler.nodes.graphbuilderconf.IntrinsicContext.Compi
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.spi.ConstantFieldProvider;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.core.common.type.StampPair;
@@ -105,7 +105,7 @@ public class GraphKit implements GraphBuilderTool {
         this.graphBuilderPlugins = graphBuilderPlugins;
         this.lastFixedNode = graph.start();
 
-        structures = new ArrayList<>();
+        structures = SpecifiedArrayList.createNew();
         /*
          * Add a dummy element, so that the access of the last element never leads to an exception.
          */
