@@ -23,7 +23,6 @@
 package org.graalvm.compiler.replacements.verifier;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,6 +41,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.ClassSubstitution;
 import org.graalvm.compiler.api.replacements.MethodSubstitution;
 
@@ -115,7 +115,7 @@ public final class MethodSubstitutionVerifier extends AbstractVerifier {
     private TypeMirror[] originalSignature(TypeElement originalType, ExecutableElement method, AnnotationMirror annotation, boolean isStatic) {
         AnnotationValue signatureValue = findAnnotationValue(annotation, ORIGINAL_SIGNATURE);
         String signatureString = resolveAnnotationValue(String.class, signatureValue);
-        List<TypeMirror> parameters = new ArrayList<>();
+        List<TypeMirror> parameters = SpecifiedArrayList.createNew();
         if (signatureString.equals(ORIGINAL_SIGNATURE_DEFAULT)) {
             for (int i = 0; i < method.getParameters().size(); i++) {
                 parameters.add(method.getParameters().get(i).asType());

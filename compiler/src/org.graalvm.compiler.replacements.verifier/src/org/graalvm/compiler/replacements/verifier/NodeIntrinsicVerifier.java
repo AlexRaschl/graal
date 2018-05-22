@@ -23,7 +23,6 @@
 package org.graalvm.compiler.replacements.verifier;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Formatter;
@@ -46,6 +45,7 @@ import javax.lang.model.type.TypeVariable;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.graph.Node.ConstantNodeParameter;
 import org.graalvm.compiler.graph.Node.InjectedNodeParameter;
 import org.graalvm.compiler.graph.Node.NodeIntrinsic;
@@ -247,7 +247,7 @@ public final class NodeIntrinsicVerifier extends AbstractVerifier {
 
     private List<ExecutableElement> findConstructors(TypeElement nodeClass, TypeMirror[] signature, Map<ExecutableElement, String> nonMatches, boolean requiresInjectedStamp) {
         List<ExecutableElement> constructors = ElementFilter.constructorsIn(nodeClass.getEnclosedElements());
-        List<ExecutableElement> found = new ArrayList<>(constructors.size());
+        List<ExecutableElement> found = SpecifiedArrayList.createNew(constructors.size());
         for (ExecutableElement constructor : constructors) {
             if (matchSignature(0, constructor, signature, nonMatches, requiresInjectedStamp)) {
                 found.add(constructor);
@@ -258,7 +258,7 @@ public final class NodeIntrinsicVerifier extends AbstractVerifier {
 
     private List<ExecutableElement> findIntrinsifyFactoryMethod(TypeElement nodeClass, TypeMirror[] signature, Map<ExecutableElement, String> nonMatches, boolean requiresInjectedStamp) {
         List<ExecutableElement> methods = ElementFilter.methodsIn(nodeClass.getEnclosedElements());
-        List<ExecutableElement> found = new ArrayList<>(methods.size());
+        List<ExecutableElement> found = SpecifiedArrayList.createNew(methods.size());
         for (ExecutableElement method : methods) {
             if (!method.getSimpleName().toString().equals("intrinsify")) {
                 continue;

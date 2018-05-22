@@ -23,7 +23,6 @@
 package org.graalvm.compiler.replacements.verifier;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +35,8 @@ import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 public class VerifierAnnotationProcessor extends AbstractProcessor {
 
@@ -85,7 +86,7 @@ public class VerifierAnnotationProcessor extends AbstractProcessor {
          */
         if (verifiers == null) {
             assert this.processingEnv != null : "ProcessingEnv must be initialized before calling getVerifiers.";
-            verifiers = new ArrayList<>();
+            verifiers = SpecifiedArrayList.createNew();
             verifiers.add(new ClassSubstitutionVerifier(this.processingEnv));
             verifiers.add(new MethodSubstitutionVerifier(this.processingEnv));
             verifiers.add(new NodeIntrinsicVerifier(this.processingEnv));
