@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.graph.Graph.DuplicationReplacement;
@@ -169,7 +170,7 @@ public class LoopFragmentInside extends LoopFragment {
          * Collect any new back edges values before updating them since they might reference each other.
          */
         LoopBeginNode mainLoopBegin = loop.loopBegin();
-        ArrayList<ValueNode> backedgeValues = new ArrayList<>();
+        SpecifiedArrayList<ValueNode> backedgeValues = SpecifiedArrayList.createNew();
         for (PhiNode mainPhiNode : mainLoopBegin.phis()) {
             ValueNode duplicatedNode = getDuplicatedNode(mainPhiNode.valueAt(1));
             if (duplicatedNode == null) {
