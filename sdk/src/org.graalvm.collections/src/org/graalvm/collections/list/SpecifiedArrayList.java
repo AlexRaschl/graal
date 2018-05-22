@@ -473,18 +473,18 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         modCount++;
     }
 
-// @Override
-// public Object clone() {
-// try {
-// SpecifiedArrayListImpl<?> v = (SpecifiedArrayListImpl<?>) super.clone();
-// v.elementData = Arrays.copyOf(elementData, size);
-// v.modCount = 0;
-// return v;
-// } catch (CloneNotSupportedException e) {
-// // this shouldn't happen, since we are Cloneable
-// throw new InternalError(e);
-// }
-// }
+    @Override
+    public Object clone() {
+        try {
+            SpecifiedArrayList<?> v = (SpecifiedArrayList<?>) super.clone();
+            v.elementData = Arrays.copyOf(elementData, size);
+            v.modCount = 0;
+            return v;
+        } catch (CloneNotSupportedException e) {
+            // this shouldn't happen, since we are Cloneable
+            throw new InternalError(e);
+        }
+    }
 
     @Override
     public Iterator<E> iterator() {
