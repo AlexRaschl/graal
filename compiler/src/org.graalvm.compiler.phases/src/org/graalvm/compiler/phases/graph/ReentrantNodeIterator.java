@@ -23,7 +23,6 @@
 package org.graalvm.compiler.phases.graph;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +30,7 @@ import java.util.List;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.MapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.nodes.AbstractBeginNode;
 import org.graalvm.compiler.nodes.AbstractEndNode;
@@ -146,7 +146,7 @@ public final class ReentrantNodeIterator {
                                     }
                                 }
                                 if (endsVisited) {
-                                    ArrayList<StateT> states = new ArrayList<>(merge.forwardEndCount());
+                                    SpecifiedArrayList<StateT> states = SpecifiedArrayList.createNew(merge.forwardEndCount());
                                     for (int i = 0; i < merge.forwardEndCount(); i++) {
                                         AbstractEndNode forwardEnd = merge.forwardEndAt(i);
                                         assert forwardEnd == current || blockEndStates.containsKey(forwardEnd);

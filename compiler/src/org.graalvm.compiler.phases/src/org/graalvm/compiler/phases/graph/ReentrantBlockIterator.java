@@ -23,13 +23,13 @@
 package org.graalvm.compiler.phases.graph;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.function.Predicate;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.PermanentBailoutException;
 import org.graalvm.compiler.core.common.RetryableBailoutException;
 import org.graalvm.compiler.core.common.cfg.Loop;
@@ -49,8 +49,8 @@ public final class ReentrantBlockIterator {
         public final List<StateT> exitStates;
 
         public LoopInfo(int endCount, int exitCount) {
-            endStates = new ArrayList<>(endCount);
-            exitStates = new ArrayList<>(exitCount);
+            endStates = new SpecifiedArrayList<>(endCount);
+            exitStates = new SpecifiedArrayList<>(exitCount);
         }
     }
 
@@ -141,7 +141,7 @@ public final class ReentrantBlockIterator {
                         // add the end node and see if the merge is ready for processing
                         AbstractMergeNode merge = end.merge();
                         if (allEndsVisited(states, current, merge)) {
-                            ArrayList<StateT> mergedStates = mergeStates(states, state, current, successor, merge);
+                            SpecifiedArrayList<StateT> mergedStates = mergeStates(states, state, current, successor, merge);
                             state = closure.merge(successor, mergedStates);
                             next = successor;
                         } else {
@@ -189,8 +189,8 @@ public final class ReentrantBlockIterator {
         return successors[0];
     }
 
-    private static <StateT> ArrayList<StateT> mergeStates(EconomicMap<FixedNode, StateT> states, StateT state, Block current, Block successor, AbstractMergeNode merge) {
-        ArrayList<StateT> mergedStates = new ArrayList<>(merge.forwardEndCount());
+    private static <StateT> SpecifiedArrayList<StateT> mergeStates(EconomicMap<FixedNode, StateT> states, StateT state, Block current, Block successor, AbstractMergeNode merge) {
+        SpecifiedArrayList<StateT> mergedStates = SpecifiedArrayList.createNew(merge.forwardEndCount());
         for (Block predecessor : successor.getPredecessors()) {
             assert predecessor == current || states.containsKey(predecessor.getEndNode());
             StateT endState = predecessor == current ? state : states.removeKey(predecessor.getEndNode());

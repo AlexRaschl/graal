@@ -23,12 +23,12 @@
 package org.graalvm.compiler.phases.graph;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.graph.NodeBitMap;
 import org.graalvm.compiler.nodes.AbstractBeginNode;
@@ -259,7 +259,7 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
         if (elem.node instanceof AbstractMergeNode) {
             AbstractMergeNode merge = (AbstractMergeNode) elem.node;
             state = pruneEntry(merge.forwardEndAt(0));
-            ArrayList<T> states = new ArrayList<>(merge.forwardEndCount() - 1);
+            SpecifiedArrayList<T> states = SpecifiedArrayList.createNew(merge.forwardEndCount() - 1);
             for (int i = 1; i < merge.forwardEndCount(); i++) {
                 T other = pruneEntry(merge.forwardEndAt(i));
                 states.add(other);
@@ -305,7 +305,7 @@ public abstract class SinglePassNodeIterator<T extends MergeableState<T>> {
             }
         }
         if (endsVisited) {
-            ArrayList<T> states = new ArrayList<>(begin.loopEnds().count());
+            SpecifiedArrayList<T> states = SpecifiedArrayList.createNew(begin.loopEnds().count());
             for (LoopEndNode le : begin.orderedLoopEnds()) {
                 T leState = pruneEntry(le);
                 states.add(leState);

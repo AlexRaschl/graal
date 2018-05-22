@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.phases.contract;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -68,7 +68,7 @@ public class NodeCostUtil {
             cfg = ControlFlowGraph.compute(graph, true, true, false, false);
             BlockMap<List<FixedNode>> nodes = new BlockMap<>(cfg);
             for (Block b : cfg.getBlocks()) {
-                ArrayList<FixedNode> curNodes = new ArrayList<>();
+                SpecifiedArrayList<FixedNode> curNodes = SpecifiedArrayList.createNew();
                 for (FixedNode node : b.getNodes()) {
                     curNodes.add(node);
                 }

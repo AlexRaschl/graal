@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.phases;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.nodes.StructuredGraph;
 
 /**
@@ -38,7 +38,7 @@ public class PhaseSuite<C> extends BasePhase<C> {
     private boolean immutable;
 
     public PhaseSuite() {
-        this.phases = new ArrayList<>();
+        this.phases = SpecifiedArrayList.createNew();
     }
 
     @Override
