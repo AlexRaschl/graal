@@ -19,32 +19,18 @@ import java.util.NoSuchElementException;
  * @author Alex R.
  *
  */
-public class CSVGenerator {
 
-    private final static String MAIN_DIR_PATH = "/home/urzidil/Programming/CSV/";
-    private final static String FOLDER_NAME = "JYTHON_BENCH";
+import static org.graalvm.collections.list.statistics.StatisticConfigs.*;
+
+public class CSVGenerator {
 
     private final static File mainDir;
     private final static File FOLDER;
 
-    private final static String NAME_ALL = "_ALL.csv";
-    private final static String NAME_GBL = "_GLOBAL.csv";
-    private final static String TR_PREFIX = "_TR";
-    private final static String NAME_OP_DISTR = "_OP_DISTR.csv";
-    private final static String NAME_TYPE_OP_DISTR = "_TYPE_OP_DISTR.csv";
-    private final static String ALLOC_SITE = "_ALLOC_SITES.csv";
-    private final static String MAIN_TYPES = "_MAIN_TYPES.csv";
-    private final static String SIZE_N_CAPS = "_SIZE_CAP.csv";
-
     // Some Constants for writing
-    private final static boolean APPEND_MODE = false;
     private final static int BUF_SIZE = 512000;
 
     private static boolean initialized = false;
-
-    // For CSV file creation
-    private final static char DATA_SEPARATOR = ';';
-    private final static char LINE_SEPARATOR = '\n';
 
     static {
         mainDir = new File(MAIN_DIR_PATH);

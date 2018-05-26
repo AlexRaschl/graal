@@ -59,22 +59,22 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     private static final long serialVersionUID = 2325200269334451909L;
 
-    public final static boolean TRACKING_ENABLED = false;
-    final static boolean TRACKS_ALL = true;
-    final static HashSet<String> trackedSites = new HashSet<>(10);
-
-    /** Static block to set up Tracked Classes */
-    static {
-        // trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
-        // trackedSites.add("org.graalvm.collections.test.list.statistics.ReplacementTest");
-        //
-        trackedSites.add("org.graalvm.compiler.asm.Label");
-        // trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
-        // trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
-        //
-        // trackedSites.add("org.graalvm.compiler.nodes.IfNode");
-        // trackedSites.add("org.graalvm.compiler.nodes.InliningLog");
-    }
+// public final static boolean TRACKING_ENABLED = false;
+// final static boolean TRACKS_ALL = true;
+// final static HashSet<String> trackedSites = new HashSet<>(10);
+//
+// /** Static block to set up Tracked Classes */
+// static {
+// // trackedSites.add("org.graalvm.collections.test.list.statistics.StatisticsSimpleTest");
+// // trackedSites.add("org.graalvm.collections.test.list.statistics.ReplacementTest");
+// //
+// trackedSites.add("org.graalvm.compiler.asm.Label");
+// // trackedSites.add("org.graalvm.compiler.core.gen.NodeLIRBuilder");
+// // trackedSites.add("org.graalvm.compiler.core.common.FieldsScanner");
+// //
+// // trackedSites.add("org.graalvm.compiler.nodes.IfNode");
+// // trackedSites.add("org.graalvm.compiler.nodes.InliningLog");
+// }
 
     /**
      * Factory methods
@@ -414,7 +414,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     }
 
     private boolean isTracked() {
-        return TRACKS_ALL || trackedSites.contains(getAllocationSiteName());
+        return StatisticConfigs.TRACKS_ALL || StatisticConfigs.TRACKED_SITES.contains(getAllocationSiteName());
     }
 
     private void countIfTracked(Operation op) {

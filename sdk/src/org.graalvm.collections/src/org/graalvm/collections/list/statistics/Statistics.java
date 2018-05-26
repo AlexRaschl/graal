@@ -6,10 +6,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
 
 public class Statistics {
+
+    public static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
 
     // List of all StatisticTrackers
     static final LinkedList<StatisticTracker> trackers = new LinkedList<>();
@@ -144,14 +147,14 @@ public class Statistics {
         final String[] dataArr = new String[trackers.size()];
 
         StringBuilder sb = new StringBuilder(40);
-        int n;// TrackerId
+        int n = 0;// TrackerId
 
         for (StatisticTracker tracker : trackers) {
-            n = tracker.getID();
-            sb.append(n);
+            // n = tracker.getID();
+            sb.append(tracker.getID());
             sb.append(dataSeparator);
             sb.append(tracker.getType());
-            dataArr[n - 1] = sb.toString();
+            dataArr[n++] = sb.toString();
             sb = new StringBuilder();
         }
         return dataArr;
@@ -163,13 +166,13 @@ public class Statistics {
 
         int n = 0;
         for (StatisticTracker tracker : trackers) {
-            n = tracker.getID();
-            sb.append(n);
+            // n = tracker.getID();
+            sb.append(tracker.getID());
             sb.append(dataSeparator);
             sb.append(tracker.getCurrentSize());
             sb.append(dataSeparator);
             sb.append(tracker.getCurrentCapacity());
-            dataArr[n - 1] = sb.toString();
+            dataArr[n++] = sb.toString();
             sb = new StringBuilder();
         }
         return dataArr;

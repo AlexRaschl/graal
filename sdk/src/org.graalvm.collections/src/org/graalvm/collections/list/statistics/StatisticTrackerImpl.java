@@ -1,14 +1,10 @@
 package org.graalvm.collections.list.statistics;
 
 import java.lang.reflect.Type;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
-
-import org.omg.CORBA.DATA_CONVERSION;
 
 public class StatisticTrackerImpl implements StatisticTracker {
     // _____GLOBAL FIELDS______
@@ -51,7 +47,8 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     // Operations that are tracked more precisely for each Type in the list
-    private static final EnumSet<Operation> SPECIAL_OPS = EnumSet.of(Operation.ADD_OBJ, Operation.REMOVE_OBJ, Operation.GET_INDEXED, Operation.SET_INDEXED);
+    // private static final EnumSet<Operation> SPECIAL_OPS = EnumSet.of(Operation.ADD_OBJ,
+    // Operation.REMOVE_OBJ, Operation.GET_INDEXED, Operation.SET_INDEXED);
 
     // _____LOCAL FIELDS______
     private final int ID;
@@ -288,7 +285,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
 
     void addTypeOpToMap(Operation op, Type t) {
 
-        if (!SPECIAL_OPS.contains(op))
+        if (!StatisticConfigs.SPECIAL_OPS.contains(op))
             return;
         HashMap<Type, AtomicInteger> map = localTypeOpMap.getOrDefault(op, null);
         if (map == null) {

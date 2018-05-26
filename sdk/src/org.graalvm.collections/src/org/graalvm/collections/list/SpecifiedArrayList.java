@@ -17,7 +17,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-
+import org.graalvm.collections.list.statistics.StatisticConfigs;
 import org.graalvm.collections.list.statistics.StatisticalArrayListClone;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 
@@ -70,29 +70,29 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // return new StatisticalArrayListClone<>(c);
 // }
 //
-// public static <E> SpecifiedArrayList<E> createNew() {
-// return new StatisticalSpecifiedArrayListImpl<>();
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-// return new StatisticalSpecifiedArrayListImpl<>(c);
-// }
-
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayList<>();
+        return new StatisticalSpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayList<>(initalCapacity);
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayList<>(c);
+        return new StatisticalSpecifiedArrayListImpl<>(c);
     }
+//
+// public static <E> SpecifiedArrayList<E> createNew() {
+// return new SpecifiedArrayList<>();
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+// return new SpecifiedArrayList<>(initalCapacity);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+// return new SpecifiedArrayList<>(c);
+// }
 
     // -------------------------FIELDS-------------------------------------------------
 

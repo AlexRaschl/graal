@@ -360,7 +360,7 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
     }
 
     private boolean isTracked() {
-        return StatisticalSpecifiedArrayListImpl.TRACKS_ALL || StatisticalSpecifiedArrayListImpl.trackedSites.contains(getAllocationSiteName());
+        return StatisticConfigs.TRACKS_ALL || StatisticConfigs.TRACKED_SITES.contains(getAllocationSiteName());
     }
 
     private void countIfTracked(Operation op) {

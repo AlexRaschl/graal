@@ -37,6 +37,7 @@ import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.statistics.CSVGenerator;
+import org.graalvm.collections.list.statistics.StatisticConfigs;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayList;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 import org.graalvm.collections.list.statistics.Statistics;
@@ -293,7 +294,7 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
          * TODO Remember CSVGenerator
          */
 
-        if (StatisticalSpecifiedArrayListImpl.TRACKING_ENABLED) {
+        if (StatisticConfigs.TRACKING_ENABLED) {
             // For some reason not synchronizing this leads to inconistent data
             synchronized (this) {
 
