@@ -1,21 +1,21 @@
 package org.graalvm.collections.list.statistics;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
 
 public class Statistics {
 
     public static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
 
     // List of all StatisticTrackers
-    static final LinkedList<StatisticTracker> trackers = new LinkedList<>();
+    static final ArrayList<StatisticTracker> trackers = new ArrayList<>();
+
+    static final HashMap<String, StatisticTracker> allocToTracker = new HashMap<>();
 
     // Map of all Operations performed
     static final HashMap<Operation, AtomicInteger> globalOpMap = new HashMap<>(Operation.values().length);
@@ -23,11 +23,56 @@ public class Statistics {
     // Type Distribution
     static final HashMap<Type, AtomicInteger> globalTypeMap = new HashMap<>();
 
+    static enum Operation {
+        CSTR_STD,
+        CSTR_COLL,
+        CSTR_CAP,
+        CONTAINS,
+        CONTAINS_ALL,
+        TO_ARRAY,
+        ADD_OBJ,
+        ADD_INDEXED,
+        ADD_ALL,
+        ADD_ALL_INDEXED,
+        REMOVE_OBJ,
+        REMOVE_INDEXED,
+        REMOVE_ALL,
+        RETAIN_ALL,
+        CLEAR,
+        GET_INDEXED,
+        SET_INDEXED,
+        INDEX_OF,
+        INDEX_OF_LAST,
+        ITERATOR,
+        CREATE_LIST_ITR,
+        CREATE_LIST_ITR_INDEXED,
+        SUBLIST,
+        HASH_CODE,
+        EQUALS,
+        TO_STRING,
+        ENSURE_CAP,
+        TRIM_TO_SIZE,
+        EMPTY,
+        SIZE,
+        GROW
+    }
+
     /*
      * Instances of StatisticTrackerImpl call this function to enlist themselves in the trackers list.
      */
-    public static synchronized void addTracker(StatisticTrackerImpl tracker) {
+    public static synchronized void addTracker(StatisticTracker tracker) {
+        if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
+            allocToTracker.put(tracker.getAllocationSite(), tracker);
+        }
         trackers.add(tracker);
+    }
+
+    public static StatisticTracker fetchTracker(String allocSite) {
+        if (allocToTracker.containsKey(allocSite)) {
+            return allocToTracker.get(allocSite);
+        } else {
+            return null;
+        }
     }
 
     static synchronized StatisticTracker getTrackerByID(int id) {
@@ -61,7 +106,7 @@ public class Statistics {
         sb.append(((double) getCurrentTotalSize()) / getCurrentTotalCapacity());
         sb.append('\n');
         sb.append("Trackers allocated: ");
-        sb.append(StatisticTrackerImpl.getNextID() - 1);
+        sb.append(trackers.size());
         sb.append('\n');
         sb.append("OPERATION USAGE: \n");
         sb.append('\n');
@@ -106,7 +151,7 @@ public class Statistics {
         for (StatisticTracker t : trackers) {
             sb.append(t.getID());
             sb.append(dataSeparator);
-            sb.append(t.getAllocationSite().getClassName());
+            sb.append(t.getAllocationSite());
             allocSites[i++] = sb.toString();
 
             sb = new StringBuilder(50);

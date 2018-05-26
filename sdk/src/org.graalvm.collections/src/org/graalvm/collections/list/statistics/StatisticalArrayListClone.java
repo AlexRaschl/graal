@@ -1,33 +1,33 @@
 package org.graalvm.collections.list.statistics;
 
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ADD_ALL;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ADD_ALL_INDEXED;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ADD_INDEXED;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ADD_OBJ;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CLEAR;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CONTAINS;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CONTAINS_ALL;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CREATE_LIST_ITR;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CREATE_LIST_ITR_INDEXED;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CSTR_CAP;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CSTR_COLL;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.CSTR_STD;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.EMPTY;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ENSURE_CAP;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.GET_INDEXED;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.GROW;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.INDEX_OF;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.INDEX_OF_LAST;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.ITERATOR;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.REMOVE_ALL;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.REMOVE_INDEXED;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.REMOVE_OBJ;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.RETAIN_ALL;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.SET_INDEXED;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.SIZE;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.SUBLIST;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TO_ARRAY;
-import static org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation.TRIM_TO_SIZE;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.ADD_ALL;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.ADD_ALL_INDEXED;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.ADD_INDEXED;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.ADD_OBJ;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CLEAR;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CONTAINS;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CONTAINS_ALL;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CREATE_LIST_ITR;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CREATE_LIST_ITR_INDEXED;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CSTR_CAP;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CSTR_COLL;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CSTR_STD;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.EMPTY;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.ENSURE_CAP;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.GET_INDEXED;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.GROW;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.INDEX_OF;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.INDEX_OF_LAST;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.ITERATOR;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.REMOVE_ALL;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.REMOVE_INDEXED;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.REMOVE_OBJ;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.RETAIN_ALL;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.SET_INDEXED;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.SIZE;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.SUBLIST;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.TO_ARRAY;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.TRIM_TO_SIZE;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -35,12 +35,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.graalvm.collections.list.ArrayListClone;
-import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
 
 @SuppressWarnings("serial")
 public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements StatisticalCollection {
 
-    private StatisticTrackerImpl tracker = null;
+    private StatisticTracker tracker = null;
 
     /**
      * Creates an instance of StatisticalSpecifiedArrayListImpl with a given initial capacity.
@@ -50,8 +49,12 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
     public StatisticalArrayListClone(int initialCapacity) {
         super(initialCapacity);
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl();
-            setAllocationSite();
+            final StackTraceElement allocSite = getAllocationSite();
+            if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
+                tracker = StatisticTracker.initTracker(allocSite);
+            } else {
+                tracker = new StatisticTrackerImpl(allocSite);
+            }
             tracker.countOP(CSTR_CAP);
         }
     }
@@ -63,9 +66,14 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
     public StatisticalArrayListClone() {
         super();
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl();
+            final StackTraceElement allocSite = getAllocationSite();
+            if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
+                tracker = StatisticTracker.initTracker(allocSite);
+            } else {
+                tracker = new StatisticTrackerImpl(allocSite);
+            }
             tracker.countOP(CSTR_STD);
-            setAllocationSite();
+            // setAllocationSite();
         }
     }
 
@@ -78,11 +86,16 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
     public StatisticalArrayListClone(Collection<E> collection) {
         super(collection);
         if (isTracked()) {
-            tracker = new StatisticTrackerImpl();
+            final StackTraceElement allocSite = getAllocationSite();
+            if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
+                tracker = StatisticTracker.initTracker(allocSite);
+            } else {
+                tracker = new StatisticTrackerImpl(allocSite);
+            }
             if (collection.size() != 0)
                 tracker.setType(checkNull(collection.iterator().next()));
             tracker.countOP(CSTR_COLL);
-            setAllocationSite();
+            // setAllocationSite();
         }
     }
 
@@ -322,22 +335,22 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
         }
     }
 
-    private void setAllocationSite() {
-        Exception e = new Exception();
-
-        StackTraceElement[] elems = e.getStackTrace();
-
-        if (elems.length >= 2 && !elems[1].getMethodName().equals("<init>")) {
-            tracker.setAllocSiteElem(elems[1]);
-        } else {
-            if (!elems[2].getMethodName().equals("createNew")) {
-                tracker.setAllocSiteElem(elems[2]);
-            } else {
-                tracker.setAllocSiteElem(elems[3]);
-            }
-        }
-
-    }
+// private void setAllocationSite() {
+// Exception e = new Exception();
+//
+// StackTraceElement[] elems = e.getStackTrace();
+//
+// if (elems.length >= 2 && !elems[1].getMethodName().equals("<init>")) {
+// tracker.setAllocSiteElem(elems[1]);
+// } else {
+// if (!elems[2].getMethodName().equals("createNew")) {
+// tracker.setAllocSiteElem(elems[2]);
+// } else {
+// tracker.setAllocSiteElem(elems[3]);
+// }
+// }
+//
+// }
 
     private static String getAllocationSiteName() {
 
@@ -359,11 +372,28 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
 
     }
 
+    private static StackTraceElement getAllocationSite() {
+        Exception e = new Exception();
+
+        StackTraceElement[] elems = e.getStackTrace();
+
+        if (elems.length >= 2 && !elems[1].getMethodName().equals("<init>")) {
+            return elems[1];
+        } else {
+            if (!elems[2].getMethodName().equals("createNew")) {
+                return elems[2];
+            } else {
+                return elems[3];
+            }
+        }
+
+    }
+
     private boolean isTracked() {
         return StatisticConfigs.TRACKS_ALL || StatisticConfigs.TRACKED_SITES.contains(getAllocationSiteName());
     }
 
-    private void countIfTracked(Operation op) {
+    private void countIfTracked(Statistics.Operation op) {
         if (tracker != null)
             tracker.countOP(op);
     }

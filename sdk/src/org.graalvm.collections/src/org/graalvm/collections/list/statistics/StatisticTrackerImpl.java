@@ -6,92 +6,52 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.graalvm.collections.list.statistics.Statistics.Operation.*;
+
 public class StatisticTrackerImpl implements StatisticTracker {
     // _____GLOBAL FIELDS______
     // ID
     private static int nextID = 1;
 
-    // Operations
-    static enum Operation {
-        CSTR_STD,
-        CSTR_COLL,
-        CSTR_CAP,
-        CONTAINS,
-        CONTAINS_ALL,
-        TO_ARRAY,
-        ADD_OBJ,
-        ADD_INDEXED,
-        ADD_ALL,
-        ADD_ALL_INDEXED,
-        REMOVE_OBJ,
-        REMOVE_INDEXED,
-        REMOVE_ALL,
-        RETAIN_ALL,
-        CLEAR,
-        GET_INDEXED,
-        SET_INDEXED,
-        INDEX_OF,
-        INDEX_OF_LAST,
-        ITERATOR,
-        CREATE_LIST_ITR,
-        CREATE_LIST_ITR_INDEXED,
-        SUBLIST,
-        HASH_CODE,
-        EQUALS,
-        TO_STRING,
-        ENSURE_CAP,
-        TRIM_TO_SIZE,
-        EMPTY,
-        SIZE,
-        GROW
-    }
-
-    // Operations that are tracked more precisely for each Type in the list
-    // private static final EnumSet<Operation> SPECIAL_OPS = EnumSet.of(Operation.ADD_OBJ,
-    // Operation.REMOVE_OBJ, Operation.GET_INDEXED, Operation.SET_INDEXED);
-
     // _____LOCAL FIELDS______
     private final int ID;
 
     // Map of Operations performed on the list
-    private final HashMap<Operation, AtomicInteger> localOpMap;
+    private final HashMap<Statistics.Operation, AtomicInteger> localOpMap;
 
     // Maps for tracking Operation Distribution based on inserted Types and Subtypes. Only Operations
     // listed in SPECIAL_OPS are tracked
-    private final HashMap<Operation, HashMap<Type, AtomicInteger>> localTypeOpMap;
+    private final HashMap<Statistics.Operation, HashMap<Type, AtomicInteger>> localTypeOpMap;
 
     // Type
     private Type type;
-    private StackTraceElement allocSiteElem;
+    // private StackTraceElement allocSiteElem;
+    private String allocSite;
     private boolean isAdded = false;
 
     // Number of times the content of the list has changed NOTE: Changes made by Iterators are not
     // tracked
     private int modifications;
 
-    // TODO dont save reference to lists
-    // private final StatisticalCollection list;
     private int size = 0;
     private int capacity = 0;
     private double loadFactor;
 
-    public StatisticTrackerImpl(/* StatisticalCollection list */) {
+    public StatisticTrackerImpl(StackTraceElement allocSite) {
         ID = nextID++;
-        this.localOpMap = new HashMap<>(Operation.values().length);
-        // Easy filtering 0 grows
-        this.localOpMap.put(Operation.GROW, new AtomicInteger(0));
+        this.localOpMap = new HashMap<>(Statistics.Operation.values().length);
+        this.localOpMap.put(GROW, new AtomicInteger(0));
         this.localTypeOpMap = new HashMap<>();
         this.modifications = 0;
-        // this.list = list;
-
         Statistics.addTracker(this);
+        this.allocSite = StatisticTracker.setAllocSiteElem(allocSite);
     }
 
-    public void countOP(Operation op) {
+    public void countOP(Statistics.Operation op) {
         synchronized (Statistics.globalOpMap) {
-            addOpTo(Statistics.globalOpMap, op);
+            StatisticTracker.addOpTo(Statistics.globalOpMap, op);
         }
-        addOpTo(localOpMap, op);
+        StatisticTracker.addOpTo(localOpMap, op);
     }
 
     public void modified() {
@@ -152,12 +112,12 @@ public class StatisticTrackerImpl implements StatisticTracker {
 
     public String[] getOpDataLines(final char dataSeparator) {
         final String[] dataArr = new String[localOpMap.size()];
-        final Iterator<Entry<Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
+        final Iterator<Entry<Statistics.Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
         StringBuilder sb = new StringBuilder(50);
 
         int n = 0;
         while (itr.hasNext()) {
-            Entry<Operation, AtomicInteger> entry = itr.next();
+            Entry<Statistics.Operation, AtomicInteger> entry = itr.next();
             sb.append(this.ID);
             sb.append(dataSeparator);
             sb.append(entry.getKey().name());
@@ -171,69 +131,18 @@ public class StatisticTrackerImpl implements StatisticTracker {
 
     public String[] getTypeOpDataLines(char dataSeparator) {
         final String[][] dataArr = new String[localTypeOpMap.size()][];
-        initStrings(dataArr);
-        final Iterator<Entry<Operation, HashMap<Type, AtomicInteger>>> itr = localTypeOpMap.entrySet().iterator();
+        StatisticTracker.initStrings(dataArr);
+        final Iterator<Entry<Statistics.Operation, HashMap<Type, AtomicInteger>>> itr = localTypeOpMap.entrySet().iterator();
         int n = 0;
         while (itr.hasNext()) {
-            Entry<Operation, HashMap<Type, AtomicInteger>> entry = itr.next();
-            Operation op = entry.getKey();
+            Entry<Statistics.Operation, HashMap<Type, AtomicInteger>> entry = itr.next();
+            Statistics.Operation op = entry.getKey();
             HashMap<Type, AtomicInteger> map = entry.getValue();
             dataArr[n] = new String[map.size()];
-            putData(dataArr[n], op, map, this.ID, dataSeparator);
+            StatisticTracker.putData(dataArr[n], op, map, this.ID, dataSeparator);
             n++;
         }
-        return getFlatStringArray(dataArr);
-    }
-
-    private static void initStrings(String[][] dataArr) {
-        for (int r = 0; r < dataArr.length; r++) {
-            dataArr[r] = new String[0];
-        }
-    }
-
-    private static void putData(String[] dataLines, Operation op, HashMap<Type, AtomicInteger> map, int ID, char dataSeparator) {
-
-        final Iterator<Entry<Type, AtomicInteger>> itr = map.entrySet().iterator();
-
-        StringBuilder sb = new StringBuilder(50);
-        int n = 0;
-        while (itr.hasNext()) {
-            Entry<Type, AtomicInteger> entry = itr.next();
-            sb.append(ID);
-            sb.append(dataSeparator);
-            sb.append(op.name());
-            sb.append(dataSeparator);
-            sb.append(entry.getKey().getTypeName());
-            sb.append(dataSeparator);
-            sb.append(entry.getValue().get());
-            dataLines[n++] = sb.toString();
-            sb = new StringBuilder(50);
-
-        }
-
-    }
-
-    private static String[] getFlatStringArray(String[][] dataArr) {
-        if (dataArr == null)
-            return null;
-
-        int dim1 = dataArr.length;
-        if (dim1 == 0)
-            return new String[0];
-        if (dataArr[0] == null) {
-            return null; // TODO handle case
-        }
-
-        int dim2 = dataArr[0].length;
-
-        final String[] result = new String[dataArr.length * dataArr[0].length];
-        int i = 0;
-        for (int r = 0; r < dim1; r++) {
-            for (int c = 0; c < dim2; c++) {
-                result[i++] = dataArr[r][c];
-            }
-        }
-        return result;
+        return StatisticTracker.getFlatStringArray(dataArr);
     }
 
     public void printGeneralInformation() {
@@ -257,7 +166,8 @@ public class StatisticTrackerImpl implements StatisticTracker {
         sb.append(loadFactor);
         sb.append('\n');
         sb.append("Allocation Site: ");
-        sb.append(allocSiteElem.getClassName());
+        // sb.append(allocSiteElem.getClassName());
+        sb.append(allocSite);
         sb.append('\n');
         sb.append("Modifications made so far: ");
         sb.append(modifications);
@@ -273,17 +183,17 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     // TODO check if i need to change the type if it is a superclass of the currently added one
-    synchronized void setType(Class<?> c) {
+    public synchronized void setType(Class<?> c) {
         if (!isAdded) {
             synchronized (Statistics.globalTypeMap) {
                 this.type = c;
-                addTypeTo(Statistics.globalTypeMap, type);
+                StatisticTracker.addTypeTo(Statistics.globalTypeMap, type);
                 isAdded = true;
             }
         }
     }
 
-    void addTypeOpToMap(Operation op, Type t) {
+    public void addTypeOpToMap(Statistics.Operation op, Type t) {
 
         if (!StatisticConfigs.SPECIAL_OPS.contains(op))
             return;
@@ -303,31 +213,13 @@ public class StatisticTrackerImpl implements StatisticTracker {
         }
     }
 
-    void setAllocSiteElem(StackTraceElement elem) {
-        if (allocSiteElem == null)
-            this.allocSiteElem = elem;
+    public String getAllocationSite() {
+        // return allocSiteElem;
+        return this.allocSite;
     }
 
-    private static void addOpTo(HashMap<Operation, AtomicInteger> map, Operation op) {
-        AtomicInteger curr = map.getOrDefault(op, null);
-        if (curr == null) {
-            map.put(op, new AtomicInteger(1));
-        } else {
-            curr.getAndIncrement();
-        }
-    }
-
-    private static void addTypeTo(HashMap<Type, AtomicInteger> map, Type t) {
-        AtomicInteger curr = map.getOrDefault(t, null);
-        if (curr == null) {
-            map.put(t, new AtomicInteger(1));
-        } else {
-            curr.getAndIncrement();
-        }
-    }
-
-    public StackTraceElement getAllocationSite() {
-        return allocSiteElem;
-    }
+// public String getAllocSiteName() {
+// return this.allocSite;
+// }
 
 }

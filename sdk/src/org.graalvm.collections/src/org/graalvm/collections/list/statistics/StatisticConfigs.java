@@ -3,7 +3,7 @@ package org.graalvm.collections.list.statistics;
 import java.util.EnumSet;
 import java.util.HashSet;
 
-import org.graalvm.collections.list.statistics.StatisticTrackerImpl.Operation;
+import org.graalvm.collections.list.statistics.Statistics.Operation;
 
 public class StatisticConfigs {
 
@@ -28,13 +28,14 @@ public class StatisticConfigs {
     public static final boolean APPEND_MODE = false;
 
     // Use the allocSite Tracker which is faster
-    public static final boolean useAllocSiteTracking = false;
+    public static final boolean USE_ALLOC_SITE_TRACKING = true;
+    public static final boolean AGGREGATE_SAME_CLASSES = true;
 
     // Enable Tracking
     public static final boolean TRACKING_ENABLED = true;
 
     // Track all Allocation Sites or only the Sites listed in trackedSites HashSet
-    public static final boolean TRACKS_ALL = false;
+    public static final boolean TRACKS_ALL = true;
 
     // Specify Sites to track if TRACKS_ALL is disabled
     public static final HashSet<String> TRACKED_SITES = new HashSet<>(10);
@@ -53,5 +54,5 @@ public class StatisticConfigs {
     }
 
     // Operations that are tracked more precisely for each Type in the list
-    public static final EnumSet<Operation> SPECIAL_OPS = EnumSet.of(Operation.ADD_OBJ, Operation.REMOVE_OBJ, Operation.GET_INDEXED, Operation.SET_INDEXED);
+    public static final EnumSet<Statistics.Operation> SPECIAL_OPS = EnumSet.of(Operation.ADD_OBJ, Operation.REMOVE_OBJ, Operation.GET_INDEXED, Operation.SET_INDEXED);
 }

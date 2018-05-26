@@ -93,6 +93,12 @@ public class StatisticsSimpleTest {
         testList9 = null;
         System.gc();
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         Statistics.printGlobalInformation();
 
         String[] data = Statistics.getOpDataLines(DATA_SEPARATOR);
@@ -111,7 +117,6 @@ public class StatisticsSimpleTest {
         System.out.println();
 
         CSVGenerator.createFileOfGlobalInfo(StatisticsSimpleTest.class.getSimpleName());
-
         CSVGenerator.createFileOfTracker(1, StatisticsSimpleTest.class.getSimpleName());
 
         // CSVGenerator.createFileOfEverything(StatisticsSimpleTest.class.getSimpleName());

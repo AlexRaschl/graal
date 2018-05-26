@@ -81,13 +81,14 @@ public class CSVGenerator {
         writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
         // writeToFile(file, opLines, true);
 
-        int length = StatisticTrackerImpl.getNextID();
+        int length = Statistics.trackers.size();
+        ;
         List<String[]> arrays = new ArrayList<>(10002);
         arrays.add(opLines);
 
-        for (int i = 1; i < length; i++) {
+        for (int i = 0; i < length; i++) {
 
-            arrays.add(Statistics.getTrackerByID(i).getOpDataLines(DATA_SEPARATOR));
+            arrays.add(Statistics.trackers.get(i).getOpDataLines(DATA_SEPARATOR));
             if (i % 25000 == 0) {// TODO REMOVE
                 writeToFile(file, arrays, true);
                 arrays = new ArrayList<>(25005);
@@ -102,11 +103,11 @@ public class CSVGenerator {
         if (file == null)
             return; // TODO Exception
         writeToFile(file, "Tracker" + DATA_SEPARATOR + "Operation on" + DATA_SEPARATOR + "Type" + DATA_SEPARATOR + "Occurrences" + LINE_SEPARATOR, APPEND_MODE);
-        int length = StatisticTrackerImpl.getNextID();
+        int length = Statistics.trackers.size();
         String[] trackerInfo;
 
-        for (int i = 1; i < length; i++) {
-            trackerInfo = Statistics.getTrackerByID(i).getTypeOpDataLines(DATA_SEPARATOR);
+        for (int i = 0; i < length; i++) {
+            trackerInfo = Statistics.trackers.get(i).getTypeOpDataLines(DATA_SEPARATOR);
             writeToFile(file, trackerInfo, true);
         }
     }
