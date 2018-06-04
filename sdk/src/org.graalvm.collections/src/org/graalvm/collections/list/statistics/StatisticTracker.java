@@ -1,6 +1,7 @@
 package org.graalvm.collections.list.statistics;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -201,16 +202,18 @@ interface StatisticTracker {
 
         // final int dim2 = dataArr[0].length;
 
-        final String[] result = new String[dataArr.length * dataArr[0].length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = new String();
-        }
+        final ArrayList<String> result = new ArrayList<>();
+
+// for (int i = 0; i < result.length; i++) {
+// result[i] = new String();
+// }
+
         int i = 0;
         for (int r = 0; r < dim1; r++) {
             for (int c = 0; c < dataArr[r].length; c++) {
-                result[i++] = dataArr[r][c];
+                result.add(dataArr[r][c]);
             }
         }
-        return result;
+        return result.toArray(new String[1]);
     }
 }

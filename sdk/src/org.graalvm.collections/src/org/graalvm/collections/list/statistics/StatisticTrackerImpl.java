@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.graalvm.collections.list.statistics.Statistics.Operation;
+
 import static org.graalvm.collections.list.statistics.Statistics.Operation.*;
 
 public class StatisticTrackerImpl implements StatisticTracker {
@@ -40,7 +42,10 @@ public class StatisticTrackerImpl implements StatisticTracker {
     public StatisticTrackerImpl(StackTraceElement allocSite) {
         ID = nextID++;
         this.localOpMap = new HashMap<>(Statistics.Operation.values().length);
-        this.localOpMap.put(GROW, new AtomicInteger(0));
+        if (StatisticConfigs.INIT_ZERO) {
+            for (Operation op : StatisticConfigs.INIT_ZERO_SET)
+                localOpMap.put(op, new AtomicInteger(0));
+        }
         this.localTypeOpMap = new HashMap<>();
         this.modifications = 0;
         Statistics.addTracker(this);

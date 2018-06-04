@@ -57,7 +57,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
 // return new ArrayListClone<>(c);
 // }
-
+//
 // public static <E> SpecifiedArrayList<E> createNew() {
 // return new StatisticalArrayListClone<>();
 // }
@@ -70,29 +70,29 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // return new StatisticalArrayListClone<>(c);
 // }
 //
-    public static <E> SpecifiedArrayList<E> createNew() {
-        return new StatisticalSpecifiedArrayListImpl<>();
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new StatisticalSpecifiedArrayListImpl<>(c);
-    }
-//
 // public static <E> SpecifiedArrayList<E> createNew() {
-// return new SpecifiedArrayList<>();
+// return new StatisticalSpecifiedArrayListImpl<>();
 // }
 //
 // public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-// return new SpecifiedArrayList<>(initalCapacity);
+// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
 // }
 //
 // public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-// return new SpecifiedArrayList<>(c);
+// return new StatisticalSpecifiedArrayListImpl<>(c);
 // }
+//
+    public static <E> SpecifiedArrayList<E> createNew() {
+        return new SpecifiedArrayList<>();
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+        return new SpecifiedArrayList<>(initalCapacity);
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+        return new SpecifiedArrayList<>(c);
+    }
 
     // -------------------------FIELDS-------------------------------------------------
 

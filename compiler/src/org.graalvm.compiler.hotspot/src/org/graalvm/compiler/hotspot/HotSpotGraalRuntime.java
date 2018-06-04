@@ -296,40 +296,22 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
 
         if (StatisticConfigs.TRACKING_ENABLED) {
             // For some reason not synchronizing this leads to inconistent data
-            synchronized (this) {
+            // synchronized (this) {
 
-                // Wait for other threads to generate all Lists before printing results
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            // Wait for other threads to generate all Lists before printing results
+
+            Statistics.getReadLock();
+            try {
+// Thread.sleep(10000);
+// } catch (InterruptedException e) {
+// e.printStackTrace();
+// }
                 Statistics.printGlobalInformation();
-
-                // System.out.println("SPECIAL INFO");
-                // System.out.println("OP data lines");
-                // String[] data = Statistics.getOpDataLines(';');
-                // for (String s : data)
-                // System.out.println(s);
-                // System.out.println();
-
-                // System.out.println("Type Data lines");
-                // data = Statistics.getTypeDataLines(';');
-                // for (String s : data)
-                // System.out.println(s);
-                // System.out.println();
-                //
                 System.out.println("Load Factor lines");
                 String data[] = Statistics.getLoadFactorDataLines(';');
                 for (String s : data)
                     System.out.println(s);
                 System.out.println();
-                //
-                // System.out.println("Allocation Site lines");
-                // data = Statistics.getAllocSiteLines(';');
-                // for (String s : data)
-                // System.out.println(s);
-                // System.out.println();
 
                 final String prefix = this.getClass().getSimpleName();
                 CSVGenerator.createFileOfAllocationSites(prefix);
@@ -337,8 +319,11 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
                 CSVGenerator.createFileOfTrackerTypes(prefix);
                 CSVGenerator.createFileOfTrackerSizes(prefix);
                 CSVGenerator.createFileOfAllocationSites(prefix);
-                // CSVGenerator.createFileOfTypeOperationDistributions(prefix);
+                CSVGenerator.createFileOfTypeOperationDistributions(prefix);
                 CSVGenerator.createFileOfOperationDistributions(prefix);
+                // }
+            } finally {
+                Statistics.releaseReadLock();
             }
         }
 

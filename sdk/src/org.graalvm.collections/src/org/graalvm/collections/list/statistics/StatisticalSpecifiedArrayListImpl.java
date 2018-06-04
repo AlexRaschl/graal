@@ -5,6 +5,7 @@ import static org.graalvm.collections.list.statistics.Statistics.Operation.ADD_A
 import static org.graalvm.collections.list.statistics.Statistics.Operation.ADD_INDEXED;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.ADD_OBJ;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.CLEAR;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.CLONE;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.CONTAINS;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.CONTAINS_ALL;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.CREATE_LIST_ITR;
@@ -25,14 +26,18 @@ import static org.graalvm.collections.list.statistics.Statistics.Operation.REMOV
 import static org.graalvm.collections.list.statistics.Statistics.Operation.RETAIN_ALL;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.SET_INDEXED;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.SIZE;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.SORT;
+import static org.graalvm.collections.list.statistics.Statistics.Operation.SPLITERATOR;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.SUBLIST;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.TO_ARRAY;
 import static org.graalvm.collections.list.statistics.Statistics.Operation.TRIM_TO_SIZE;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Spliterator;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
 
@@ -56,6 +61,7 @@ import org.graalvm.collections.list.SpecifiedArrayList;
 public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> implements StatisticalCollection {
 
     private static final long serialVersionUID = 2325200269334451909L;
+    private final boolean isTracked = isTracked();
 
     /**
      * Factory methods
@@ -84,7 +90,10 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      */
     public StatisticalSpecifiedArrayListImpl(int initialCapacity) {
         super(initialCapacity);
-        if (isTracked()) {
+
+        // isTracked = isTracked();
+
+        if (isTracked) {
             final StackTraceElement allocSite = getAllocationSite();
             if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
                 tracker = StatisticTracker.initTracker(allocSite);
@@ -101,7 +110,8 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      */
     public StatisticalSpecifiedArrayListImpl() {
         super();
-        if (isTracked()) {
+        // isTracked = isTracked();
+        if (isTracked) {
             final StackTraceElement allocSite = getAllocationSite();
             if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
                 tracker = StatisticTracker.initTracker(allocSite);
@@ -121,7 +131,8 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      */
     public StatisticalSpecifiedArrayListImpl(Collection<E> collection) {
         super(collection);
-        if (isTracked()) {
+        // isTracked = isTracked();
+        if (isTracked) {
             final StackTraceElement allocSite = getAllocationSite();
             if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
                 tracker = StatisticTracker.initTracker(allocSite);
@@ -167,7 +178,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     @Override
     public boolean add(E e) {
-        if (tracker != null) {
+        if (isTracked) {
             Class<?> clazz = checkNull(e);
             tracker.countOP(ADD_OBJ);
             tracker.addTypeOpToMap(ADD_OBJ, clazz);
@@ -179,7 +190,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     @Override
     public boolean remove(Object o) {
-        if (tracker != null) {
+        if (isTracked) {
             tracker.countOP(REMOVE_OBJ);
             tracker.modified();
             tracker.addTypeOpToMap(REMOVE_OBJ, o == null ? NoObject.class : o.getClass());
@@ -197,7 +208,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     public boolean addAll(Collection<? extends E> c) {
         boolean res = super.addAll(c);
 
-        if (tracker != null) {
+        if (isTracked) {
             tracker.countOP(ADD_ALL);
 
             if (c.size() != 0) {
@@ -216,7 +227,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     public boolean addAll(int index, Collection<? extends E> c) {
         boolean res = super.addAll(index, c);
 
-        if (tracker != null) {
+        if (isTracked) {
             tracker.countOP(ADD_ALL_INDEXED);
             if (c.size() != 0) {
                 Class<?> clazz;
@@ -234,7 +245,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     public boolean removeAll(Collection<?> c) {
         boolean res = super.removeAll(c);
 
-        if (tracker != null) {
+        if (isTracked) {
             tracker.countOP(REMOVE_ALL);
             if (res)
                 tracker.modified();
@@ -246,12 +257,33 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     public boolean retainAll(Collection<?> c) {
         boolean res = super.retainAll(c);
 
-        if (tracker != null) {
+        if (isTracked) {
             tracker.countOP(RETAIN_ALL);
             if (res)
                 tracker.modified();
         }
         return res;
+    }
+
+    @Override
+    public void sort(Comparator<? super E> c) {
+        super.sort(c);
+        if (isTracked) {
+            tracker.countOP(SORT);
+            tracker.modified();
+        }
+    }
+
+    @Override
+    public Object clone() {
+        countIfTracked(CLONE);
+        return super.clone();
+    }
+
+    @Override
+    public Spliterator<E> spliterator() {
+        countIfTracked(SPLITERATOR);
+        return super.spliterator();
     }
 
     @Override
@@ -264,7 +296,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
     public E get(int index) {
         E e = super.get(index);
 
-        if (tracker != null) {
+        if (isTracked) {
             tracker.countOP(GET_INDEXED);
             tracker.addTypeOpToMap(GET_INDEXED, checkNull(e));
         }
@@ -273,7 +305,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     @Override
     public E set(int index, E element) {
-        if (tracker != null) {
+        if (isTracked) {
             Class<?> clazz = checkNull(element);
             tracker.countOP(SET_INDEXED);
             tracker.modified();
@@ -286,7 +318,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     @Override
     public void add(int index, E element) {
-        if (tracker != null) {
+        if (isTracked) {
             tracker.countOP(ADD_INDEXED);
             tracker.modified();
             tracker.setType(checkNull(element));
@@ -296,7 +328,7 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     @Override
     public E remove(int index) {
-        if (tracker != null) {
+        if (isTracked) {
             tracker.countOP(REMOVE_INDEXED);
             tracker.modified();
         }
@@ -427,19 +459,19 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     // TODO replace with variable that is set in constructor to remove the getAllocSiteNameNeed and also
     // for performance
-    private boolean isTracked() {
+    private static boolean isTracked() {
         return StatisticConfigs.TRACKS_ALL || StatisticConfigs.TRACKED_SITES.contains(getAllocationSiteName());
     }
 
     private void countIfTracked(Statistics.Operation op) {
-        if (tracker != null)
+        if (isTracked)
             tracker.countOP(op);
     }
 
     // TODO implement better solution than finalize
     @Override
     protected void finalize() throws Throwable {
-        if (tracker != null) {
+        if (isTracked) {
             synchronized (tracker) {
                 tracker.setCurrentCapacity(getCapacity());
                 tracker.setCurrentSize(size());

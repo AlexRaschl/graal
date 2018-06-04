@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Statistics {
 
-    public static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
+    private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
 
     // List of all StatisticTrackers
     static final ArrayList<StatisticTracker> trackers = new ArrayList<>();
@@ -54,132 +54,184 @@ public class Statistics {
         TRIM_TO_SIZE,
         EMPTY,
         SIZE,
-        GROW
+        GROW,
+        SORT,
+        CLONE,
+        SPLITERATOR
     }
 
     /*
      * Instances of StatisticTrackerImpl call this function to enlist themselves in the trackers list.
      */
-    public static synchronized void addTracker(StatisticTracker tracker) {
-        if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
-            allocToTracker.put(tracker.getAllocationSite(), tracker);
+    public static void addTracker(StatisticTracker tracker) {
+        LOCK.writeLock().lock();
+        try {
+            if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
+                allocToTracker.put(tracker.getAllocationSite(), tracker);
+            }
+            trackers.add(tracker);
+        } finally {
+            LOCK.writeLock().unlock();
         }
-        trackers.add(tracker);
+
+    }
+
+    public static void getReadLock() {
+        LOCK.readLock().lock();
+    }
+
+    public static void releaseReadLock() {
+        LOCK.readLock().unlock();
     }
 
     public static StatisticTracker fetchTracker(String allocSite) {
-        if (allocToTracker.containsKey(allocSite)) {
-            return allocToTracker.get(allocSite);
-        } else {
-            return null;
+        LOCK.readLock().lock();
+        try {
+            if (allocToTracker.containsKey(allocSite)) {
+                return allocToTracker.get(allocSite);
+            } else {
+                return null;
+            }
+        } finally {
+            LOCK.readLock().unlock();
         }
     }
 
-    static synchronized StatisticTracker getTrackerByID(int id) {
-        final Iterator<StatisticTracker> itr = trackers.iterator();
-        while (itr.hasNext()) {
-            StatisticTracker t = itr.next();
-            if (t.getID() == id)
-                return t;
+    static StatisticTracker getTrackerByID(int id) {
+        LOCK.readLock().lock();
+        try {
+            final Iterator<StatisticTracker> itr = trackers.iterator();
+            while (itr.hasNext()) {
+                StatisticTracker t = itr.next();
+                if (t.getID() == id)
+                    return t;
+            }
+            return null;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return null;
     }
 
     public static void printOverallSummary() {
-        printGlobalInformation();
+        LOCK.readLock().lock();
+        try {
+            printGlobalInformation();
 
-        for (StatisticTracker t : trackers) {
-            t.printGeneralInformation();
+            for (StatisticTracker t : trackers) {
+                t.printGeneralInformation();
+            }
+        } finally {
+            LOCK.readLock().unlock();
         }
     }
 
-    public static synchronized void printGlobalInformation() {
-        StringBuilder sb = new StringBuilder(200);
-        sb.append("GLOBAL INFORMATION: \n");
-        sb.append("Current used Size: ");
-        sb.append(getCurrentTotalSize());
-        sb.append('\n');
-        sb.append("Current available Capacity: ");
-        sb.append(getCurrentTotalCapacity());
-        sb.append('\n');
-        sb.append("Current global load factor: ");
-        sb.append(((double) getCurrentTotalSize()) / getCurrentTotalCapacity());
-        sb.append('\n');
-        sb.append("Trackers allocated: ");
-        sb.append(trackers.size());
-        sb.append('\n');
-        sb.append("OPERATION USAGE: \n");
-        sb.append('\n');
-        sb.append(getPrettyOpMapContentString(globalOpMap));
-        sb.append('\n');
-        sb.append("TYPE DISTRIBUTION: \n");
-        sb.append(getPrettyTypeMapContentString());
-        sb.append("END of Summary! \n\n");
-        System.out.print(sb.toString());
+    public static void printGlobalInformation() {
+        LOCK.readLock().lock();
+        try {
+            StringBuilder sb = new StringBuilder(200);
+            sb.append("GLOBAL INFORMATION: \n");
+            sb.append("Current used Size: ");
+            sb.append(getCurrentTotalSize());
+            sb.append('\n');
+            sb.append("Current available Capacity: ");
+            sb.append(getCurrentTotalCapacity());
+            sb.append('\n');
+            sb.append("Current global load factor: ");
+            sb.append(((double) getCurrentTotalSize()) / getCurrentTotalCapacity());
+            sb.append('\n');
+            sb.append("Trackers allocated: ");
+            sb.append(trackers.size());
+            sb.append('\n');
+            sb.append("OPERATION USAGE: \n");
+            sb.append('\n');
+            sb.append(getPrettyOpMapContentString(globalOpMap));
+            sb.append('\n');
+            sb.append("TYPE DISTRIBUTION: \n");
+            sb.append(getPrettyTypeMapContentString());
+            sb.append("END of Summary! \n\n");
+            System.out.print(sb.toString());
+        } finally {
+            LOCK.readLock().unlock();
+        }
     }
 
     /*
      * Data Lines for CSV Generator
      */
-    public static synchronized String[] getOpDataLines(final char dataSeparator) {
-        final String[] dataArr = new String[globalOpMap.size()];
-        Iterator<Entry<Operation, AtomicInteger>> itr = globalOpMap.entrySet().iterator();
-        StringBuilder sb = new StringBuilder(50);
+    public static String[] getOpDataLines(final char dataSeparator) {
+        LOCK.readLock().lock();
+        try {
+            final String[] dataArr = new String[globalOpMap.size()];
+            Iterator<Entry<Operation, AtomicInteger>> itr = globalOpMap.entrySet().iterator();
+            StringBuilder sb = new StringBuilder(50);
 
-        int n = 0;
-        while (itr.hasNext()) {
-            Entry<Operation, AtomicInteger> entry = itr.next();
-            sb.append(0);
-            sb.append(dataSeparator);
-            sb.append(entry.getKey().name());
-            sb.append(dataSeparator);
-            sb.append(' ');
-            sb.append(entry.getValue().get());
-            dataArr[n++] = sb.toString();
-            sb = new StringBuilder(50);
+            int n = 0;
+            while (itr.hasNext()) {
+                Entry<Operation, AtomicInteger> entry = itr.next();
+                sb.append(0);
+                sb.append(dataSeparator);
+                sb.append(entry.getKey().name());
+                sb.append(dataSeparator);
+                sb.append(' ');
+                sb.append(entry.getValue().get());
+                dataArr[n++] = sb.toString();
+                sb = new StringBuilder(50);
+            }
+            return dataArr;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return dataArr;
     }
 
-    public static synchronized String[] getAllocSiteLines(final char dataSeparator) {
-        final String[] allocSites = new String[trackers.size()];
-        StringBuilder sb = new StringBuilder(50);
+    public static String[] getAllocSiteLines(final char dataSeparator) {
+        LOCK.readLock().lock();
+        try {
+            final String[] allocSites = new String[trackers.size()];
+            StringBuilder sb = new StringBuilder(50);
 
-        int i = 0;
-        // sb.append("Trackers allocated: " + (StatisticTrackerImpl.getNextID() - 1));
-        // sb.append("trackerList size: " + trackers.size());
-        for (StatisticTracker t : trackers) {
-            sb.append(t.getID());
-            sb.append(dataSeparator);
-            sb.append(t.getAllocationSite());
-            allocSites[i++] = sb.toString();
+            int i = 0;
+            // sb.append("Trackers allocated: " + (StatisticTrackerImpl.getNextID() - 1));
+            // sb.append("trackerList size: " + trackers.size());
+            for (StatisticTracker t : trackers) {
+                sb.append(t.getID());
+                sb.append(dataSeparator);
+                sb.append(t.getAllocationSite());
+                allocSites[i++] = sb.toString();
 
-            sb = new StringBuilder(50);
+                sb = new StringBuilder(50);
+            }
+            return allocSites;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return allocSites;
     }
 
     /*
      * Returns an Overview of the used Types that the tracked lists are storing
      */
-    public static synchronized String[] getTypeDataLines(final char dataSeparator) {
-        final String[] dataArr = new String[globalTypeMap.size()];
-        final Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
+    public static String[] getTypeDataLines(final char dataSeparator) {
+        LOCK.readLock().lock();
+        try {
+            final String[] dataArr = new String[globalTypeMap.size()];
+            final Iterator<Entry<Type, AtomicInteger>> itr = globalTypeMap.entrySet().iterator();
 
-        int n = 0;
-        StringBuilder sb = new StringBuilder(30);
-        while (itr.hasNext()) {
-            Entry<Type, AtomicInteger> entry = itr.next();
-            sb.append(0);
-            sb.append(dataSeparator);
-            sb.append(entry.getKey().getTypeName());
-            sb.append(dataSeparator);
-            sb.append(' ');
-            sb.append(entry.getValue().get());
-            dataArr[n++] = sb.toString();
-            sb = new StringBuilder();
+            int n = 0;
+            StringBuilder sb = new StringBuilder(30);
+            while (itr.hasNext()) {
+                Entry<Type, AtomicInteger> entry = itr.next();
+                sb.append(0);
+                sb.append(dataSeparator);
+                sb.append(entry.getKey().getTypeName());
+                sb.append(dataSeparator);
+                sb.append(' ');
+                sb.append(entry.getValue().get());
+                dataArr[n++] = sb.toString();
+                sb = new StringBuilder();
+            }
+            return dataArr;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return dataArr;
     }
 
     /**
@@ -188,39 +240,49 @@ public class Statistics {
      * @param dataSeparator
      * @return
      */
-    public static synchronized String[] getTypesForAllTrackers(final char dataSeparator) {
-        final String[] dataArr = new String[trackers.size()];
+    public static String[] getTypesForAllTrackers(final char dataSeparator) {
+        LOCK.readLock().lock();
+        try {
+            final String[] dataArr = new String[trackers.size()];
 
-        StringBuilder sb = new StringBuilder(40);
-        int n = 0;// TrackerId
+            StringBuilder sb = new StringBuilder(40);
+            int n = 0;// TrackerId
 
-        for (StatisticTracker tracker : trackers) {
-            // n = tracker.getID();
-            sb.append(tracker.getID());
-            sb.append(dataSeparator);
-            sb.append(tracker.getType());
-            dataArr[n++] = sb.toString();
-            sb = new StringBuilder();
+            for (StatisticTracker tracker : trackers) {
+                // n = tracker.getID();
+                sb.append(tracker.getID());
+                sb.append(dataSeparator);
+                sb.append(tracker.getType());
+                dataArr[n++] = sb.toString();
+                sb = new StringBuilder();
+            }
+            return dataArr;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return dataArr;
     }
 
     public static String[] getCapacityAndSizes(final char dataSeparator) {
-        StringBuilder sb = new StringBuilder();
-        final String[] dataArr = new String[trackers.size()];
+        LOCK.readLock().lock();
+        try {
+            StringBuilder sb = new StringBuilder();
+            final String[] dataArr = new String[trackers.size()];
 
-        int n = 0;
-        for (StatisticTracker tracker : trackers) {
-            // n = tracker.getID();
-            sb.append(tracker.getID());
-            sb.append(dataSeparator);
-            sb.append(tracker.getCurrentSize());
-            sb.append(dataSeparator);
-            sb.append(tracker.getCurrentCapacity());
-            dataArr[n++] = sb.toString();
-            sb = new StringBuilder();
+            int n = 0;
+            for (StatisticTracker tracker : trackers) {
+                // n = tracker.getID();
+                sb.append(tracker.getID());
+                sb.append(dataSeparator);
+                sb.append(tracker.getCurrentSize());
+                sb.append(dataSeparator);
+                sb.append(tracker.getCurrentCapacity());
+                dataArr[n++] = sb.toString();
+                sb = new StringBuilder();
+            }
+            return dataArr;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return dataArr;
     }
 
     private static final int INTERVAL_SIZE = 10;
@@ -230,116 +292,131 @@ public class Statistics {
      */
 
     // TODO ADD 0 LF recognition
-    public static synchronized String[] getLoadFactorDataLinesOld(final char dataSeparator) {
-        int[] intervalOccurrences = new int[INTERVAL_SIZE + 2];
-        String[] dataArr = new String[INTERVAL_SIZE + 2];
-        double stepSize = 100 / INTERVAL_SIZE;
-        for (StatisticTracker t : trackers) {
-            double lf = t.getCurrentLoadFactor() * 100.0;
-            if (lf == 0) {
-                intervalOccurrences[INTERVAL_SIZE + 1]++;
-            } else {
-                int i = 1;
-                while (i <= INTERVAL_SIZE + 1) {
-                    if (lf < i * stepSize) {
-
-                        intervalOccurrences[i - 1]++;
-                        break;
-                    }
-                    i++;
-                }
-            }
-        }
-
-        StringBuilder sb = new StringBuilder(25);
-        sb.append(0);
-        sb.append(dataSeparator);
-        sb.append("[0%, 0%]");
-        sb.append(dataSeparator);
-        sb.append(' ');
-        sb.append(intervalOccurrences[INTERVAL_SIZE + 1]);
-        dataArr[0] = sb.toString();
-        sb = new StringBuilder(25);
-        for (int i = 0; i < INTERVAL_SIZE; i++) {
-            sb.append(0);
-            sb.append(dataSeparator);
-            if (i == 0) {
-                sb.append(']');
-            } else {
-                sb.append('[');
-            }
-            sb.append((i) * stepSize);
-            sb.append("%, ");
-            sb.append((i + 1) * stepSize);
-            sb.append("%[");
-            sb.append(dataSeparator);
-            sb.append(' ');
-            sb.append(intervalOccurrences[i]);
-            dataArr[i + 1] = sb.toString();
-            sb = new StringBuilder(25);
-        }
-        sb.append(0);
-        sb.append(dataSeparator);
-        sb.append("[100%, 100%]");
-        sb.append(dataSeparator);
-        sb.append(' ');
-        sb.append(intervalOccurrences[INTERVAL_SIZE]);
-        dataArr[INTERVAL_SIZE + 1] = sb.toString();
-        return dataArr;
-    }
-
-    public static synchronized String[] getLoadFactorDataLines(final char dataSeparator) {
-        final int[] intervalOccurrences = new int[INTERVAL_SIZE + 3];
-        final String[] dataArr = new String[INTERVAL_SIZE + 3];
-        final double stepSize = 100 / INTERVAL_SIZE;
-
-        for (StatisticTracker t : trackers) {
-            final double lf = t.getCurrentLoadFactor() * 100.0;
-            if (lf == 0) {
-                intervalOccurrences[0]++;
-            } else if (lf >= 100) {
-                if (lf == 100) {
+    public static String[] getLoadFactorDataLinesOld(final char dataSeparator) {
+        LOCK.readLock().lock();
+        try {
+            int[] intervalOccurrences = new int[INTERVAL_SIZE + 2];
+            String[] dataArr = new String[INTERVAL_SIZE + 2];
+            double stepSize = 100 / INTERVAL_SIZE;
+            for (StatisticTracker t : trackers) {
+                double lf = t.getCurrentLoadFactor() * 100.0;
+                if (lf == 0) {
                     intervalOccurrences[INTERVAL_SIZE + 1]++;
                 } else {
-                    intervalOccurrences[INTERVAL_SIZE + 2]++;
-                }
+                    int i = 1;
+                    while (i <= INTERVAL_SIZE + 1) {
+                        if (lf < i * stepSize) {
 
-            } else {
-                int i = 1;
-                while (i <= INTERVAL_SIZE) {
-                    if (lf < i * stepSize) {
-                        intervalOccurrences[i]++;
-                        break;
+                            intervalOccurrences[i - 1]++;
+                            break;
+                        }
+                        i++;
                     }
-                    i++;
                 }
             }
-        }
 
-        dataArr[0] = "[0%, 0%]" + dataSeparator + " " + intervalOccurrences[0];
-        for (int i = 1; i <= INTERVAL_SIZE; i++) {
-            dataArr[i] = ((i == 0) ? "]" : "[") + (i - 1) * stepSize + "%, " + i * stepSize + "%[" + dataSeparator + " " + intervalOccurrences[i];
+            StringBuilder sb = new StringBuilder(25);
+            sb.append(0);
+            sb.append(dataSeparator);
+            sb.append("[0%, 0%]");
+            sb.append(dataSeparator);
+            sb.append(' ');
+            sb.append(intervalOccurrences[INTERVAL_SIZE + 1]);
+            dataArr[0] = sb.toString();
+            sb = new StringBuilder(25);
+            for (int i = 0; i < INTERVAL_SIZE; i++) {
+                sb.append(0);
+                sb.append(dataSeparator);
+                if (i == 0) {
+                    sb.append(']');
+                } else {
+                    sb.append('[');
+                }
+                sb.append((i) * stepSize);
+                sb.append("%, ");
+                sb.append((i + 1) * stepSize);
+                sb.append("%[");
+                sb.append(dataSeparator);
+                sb.append(' ');
+                sb.append(intervalOccurrences[i]);
+                dataArr[i + 1] = sb.toString();
+                sb = new StringBuilder(25);
+            }
+            sb.append(0);
+            sb.append(dataSeparator);
+            sb.append("[100%, 100%]");
+            sb.append(dataSeparator);
+            sb.append(' ');
+            sb.append(intervalOccurrences[INTERVAL_SIZE]);
+            dataArr[INTERVAL_SIZE + 1] = sb.toString();
+            return dataArr;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        dataArr[INTERVAL_SIZE + 1] = "[100%, 100%]" + dataSeparator + " " + intervalOccurrences[INTERVAL_SIZE + 1];
-        dataArr[INTERVAL_SIZE + 2] = "[ZERO, SIZE]" + dataSeparator + " " + intervalOccurrences[INTERVAL_SIZE + 2];
-        return dataArr;
+    }
+
+    public static String[] getLoadFactorDataLines(final char dataSeparator) {
+        LOCK.readLock().lock();
+        try {
+            final int[] intervalOccurrences = new int[INTERVAL_SIZE + 3];
+            final String[] dataArr = new String[INTERVAL_SIZE + 3];
+            final double stepSize = 100 / INTERVAL_SIZE;
+
+            for (StatisticTracker t : trackers) {
+                final double lf = t.getCurrentLoadFactor() * 100.0;
+                if (lf == 0) {
+                    intervalOccurrences[0]++;
+                } else if (lf >= 100) {
+                    if (lf == 100) {
+                        intervalOccurrences[INTERVAL_SIZE + 1]++;
+                    } else {
+                        intervalOccurrences[INTERVAL_SIZE + 2]++;
+                    }
+
+                } else {
+                    int i = 1;
+                    while (i <= INTERVAL_SIZE) {
+                        if (lf < i * stepSize) {
+                            intervalOccurrences[i]++;
+                            break;
+                        }
+                        i++;
+                    }
+                }
+            }
+
+            dataArr[0] = "[0%, 0%]" + dataSeparator + " " + intervalOccurrences[0];
+            for (int i = 1; i <= INTERVAL_SIZE; i++) {
+                dataArr[i] = ((i == 0) ? "]" : "[") + (i - 1) * stepSize + "%, " + i * stepSize + "%[" + dataSeparator + " " + intervalOccurrences[i];
+            }
+            dataArr[INTERVAL_SIZE + 1] = "[100%, 100%]" + dataSeparator + " " + intervalOccurrences[INTERVAL_SIZE + 1];
+            dataArr[INTERVAL_SIZE + 2] = "[ZERO, SIZE]" + dataSeparator + " " + intervalOccurrences[INTERVAL_SIZE + 2];
+            return dataArr;
+        } finally {
+            LOCK.readLock().unlock();
+        }
     }
 
     static String getPrettyOpMapContentString(HashMap<Operation, AtomicInteger> map) {
-        StringBuilder sb = new StringBuilder();
-        Iterator<Entry<Operation, AtomicInteger>> itr = map.entrySet().iterator();
+        LOCK.readLock().lock();
+        try {
+            StringBuilder sb = new StringBuilder();
+            Iterator<Entry<Operation, AtomicInteger>> itr = map.entrySet().iterator();
 
-        int n = 0;
-        while (itr.hasNext()) {
-            Entry<Operation, AtomicInteger> entry = itr.next();
-            sb.append(++n);
-            sb.append(": Operation: ");
-            sb.append(entry.getKey().name());
-            sb.append(", Usages: ");
-            sb.append(entry.getValue().get());
-            sb.append('\n');
+            int n = 0;
+            while (itr.hasNext()) {
+                Entry<Operation, AtomicInteger> entry = itr.next();
+                sb.append(++n);
+                sb.append(": Operation: ");
+                sb.append(entry.getKey().name());
+                sb.append(", Usages: ");
+                sb.append(entry.getValue().get());
+                sb.append('\n');
+            }
+            return sb.toString();
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return sb.toString();
     }
 
     public void printPrettyGlobalOpMapContentString() {
@@ -347,36 +424,51 @@ public class Statistics {
     }
 
     public static String getPrettyTypeMapContentString() {
-        StringBuilder sb = new StringBuilder();
-        Iterator<Entry<Type, AtomicInteger>> itr = Statistics.globalTypeMap.entrySet().iterator();
+        LOCK.readLock().lock();
+        try {
+            StringBuilder sb = new StringBuilder();
+            Iterator<Entry<Type, AtomicInteger>> itr = Statistics.globalTypeMap.entrySet().iterator();
 
-        int n = 0;
-        while (itr.hasNext()) {
-            Entry<Type, AtomicInteger> entry = itr.next();
-            sb.append(++n);
-            sb.append(": Type: ");
-            sb.append(entry.getKey().getTypeName());
-            sb.append(", Usages: ");
-            sb.append(entry.getValue().get());
-            sb.append('\n');
+            int n = 0;
+            while (itr.hasNext()) {
+                Entry<Type, AtomicInteger> entry = itr.next();
+                sb.append(++n);
+                sb.append(": Type: ");
+                sb.append(entry.getKey().getTypeName());
+                sb.append(", Usages: ");
+                sb.append(entry.getValue().get());
+                sb.append('\n');
+            }
+            return sb.toString();
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return sb.toString();
     }
 
-    private static synchronized int getCurrentTotalCapacity() {
-        int capacity = 0;
-        for (StatisticTracker t : trackers) {
-            capacity += t.getCurrentCapacity();
+    private static int getCurrentTotalCapacity() {
+        LOCK.readLock().lock();
+        try {
+            int capacity = 0;
+            for (StatisticTracker t : trackers) {
+                capacity += t.getCurrentCapacity();
+            }
+            return capacity;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return capacity;
     }
 
-    private static synchronized int getCurrentTotalSize() {
-        int size = 0;
-        for (StatisticTracker t : trackers) {
-            size += t.getCurrentSize();
+    private static int getCurrentTotalSize() {
+        LOCK.readLock().lock();
+        try {
+            int size = 0;
+            for (StatisticTracker t : trackers) {
+                size += t.getCurrentSize();
+            }
+            return size;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        return size;
     }
 
 }

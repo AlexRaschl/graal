@@ -35,6 +35,9 @@ public class CSVGenerator {
     static {
         mainDir = new File(MAIN_DIR_PATH);
         FOLDER = new File(MAIN_DIR_PATH + FOLDER_NAME);
+        if (!mainDir.exists()) {
+            mainDir.mkdir();
+        }
         if (mainDir.exists() && mainDir.isDirectory()) {
             if (FOLDER.exists() && FOLDER.isDirectory()) {
                 initialized = true;
@@ -116,7 +119,7 @@ public class CSVGenerator {
         if (!initialized)
             return;
 
-        StatisticTracker tracker = Statistics.getTrackerByID(ID);
+        final StatisticTracker tracker = Statistics.getTrackerByID(ID);
         if (tracker == null)
             throw new NoSuchElementException();
 

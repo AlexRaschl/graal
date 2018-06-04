@@ -9,7 +9,7 @@ public class StatisticConfigs {
 
     // For CSVGenerator
     public static final String MAIN_DIR_PATH = "/home/urzidil/Programming/CSV/";
-    public static final String FOLDER_NAME = "TESTFOLDER";
+    public static final String FOLDER_NAME = "TEST";
     //
     public static final String NAME_ALL = "_ALL.csv";
     public static final String NAME_GBL = "_GLOBAL.csv";
@@ -29,13 +29,14 @@ public class StatisticConfigs {
 
     // Use the allocSite Tracker which is faster
     public static final boolean USE_ALLOC_SITE_TRACKING = true;
-    public static final boolean AGGREGATE_SAME_CLASSES = true;
+    public static final boolean AGGREGATE_SAME_CLASSES = false;
 
     // Enable Tracking
     public static final boolean TRACKING_ENABLED = true;
 
     // Track all Allocation Sites or only the Sites listed in trackedSites HashSet
     public static final boolean TRACKS_ALL = true;
+    public static final boolean INIT_ZERO = true;
 
     // Specify Sites to track if TRACKS_ALL is disabled
     public static final HashSet<String> TRACKED_SITES = new HashSet<>(10);
@@ -55,4 +56,5 @@ public class StatisticConfigs {
 
     // Operations that are tracked more precisely for each Type in the list
     public static final EnumSet<Statistics.Operation> SPECIAL_OPS = EnumSet.of(Operation.ADD_OBJ, Operation.REMOVE_OBJ, Operation.GET_INDEXED, Operation.SET_INDEXED);
+    public static final EnumSet<Statistics.Operation> INIT_ZERO_SET = EnumSet.of(Operation.ADD_OBJ, Operation.REMOVE_OBJ, Operation.GROW, Operation.SET_INDEXED, Operation.CLEAR);
 }

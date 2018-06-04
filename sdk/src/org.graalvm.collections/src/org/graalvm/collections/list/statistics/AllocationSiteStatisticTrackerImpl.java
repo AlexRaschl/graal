@@ -1,7 +1,5 @@
 package org.graalvm.collections.list.statistics;
 
-import static org.graalvm.collections.list.statistics.Statistics.Operation.GROW;
-
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,12 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.graalvm.collections.list.statistics.Statistics.Operation;
 
-import com.sun.org.apache.bcel.internal.generic.LALOAD;
-
 public class AllocationSiteStatisticTrackerImpl implements StatisticTracker {
-
-    // Save known alloc Sites here to
-    // private final static HashSet<String> ALLOC_SITES = new HashSet<>();
 
     private static int nextID = 1;
 
@@ -28,18 +21,20 @@ public class AllocationSiteStatisticTrackerImpl implements StatisticTracker {
     private volatile int modifications = 0;
     private volatile int size = 0;
     private volatile int capacity = 0;
-    private volatile double loadFactor;
 
     private final HashMap<Statistics.Operation, HashMap<Type, AtomicInteger>> localTypeOpMap;
 
     private boolean isAdded = false;
-    private Type mainType;
+    private Type mainType; // This is mostly useless here. Use the typeOPDistribution to get all types
 
     public AllocationSiteStatisticTrackerImpl(StackTraceElement allocSite) {
         this.ID = nextID++;
         this.allocSite = StatisticTracker.setAllocSiteElem(allocSite);
         this.localOpMap = new HashMap<>(Statistics.Operation.values().length);
-        this.localOpMap.put(GROW, new AtomicInteger(0));
+        if (StatisticConfigs.INIT_ZERO) {
+            for (Operation op : StatisticConfigs.INIT_ZERO_SET)
+                localOpMap.put(op, new AtomicInteger(0));
+        }
         this.localTypeOpMap = new HashMap<>();
     }
 
@@ -62,7 +57,6 @@ public class AllocationSiteStatisticTrackerImpl implements StatisticTracker {
 
     public synchronized void setCurrentCapacity(int capacity) {
         this.capacity += capacity;
-        // System.out.println("Increased cap to: " + this.capacity);
     }
 
     public int getCurrentSize() {
@@ -71,7 +65,6 @@ public class AllocationSiteStatisticTrackerImpl implements StatisticTracker {
 
     public synchronized void setCurrentSize(int size) {
         this.size += size;
-        // System.out.println("Increased cap to: " + this.size);
     }
 
     public String getAllocationSite() {
@@ -82,7 +75,6 @@ public class AllocationSiteStatisticTrackerImpl implements StatisticTracker {
         if (capacity == 0) {
             return 1.1;
         } else {
-            // System.out.println("return: " + ((double) size) / capacity);
             return ((double) size) / capacity;
         }
     }
@@ -119,7 +111,7 @@ public class AllocationSiteStatisticTrackerImpl implements StatisticTracker {
         sb.append('\n');
         sb.append("Current load factor: ");
         // sb.append(list.getCurrentLoadFactor());
-        sb.append(loadFactor);
+        sb.append(getCurrentLoadFactor());
         sb.append('\n');
         sb.append("Allocation Site: ");
         // sb.append(allocSiteElem.getClassName());
