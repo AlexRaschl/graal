@@ -29,7 +29,7 @@ public class StatisticConfigs {
 
     // Use the allocSite Tracker which is faster
     public static final boolean USE_ALLOC_SITE_TRACKING = true;
-    public static final boolean AGGREGATE_SAME_CLASSES = false;
+    public static final boolean AGGREGATE_SAME_CLASSES = true;
 
     // Enable Tracking
     public static final boolean TRACKING_ENABLED = true;

@@ -70,36 +70,36 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // return new StatisticalArrayListClone<>(c);
 // }
 //
-// public static <E> SpecifiedArrayList<E> createNew() {
-// return new StatisticalSpecifiedArrayListImpl<>();
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-// return new StatisticalSpecifiedArrayListImpl<>(c);
-// }
-//
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayList<>();
+        return new StatisticalSpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayList<>(initalCapacity);
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayList<>(c);
+        return new StatisticalSpecifiedArrayListImpl<>(c);
     }
+
+// public static <E> SpecifiedArrayList<E> createNew() {
+// return new SpecifiedArrayList<>();
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+// return new SpecifiedArrayList<>(initalCapacity);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+// return new SpecifiedArrayList<>(c);
+// }
 
     // -------------------------FIELDS-------------------------------------------------
 
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 10; // Capacity after first grow
+    private final static int NEXT_CAPACITY = 8; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Growing factor
     // private final static int CAPACITY_GROWING_THRESHOLD = 32; // Unused
     //
@@ -136,8 +136,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * Creates an instance of SpecifiedArrayList.
      */
     public SpecifiedArrayList() {
-
-        // this(INITIAL_CAPACITY);
         this.size = 0;
         this.elementData = EMPTY_ELEMENTDATA;
 
@@ -168,8 +166,13 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public void trimToSize() {
         modCount++;
 
-        if (elementData.length >= size)
-            elementData = Arrays.copyOf(elementData, size);
+        if (elementData.length >= size) {
+            if (size == 0) {
+                elementData = EMPTY_ELEMENTDATA;
+            } else {
+                elementData = Arrays.copyOf(elementData, size);
+            }
+        }
 
     }
 
@@ -209,8 +212,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public boolean add(E e) {
 
         ensureCapacity(size + 1);
-        // growIfNeeded();
-
         elementData[size++] = e;
         return true;
     }
@@ -218,8 +219,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     @Override
     public void add(int index, E element) {
         checkBoundsForAdd(index);
-
-        // growIfNeeded();
         ensureCapacity(size + 1);
 
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
@@ -733,7 +732,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
         if (size > 0) {
             // be like clone(), allocate array based upon size not capacity
-            int capacity = calculateCapacity(elementData, size);
+            int capacity = size; // TODO check if replace correct
             SharedSecrets.getJavaOISAccess().checkArray(s, Object[].class, capacity);
             ensureCapacity(size);
 
@@ -775,10 +774,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         }
     }
 
-    public int calculateCapacity(int proposedCap, int minCap) {
-        return Math.max(proposedCap, minCap); // TODO optimize (this is only a safe solution)
-    }
-
     //
     //
     // -------------------POTECTED METHODS------------------------
@@ -786,7 +781,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     //
 
     protected double getLoadFactor() {
-        if (elementData == EMPTY_ELEMENTDATA || elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
+        if (elementData == EMPTY_ELEMENTDATA)
             return 1.1;// Special Value for EMPTY_ELEMENT DATA
         return ((double) size / elementData.length);
     }
@@ -846,7 +841,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     }
 
     /**
-     * Increases the arraySize by multiplying the array length by the current GROW_FACTOR
+     * Increases the arraySize
      */
     protected void grow(int minCapacity) {
         final int curCapacity = elementData.length;
@@ -854,15 +849,26 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // TODO I actually have no Idea why this commenting this stuff raises the loadFactor by 10 Percent
 
         if (elementData == EMPTY_ELEMENTDATA) {
-            elementData = new Object[calculateCapacity(INITIAL_CAPACITY, minCapacity)];
+            elementData = new Object[Math.max(INITIAL_CAPACITY, minCapacity)];
 
-        } else if (curCapacity == INITIAL_CAPACITY) {
-            elementData = Arrays.copyOf(elementData, calculateCapacity(NEXT_CAPACITY, minCapacity));
+        } else if (curCapacity <= INITIAL_CAPACITY) {
+            elementData = Arrays.copyOf(elementData, Math.max(NEXT_CAPACITY, minCapacity));
         } else {
-            final int newLength = curCapacity + (curCapacity >> 1);
-            // final int newLength = curCapacity + curCapacity;
+            int newLength = curCapacity + (curCapacity >> 1); // *1.5
             elementData = Arrays.copyOf(elementData, calculateCapacity(newLength, minCapacity));
         }
+    }
+
+    public int calculateCapacity(int proposedCap, int minCap) {
+
+        int capacity = proposedCap;
+        if (proposedCap - minCap < 0)
+            capacity = minCap; // The minCap is usually closer to the needed size
+// if (capacity - MAX_ARRAY_SIZE < 0)
+// capacity = hugeCapacityAL(minCap);
+
+        return capacity;
+
     }
 
     // TODO Use like in ArrayList
@@ -904,12 +910,12 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         return (E) obj;
     }
 
-    private static int calculateCapacity(Object[] elementData, int minCapacity) {
-        if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
-            return Math.max(DEFAULT_CAPACITY, minCapacity);
-        }
-        return minCapacity;
-    }
+// private static int calculateCapacity(Object[] elementData, int minCapacity) {
+// if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+// return Math.max(DEFAULT_CAPACITY, minCapacity);
+// }
+// return minCapacity;
+// }
 
     //
     //
