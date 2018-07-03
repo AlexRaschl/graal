@@ -864,7 +864,7 @@ public final class SchedulePhase extends Phase {
                 }
 
                 // Initialize with begin node, it is always the first node.
-                SpecifiedArrayList<Node> nodes = SpecifiedArrayList.createNew(totalCount);
+                SpecifiedArrayList<Node> nodes = SpecifiedArrayList.createNewFixed(totalCount);
                 blockToNodes.put(b, nodes);
 
                 for (FixedNode current : b.getBeginNode().getBlockNodes()) {

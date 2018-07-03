@@ -91,7 +91,7 @@ class AMD64HotSpotRegisterAllocationConfig extends RegisterAllocationConfig {
             regMap.set(reg.number);
         }
 
-        SpecifiedArrayList<Register> allocatableRegisters = SpecifiedArrayList.createNew(registers.size());
+        SpecifiedArrayList<Register> allocatableRegisters = SpecifiedArrayList.createNewFixed(registers.size());
         for (Register reg : registerAllocationOrder) {
             if (regMap.get(reg.number)) {
                 allocatableRegisters.add(reg);

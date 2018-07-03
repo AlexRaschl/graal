@@ -146,7 +146,7 @@ public final class ReentrantNodeIterator {
                                     }
                                 }
                                 if (endsVisited) {
-                                    SpecifiedArrayList<StateT> states = SpecifiedArrayList.createNew(merge.forwardEndCount());
+                                    SpecifiedArrayList<StateT> states = SpecifiedArrayList.createNewFixed(merge.forwardEndCount());
                                     for (int i = 0; i < merge.forwardEndCount(); i++) {
                                         AbstractEndNode forwardEnd = merge.forwardEndAt(i);
                                         assert forwardEnd == current || blockEndStates.containsKey(forwardEnd);

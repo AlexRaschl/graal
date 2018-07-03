@@ -190,7 +190,7 @@ public final class ReentrantBlockIterator {
     }
 
     private static <StateT> SpecifiedArrayList<StateT> mergeStates(EconomicMap<FixedNode, StateT> states, StateT state, Block current, Block successor, AbstractMergeNode merge) {
-        SpecifiedArrayList<StateT> mergedStates = SpecifiedArrayList.createNew(merge.forwardEndCount());
+        SpecifiedArrayList<StateT> mergedStates = SpecifiedArrayList.createNewFixed(merge.forwardEndCount());
         for (Block predecessor : successor.getPredecessors()) {
             assert predecessor == current || states.containsKey(predecessor.getEndNode());
             StateT endState = predecessor == current ? state : states.removeKey(predecessor.getEndNode());
