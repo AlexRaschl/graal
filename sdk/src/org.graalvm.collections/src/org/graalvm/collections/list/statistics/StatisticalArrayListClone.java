@@ -363,23 +363,6 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
         }
     }
 
-// private void setAllocationSite() {
-// Exception e = new Exception();
-//
-// StackTraceElement[] elems = e.getStackTrace();
-//
-// if (elems.length >= 2 && !elems[1].getMethodName().equals("<init>")) {
-// tracker.setAllocSiteElem(elems[1]);
-// } else {
-// if (!elems[2].getMethodName().equals("createNew")) {
-// tracker.setAllocSiteElem(elems[2]);
-// } else {
-// tracker.setAllocSiteElem(elems[3]);
-// }
-// }
-//
-// }
-
     private static String getAllocationSiteName() {
 
         Exception e = new Exception();

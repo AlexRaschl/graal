@@ -190,8 +190,7 @@ public class Statistics {
             StringBuilder sb = new StringBuilder(50);
 
             int i = 0;
-            // sb.append("Trackers allocated: " + (StatisticTrackerImpl.getNextID() - 1));
-            // sb.append("trackerList size: " + trackers.size());
+
             for (StatisticTracker t : trackers) {
                 sb.append(t.getID());
                 sb.append(dataSeparator);
@@ -249,7 +248,6 @@ public class Statistics {
             int n = 0;// TrackerId
 
             for (StatisticTracker tracker : trackers) {
-                // n = tracker.getID();
                 sb.append(tracker.getID());
                 sb.append(dataSeparator);
                 sb.append(tracker.getType());
@@ -270,7 +268,6 @@ public class Statistics {
 
             int n = 0;
             for (StatisticTracker tracker : trackers) {
-                // n = tracker.getID();
                 sb.append(tracker.getID());
                 sb.append(dataSeparator);
                 sb.append(tracker.getCurrentSize());
@@ -291,7 +288,6 @@ public class Statistics {
      * Data Lines for CSV Generator
      */
 
-    // TODO ADD 0 LF recognition
     public static String[] getLoadFactorDataLinesOld(final char dataSeparator) {
         LOCK.readLock().lock();
         try {

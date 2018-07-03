@@ -34,13 +34,6 @@ public interface StatisticalSpecifiedArrayList<E> extends StatisticalCollection 
      * TODO package org.graalvm.compiler.lir.alloc.trace.lsra.TraceLinearScanWalker inefficient empty
      * list strategy.
      *
-     * TODO org.graalvm.compiler.nodes.FrameState uses sublist!!
-     *
-     * TODO Sublist was most likely to cause trouble. Now implemented Sublist in SARImpl but not 100
-     * correctly To implement this 100% correctly i need to make SAR the main class and delete the IMPL
-     * class
-     *
-     * TODO TrackerSupport for ArrayListClone
      *
      */
 

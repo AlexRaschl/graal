@@ -121,7 +121,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     // ARRAYLIST IMMITATION Stuff
     static final Object[] EMPTY_ELEMENTDATA = {};
     static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
-    private final static int DEFAULT_CAPACITY = 10;
 
     // ---------------------CONSTRUCTORS --------------------------------
     /**
@@ -219,7 +218,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public boolean add(E e) {
-
         ensureCapacity(size + 1);
         elementData[size++] = e;
         return true;
@@ -258,10 +256,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public E remove(int index) {
-
         checkBoundaries(index);
         modCount++;
-        Object oldElem = elementData[index];
+
+        final Object oldElem = elementData[index];
         System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
         elementData[--size] = null;
         return castUnchecked(oldElem);
@@ -274,7 +272,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
         elementData = EMPTY_ELEMENTDATA;
         size = 0;
-
     }
 
     @Override
@@ -286,14 +283,14 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     @Override
     public E set(int index, E element) {
         checkBoundaries(index);
-        Object oldElem = elementData[index];
+
+        final Object oldElem = elementData[index];
         elementData[index] = element;
         return castUnchecked(oldElem);
     }
 
     @Override
     public int indexOf(Object o) {
-
         if (o == null) {
             for (int i = 0; i < size; i++) {
                 if (elementData[i] == null)
@@ -338,7 +335,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         Object[] a = c.toArray();
         int cSize = c.size();
 
-        // if(cSize == 0)return false;
+        if (cSize == 0)
+            return false;
 
         ensureCapacity(size + cSize);// Useful if c is large
 
@@ -356,8 +354,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public boolean addAll(int index, Collection<? extends E> c) {
         checkBoundsForAdd(index);
 
-// if (c.size() == 0)
-// return false;
+        if (c.size() == 0)
+            return false;
 
         Object[] arr = c.toArray();
         int cSize = arr.length;
@@ -634,10 +632,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             } catch (IndexOutOfBoundsException ex) {
                 throw new ConcurrentModificationException();
             }
-// if (lastRet == -1)
-// throw new IllegalStateException("Remove or add Operation has been already excecuted!");
-// SpecifiedArrayListImpl.this.set(lastRet, e);
-
         }
 
         @Override
@@ -684,11 +678,11 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public String toString() {
-        Iterator<E> it = iterator();
+        final Iterator<E> it = iterator();
         if (!it.hasNext())
             return "[]";
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append('[');
         for (;;) {
             E e = it.next();
@@ -710,7 +704,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     private void writeObject(java.io.ObjectOutputStream s)
                     throws java.io.IOException {
         // Write out element count, and any hidden stuff
-        int expectedModCount = modCount;
+        final int expectedModCount = modCount;
         s.defaultWriteObject();
 
         // Write out size as capacity for behavioural compatibility with clone()
@@ -790,7 +784,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     //
 
     protected double getLoadFactor() {
-        if (elementData == EMPTY_ELEMENTDATA)
+        if (elementData == EMPTY_ELEMENTDATA || elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
             return 1.1;// Special Value for EMPTY_ELEMENT DATA
         return ((double) size / elementData.length);
     }
@@ -825,7 +819,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     }
 
     void trimIfUseful() {
-        int threshold = (elementData.length / TRIM_FACTOR) + 1; // TODO Find more efficient strategy
+        int threshold = (elementData.length / TRIM_FACTOR) + 1;
         if (threshold > size && threshold < elementData.length) {
             trim(threshold);
         }
@@ -850,7 +844,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     }
 
     /**
-     * Increases the arraySize
+     * Increases the capacity of the underlying array
      */
     protected void grow(int minCapacity) {
         final int curCapacity = elementData.length;
@@ -863,7 +857,9 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         } else if (curCapacity <= INITIAL_CAPACITY) {
             elementData = Arrays.copyOf(elementData, Math.max(NEXT_CAPACITY, minCapacity));
         } else {
-            int newLength = curCapacity + (curCapacity >> 1); // *1.5
+            // int newLength = curCapacity + (curCapacity >> 1); // *1.5
+            final int newLength = curCapacity + (curCapacity >> 1) + (curCapacity >> 2); // *1.75
+            // int newLength = curCapacity << 1;
             elementData = Arrays.copyOf(elementData, calculateCapacity(newLength, minCapacity));
         }
     }
@@ -910,7 +906,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             size = w;
         }
 
-        // trimIfUseful(); TODO Check if useful
+        trimIfUseful();// TODO Check if useful
         return removed != 0;
     }
 
@@ -961,10 +957,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * @throws IndexOutOfBoundsException {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      */
+
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         subListRangeCheck(fromIndex, toIndex, size);
-        // return super.subList(fromIndex, toIndex);
         return new SubList(this, 0, fromIndex, toIndex);
     }
 
@@ -1435,7 +1431,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // * @return <tt>true<tt> if all elements have been added successfully else <tt>false<tt>
 // */
 // @Override
-// public abstract boolean addAll(Collection<? extends E> c); // TODO Check if EnsureCapacity is
+// public abstract boolean addAll(Collection<? extends E> c); // TOD Check if EnsureCapacity is
 // useful here
 //
 // /**

@@ -6,14 +6,11 @@ import sun.misc.SharedSecrets;
 
 public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
 
-    private static final long serialVersionUID = 1L;
-
-    final int capacity;
+    private static final long serialVersionUID = 9130616599645229595L;
 
     FixedCapacitiySpecifiedArrayList(int capacity) {
         if (capacity < 0)
             throw new IllegalArgumentException("Negative Capacity");
-        this.capacity = capacity;
         this.size = 0;
         elementData = new Object[capacity];
     }
@@ -44,7 +41,7 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
 
     @Override
     public void add(int index, E element) {
-        checkBoundsForAdd(index);
+        // checkBoundsForAdd(index);
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
         size++;
@@ -61,7 +58,7 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        checkBoundsForAdd(index);
+        // checkBoundsForAdd(index);
         Object[] arr = c.toArray();
         int cSize = arr.length;
         System.arraycopy(elementData, index, elementData, index + cSize, size - index);

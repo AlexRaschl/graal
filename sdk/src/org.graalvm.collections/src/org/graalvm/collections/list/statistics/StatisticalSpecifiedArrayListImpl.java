@@ -90,9 +90,6 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      */
     public StatisticalSpecifiedArrayListImpl(int initialCapacity) {
         super(initialCapacity);
-
-        // isTracked = isTracked();
-
         if (isTracked) {
             final StackTraceElement allocSite = getAllocationSite();
             if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
@@ -110,7 +107,6 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      */
     public StatisticalSpecifiedArrayListImpl() {
         super();
-        // isTracked = isTracked();
         if (isTracked) {
             final StackTraceElement allocSite = getAllocationSite();
             if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
@@ -119,7 +115,6 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
                 tracker = new StatisticTrackerImpl(allocSite);
             }
             tracker.countOP(CSTR_STD);
-            // setAllocationSite();
         }
     }
 
@@ -131,7 +126,6 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
      */
     public StatisticalSpecifiedArrayListImpl(Collection<E> collection) {
         super(collection);
-        // isTracked = isTracked();
         if (isTracked) {
             final StackTraceElement allocSite = getAllocationSite();
             if (StatisticConfigs.USE_ALLOC_SITE_TRACKING) {
@@ -142,7 +136,6 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
             if (collection.size() != 0)
                 tracker.setType(checkNull(collection.iterator().next()));
             tracker.countOP(CSTR_COLL);
-            // setAllocationSite();
         }
     }
 
@@ -403,23 +396,6 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
         }
     }
 
-// private void setAllocationSite() {
-// Exception e = new Exception();
-//
-// StackTraceElement[] elems = e.getStackTrace();
-//
-// if (elems.length >= 2 && !elems[1].getMethodName().equals("<init>")) {
-// tracker.setAllocSiteElem(elems[1]);
-// } else {
-// if (!elems[2].getMethodName().equals("createNew")) {
-// tracker.setAllocSiteElem(elems[2]);
-// } else {
-// tracker.setAllocSiteElem(elems[3]);
-// }
-// }
-//
-// }
-
     private static StackTraceElement getAllocationSite() {
         Exception e = new Exception();
 
@@ -457,8 +433,6 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
 
     }
 
-    // TODO replace with variable that is set in constructor to remove the getAllocSiteNameNeed and also
-    // for performance
     private static boolean isTracked() {
         return StatisticConfigs.TRACKS_ALL || StatisticConfigs.TRACKED_SITES.contains(getAllocationSiteName());
     }
@@ -468,7 +442,6 @@ public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> 
             tracker.countOP(op);
     }
 
-    // TODO implement better solution than finalize
     @Override
     protected void finalize() throws Throwable {
         if (isTracked) {

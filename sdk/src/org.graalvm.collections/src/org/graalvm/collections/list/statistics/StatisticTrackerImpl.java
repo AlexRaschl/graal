@@ -95,26 +95,6 @@ public class StatisticTrackerImpl implements StatisticTracker {
         return ID;
     }
 
-// public String[] getOpDataLines(final char dataSeparator) {
-// final String[] dataArr = new String[localOpMap.size()];
-// final Iterator<Entry<Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
-// StringBuilder sb = new StringBuilder(50);
-//
-// int n = 0;
-// while (itr.hasNext()) {
-// Entry<Operation, AtomicInteger> entry = itr.next();
-// sb.append(this.ID);
-// sb.append(dataSeparator);
-// sb.append(entry.getKey().name());
-// sb.append(dataSeparator);
-// sb.append(entry.getValue().get());
-//
-// dataArr[n++] = sb.toString();
-// sb = new StringBuilder(50);
-// }
-// return dataArr;
-// }
-
     public String[] getOpDataLines(final char dataSeparator) {
         final String[] dataArr = new String[localOpMap.size()];
         final Iterator<Entry<Statistics.Operation, AtomicInteger>> itr = localOpMap.entrySet().iterator();
@@ -159,19 +139,15 @@ public class StatisticTrackerImpl implements StatisticTracker {
         sb.append(this.type.getTypeName());
         sb.append('\n');
         sb.append("Current used Size: ");
-        // sb.append(list.getCurrentSize());
         sb.append(size);
         sb.append('\n');
         sb.append("Current Capacity: ");
-        // sb.append(list.getCurrentCapacity());
         sb.append(capacity);
         sb.append('\n');
         sb.append("Current load factor: ");
-        // sb.append(list.getCurrentLoadFactor());
         sb.append(loadFactor);
         sb.append('\n');
         sb.append("Allocation Site: ");
-        // sb.append(allocSiteElem.getClassName());
         sb.append(allocSite);
         sb.append('\n');
         sb.append("Modifications made so far: ");
@@ -187,7 +163,6 @@ public class StatisticTrackerImpl implements StatisticTracker {
         return nextID;
     }
 
-    // TODO check if i need to change the type if it is a superclass of the currently added one
     public synchronized void setType(Class<?> c) {
         if (!isAdded) {
             synchronized (Statistics.globalTypeMap) {
@@ -219,12 +194,7 @@ public class StatisticTrackerImpl implements StatisticTracker {
     }
 
     public String getAllocationSite() {
-        // return allocSiteElem;
         return this.allocSite;
     }
-
-// public String getAllocSiteName() {
-// return this.allocSite;
-// }
 
 }

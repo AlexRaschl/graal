@@ -197,16 +197,10 @@ interface StatisticTracker {
         if (dim1 == 0)
             return new String[0];
         if (dataArr[0] == null) {
-            return null; // TODO handle case
+            return null;
         }
 
-        // final int dim2 = dataArr[0].length;
-
         final ArrayList<String> result = new ArrayList<>();
-
-// for (int i = 0; i < result.length; i++) {
-// result[i] = new String();
-// }
 
         int i = 0;
         for (int r = 0; r < dim1; r++) {

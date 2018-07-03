@@ -200,8 +200,6 @@ public class CSVGenerator {
     private static void writeToFile(File file, List<String[]> arrays, boolean append) {
 
         final byte[] bytes = arrays.stream().flatMap(arr -> Arrays.stream(arr)).map(string -> string.concat("\n")).reduce("", (a, b) -> a.concat(b)).getBytes();
-        // final byte[] bytes = arrays.stream().flatMap(arr -> Arrays.stream(arr)).reduce("", (a, b) ->
-        // a.concat(b)).getBytes();
         try {
             Files.write(Paths.get(file.getPath()), bytes, StandardOpenOption.APPEND);
         } catch (IOException e) {
@@ -235,9 +233,6 @@ public class CSVGenerator {
             final BufferedWriter out = new BufferedWriter(new FileWriter(file, append));
             out.write(string);
             out.close();
-            // FileOutputStream w = new FileOutputStream(file, append);
-            // w.write(string.getBytes());
-            // w.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
