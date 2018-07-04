@@ -29,7 +29,14 @@ public final class SimpleIntSpecifiedArrayList {
 
     }
 
-    // TODO Check if collection CTOR needed
+    public SimpleIntSpecifiedArrayList(final int[] collection) {
+        this.size = collection.length;
+        if (size != 0) {
+            elementData = collection;
+        } else {
+            elementData = EMPTY_INTS;
+        }
+    }
 
     public int size() {
         return size;

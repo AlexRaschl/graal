@@ -119,6 +119,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         return new SimpleIntSpecifiedArrayList(initialCapacity);
     }
 
+    public static SimpleIntSpecifiedArrayList createNewIntList(final int[] c) {
+        return new SimpleIntSpecifiedArrayList(c);
+    }
+
     public static SimpleDoubleSpecifiedArrayList createNewDoubleList(final int initialCapacity) {
         return new SimpleDoubleSpecifiedArrayList(initialCapacity);
     }

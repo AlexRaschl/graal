@@ -27,6 +27,7 @@ import java.util.List;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.primitives.SimpleIntSpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.nodes.AbstractBeginNode;
@@ -75,12 +76,14 @@ public class MultiTypeGuardInlineInfo extends AbstractInlineInfo {
     private final List<ResolvedJavaMethod> concretes;
     private final double[] methodProbabilities;
     private final double maximumMethodProbability;
-    private final SpecifiedArrayList<Integer> typesToConcretes;
+    // private final SpecifiedArrayList<Integer> typesToConcretes;
+    private final SimpleIntSpecifiedArrayList typesToConcretes;
+
     private final SpecifiedArrayList<ProfiledType> ptypes;
     private final double notRecordedTypeProbability;
     private final Inlineable[] inlineableElements;
 
-    public MultiTypeGuardInlineInfo(Invoke invoke, SpecifiedArrayList<ResolvedJavaMethod> concretes, SpecifiedArrayList<ProfiledType> ptypes, SpecifiedArrayList<Integer> typesToConcretes,
+    public MultiTypeGuardInlineInfo(Invoke invoke, SpecifiedArrayList<ResolvedJavaMethod> concretes, SpecifiedArrayList<ProfiledType> ptypes, SimpleIntSpecifiedArrayList typesToConcretes,
                     double notRecordedTypeProbability) {
         super(invoke);
         assert concretes.size() > 0 : "must have at least one method";

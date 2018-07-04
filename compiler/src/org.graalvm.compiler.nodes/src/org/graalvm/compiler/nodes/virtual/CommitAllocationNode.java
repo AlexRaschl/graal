@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.primitives.SimpleIntSpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.graph.NodeClass;
@@ -72,7 +73,9 @@ public final class CommitAllocationNode extends FixedWithNextNode implements Vir
     @Input NodeInputList<VirtualObjectNode> virtualObjects = new NodeInputList<>(this);
     @Input NodeInputList<ValueNode> values = new NodeInputList<>(this);
     @Input(Association) NodeInputList<MonitorIdNode> locks = new NodeInputList<>(this);
-    protected SpecifiedArrayList<Integer> lockIndexes = SpecifiedArrayList.createNew(Arrays.asList(0));
+    // protected SpecifiedArrayList<Integer> lockIndexes =
+    // SpecifiedArrayList.createNew(Arrays.asList(0));
+    protected SimpleIntSpecifiedArrayList lockIndexes = SpecifiedArrayList.createNewIntList(new int[]{0});
     protected SpecifiedArrayList<Boolean> ensureVirtual = SpecifiedArrayList.createNew();
 
     public CommitAllocationNode() {
@@ -125,7 +128,8 @@ public final class CommitAllocationNode extends FixedWithNextNode implements Vir
 
     @Override
     public void afterClone(Node other) {
-        lockIndexes = SpecifiedArrayList.createNew(lockIndexes);
+        // lockIndexes = SpecifiedArrayList.createNew(lockIndexes);
+        lockIndexes = SpecifiedArrayList.createNewIntList(lockIndexes.toArray());
     }
 
     public void addLocks(List<MonitorIdNode> monitorIds) {
@@ -213,8 +217,8 @@ public final class CommitAllocationNode extends FixedWithNextNode implements Vir
         if (usedCount < virtualObjects.size()) {
             List<VirtualObjectNode> newVirtualObjects = SpecifiedArrayList.createNew(usedCount);
             List<MonitorIdNode> newLocks = SpecifiedArrayList.createNew(usedCount);
-            SpecifiedArrayList<Integer> newLockIndexes = SpecifiedArrayList.createNew(usedCount + 1);
-            SpecifiedArrayList<Boolean> newEnsureVirtual = SpecifiedArrayList.createNew(usedCount);
+            final SimpleIntSpecifiedArrayList newLockIndexes = SpecifiedArrayList.createNewIntList(usedCount + 1);
+            final SpecifiedArrayList<Boolean> newEnsureVirtual = SpecifiedArrayList.createNew(usedCount);
             newLockIndexes.add(0);
             List<ValueNode> newValues = SpecifiedArrayList.createNew();
             int valuePos = 0;

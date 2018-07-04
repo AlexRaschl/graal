@@ -37,6 +37,7 @@ import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.primitives.SimpleDoubleSpecifiedArrayList;
+import org.graalvm.collections.list.primitives.SimpleIntSpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.ObjectStamp;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -351,7 +352,8 @@ public class InliningData {
 
             // Clean out types whose methods are no longer available.
             SpecifiedArrayList<JavaTypeProfile.ProfiledType> usedTypes = SpecifiedArrayList.createNew();
-            SpecifiedArrayList<Integer> typesToConcretes = SpecifiedArrayList.createNew();
+            // SpecifiedArrayList<Integer> typesToConcretes = SpecifiedArrayList.createNew();
+            final SimpleIntSpecifiedArrayList typesToConcretes = SpecifiedArrayList.createNewIntList(0);
             for (JavaTypeProfile.ProfiledType type : ptypes) {
                 ResolvedJavaMethod concrete = type.getType().resolveConcreteMethod(targetMethod, contextType);
                 int index = concreteMethods.indexOf(concrete);
