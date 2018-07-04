@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import sun.misc.SharedSecrets;
 
-public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
+final class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
 
     private static final long serialVersionUID = 9130616599645229595L;
 
@@ -16,23 +16,23 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
     }
 
     @Override
-    public void trimToSize() {
+    public final void trimToSize() {
         return;
     }
 
     @Override
-    void trimIfUseful(final int numRemoved) {
+    final void trimIfUseful(final int numRemoved) {
         return;
     }
 
     @Override
-    public boolean add(E e) {
+    public final boolean add(E e) {
         elementData[size++] = e;
         return true;
     }
 
     @Override
-    public void clear() {
+    public final void clear() {
         for (int i = 0; i < size; i++) {
             elementData[i] = null;
         }
@@ -40,7 +40,7 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
     }
 
     @Override
-    public void add(int index, E element) {
+    public final void add(int index, E element) {
         // checkBoundsForAdd(index);
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
@@ -48,7 +48,7 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> c) {
+    public final boolean addAll(Collection<? extends E> c) {
         Object[] a = c.toArray();
         int cSize = c.size();
         System.arraycopy(a, 0, elementData, size, cSize);
@@ -57,7 +57,7 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
+    public final boolean addAll(int index, Collection<? extends E> c) {
         // checkBoundsForAdd(index);
         Object[] arr = c.toArray();
         int cSize = arr.length;
@@ -72,7 +72,7 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
     /**
      * Reconstitute the <tt>ArrayList</tt> instance from a stream (that is, deserialize it).
      */
-    private void readObject(java.io.ObjectInputStream s)
+    private final void readObject(java.io.ObjectInputStream s)
                     throws java.io.IOException, ClassNotFoundException {
         elementData = EMPTY_ELEMENTDATA;
 
@@ -95,7 +95,7 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
         }
     }
 
-    private void checkBoundsForAdd(int index) {
+    private final void checkBoundsForAdd(int index) {
         if (index > size || index < 0)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
     }

@@ -36,6 +36,7 @@ import java.util.List;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.primitives.SimpleDoubleSpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.ObjectStamp;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -300,7 +301,8 @@ public class InliningData {
 
             // Find unique methods and their probabilities.
             SpecifiedArrayList<ResolvedJavaMethod> concreteMethods = SpecifiedArrayList.createNew();
-            SpecifiedArrayList<Double> concreteMethodsProbabilities = SpecifiedArrayList.createNew();
+            // SpecifiedArrayList<Double> concreteMethodsProbabilities = SpecifiedArrayList.createNew();
+            SimpleDoubleSpecifiedArrayList concreteMethodsProbabilities = SpecifiedArrayList.createNewDoubleList(0);
             for (int i = 0; i < ptypes.length; i++) {
                 ResolvedJavaMethod concrete = ptypes[i].getType().resolveConcreteMethod(targetMethod, contextType);
                 if (concrete == null) {
@@ -321,7 +323,9 @@ public class InliningData {
             // Clear methods that fall below the threshold.
             if (notRecordedTypeProbability > 0) {
                 SpecifiedArrayList<ResolvedJavaMethod> newConcreteMethods = SpecifiedArrayList.createNew();
-                SpecifiedArrayList<Double> newConcreteMethodsProbabilities = SpecifiedArrayList.createNew();
+                // SpecifiedArrayList<Double> newConcreteMethodsProbabilities = SpecifiedArrayList.createNew();
+                SimpleDoubleSpecifiedArrayList newConcreteMethodsProbabilities = SpecifiedArrayList.createNewDoubleList(0);
+
                 for (int i = 0; i < concreteMethods.size(); ++i) {
                     if (concreteMethodsProbabilities.get(i) >= MegamorphicInliningMinMethodProbability.getValue(options)) {
                         newConcreteMethods.add(concreteMethods.get(i));

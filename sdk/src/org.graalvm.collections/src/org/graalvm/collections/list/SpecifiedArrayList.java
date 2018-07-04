@@ -17,6 +17,9 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+
+import org.graalvm.collections.list.primitives.SimpleDoubleSpecifiedArrayList;
+import org.graalvm.collections.list.primitives.SimpleIntSpecifiedArrayList;
 import org.graalvm.collections.list.statistics.StatisticConfigs;
 import org.graalvm.collections.list.statistics.StatisticalArrayListClone;
 import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
@@ -58,6 +61,11 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // return new ArrayListClone<>(c);
 // }
 //
+// public static <E> SpecifiedArrayList<E> createNewFixed(final int initalCapacity) {
+// return new ArrayListClone<>(initalCapacity);
+// }
+
+//
 // public static <E> SpecifiedArrayList<E> createNew() {
 // return new StatisticalArrayListClone<>();
 // }
@@ -68,6 +76,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 //
 // public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
 // return new StatisticalArrayListClone<>(c);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNewFixed(final int initalCapacity) {
+// return new StatisticalArrayListClone<>(initalCapacity);
 // }
 //
 
@@ -103,14 +115,21 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         return new FixedCapacitiySpecifiedArrayList<>(initialCapacity);
     }
 
+    public static SimpleIntSpecifiedArrayList createNewIntList(final int initialCapacity) {
+        return new SimpleIntSpecifiedArrayList(initialCapacity);
+    }
+
+    public static SimpleDoubleSpecifiedArrayList createNewDoubleList(final int initialCapacity) {
+        return new SimpleDoubleSpecifiedArrayList(initialCapacity);
+    }
+
     // -------------------------FIELDS-------------------------------------------------
 
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
     private final static int NEXT_CAPACITY = 8; // Capacity after first grow
-    private final static int TRIM_FACTOR = 2; // Growing factor
-    // private final static int CAPACITY_GROWING_THRESHOLD = 32; // Unused
+    private final static int TRIM_FACTOR = 2; // Trim factor
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
@@ -131,9 +150,9 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public SpecifiedArrayList(int initialCapacity) {
 
         if (initialCapacity > 0) {
-            this.elementData = new Object[initialCapacity];
+            elementData = new Object[initialCapacity];
         } else if (initialCapacity == 0) {
-            this.elementData = EMPTY_ELEMENTDATA;
+            elementData = EMPTY_ELEMENTDATA;
         } else {
             throw new IllegalArgumentException("Negative Capacity: " + initialCapacity);
         }
@@ -144,8 +163,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * Creates an instance of SpecifiedArrayList.
      */
     public SpecifiedArrayList() {
-        this.size = 0;
-        this.elementData = EMPTY_ELEMENTDATA;
+        size = 0;
+        elementData = EMPTY_ELEMENTDATA;
 
     }
 
@@ -155,7 +174,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      * @param collection
      */
     public SpecifiedArrayList(Collection<? extends E> collection) {
-
         size = collection.size();
         elementData = collection.toArray();
         if (size != 0) {
@@ -235,20 +253,19 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public boolean remove(Object o) {
-        if (o == null) {
+        if (o != null) {
             for (int i = 0; i < size; i++) {
-                if (elementData[i] == null) {
+                if (o.equals(elementData[i])) {
                     fastRemove(i);
                     return true;
                 }
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (o.equals(elementData[i])) {
+                if (elementData[i] == null) {
                     fastRemove(i);
                     return true;
                 }
-
             }
         }
         return false;
@@ -295,14 +312,14 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public int indexOf(Object o) {
-        if (o == null) {
+        if (o != null) {
             for (int i = 0; i < size; i++) {
-                if (elementData[i] == null)
+                if (o.equals(elementData[i]))
                     return i;
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (o.equals(elementData[i]))
+                if (elementData[i] == null)
                     return i;
             }
         }
@@ -311,14 +328,14 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public int lastIndexOf(Object o) {
-        if (o == null) {
+        if (o != null) {
             for (int i = size - 1; i >= 0; i--) {
-                if (elementData[i] == null)
+                if (o.equals(elementData[i]))
                     return i;
             }
         } else {
             for (int i = size - 1; i >= 0; i--) {
-                if (o.equals(elementData[i]))
+                if (elementData[i] == null)
                     return i;
             }
         }
@@ -336,8 +353,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        Object[] a = c.toArray();
-        int cSize = c.size();
+        final Object[] a = c.toArray();
+        final int cSize = c.size();
 
         if (cSize == 0)
             return false;
@@ -361,8 +378,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         if (c.size() == 0)
             return false;
 
-        Object[] arr = c.toArray();
-        int cSize = arr.length;
+        final Object[] arr = c.toArray();
+        final int cSize = arr.length;
 
         ensureCapacity(size + cSize);
         System.arraycopy(elementData, index, elementData, index + cSize, size - index);
@@ -394,12 +411,12 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      */
     @Override
     protected void removeRange(int fromIndex, int toIndex) {
-        int numMoved = size - toIndex;
+        final int numMoved = size - toIndex;
         System.arraycopy(elementData, toIndex, elementData, fromIndex,
                         numMoved);
 
         // clear to let GC do its work
-        int newSize = size - (toIndex - fromIndex);
+        final int newSize = size - (toIndex - fromIndex);
         for (int i = newSize; i < size; i++) {
             elementData[i] = null;
         }
@@ -486,7 +503,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     @Override
     public Object clone() {
         try {
-            SpecifiedArrayList<?> v = (SpecifiedArrayList<?>) super.clone();
+            final SpecifiedArrayList<?> v = (SpecifiedArrayList<?>) super.clone();
             v.elementData = Arrays.copyOf(elementData, size);
             v.modCount = 0;
             return v;
@@ -672,7 +689,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SpecifiedArrayList<E> other = (SpecifiedArrayList<E>) obj;
+        final SpecifiedArrayList<E> other = (SpecifiedArrayList<E>) obj;
         if (!Arrays.equals(elementData, other.elementData))
             return false;
         if (size != other.size)
@@ -739,11 +756,11 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
         if (size > 0) {
             // be like clone(), allocate array based upon size not capacity
-            int capacity = size; // TODO check if replace correct
+            final int capacity = size; // TODO check if replace correct
             SharedSecrets.getJavaOISAccess().checkArray(s, Object[].class, capacity);
             ensureCapacity(size);
 
-            Object[] a = elementData;
+            final Object[] a = elementData;
             // Read in all elements in the proper order.
             for (int i = 0; i < size; i++) {
                 a[i] = s.readObject();
@@ -823,7 +840,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     }
 
     void trimIfUseful(final int numRemoved) {
-        int threshold = (elementData.length / TRIM_FACTOR) + 1;
+        final int threshold = (elementData.length / TRIM_FACTOR) + 1;
         if (numRemoved > elementData.length / 5 && threshold > size && threshold < elementData.length) {
             trim(threshold);
         }
@@ -841,7 +858,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
      *
      * @param index index of object to be removed
      */
-    private void fastRemove(int index) {
+    private void fastRemove(final int index) {
         modCount++;
         System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
         elementData[--size] = null;
@@ -850,7 +867,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     /**
      * Increases the capacity of the underlying array
      */
-    protected void grow(int minCapacity) {
+    protected void grow(final int minCapacity) {
         final int curCapacity = elementData.length;
 
 // TODO I actually have no Idea why this commenting this stuff raises the loadFactor by 10 Percent
@@ -868,7 +885,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         }
     }
 
-    private static int calculateCapacity(int proposedCap, int minCap) {
+    private static int calculateCapacity(final int proposedCap, final int minCap) {
 
         int capacity = proposedCap;
         if (proposedCap - minCap < 0)

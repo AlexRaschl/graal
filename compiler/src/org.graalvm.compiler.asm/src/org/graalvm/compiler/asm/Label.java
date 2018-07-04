@@ -23,6 +23,7 @@
 package org.graalvm.compiler.asm;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.primitives.SimpleIntSpecifiedArrayList;
 
 /**
  * This class represents a label within assembly code.
@@ -36,7 +37,7 @@ public final class Label {
      * References to instructions that jump to this unresolved label. These instructions need to be
      * patched when the label is bound using the {@link #patchInstructions(Assembler)} method.
      */
-    private SpecifiedArrayList<Integer> patchPositions = null;
+    private SimpleIntSpecifiedArrayList patchPositions = null;
 
     /**
      * Returns the position of this label in the code buffer.
@@ -76,8 +77,7 @@ public final class Label {
     public void addPatchAt(int branchLocation) {
         assert !isBound() : "Label is already bound " + this + " " + branchLocation + " at position " + position;
         if (patchPositions == null) {
-            // TODO Remember Replace
-            patchPositions = SpecifiedArrayList.createNew(2);
+            patchPositions = SpecifiedArrayList.createNewIntList(0);
         }
         patchPositions.add(branchLocation);
     }
