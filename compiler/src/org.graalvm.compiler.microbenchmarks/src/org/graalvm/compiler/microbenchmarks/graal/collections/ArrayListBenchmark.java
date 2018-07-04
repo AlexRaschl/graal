@@ -43,7 +43,7 @@ public class ArrayListBenchmark extends GraalBenchmark {
 
     @State(Scope.Benchmark)
     public static class ThreadState {
-        final ArrayList<Integer> list = new ArrayList<>(N);
+        final ArrayList<Integer> list = new ArrayList<>();
     }
 
     @Benchmark
@@ -78,7 +78,7 @@ public class ArrayListBenchmark extends GraalBenchmark {
 
     @State(Scope.Benchmark)
     public static class ClearedThreadState {
-        final ArrayList<Integer> list = new ArrayList<>(N);
+        final ArrayList<Integer> list = new ArrayList<>();
 
         // We don't want to measure the cost of list clearing
         @Setup(Level.Invocation)
@@ -97,7 +97,7 @@ public class ArrayListBenchmark extends GraalBenchmark {
 
     @State(Scope.Benchmark)
     public static class AddedClearedThreadState {
-        final ArrayList<Integer> list = new ArrayList<>(N);
+        final ArrayList<Integer> list = new ArrayList<>();
         final Integer[] integers = new Integer[N];
 
         // We don't want to measure the cost of list clearing

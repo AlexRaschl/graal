@@ -270,7 +270,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public void clear() {
         modCount++;
 
-        elementData = EMPTY_ELEMENTDATA;
+        // elementData = EMPTY_ELEMENTDATA;
+        for (int i = 0; i < size; i++)
+            elementData[i] = null;
+
         size = 0;
     }
 
@@ -818,9 +821,9 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             throw new IndexOutOfBoundsException("Index: " + index + ", Size " + size);
     }
 
-    void trimIfUseful() {
+    void trimIfUseful(final int numRemoved) {
         int threshold = (elementData.length / TRIM_FACTOR) + 1;
-        if (threshold > size && threshold < elementData.length) {
+        if (numRemoved > elementData.length / 5 && threshold > size && threshold < elementData.length) {
             trim(threshold);
         }
     }
@@ -906,7 +909,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             size = w;
         }
 
-        trimIfUseful();// TODO Check if useful
+        trimIfUseful(removed);// TODO Check if useful
         return removed != 0;
     }
 

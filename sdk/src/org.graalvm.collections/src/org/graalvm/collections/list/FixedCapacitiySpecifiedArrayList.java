@@ -21,7 +21,7 @@ public class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
     }
 
     @Override
-    void trimIfUseful() {
+    void trimIfUseful(final int numRemoved) {
         return;
     }
 
