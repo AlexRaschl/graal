@@ -271,6 +271,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         modCount++;
 
         // elementData = EMPTY_ELEMENTDATA;
+
         for (int i = 0; i < size; i++)
             elementData[i] = null;
 
