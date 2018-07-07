@@ -882,9 +882,9 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         } else if (curCapacity <= INITIAL_CAPACITY) {
             elementData = Arrays.copyOf(elementData, Math.max(NEXT_CAPACITY, minCapacity));
         } else {
-            // int newLength = curCapacity + (curCapacity >> 1); // *1.5
+            final int newLength = curCapacity + (curCapacity >> 1); // *1.5
             // final int newLength = curCapacity + (curCapacity >> 1) + (curCapacity >> 2); // *1.75
-            final int newLength = curCapacity << 2;
+            // final int newLength = curCapacity << 2;
             elementData = Arrays.copyOf(elementData, calculateCapacity(newLength, minCapacity));
         }
     }
