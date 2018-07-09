@@ -338,6 +338,7 @@ class CounterBenchmarkMixin(DebugValueBenchmarkMixin):
 
 class MemUseTrackerBenchmarkMixin(DebugValueBenchmarkMixin):
     trackers = [
+        "CompileMemory",
         # LIR stages
         "LIRPhaseMemUse_AllocationStage",
         "LIRPhaseMemUse_PostAllocationOptimizationStage",

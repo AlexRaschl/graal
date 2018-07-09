@@ -42,6 +42,7 @@ import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.DebugDumpScope;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.debug.TimerKey;
+import org.graalvm.compiler.debug.MemUseTrackerKey;
 import org.graalvm.compiler.options.EnumOptionKey;
 import org.graalvm.compiler.options.OptionKey;
 import org.graalvm.compiler.options.OptionValues;
@@ -254,6 +255,9 @@ public class CompilationTask {
         return installedCode;
     }
 
+    
+    private static final MemUseTrackerKey MemUsedCompiling = DebugContext.memUseTracker("CompileMemory");
+    
     /**
      * Time spent in compilation.
      */
@@ -312,7 +316,7 @@ public class CompilationTask {
         }
 
         HotSpotCompilationWrapper compilation = new HotSpotCompilationWrapper(compilationEvent);
-        try (DebugCloseable a = CompilationTime.start(debug)) {
+        try (DebugCloseable a = CompilationTime.start(debug); DebugCloseable b = MemUsedCompiling.start(debug);) {
             return compilation.run(debug);
         } finally {
             try {
