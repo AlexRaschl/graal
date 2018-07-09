@@ -42,6 +42,7 @@ import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.DebugDumpScope;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.debug.TimerKey;
+import org.graalvm.compiler.debug.MemUseTrackerKey;
 import org.graalvm.compiler.options.EnumOptionKey;
 import org.graalvm.compiler.options.OptionKey;
 import org.graalvm.compiler.options.OptionValues;
@@ -116,10 +117,9 @@ public class CompilationTask {
             if (t instanceof BailoutException) {
                 BailoutException bailout = (BailoutException) t;
                 /*
-                 * Handling of permanent bailouts: Permanent bailouts that can happen for example
-                 * due to unsupported unstructured control flow in the bytecodes of a method must
-                 * not be retried. Hotspot compile broker will ensure that no recompilation at the
-                 * given tier will happen if retry is false.
+                 * Handling of permanent bailouts: Permanent bailouts that can happen for example due to unsupported
+                 * unstructured control flow in the bytecodes of a method must not be retried. Hotspot compile
+                 * broker will ensure that no recompilation at the given tier will happen if retry is false.
                  */
                 return HotSpotCompilationRequestResult.failure(bailout.getMessage(), !bailout.isPermanent());
             }
@@ -132,9 +132,9 @@ public class CompilationTask {
             }
 
             /*
-             * Treat random exceptions from the compiler as indicating a problem compiling this
-             * method. Report the result of toString instead of getMessage to ensure that the
-             * exception type is included in the output in case there's no detail mesage.
+             * Treat random exceptions from the compiler as indicating a problem compiling this method. Report
+             * the result of toString instead of getMessage to ensure that the exception type is included in the
+             * output in case there's no detail mesage.
              */
             return HotSpotCompilationRequestResult.failure(t.toString(), false);
         }
@@ -142,8 +142,8 @@ public class CompilationTask {
         @Override
         protected ExceptionAction lookupAction(OptionValues values, EnumOptionKey<ExceptionAction> actionKey) {
             /*
-             * Automatically exit VM on non-bailout during bootstrap or when asserts are enabled but
-             * respect CompilationFailureAction if it has been explicitly set.
+             * Automatically exit VM on non-bailout during bootstrap or when asserts are enabled but respect
+             * CompilationFailureAction if it has been explicitly set.
              */
             if (actionKey == CompilationFailureAction && !actionKey.hasBeenSet(values)) {
                 if (Assertions.assertionsEnabled() || compiler.getGraalRuntime().isBootstrapping()) {
@@ -255,6 +255,8 @@ public class CompilationTask {
         return installedCode;
     }
 
+    private static final MemUseTrackerKey MemUsedCompiling = DebugContext.memUseTracker("CompileMemory");
+
     /**
      * Time spent in compilation.
      */
@@ -313,7 +315,7 @@ public class CompilationTask {
         }
 
         HotSpotCompilationWrapper compilation = new HotSpotCompilationWrapper(compilationEvent);
-        try (DebugCloseable a = CompilationTime.start(debug)) {
+        try (DebugCloseable a = CompilationTime.start(debug); DebugCloseable b = MemUsedCompiling.start(debug);) {
             return compilation.run(debug);
         } finally {
             try {
