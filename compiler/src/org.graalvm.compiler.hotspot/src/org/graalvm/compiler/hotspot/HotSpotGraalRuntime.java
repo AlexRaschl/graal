@@ -302,10 +302,11 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
 
             Statistics.getReadLock();
             try {
-// Thread.sleep(10000);
-// } catch (InterruptedException e) {
-// e.printStackTrace();
-// }
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Statistics.printGlobalInformation();
                 System.out.println("Load Factor lines");
                 String data[] = Statistics.getLoadFactorDataLines(';');

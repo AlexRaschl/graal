@@ -136,19 +136,15 @@ public final class SimpleIntSpecifiedArrayList {
 
     }
 
-    private void grow(int capacity) {
+    private void grow(int minCapacity) {
         final int curCapacity = elementData.length;
         if (elementData == EMPTY_INTS) {
-            elementData = new int[Math.max(INITIAL_CAPACITY, capacity)];
+            elementData = new int[Math.max(INITIAL_CAPACITY, minCapacity)];
         } else if (curCapacity <= NEXT_CAPACITY) {
-            elementData = Arrays.copyOf(elementData, Math.max(NEXT_CAPACITY, capacity));
+            elementData = Arrays.copyOf(elementData, Math.max(NEXT_CAPACITY, minCapacity));
         } else {
-            int nextCapacity = curCapacity + curCapacity;
-
-            if (capacity < nextCapacity)
-                nextCapacity = capacity;
-
-            elementData = Arrays.copyOf(elementData, nextCapacity);
+            final int nextCapacity = curCapacity + (curCapacity >> 1);
+            elementData = Arrays.copyOf(elementData, Math.max(nextCapacity, minCapacity));
         }
     }
 

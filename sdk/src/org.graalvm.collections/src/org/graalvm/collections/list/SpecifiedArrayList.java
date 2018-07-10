@@ -20,9 +20,6 @@ import java.util.function.UnaryOperator;
 
 import org.graalvm.collections.list.primitives.SimpleDoubleSpecifiedArrayList;
 import org.graalvm.collections.list.primitives.SimpleIntSpecifiedArrayList;
-import org.graalvm.collections.list.statistics.StatisticConfigs;
-import org.graalvm.collections.list.statistics.StatisticalArrayListClone;
-import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 
 import sun.misc.SharedSecrets;
 
@@ -65,7 +62,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // return new ArrayListClone<>(initalCapacity);
 // }
 
-//
 // public static <E> SpecifiedArrayList<E> createNew() {
 // return new StatisticalArrayListClone<>();
 // }
@@ -81,7 +77,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // public static <E> SpecifiedArrayList<E> createNewFixed(final int initalCapacity) {
 // return new StatisticalArrayListClone<>(initalCapacity);
 // }
-//
 
 // public static <E> SpecifiedArrayList<E> createNew() {
 // return new StatisticalSpecifiedArrayListImpl<>();
@@ -94,10 +89,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
 // return new StatisticalSpecifiedArrayListImpl<>(c);
 // }
-// public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
-// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
-// }
 //
+// public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
+// return new StatisticalSpecifiedArrayListImpl<>(initialCapacity);
+// }
 
     public static <E> SpecifiedArrayList<E> createNew() {
         return new SpecifiedArrayList<>();
@@ -132,7 +127,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 8; // Capacity after first grow
+    private final static int NEXT_CAPACITY = 10; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Trim factor
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
@@ -879,34 +874,30 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         if (elementData == EMPTY_ELEMENTDATA) {
             elementData = new Object[Math.max(INITIAL_CAPACITY, minCapacity)];
 
-        } else if (curCapacity <= INITIAL_CAPACITY) {
+        } else if (curCapacity <= INITIAL_CAPACITY) { // TODO check if <= leads to better results
             elementData = Arrays.copyOf(elementData, Math.max(NEXT_CAPACITY, minCapacity));
         } else {
             final int newLength = curCapacity + (curCapacity >> 1); // *1.5
             // final int newLength = curCapacity + (curCapacity >> 1) + (curCapacity >> 2); // *1.75
             // final int newLength = curCapacity << 2;
-            elementData = Arrays.copyOf(elementData, calculateCapacity(newLength, minCapacity));
+            elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }
     }
 
-    private static int calculateCapacity(final int proposedCap, final int minCap) {
+// private static int calculateCapacity(final int proposedCap, final int minCap) {
+// int capacity = proposedCap;
+// if (proposedCap < minCap)
+// capacity = minCap;
+//
+// return capacity;
+// }
 
-        int capacity = proposedCap;
-        if (proposedCap - minCap < 0)
-            capacity = minCap; // The minCap is usually closer to the needed size
-// if (capacity - MAX_ARRAY_SIZE < 0)
-// capacity = hugeCapacityAL(minCap);
-
-        return capacity;
-
-    }
-
-    // TODO Use like in ArrayList
-    private static int hugeCapacityAL(int minCapacity) {
-        if (minCapacity < 0) // overflow
-            throw new OutOfMemoryError();
-        return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
-    }
+// // TODO Use like in ArrayList
+// private static int hugeCapacityAL(int minCapacity) {
+// if (minCapacity < 0) // overflow
+// throw new OutOfMemoryError();
+// return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
+// }
 
     private boolean removeCollection(Collection<?> c, boolean isRetained) {
         int removed = 0;
