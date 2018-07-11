@@ -20,6 +20,7 @@ import java.util.function.UnaryOperator;
 
 import org.graalvm.collections.list.primitives.SimpleDoubleSpecifiedArrayList;
 import org.graalvm.collections.list.primitives.SimpleIntSpecifiedArrayList;
+import org.graalvm.collections.list.statistics.StatisticalArrayListClone;
 
 import sun.misc.SharedSecrets;
 
@@ -880,7 +881,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             // final int newLength = curCapacity + (curCapacity >> 1); // *1.5
             // final int newLength = curCapacity + (curCapacity >> 1) + (curCapacity >> 2); // *1.75
             // final int newLength = curCapacity << 2;
-            final int newLength = curCapacity + 10;
+            final int newLength = curCapacity + NEXT_CAPACITY;
             elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }
     }

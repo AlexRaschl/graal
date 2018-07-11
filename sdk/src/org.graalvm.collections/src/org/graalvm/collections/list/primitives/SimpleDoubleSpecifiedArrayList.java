@@ -135,7 +135,8 @@ public class SimpleDoubleSpecifiedArrayList {
         } else if (curCapacity <= NEXT_CAPACITY) {
             elementData = Arrays.copyOf(elementData, Math.max(NEXT_CAPACITY, minCapacity));
         } else {
-            final int nextCapacity = curCapacity + (curCapacity >> 1);
+            // final int nextCapacity = curCapacity + (curCapacity >> 1);
+            final int nextCapacity = curCapacity + NEXT_CAPACITY;
             elementData = Arrays.copyOf(elementData, Math.max(nextCapacity, minCapacity));
         }
     }
