@@ -127,8 +127,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     private static final long serialVersionUID = 9130616599645229594L;
 
-    private final static int INITIAL_CAPACITY = 3; // Used on first insertion
-    private final static int NEXT_CAPACITY = 5; // Capacity after first grow
+    private final static int INITIAL_CAPACITY = 2; // Used on first insertion
+    private final static int NEXT_CAPACITY = 8; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Trim factor
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
@@ -287,10 +287,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public void clear() {
         modCount++;
 
-        // elementData = EMPTY_ELEMENTDATA;
+// for (int i = 0; i < size; i++)
+// elementData[i] = null;
 
-        for (int i = 0; i < size; i++)
-            elementData[i] = null;
+        elementData = EMPTY_ELEMENTDATA;
 
         size = 0;
     }
@@ -881,7 +881,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             // final int newLength = curCapacity + (curCapacity >> 1); // *1.5
             // final int newLength = curCapacity + (curCapacity >> 1) + (curCapacity >> 2); // *1.75
             // final int newLength = curCapacity << 2;
-            final int newLength = curCapacity + curCapacity + curCapacity;
+            final int newLength = curCapacity + 10;
             elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }
     }
