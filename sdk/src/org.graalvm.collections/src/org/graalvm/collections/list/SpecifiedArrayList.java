@@ -128,7 +128,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 8; // Capacity after first grow
+    private final static int NEXT_CAPACITY = 10; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Trim factor
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
