@@ -20,7 +20,7 @@ import java.util.function.UnaryOperator;
 
 import org.graalvm.collections.list.primitives.SimpleDoubleSpecifiedArrayList;
 import org.graalvm.collections.list.primitives.SimpleIntSpecifiedArrayList;
-import org.graalvm.collections.list.statistics.StatisticalArrayListClone;
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
 
 import sun.misc.SharedSecrets;
 
@@ -79,37 +79,37 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // return new StatisticalArrayListClone<>(initalCapacity);
 // }
 
-// public static <E> SpecifiedArrayList<E> createNew() {
-// return new StatisticalSpecifiedArrayListImpl<>();
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-// return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-// return new StatisticalSpecifiedArrayListImpl<>(c);
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
-// return new StatisticalSpecifiedArrayListImpl<>(initialCapacity);
-// }
-
     public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayList<>();
+        return new StatisticalSpecifiedArrayListImpl<>();
     }
 
     public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayList<>(initalCapacity);
+        return new StatisticalSpecifiedArrayListImpl<>(initalCapacity);
     }
 
     public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayList<>(c);
+        return new StatisticalSpecifiedArrayListImpl<>(c);
     }
 
     public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
-        return new FixedCapacitiySpecifiedArrayList<>(initialCapacity);
+        return new StatisticalSpecifiedArrayListImpl<>(initialCapacity);
     }
+
+// public static <E> SpecifiedArrayList<E> createNew() {
+// return new SpecifiedArrayList<>();
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+// return new SpecifiedArrayList<>(initalCapacity);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+// return new SpecifiedArrayList<>(c);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
+// return new FixedCapacitiySpecifiedArrayList<>(initialCapacity);
+// }
 
     public static SimpleIntSpecifiedArrayList createNewIntList(final int initialCapacity) {
         return new SimpleIntSpecifiedArrayList(initialCapacity);
@@ -127,7 +127,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     private static final long serialVersionUID = 9130616599645229594L;
 
-    private final static int INITIAL_CAPACITY = 1; // Used on first insertion
+    private final static int INITIAL_CAPACITY = 3; // Used on first insertion
     private final static int NEXT_CAPACITY = 5; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Trim factor
     //
@@ -881,7 +881,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             // final int newLength = curCapacity + (curCapacity >> 1); // *1.5
             // final int newLength = curCapacity + (curCapacity >> 1) + (curCapacity >> 2); // *1.75
             // final int newLength = curCapacity << 2;
-            final int newLength = curCapacity + NEXT_CAPACITY;
+            final int newLength = curCapacity + curCapacity + curCapacity;
             elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }
     }
