@@ -287,10 +287,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public void clear() {
         modCount++;
 
-// for (int i = 0; i < size; i++)
-// elementData[i] = null;
+        for (int i = 0; i < size; i++)
+            elementData[i] = null;
 
-        elementData = EMPTY_ELEMENTDATA;
+        // elementData = EMPTY_ELEMENTDATA;
 
         size = 0;
     }
