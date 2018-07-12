@@ -91,6 +91,7 @@ public class SimpleDoubleSpecifiedArrayList {
 
     public void clear() {
         size = 0;
+        elementData = EMPTY_DOUBLES;
     }
 
     public double get(int index) {

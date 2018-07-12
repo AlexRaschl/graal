@@ -99,6 +99,7 @@ public final class SimpleIntSpecifiedArrayList {
 
     public void clear() {
         size = 0;
+        elementData = EMPTY_INTS;
     }
 
     public int get(int index) {

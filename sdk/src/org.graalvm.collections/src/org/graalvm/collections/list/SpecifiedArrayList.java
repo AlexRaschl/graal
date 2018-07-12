@@ -843,8 +843,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     void trimIfUseful(final int numRemoved) {
         final int threshold = (elementData.length / TRIM_FACTOR) + 1;
-        if (numRemoved > elementData.length / 5 && threshold > size && threshold < elementData.length) {
-            System.out.println("TRIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIM");
+        if (numRemoved > elementData.length / 4 && threshold > size && threshold < elementData.length) {
             trim(threshold);
         }
     }
