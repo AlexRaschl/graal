@@ -6,7 +6,7 @@ public final class SimpleIntSpecifiedArrayList {
 
     // CONSTTANTS
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 8; // Capacity after first grow
+    private final static int NEXT_CAPACITY = 50; // Capacity after first grow
 
     private final static int[] EMPTY_INTS = {};
 
@@ -147,11 +147,11 @@ public final class SimpleIntSpecifiedArrayList {
             // final int nextCapacity = curCapacity + (curCapacity >> 1);
             // final int nextCapacity = curCapacity + NEXT_CAPACITY;
             final int newLength;
-            if (curCapacity < 12) {
-                newLength = curCapacity + 4;
-            } else {
-                newLength = curCapacity << 1; // Times 2
-            }
+// if (curCapacity < 12) {
+// newLength = curCapacity + 4;
+// } else {
+            newLength = curCapacity << 1; // Times 2
+            // }
             elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }
     }
