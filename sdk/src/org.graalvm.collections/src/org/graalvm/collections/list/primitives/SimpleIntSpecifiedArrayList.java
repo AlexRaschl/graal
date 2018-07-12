@@ -143,9 +143,15 @@ public final class SimpleIntSpecifiedArrayList {
         } else if (curCapacity <= NEXT_CAPACITY) {
             elementData = Arrays.copyOf(elementData, Math.max(NEXT_CAPACITY, minCapacity));
         } else {
-            final int nextCapacity = curCapacity + (curCapacity >> 1);
+            // final int nextCapacity = curCapacity + (curCapacity >> 1);
             // final int nextCapacity = curCapacity + NEXT_CAPACITY;
-            elementData = Arrays.copyOf(elementData, Math.max(nextCapacity, minCapacity));
+            final int newLength;
+            if (curCapacity < 12) {
+                newLength = curCapacity + 4;
+            } else {
+                newLength = curCapacity << 1; // Times 2
+            }
+            elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }
     }
 

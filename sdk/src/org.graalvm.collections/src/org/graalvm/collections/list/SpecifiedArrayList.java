@@ -287,11 +287,13 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public void clear() {
         modCount++;
 
-        for (int i = 0; i < size; i++)
-            elementData[i] = null;
-
-        // elementData = EMPTY_ELEMENTDATA;
-
+        if (elementData.length > 12) {
+            elementData = EMPTY_ELEMENTDATA;
+            // System.out.println("Reset to 0 cap");
+        } else {
+            for (int i = 0; i < size; i++)
+                elementData[i] = null;
+        }
         size = 0;
     }
 
@@ -714,59 +716,59 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         }
     }
 
-    // ---------------------------SERIALIZATION METHODS------------------------------
-
-    /**
-     * Save the state of the <tt>ArrayList</tt> instance to a stream (that is, serialize it).
-     *
-     * @serialData The length of the array backing the <tt>ArrayList</tt> instance is emitted (int),
-     *             followed by all of its elements (each an <tt>Object</tt>) in the proper order.
-     */
-    private void writeObject(java.io.ObjectOutputStream s)
-                    throws java.io.IOException {
-        // Write out element count, and any hidden stuff
-        final int expectedModCount = modCount;
-        s.defaultWriteObject();
-
-        // Write out size as capacity for behavioural compatibility with clone()
-        s.writeInt(size);
-
-        // Write out all elements in the proper order.
-        for (int i = 0; i < size; i++) {
-            s.writeObject(elementData[i]);
-        }
-
-        if (modCount != expectedModCount) {
-            throw new ConcurrentModificationException();
-        }
-    }
-
-    /**
-     * Reconstitute the <tt>ArrayList</tt> instance from a stream (that is, deserialize it).
-     */
-    private void readObject(java.io.ObjectInputStream s)
-                    throws java.io.IOException, ClassNotFoundException {
-        elementData = EMPTY_ELEMENTDATA;
-
-        // Read in size, and any hidden stuff
-        s.defaultReadObject();
-
-        // Read in capacity
-        s.readInt(); // ignored
-
-        if (size > 0) {
-            // be like clone(), allocate array based upon size not capacity
-            final int capacity = size; // TODO check if replace correct
-            SharedSecrets.getJavaOISAccess().checkArray(s, Object[].class, capacity);
-            ensureCapacity(size);
-
-            final Object[] a = elementData;
-            // Read in all elements in the proper order.
-            for (int i = 0; i < size; i++) {
-                a[i] = s.readObject();
-            }
-        }
-    }
+// // ---------------------------SERIALIZATION METHODS------------------------------
+//
+// /**
+// * Save the state of the <tt>ArrayList</tt> instance to a stream (that is, serialize it).
+// *
+// * @serialData The length of the array backing the <tt>ArrayList</tt> instance is emitted (int),
+// * followed by all of its elements (each an <tt>Object</tt>) in the proper order.
+// */
+// private void writeObject(java.io.ObjectOutputStream s)
+// throws java.io.IOException {
+// // Write out element count, and any hidden stuff
+// final int expectedModCount = modCount;
+// s.defaultWriteObject();
+//
+// // Write out size as capacity for behavioural compatibility with clone()
+// s.writeInt(size);
+//
+// // Write out all elements in the proper order.
+// for (int i = 0; i < size; i++) {
+// s.writeObject(elementData[i]);
+// }
+//
+// if (modCount != expectedModCount) {
+// throw new ConcurrentModificationException();
+// }
+// }
+//
+// /**
+// * Reconstitute the <tt>ArrayList</tt> instance from a stream (that is, deserialize it).
+// */
+// private void readObject(java.io.ObjectInputStream s)
+// throws java.io.IOException, ClassNotFoundException {
+// elementData = EMPTY_ELEMENTDATA;
+//
+// // Read in size, and any hidden stuff
+// s.defaultReadObject();
+//
+// // Read in capacity
+// s.readInt(); // ignored
+//
+// if (size > 0) {
+// // be like clone(), allocate array based upon size not capacity
+// final int capacity = size; // TODO check if replace correct
+// SharedSecrets.getJavaOISAccess().checkArray(s, Object[].class, capacity);
+// ensureCapacity(size);
+//
+// final Object[] a = elementData;
+// // Read in all elements in the proper order.
+// for (int i = 0; i < size; i++) {
+// a[i] = s.readObject();
+// }
+// }
+// }
 
     // ------------------GROWING METHODS------------------------
 
@@ -792,8 +794,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public void ensureCapacity(int minCapacity) {
         modCount++;
 
-        final int curCapacity = elementData.length;
-        if (curCapacity < minCapacity) {
+        if (elementData.length < minCapacity) {
             grow(minCapacity);
         }
     }
@@ -842,6 +843,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     void trimIfUseful(final int numRemoved) {
         final int threshold = (elementData.length / TRIM_FACTOR) + 1;
         if (numRemoved > elementData.length / 5 && threshold > size && threshold < elementData.length) {
+            System.out.println("TRIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIM");
             trim(threshold);
         }
     }
@@ -881,7 +883,12 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             // final int newLength = curCapacity + (curCapacity >> 1); // *1.5
             // final int newLength = curCapacity + (curCapacity >> 1) + (curCapacity >> 2); // *1.75
             // final int newLength = curCapacity << 2;
-            final int newLength = curCapacity + 10;
+            final int newLength;
+            if (curCapacity < 12) {
+                newLength = curCapacity + 4;
+            } else {
+                newLength = curCapacity << 1; // Times 2
+            }
             elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }
     }
@@ -924,7 +931,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             size = w;
         }
 
-        trimIfUseful(removed);// TODO Check if useful
+        // trimIfUseful(removed);// TODO Check if useful
         return removed != 0;
     }
 
@@ -1240,140 +1247,143 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
                 throw new ConcurrentModificationException();
         }
 
-        @Override
-        public Spliterator<E> spliterator() {
-            checkForComodification();
-            return new SpecifiedArrayListSpliterator<>(SpecifiedArrayList.this, offset,
-                            offset + this.size, this.modCount);
-        }
+// @Override
+// public Spliterator<E> spliterator() {
+// checkForComodification();
+// return new SpecifiedArrayListSpliterator<>(SpecifiedArrayList.this, offset,
+// offset + this.size, this.modCount);
+// }
     }
 
     // --------------SPLITERATOR --------------------------------
 
-    /**
-     * Creates a <em><a href="Spliterator.html#binding">late-binding</a></em> and <em>fail-fast</em>
-     * {@link Spliterator} over the elements in this list.
-     *
-     * <p>
-     * The {@code Spliterator} reports {@link Spliterator#SIZED}, {@link Spliterator#SUBSIZED}, and
-     * {@link Spliterator#ORDERED}. Overriding implementations should document the reporting of
-     * additional characteristic values.
-     *
-     * @return a {@code Spliterator} over the elements in this list
-     * @since 1.8
-     */
-    @Override
-    public Spliterator<E> spliterator() {
-        return new SpecifiedArrayListSpliterator<>(this, 0, -1, 0);
-    }
+// /**
+// * Creates a <em><a href="Spliterator.html#binding">late-binding</a></em> and <em>fail-fast</em>
+// * {@link Spliterator} over the elements in this list.
+// *
+// * <p>
+// * The {@code Spliterator} reports {@link Spliterator#SIZED}, {@link Spliterator#SUBSIZED}, and
+// * {@link Spliterator#ORDERED}. Overriding implementations should document the reporting of
+// * additional characteristic values.
+// *
+// * @return a {@code Spliterator} over the elements in this list
+// * @since 1.8
+// */
+// @Override
+// public Spliterator<E> spliterator() {
+// return new SpecifiedArrayListSpliterator<>(this, 0, -1, 0);
+// }
 
-    /** Index-based split-by-two, lazily initialized Spliterator */
-    static final class SpecifiedArrayListSpliterator<E> implements Spliterator<E> {
-
-        /*
-         * If ArrayLists were immutable, or structurally immutable (no adds, removes, etc), we could
-         * implement their spliterators with Arrays.spliterator. Instead we detect as much interference
-         * during traversal as practical without sacrificing much performance. We rely primarily on
-         * modCounts. These are not guaranteed to detect concurrency violations, and are sometimes overly
-         * conservative about within-thread interference, but detect enough problems to be worthwhile in
-         * practice. To carry this out, we (1) lazily initialize fence and expectedModCount until the latest
-         * point that we need to commit to the state we are checking against; thus improving precision.
-         * (This doesn't apply to SubLists, that create spliterators with current non-lazy values). (2) We
-         * perform only a single ConcurrentModificationException check at the end of forEach (the most
-         * performance-sensitive method). When using forEach (as opposed to iterators), we can normally only
-         * detect interference after actions, not before. Further CME-triggering checks apply to all other
-         * possible violations of assumptions for example null or too-small elementData array given its
-         * size(), that could only have occurred due to interference. This allows the inner loop of forEach
-         * to run without any further checks, and simplifies lambda-resolution. While this does entail a
-         * number of checks, note that in the common case of list.stream().forEach(a), no checks or other
-         * computation occur anywhere other than inside forEach itself. The other less-often-used methods
-         * cannot take advantage of most of these streamlinings.
-         */
-
-        private final SpecifiedArrayList<E> list;
-        private int index; // current index, modified on advance/split
-        private int fence; // -1 until used; then one past last index
-        private int expectedModCount; // initialized when fence set
-
-        /** Create new spliterator covering the given range */
-        SpecifiedArrayListSpliterator(SpecifiedArrayList<E> list, int origin, int fence,
-                        int expectedModCount) {
-            this.list = list; // OK if null unless traversed
-            this.index = origin;
-            this.fence = fence;
-            this.expectedModCount = expectedModCount;
-        }
-
-        private int getFence() { // initialize fence to size on first use
-            int hi; // (a specialized variant appears in method forEach)
-            SpecifiedArrayList<E> lst;
-            if ((hi = fence) < 0) {
-                if ((lst = list) == null)
-                    hi = fence = 0;
-                else {
-                    expectedModCount = lst.modCount;
-                    hi = fence = lst.size;
-                }
-            }
-            return hi;
-        }
-
-        public SpecifiedArrayListSpliterator<E> trySplit() {
-            int hi = getFence(), lo = index, mid = (lo + hi) >>> 1;
-            return (lo >= mid) ? null : // divide range in half unless too small
-                            new SpecifiedArrayListSpliterator<>(list, lo, index = mid,
-                                            expectedModCount);
-        }
-
-        public boolean tryAdvance(Consumer<? super E> action) {
-            if (action == null)
-                throw new NullPointerException();
-            int hi = getFence(), i = index;
-            if (i < hi) {
-                index = i + 1;
-                @SuppressWarnings("unchecked")
-                E e = (E) list.elementData[i];
-                action.accept(e);
-                if (list.modCount != expectedModCount)
-                    throw new ConcurrentModificationException();
-                return true;
-            }
-            return false;
-        }
-
-        public void forEachRemaining(Consumer<? super E> action) {
-            int i, hi, mc; // hoist accesses and checks from loop
-            SpecifiedArrayList<E> lst;
-            Object[] a;
-            if (action == null)
-                throw new NullPointerException();
-            if ((lst = list) != null && (a = lst.elementData) != null) {
-                if ((hi = fence) < 0) {
-                    mc = lst.modCount;
-                    hi = lst.size;
-                } else
-                    mc = expectedModCount;
-                if ((i = index) >= 0 && (index = hi) <= a.length) {
-                    for (; i < hi; ++i) {
-                        @SuppressWarnings("unchecked")
-                        E e = (E) a[i];
-                        action.accept(e);
-                    }
-                    if (lst.modCount == mc)
-                        return;
-                }
-            }
-            throw new ConcurrentModificationException();
-        }
-
-        public long estimateSize() {
-            return (long) (getFence() - index);
-        }
-
-        public int characteristics() {
-            return Spliterator.ORDERED | Spliterator.SIZED | Spliterator.SUBSIZED;
-        }
-    }
+// /** Index-based split-by-two, lazily initialized Spliterator */
+// static final class SpecifiedArrayListSpliterator<E> implements Spliterator<E> {
+//
+// /*
+// * If ArrayLists were immutable, or structurally immutable (no adds, removes, etc), we could
+// * implement their spliterators with Arrays.spliterator. Instead we detect as much interference
+// * during traversal as practical without sacrificing much performance. We rely primarily on
+// * modCounts. These are not guaranteed to detect concurrency violations, and are sometimes overly
+// * conservative about within-thread interference, but detect enough problems to be worthwhile in
+// * practice. To carry this out, we (1) lazily initialize fence and expectedModCount until the
+// latest
+// * point that we need to commit to the state we are checking against; thus improving precision.
+// * (This doesn't apply to SubLists, that create spliterators with current non-lazy values). (2) We
+// * perform only a single ConcurrentModificationException check at the end of forEach (the most
+// * performance-sensitive method). When using forEach (as opposed to iterators), we can normally
+// only
+// * detect interference after actions, not before. Further CME-triggering checks apply to all other
+// * possible violations of assumptions for example null or too-small elementData array given its
+// * size(), that could only have occurred due to interference. This allows the inner loop of
+// forEach
+// * to run without any further checks, and simplifies lambda-resolution. While this does entail a
+// * number of checks, note that in the common case of list.stream().forEach(a), no checks or other
+// * computation occur anywhere other than inside forEach itself. The other less-often-used methods
+// * cannot take advantage of most of these streamlinings.
+// */
+//
+// private final SpecifiedArrayList<E> list;
+// private int index; // current index, modified on advance/split
+// private int fence; // -1 until used; then one past last index
+// private int expectedModCount; // initialized when fence set
+//
+// /** Create new spliterator covering the given range */
+// SpecifiedArrayListSpliterator(SpecifiedArrayList<E> list, int origin, int fence,
+// int expectedModCount) {
+// this.list = list; // OK if null unless traversed
+// this.index = origin;
+// this.fence = fence;
+// this.expectedModCount = expectedModCount;
+// }
+//
+// private int getFence() { // initialize fence to size on first use
+// int hi; // (a specialized variant appears in method forEach)
+// SpecifiedArrayList<E> lst;
+// if ((hi = fence) < 0) {
+// if ((lst = list) == null)
+// hi = fence = 0;
+// else {
+// expectedModCount = lst.modCount;
+// hi = fence = lst.size;
+// }
+// }
+// return hi;
+// }
+//
+// public SpecifiedArrayListSpliterator<E> trySplit() {
+// int hi = getFence(), lo = index, mid = (lo + hi) >>> 1;
+// return (lo >= mid) ? null : // divide range in half unless too small
+// new SpecifiedArrayListSpliterator<>(list, lo, index = mid,
+// expectedModCount);
+// }
+//
+// public boolean tryAdvance(Consumer<? super E> action) {
+// if (action == null)
+// throw new NullPointerException();
+// int hi = getFence(), i = index;
+// if (i < hi) {
+// index = i + 1;
+// @SuppressWarnings("unchecked")
+// E e = (E) list.elementData[i];
+// action.accept(e);
+// if (list.modCount != expectedModCount)
+// throw new ConcurrentModificationException();
+// return true;
+// }
+// return false;
+// }
+//
+// public void forEachRemaining(Consumer<? super E> action) {
+// int i, hi, mc; // hoist accesses and checks from loop
+// SpecifiedArrayList<E> lst;
+// Object[] a;
+// if (action == null)
+// throw new NullPointerException();
+// if ((lst = list) != null && (a = lst.elementData) != null) {
+// if ((hi = fence) < 0) {
+// mc = lst.modCount;
+// hi = lst.size;
+// } else
+// mc = expectedModCount;
+// if ((i = index) >= 0 && (index = hi) <= a.length) {
+// for (; i < hi; ++i) {
+// @SuppressWarnings("unchecked")
+// E e = (E) a[i];
+// action.accept(e);
+// }
+// if (lst.modCount == mc)
+// return;
+// }
+// }
+// throw new ConcurrentModificationException();
+// }
+//
+// public long estimateSize() {
+// return (long) (getFence() - index);
+// }
+//
+// public int characteristics() {
+// return Spliterator.ORDERED | Spliterator.SIZED | Spliterator.SUBSIZED;
+// }
+// }
 
 }
 //
