@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class SimpleDoubleSpecifiedArrayList {
     // CONSTTANTS
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 50; // Capacity after first grow
+    private final static int NEXT_CAPACITY = 32; // Capacity after first grow
 
     private final static double[] EMPTY_DOUBLES = {};
 
@@ -138,11 +138,11 @@ public class SimpleDoubleSpecifiedArrayList {
         } else {
             // final int nextCapacity = curCapacity + (curCapacity >> 1);
             // final int nextCapacity = curCapacity + NEXT_CAPACITY;
-            final int newLength;
+
 // if (curCapacity < 12) {
 // newLength = curCapacity + 4;
 // } else {
-            newLength = curCapacity << 1; // Times 2
+            final int newLength = curCapacity << 1; // Times 2
             // }
             elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }

@@ -128,7 +128,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 50; // Capacity after first grow
+    private final static int NEXT_CAPACITY = 32; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Trim factor
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
@@ -844,7 +844,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     void trimIfUseful(final int numRemoved) {
         final int threshold = (elementData.length / TRIM_FACTOR) + 1;
-        if (numRemoved > elementData.length / 4 && threshold > size && threshold < elementData.length) {
+        if (numRemoved > NEXT_CAPACITY && numRemoved > elementData.length / 4 && threshold > size && threshold < elementData.length) {
             trim(threshold);
         }
     }
@@ -884,11 +884,11 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             // final int newLength = curCapacity + (curCapacity >> 1); // *1.5
             // final int newLength = curCapacity + (curCapacity >> 1) + (curCapacity >> 2); // *1.75
             // final int newLength = curCapacity << 2;
-            final int newLength;
+
 // if (curCapacity < 12) {
 // newLength = curCapacity + 4;
 // } else {
-            newLength = curCapacity << 1; // Times 2
+            final int newLength = curCapacity << 1; // Times 2
             // }
             elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
         }
@@ -932,7 +932,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             size = w;
         }
 
-        // trimIfUseful(removed);// TODO Check if useful
+        trimIfUseful(removed);// TODO Check if useful
         return removed != 0;
     }
 
