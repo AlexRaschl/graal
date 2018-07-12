@@ -287,14 +287,15 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     public void clear() {
         modCount++;
 
-        if (elementData.length > 12) {
-            elementData = EMPTY_ELEMENTDATA;
-            // System.out.println("Reset to 0 cap");
-        } else {
-            for (int i = 0; i < size; i++)
-                elementData[i] = null;
-        }
+        // if (elementData.length > 12) {
+        elementData = EMPTY_ELEMENTDATA;
+        // System.out.println("Reset to 0 cap");
+// } else {
+// for (int i = 0; i < size; i++)
+// elementData[i] = null;
+// }
         size = 0;
+        // System.gc();
     }
 
     @Override
