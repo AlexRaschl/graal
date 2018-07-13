@@ -8,7 +8,8 @@ import org.graalvm.collections.list.statistics.Statistics.Operation;
 public class StatisticConfigs {
 
     // For CSVGenerator
-    public static final String MAIN_DIR_PATH = "/home/urzidil/Programming/CSV/";
+    public static final String USER_HOME = System.getProperty("user.home");
+    public static final String MAIN_DIR_PATH = USER_HOME + "/Programming/CSV/";
     public static final String FOLDER_NAME = "TEST";
     //
     public static final String NAME_ALL = "_ALL.csv";
