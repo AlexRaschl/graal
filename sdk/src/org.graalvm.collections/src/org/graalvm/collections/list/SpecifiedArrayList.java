@@ -277,7 +277,9 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         modCount++;
 
         final Object oldElem = elementData[index];
-        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+
+        if (index != size)
+            System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
         elementData[--size] = null;
         return castUnchecked(oldElem);
 
@@ -357,7 +359,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        final Object[] a = c.toArray();
+
         final int cSize = c.size();
 
         if (cSize == 0)
@@ -365,6 +367,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
         ensureCapacity(size + cSize);// Useful if c is large
 
+        final Object[] a = c.toArray();
         System.arraycopy(a, 0, elementData, size, cSize);
         size = size + cSize;
         return cSize != 0;
