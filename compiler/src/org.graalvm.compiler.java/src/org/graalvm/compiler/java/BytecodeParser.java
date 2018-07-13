@@ -2606,7 +2606,7 @@ public class BytecodeParser implements GraphBuilderContext {
                 LoopExitNode lastLoopExit = null;
 
                 int pos = 0;
-                SpecifiedArrayList<BciBlock> exitLoops = SpecifiedArrayList.createNew(Long.bitCount(exits));
+                SpecifiedArrayList<BciBlock> exitLoops = SpecifiedArrayList.createNewFixed(Long.bitCount(exits));
                 do {
                     long lMask = 1L << pos;
                     if ((exits & lMask) != 0) {

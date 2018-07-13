@@ -202,7 +202,7 @@ public class HotSpotCompiledCodeBuilder {
      * PCs to be unique.
      */
     private static Site[] getSortedSites(CodeCacheProvider codeCache, CompilationResult target) {
-        List<Site> sites = SpecifiedArrayList.createNew(
+        List<Site> sites = SpecifiedArrayList.createNewFixed(
                         target.getExceptionHandlers().size() + target.getInfopoints().size() + target.getDataPatches().size() + target.getMarks().size() + target.getSourceMappings().size());
         sites.addAll(target.getExceptionHandlers());
         sites.addAll(target.getInfopoints());

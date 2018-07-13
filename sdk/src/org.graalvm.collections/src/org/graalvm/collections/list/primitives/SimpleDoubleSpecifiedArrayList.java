@@ -2,7 +2,7 @@ package org.graalvm.collections.list.primitives;
 
 import java.util.Arrays;
 
-public class SimpleDoubleSpecifiedArrayList {
+public final class SimpleDoubleSpecifiedArrayList {
     // CONSTTANTS
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
     private final static int NEXT_CAPACITY = 32; // Capacity after first grow
@@ -30,29 +30,29 @@ public class SimpleDoubleSpecifiedArrayList {
 
     // TODO Check if collection CTOR needed
 
-    public int size() {
+    public final int size() {
         return size;
     }
 
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return size == 0;
     }
 
-    public boolean contains(int e) {
+    public final boolean contains(int e) {
         return indexOf(e) >= 0;
     }
 
-    public double[] toArray() {
+    public final double[] toArray() {
         return Arrays.copyOf(elementData, size);
     }
 
-    public boolean add(double e) {
+    public final boolean add(double e) {
         ensureCapacity(size + 1);
         elementData[size++] = e;
         return true;
     }
 
-    public void add(int index, double element) {
+    public final void add(int index, double element) {
         checkBoundsForAdd(index);
         ensureCapacity(size + 1);
 
@@ -62,51 +62,52 @@ public class SimpleDoubleSpecifiedArrayList {
 
     }
 
-    public double removeIdx(int index) {
-        checkBoundaries(index);
-        final double oldElem = elementData[index];
-        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
-        return oldElem;
-    }
+// public final double removeIdx(int index) {
+// checkBoundaries(index);
+// final double oldElem = elementData[index];
+// if (size != index)
+// System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+// return oldElem;
+// }
 
-    public boolean remove(double e) {
-        for (int i = 0; i < size; i++) {
-            if (e == elementData[i]) {
-                fastRemove(i);
-                return true;
-            }
-        }
-        return false;
-    }
+// public final boolean remove(double e) {
+// for (int i = 0; i < size; i++) {
+// if (e == elementData[i]) {
+// fastRemove(i);
+// return true;
+// }
+// }
+// return false;
+// }
 
-    /**
-     * Removes the Object at given index without any checks.
-     *
-     * @param index index of object to be removed
-     */
-    private void fastRemove(final int index) {
-        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
-        size--;
-    }
+// /**
+// * Removes the Object at given index without any checks.
+// *
+// * @param index index of object to be removed
+// */
+// private final void fastRemove(final int index) {
+// System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+// size--;
+// }
 
-    public void clear() {
+    public final void clear() {
         size = 0;
         elementData = EMPTY_DOUBLES;
     }
 
-    public double get(int index) {
+    public final double get(int index) {
         checkBoundaries(index);
         return elementData[index];
     }
 
-    public double set(int index, double element) {
+    public final double set(int index, double element) {
         checkBoundaries(index);
         final double oldVal = elementData[index];
         elementData[index] = element;
         return oldVal;
     }
 
-    public int indexOf(double e) {
+    public final int indexOf(double e) {
         for (int i = 0; i < size; i++)
             if (e == elementData[i])
                 return i;
@@ -114,7 +115,7 @@ public class SimpleDoubleSpecifiedArrayList {
         return -1;
     }
 
-    public int lastIndexOf(double e) {
+    public final int lastIndexOf(double e) {
         for (int i = size - 1; i > -1; i--)
             if (e == elementData[i])
                 return i;
@@ -122,7 +123,7 @@ public class SimpleDoubleSpecifiedArrayList {
         return -1;
     }
 
-    public void ensureCapacity(final int capacity) {
+    public final void ensureCapacity(final int capacity) {
         if (elementData.length < capacity) {
             grow(capacity);
         }

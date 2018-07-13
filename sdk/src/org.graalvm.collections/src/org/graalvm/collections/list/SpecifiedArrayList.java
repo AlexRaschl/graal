@@ -246,7 +246,8 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         checkBoundsForAdd(index);
         ensureCapacity(size + 1);
 
-        System.arraycopy(elementData, index, elementData, index + 1, size - index);
+        if (index != size)
+            System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
         size++;
     }

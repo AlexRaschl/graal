@@ -1171,8 +1171,8 @@ public final class IfNode extends ControlSplitNode implements Simplifiable, LIRL
             return false;
         }
 
-        List<EndNode> falseEnds = SpecifiedArrayList.createNew(mergePredecessors.size());
-        List<EndNode> trueEnds = SpecifiedArrayList.createNew(mergePredecessors.size());
+        List<EndNode> falseEnds = SpecifiedArrayList.createNewFixed(mergePredecessors.size());
+        List<EndNode> trueEnds = SpecifiedArrayList.createNewFixed(mergePredecessors.size());
         EconomicMap<AbstractEndNode, ValueNode> phiValues = EconomicMap.create(Equivalence.IDENTITY, mergePredecessors.size());
 
         AbstractBeginNode oldFalseSuccessor = falseSuccessor();

@@ -38,29 +38,29 @@ public final class SimpleIntSpecifiedArrayList {
         }
     }
 
-    public int size() {
+    public final int size() {
         return size;
     }
 
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return size == 0;
     }
 
-    public boolean contains(int e) {
+    public final boolean contains(int e) {
         return indexOf(e) >= 0;
     }
 
-    public int[] toArray() {
+    public final int[] toArray() {
         return Arrays.copyOf(elementData, size);
     }
 
-    public boolean add(int e) {
+    public final boolean add(int e) {
         ensureCapacity(size + 1);
         elementData[size++] = e;
         return true;
     }
 
-    public void add(int index, int element) {
+    public final void add(int index, int element) {
         checkBoundsForAdd(index);
         ensureCapacity(size + 1);
 
@@ -70,14 +70,16 @@ public final class SimpleIntSpecifiedArrayList {
 
     }
 
-    public int removeIdx(int index) {
-        checkBoundaries(index);
-        final int oldElem = elementData[index];
-        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
-        return oldElem;
-    }
+// public int removeIdx(int index) {
+// checkBoundaries(index);
+// final int oldElem = elementData[index];
+// if (size != index)
+// System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+// return oldElem;
+// }
 
-    public boolean remove(int e) {
+    // TODO remove this
+    public final boolean remove(int e) {
         for (int i = 0; i < size; i++) {
             if (e == elementData[i]) {
                 fastRemove(i);
@@ -92,29 +94,29 @@ public final class SimpleIntSpecifiedArrayList {
      *
      * @param index index of object to be removed
      */
-    private void fastRemove(final int index) {
+    private final void fastRemove(final int index) {
         System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
         size--;
     }
 
-    public void clear() {
+    public final void clear() {
         size = 0;
         elementData = EMPTY_INTS;
     }
 
-    public int get(int index) {
+    public final int get(int index) {
         checkBoundaries(index);
         return elementData[index];
     }
 
-    public int set(int index, int element) {
+    public final int set(int index, int element) {
         checkBoundaries(index);
         final int oldVal = elementData[index];
         elementData[index] = element;
         return oldVal;
     }
 
-    public int indexOf(int e) {
+    public final int indexOf(int e) {
         for (int i = 0; i < size; i++)
             if (e == elementData[i])
                 return i;
@@ -122,7 +124,7 @@ public final class SimpleIntSpecifiedArrayList {
         return -1;
     }
 
-    public int lastIndexOf(int e) {
+    public final int lastIndexOf(int e) {
         for (int i = size - 1; i > -1; i--)
             if (e == elementData[i])
                 return i;
@@ -130,7 +132,7 @@ public final class SimpleIntSpecifiedArrayList {
         return -1;
     }
 
-    public void ensureCapacity(final int capacity) {
+    public final void ensureCapacity(final int capacity) {
         if (elementData.length < capacity) {
             grow(capacity);
         }

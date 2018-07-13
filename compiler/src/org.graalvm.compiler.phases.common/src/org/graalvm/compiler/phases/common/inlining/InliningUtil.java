@@ -310,7 +310,7 @@ public class InliningUtil extends ValueMergeUtil {
             nonNullReceiver(invoke);
         }
 
-        SpecifiedArrayList<Node> nodes = SpecifiedArrayList.createNew(inlineGraph.getNodes().count());
+        SpecifiedArrayList<Node> nodes = SpecifiedArrayList.createNewFixed(inlineGraph.getNodes().count());
         SpecifiedArrayList<ReturnNode> returnNodes = SpecifiedArrayList.createNew(4);
         SpecifiedArrayList<Invoke> partialIntrinsicExits = SpecifiedArrayList.createNew();
         UnwindNode unwindNode = null;

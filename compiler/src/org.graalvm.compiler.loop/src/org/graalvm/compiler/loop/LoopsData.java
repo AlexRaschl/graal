@@ -52,7 +52,7 @@ public class LoopsData {
             throw debug.handle(e);
         }
         assert checkLoopOrder(cfg.getLoops());
-        loops = SpecifiedArrayList.createNew(cfg.getLoops().size());
+        loops = SpecifiedArrayList.createNewFixed(cfg.getLoops().size());
         for (Loop<Block> loop : cfg.getLoops()) {
             LoopEx ex = new LoopEx(loop, this);
             loops.add(ex);
