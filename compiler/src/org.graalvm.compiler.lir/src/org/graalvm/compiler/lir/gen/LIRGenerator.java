@@ -343,7 +343,7 @@ public abstract class LIRGenerator implements LIRGeneratorTool {
 
             // set up the list of LIR instructions
             assert res.getLIR().getLIRforBlock(currentBlock) == null : "LIR list already computed for this block";
-            res.getLIR().setLIRforBlock(currentBlock, SpecifiedArrayList.createNew());
+            res.getLIR().setLIRforBlock(currentBlock, SpecifiedArrayList.createNew(10));
 
             append(new LabelOp(new Label(currentBlock.getId()), currentBlock.isAligned()));
 
