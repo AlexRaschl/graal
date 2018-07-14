@@ -1,11 +1,8 @@
 package org.graalvm.compiler.microbenchmarks.graal.collections;
 
-import java.util.Iterator;
-import java.util.ListIterator;
-
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.collections.list.statistics.Statistics;
-import org.graalvm.compiler.microbenchmarks.graal.GraalBenchmark;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Scope;
@@ -14,13 +11,12 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 
-public class SpecifiedArrayListBenchmark extends GraalBenchmark {
-
+public class TwoCapacitySpecifiedArrayListBenchmark {
     private static final int N = 2;
 
     @State(Scope.Benchmark)
     public static class ThreadState {
-        final SpecifiedArrayList<Integer> list = new SpecifiedArrayList<>();
+        final TwoCapacitySpecifiedArrayList<Integer> list = new TwoCapacitySpecifiedArrayList<>();
 
         @TearDown(Level.Trial)
         public void teardown() {
@@ -146,53 +142,20 @@ public class SpecifiedArrayListBenchmark extends GraalBenchmark {
         }
     }
 
-    @Benchmark
-    @Warmup(iterations = 20)
-    public void iteratorUsage(AddedClearedThreadState state) {
-        Iterator<Integer> itr = state.list.iterator();
-        while (itr.hasNext())
-            itr.next();
-    }
-
-    @Benchmark
-    @Warmup(iterations = 20)
-    public void listIteratorUsage(AddedClearedThreadState state) {
-        ListIterator<Integer> itr = state.list.listIterator();
-        while (itr.hasNext())
-            itr.next();
-    }
-
 // @Benchmark
 // @Warmup(iterations = 20)
-// public void addRemoveBoxed(ClearedThreadState state) {
-// for (int i = 0; i < N; ++i) {
-// state.list.add(i);
+// public void iteratorUsage(AddedClearedThreadState state) {
+// Iterator<Integer> itr = state.list.iterator();
+// while (itr.hasNext())
+// itr.next();
 // }
-// for (int i = 0; i < N; ++i) {
-// state.list.remove(new Integer(i));
-// }
-// }
-
+//
 // @Benchmark
 // @Warmup(iterations = 20)
-// public void addIndexOfAndClear(ThreadState state) {
-// for (int i = 0; i < N; ++i) {
-// state.list.add(i);
-// }
-// for (int i = 0; i < N; ++i) {
-// state.list.indexOf(new Integer(i));
-// }
-// state.list.clear();
+// public void listIteratorUsage(AddedClearedThreadState state) {
+// ListIterator<Integer> itr = state.list.listIterator();
+// while (itr.hasNext())
+// itr.next();
 // }
 
-// @Benchmark
-// @Warmup(iterations = 20)
-// public void addIndexOf(ClearedThreadState state) {
-// for (int i = 0; i < N; ++i) {
-// state.list.add(i);
-// }
-// for (int i = 0; i < N; ++i) {
-// state.list.indexOf(new Integer(i));
-// }
-// }
 }
