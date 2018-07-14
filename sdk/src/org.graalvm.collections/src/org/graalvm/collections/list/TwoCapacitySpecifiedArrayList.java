@@ -13,6 +13,7 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
     private transient Object elem0;
     private transient Object elem1;
 
+    private static final Object[] EMPTY_ELEMS = new Object[]{};
     private transient Object[] elementData;
 
     private int size;
@@ -21,6 +22,7 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
     public TwoCapacitySpecifiedArrayList() {
         this.size = 0;
         isArray = false;
+        elementData = EMPTY_ELEMS;
     }
 
     public int size() {
@@ -366,9 +368,29 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
         return -1;
     }
 
-    private void ensureCapacity(int i) {
-        // TODO Auto-generated method stub
+    private void ensureCapacity(int minCapacity) {
+        if (minCapacity < SWITCH_AMT) {
+            assert size < SWITCH_AMT;
+        } else {
+            if (minCapacity > elementData.length) {
+                if (!isArray) {
+                    isArray = true;
+                    elementData = new Object[minCapacity];
+                    elementData[0] = elem0;
+                    elementData[1] = elem1;
+                } else {
+                    grow(minCapacity);
+                }
+            }
+        }
 
+    }
+
+    private void grow(int minCapacity) {
+        final int curCapacity = elementData.length;
+        final int newLength = curCapacity << 1;
+
+        elementData = Arrays.copyOf(elementData, Math.max(newLength, minCapacity));
     }
 
     public Iterator<E> iterator() {

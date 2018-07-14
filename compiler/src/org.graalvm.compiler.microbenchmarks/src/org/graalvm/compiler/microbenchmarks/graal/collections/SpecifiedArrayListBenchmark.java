@@ -16,7 +16,7 @@ import org.openjdk.jmh.annotations.Warmup;
 
 public class SpecifiedArrayListBenchmark extends GraalBenchmark {
 
-    private static final int N = 2;
+    private static final int N = 100;
 
     @State(Scope.Benchmark)
     public static class ThreadState {

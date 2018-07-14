@@ -3,6 +3,7 @@ package org.graalvm.compiler.microbenchmarks.graal.collections;
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.collections.list.statistics.Statistics;
+import org.graalvm.compiler.microbenchmarks.graal.GraalBenchmark;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Scope;
@@ -11,8 +12,8 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 
-public class TwoCapacitySpecifiedArrayListBenchmark {
-    private static final int N = 2;
+public class TwoCapacitySpecifiedArrayListBenchmark extends GraalBenchmark {
+    private static final int N = 100;
 
     @State(Scope.Benchmark)
     public static class ThreadState {
@@ -56,7 +57,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark {
 
     @State(Scope.Benchmark)
     public static class ClearedThreadState {
-        final SpecifiedArrayList<Integer> list = new SpecifiedArrayList<>();
+        final TwoCapacitySpecifiedArrayList<Integer> list = new TwoCapacitySpecifiedArrayList<>();
 
         // We don't want to measure the cost of list clearing
         @Setup(Level.Invocation)
@@ -80,7 +81,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark {
 
     @State(Scope.Benchmark)
     public static class AddedClearedThreadState {
-        final SpecifiedArrayList<Integer> list = new SpecifiedArrayList<>();
+        final TwoCapacitySpecifiedArrayList<Integer> list = new TwoCapacitySpecifiedArrayList<>();
         final Integer[] integers = new Integer[N];
 
         // We don't want to measure the cost of list clearing
