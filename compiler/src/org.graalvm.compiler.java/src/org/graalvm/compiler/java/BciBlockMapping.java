@@ -88,6 +88,7 @@ import java.util.TreeSet;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.BytecodeLookupSwitch;
 import org.graalvm.compiler.bytecode.BytecodeStream;
@@ -175,7 +176,7 @@ public final class BciBlockMapping {
         }
 
         public BciBlock() {
-            this.successors = SpecifiedArrayList.createNew(4);
+            this.successors = new TwoCapacitySpecifiedArrayList<>();
         }
 
         public BciBlock exceptionDispatchBlock() {
@@ -691,7 +692,7 @@ public final class BciBlockMapping {
         predecessor.addSuccessor(sux);
     }
 
-    private final SpecifiedArrayList<BciBlock> jsrVisited = SpecifiedArrayList.createNew();
+    private final TwoCapacitySpecifiedArrayList<BciBlock> jsrVisited = new TwoCapacitySpecifiedArrayList<>();
 
     private void createJsrAlternatives(BciBlock[] blockMap, BciBlock block) {
         jsrVisited.add(block);

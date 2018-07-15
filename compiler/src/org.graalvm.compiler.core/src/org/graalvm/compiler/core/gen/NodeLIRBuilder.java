@@ -35,6 +35,7 @@ import java.util.List;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.UnmodifiableMapCursor;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.calc.Condition;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
@@ -289,7 +290,7 @@ public abstract class NodeLIRBuilder implements NodeLIRBuilderTool, LIRGeneratio
     }
 
     private Value[] createPhiOut(AbstractMergeNode merge, AbstractEndNode pred) {
-        List<Value> values = SpecifiedArrayList.createNew();
+        List<Value> values = new TwoCapacitySpecifiedArrayList<>();
         for (PhiNode phi : merge.valuePhis()) {
             ValueNode node = phi.valueAt(pred);
             Value value = operand(node);

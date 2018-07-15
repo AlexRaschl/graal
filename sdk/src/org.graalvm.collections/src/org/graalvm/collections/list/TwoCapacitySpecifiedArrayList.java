@@ -62,9 +62,9 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
     public <T> T[] toArray(T[] a) {
         final Object[] elems = toArray();
         if (a.length < size) {
-            return (T[]) Arrays.copyOf(elementData, size, a.getClass());
+            return (T[]) Arrays.copyOf(elems, size, a.getClass());
         }
-        System.arraycopy(elementData, 0, a, 0, size);
+        System.arraycopy(elems, 0, a, 0, size);
         if (a.length > size)
             a[size] = null;
         return a;

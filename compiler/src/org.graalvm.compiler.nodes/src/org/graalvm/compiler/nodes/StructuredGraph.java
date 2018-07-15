@@ -34,6 +34,7 @@ import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.UnmodifiableEconomicMap;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.common.CancellationBailoutException;
 import org.graalvm.compiler.core.common.CompilationIdentifier;
 import org.graalvm.compiler.core.common.GraalOptions;
@@ -318,7 +319,7 @@ public final class StructuredGraph extends Graph implements JavaMethodContext {
      * Records the methods that were used while constructing this graph, one entry for each time a
      * specific method is used.
      */
-    private final List<ResolvedJavaMethod> methods = SpecifiedArrayList.createNew();
+    private final List<ResolvedJavaMethod> methods = new TwoCapacitySpecifiedArrayList<>();
 
     /**
      * Records the fields that were accessed while constructing this graph.

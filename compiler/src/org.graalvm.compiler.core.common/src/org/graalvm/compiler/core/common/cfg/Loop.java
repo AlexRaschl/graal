@@ -26,6 +26,7 @@ package org.graalvm.compiler.core.common.cfg;
 import java.util.List;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 
 public abstract class Loop<T extends AbstractBlockBase<T>> {
 
@@ -48,7 +49,7 @@ public abstract class Loop<T extends AbstractBlockBase<T>> {
         this.index = index;
         this.header = header;
         this.blocks = SpecifiedArrayList.createNew();
-        this.children = SpecifiedArrayList.createNew();
+        this.children = new TwoCapacitySpecifiedArrayList<>();
         this.exits = SpecifiedArrayList.createNew();
     }
 

@@ -30,6 +30,7 @@ import java.util.List;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.gen.NodeLIRBuilder;
 import org.graalvm.compiler.core.match.MatchPattern.Result;
 import org.graalvm.compiler.debug.DebugContext;
@@ -51,7 +52,7 @@ public class MatchContext {
 
     private EconomicMap<String, NamedNode> namedNodes;
 
-    private SpecifiedArrayList<Node> consumed;
+    private TwoCapacitySpecifiedArrayList<Node> consumed;
 
     private int startIndex;
 
@@ -167,7 +168,7 @@ public class MatchContext {
 
         startIndex = Math.min(startIndex, index);
         if (consumed == null) {
-            consumed = SpecifiedArrayList.createNew(2);
+            consumed = new TwoCapacitySpecifiedArrayList<>();
         }
         consumed.add(node);
         return Result.OK;
