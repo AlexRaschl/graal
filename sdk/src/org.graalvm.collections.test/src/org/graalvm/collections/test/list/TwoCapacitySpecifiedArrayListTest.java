@@ -16,7 +16,7 @@ public class TwoCapacitySpecifiedArrayListTest {
      * TODO REPLACE get comparison with TestUtils
      */
     private static Integer[] testData;
-    private final static int TEST_SIZE = 2031;
+    private final static int TEST_SIZE = 1;
     private ArrayList<Integer> referenceList;
     private TwoCapacitySpecifiedArrayList<Integer> testList;
     private final Random r = new Random();
@@ -131,18 +131,18 @@ public class TwoCapacitySpecifiedArrayListTest {
         Assert.assertTrue(TestUtilities.compareLists(testList, referenceList));
     }
 
-// @Test
-// public void testXAll() {
-// // NOTE addAll(int index... not Included)
-// Assert.assertTrue(testList.containsAll(referenceList));
-// Assert.assertTrue(testList.removeAll(referenceList));
-// Assert.assertTrue(testList.isEmpty());
-// Assert.assertTrue(testList.addAll(referenceList));
-// Assert.assertFalse(testList.retainAll(referenceList));
-// Assert.assertTrue(testList.containsAll(referenceList));
-// testList.clear();
-// Assert.assertTrue(testList.isEmpty());
-// }
+    @Test
+    public void testXAll() {
+        // NOTE addAll(int index... not Included)
+        Assert.assertTrue(testList.containsAll(referenceList));
+        Assert.assertTrue(testList.removeAll(referenceList));
+        Assert.assertTrue(testList.isEmpty());
+        Assert.assertTrue(testList.addAll(referenceList));
+        Assert.assertFalse(testList.retainAll(referenceList));
+        Assert.assertTrue(testList.containsAll(referenceList));
+        testList.clear();
+        Assert.assertTrue(testList.isEmpty());
+    }
 
     @Test
     public void testClear() {
@@ -181,6 +181,8 @@ public class TwoCapacitySpecifiedArrayListTest {
 
     @Test
     public void addAt() {
+        referenceList.clear();
+        testList.clear();
         for (int i = 0; i < TEST_SIZE; i++) {
             testList.add(i, i + 1);
             referenceList.add(i, i + 1);

@@ -128,7 +128,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 16; // Capacity after first grow
+    private final static int NEXT_CAPACITY = 32; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Trim factor
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
@@ -371,7 +371,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         final Object[] a = c.toArray();
         System.arraycopy(a, 0, elementData, size, cSize);
         size = size + cSize;
-        return cSize != 0;
+        return true;
     }
 
     /*
@@ -382,19 +382,19 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         checkBoundsForAdd(index);
+        final int cSize = c.size();
 
-        if (c.size() == 0)
+        if (cSize == 0)
             return false;
 
         final Object[] arr = c.toArray();
-        final int cSize = arr.length;
 
         ensureCapacity(size + cSize);
         System.arraycopy(elementData, index, elementData, index + cSize, size - index);
 
         System.arraycopy(arr, 0, elementData, index, cSize);
         size += cSize;
-        return cSize != 0;
+        return true;
 
     }
 
@@ -614,7 +614,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 
     }
 
-    private class ListItr extends Itr implements ListIterator<E> {
+    private final class ListItr extends Itr implements ListIterator<E> {
 
         ListItr(int startIndex) {
             super();

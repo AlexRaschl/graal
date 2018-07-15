@@ -2,9 +2,13 @@ package org.graalvm.collections.list;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
 
@@ -171,35 +175,166 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
     }
 
     public boolean containsAll(Collection<?> c) {
-        // TODO Auto-generated method stub
-        return false;
+        for (Object e : c) {
+            if (!contains(e))
+                return false;
+        }
+        return true;
     }
 
+    @SuppressWarnings("unchecked")
     public boolean addAll(Collection<? extends E> c) {
-        // TODO Auto-generated method stub
-        return false;
+        final int cSize = c.size();
+
+        if (cSize == 0)
+            return false;
+        ensureCapacity(size + cSize); // changes isArray
+        final Object[] toAdd = c.toArray();
+        if (!isArray) {
+            for (Object o : toAdd) {
+                add((E) o);
+            }
+        } else {
+            System.arraycopy(toAdd, 0, elementData, size, cSize);
+            size = size + cSize;
+        }
+        return true;
+
     }
 
+    @SuppressWarnings("unchecked")
     public boolean addAll(int index, Collection<? extends E> c) {
-        // TODO Auto-generated method stub
-        return false;
+        rangeCheckForAdd(index);
+        final int cSize = c.size();
+        if (cSize == 0)
+            return false;
+
+        final Object[] toAdd = c.toArray();
+
+        ensureCapacity(size + cSize);// Modifies isArray
+        if (!isArray) {
+            if (cSize == 1) {
+                add(index, (E) toAdd[0]);
+            } else {
+                assert index == 0;
+                add((E) toAdd[0]);
+                add((E) toAdd[1]);
+
+            }
+            return true;
+        } else {
+            System.arraycopy(elementData, index, elementData, index + cSize, size - index);
+
+            System.arraycopy(toAdd, 0, elementData, index, cSize);
+            size += cSize;
+            return true;
+        }
     }
 
     public boolean removeAll(Collection<?> c) {
-        // TODO Auto-generated method stub
-        return false;
+        final int cSize = c.size();
+        if (cSize == 0)
+            return false;
+
+        final Object[] arr = c.toArray();
+
+        if (!isArray) {
+            boolean removed = false;
+            for (Object o : arr) {
+                removed = removed | remove(o);
+            }
+            return removed;
+        } else {
+            boolean retVal = removeCollection(c, false);
+            checkIsArrayChanged();
+            return retVal;
+        }
     }
 
     public boolean retainAll(Collection<?> c) {
-        // TODO Auto-generated method stub
-        return false;
+        final int cSize = c.size();
+        if (cSize == 0) {
+            boolean retVal = size != 0;
+            clear();
+            return retVal;
+        }
+
+        final Object[] arr = c.toArray();
+
+        if (!isArray) {
+            if (size == 1) {
+                if (!c.contains(elem0)) {
+                    elem0 = null;
+                    size = 0;
+                    return true;
+                }
+            } else if (size == 2) {
+                int idx = 1;
+                if (!c.contains(elem0)) {
+                    fastRemove(0);
+                    idx--;
+                }
+                if (!c.contains(elem1)) {
+                    fastRemove(idx);
+                    return true;
+                }
+                return idx == 0;
+            }
+            return false;
+        } else {
+            boolean retVal = removeCollection(c, true);
+            checkIsArrayChanged();
+            return retVal;
+        }
+    }
+
+    private void checkIsArrayChanged() {
+        if (isArray) {
+            if (size < SWITCH_AMT) {
+                switch (size) {
+                    case 1:
+                        elem0 = elementData[0];
+                        break;
+                    case 2:
+                        elem0 = elementData[0];
+                        elem1 = elementData[1];
+                        break;
+                    default: // Size == 0
+                        break;
+                }
+                isArray = false;
+            }
+        }
+    }
+
+    private boolean removeCollection(Collection<?> c, boolean isRetained) {
+        int removed = 0;
+        int w = 0, i = 0;
+
+        for (; i < size; i++) {
+            if (c.contains(elementData[i]) == isRetained) {
+                elementData[w] = elementData[i];
+                w++;
+            } else {
+                removed++;
+            }
+        }
+        if (i != size) {
+            System.arraycopy(elementData, i, elementData, w, size - i);
+            w += size - i;
+        }
+        if (w != size) {
+            for (int j = w; j < size; j++)
+                elementData[j] = null;
+            size = w;
+        }
+        return removed != 0;
     }
 
     public void clear() {
         if (!isArray) {
             elem0 = null;
             elem1 = null;
-
         } else {
             isArray = false;
             for (int i = 0; i < size; i++)
@@ -245,6 +380,7 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
         if (!isArray) {
             if (size == 0) {
                 elem0 = element;
+                size = 1;
             } else { // size == 1 since otherwise isArray would be true
                 if (index == 0) {
                     elem1 = elem0;
@@ -252,6 +388,7 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
                 } else {
                     elem1 = element;
                 }
+                size = 2;
             }
         } else {
             System.arraycopy(elementData, index, elementData, index + 1,
@@ -394,23 +531,19 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
     }
 
     public Iterator<E> iterator() {
-        // TODO Auto-generated method stub
-        return null;
+        return new Itr();
     }
 
     public ListIterator<E> listIterator() {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public ListIterator<E> listIterator(int index) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public List<E> subList(int fromIndex, int toIndex) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     private void rangeCheck(int index) {
@@ -432,4 +565,52 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
         return (E) obj;
     }
 
+    private final class Itr implements Iterator<E> {
+
+        protected int cursor;
+        protected int lastRet;
+
+        Itr() {
+            cursor = 0;
+            lastRet = -1;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cursor != size;
+        }
+
+        @Override
+        @SuppressWarnings({"unchecked", "hiding"})
+        public E next() {
+            int i = cursor;
+            if (i >= size)
+                throw new NoSuchElementException();
+            if (!isArray) {
+                // TODO
+                return null;
+            } else {
+                Object[] elementData = TwoCapacitySpecifiedArrayList.this.elementData;
+                if (i >= elementData.length)
+                    throw new ConcurrentModificationException();
+                cursor = i + 1;
+                return (E) elementData[lastRet = i];
+            }
+        }
+
+        /** Moved this here because also supported by Iterator in ArrayList */
+        @Override
+        public void remove() {
+            if (lastRet < 0)
+                throw new IllegalStateException();
+
+            try {
+                TwoCapacitySpecifiedArrayList.this.remove(lastRet);
+                cursor = lastRet;
+                lastRet = -1;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
+    }
 }
