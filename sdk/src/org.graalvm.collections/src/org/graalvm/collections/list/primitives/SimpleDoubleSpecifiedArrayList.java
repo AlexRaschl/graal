@@ -2,7 +2,7 @@ package org.graalvm.collections.list.primitives;
 
 import java.util.Arrays;
 
-public class SimpleDoubleSpecifiedArrayList {
+public final class SimpleDoubleSpecifiedArrayList {
     // CONSTTANTS
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
     private final static int NEXT_CAPACITY = 32; // Capacity after first grow

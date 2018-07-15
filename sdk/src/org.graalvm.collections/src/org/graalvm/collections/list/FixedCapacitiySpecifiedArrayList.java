@@ -42,7 +42,8 @@ final class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
     @Override
     public final void add(int index, E element) {
         // checkBoundsForAdd(index);
-        System.arraycopy(elementData, index, elementData, index + 1, size - index);
+        if (index != size)
+            System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
         size++;
     }
