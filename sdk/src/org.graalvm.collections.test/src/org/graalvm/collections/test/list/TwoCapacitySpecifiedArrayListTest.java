@@ -1,6 +1,8 @@
 package org.graalvm.collections.test.list;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
@@ -16,7 +18,7 @@ public class TwoCapacitySpecifiedArrayListTest {
      * TODO REPLACE get comparison with TestUtils
      */
     private static Integer[] testData;
-    private final static int TEST_SIZE = 1;
+    private final static int TEST_SIZE = 2031;
     private ArrayList<Integer> referenceList;
     private TwoCapacitySpecifiedArrayList<Integer> testList;
     private final Random r = new Random();
@@ -213,50 +215,52 @@ public class TwoCapacitySpecifiedArrayListTest {
         }
     }
 
-// @Test
-// public void testIterator() {
-// Iterator<Integer> testIt = testList.iterator();
-// Iterator<Integer> referenceIt = referenceList.iterator();
+    @Test
+    public void testIterator() {
+        Iterator<Integer> testIt = testList.iterator();
+        Iterator<Integer> referenceIt = referenceList.iterator();
+
+        while (testIt.hasNext()) {
+            Integer curr = testIt.next();
+            if (referenceIt.hasNext()) {
+                Assert.assertSame(curr, referenceIt.next());
+            } else {
+                Assert.fail("Reference Iterator has already reached end!");
+            }
+        }
+
+    }
+
 //
-// while (testIt.hasNext()) {
-// Integer curr = testIt.next();
-// if (referenceIt.hasNext()) {
-// Assert.assertSame(curr, referenceIt.next());
-// } else {
-// Assert.fail("Reference Iterator has already reached end!");
-// }
-// }
-//
-// }
-//
-// @Test
-// public void testIteratorRemove() {
-// Iterator<Integer> testIt = testList.iterator();
-// Iterator<Integer> referenceIt = referenceList.iterator();
-//
-// while (testIt.hasNext()) {
-// testIt.next();
-// if (referenceIt.hasNext()) {
-// referenceIt.next();
-// referenceIt.remove();
-// testIt.remove();
-// } else {
-// Assert.fail("Reference Iterator has already reached end!");
-// }
-// }
-// // System.out.println("Remaining size of testList is:" + testList.size());
-// // System.out.println("Remaining size of referenceList is: " + referenceList.size());
-// Assert.assertEquals(testList.size(), referenceList.size());
-// Assert.assertTrue(testList.isEmpty());
-// }
-//
-// @Test(expected = NoSuchElementException.class)
-// public void testInvalidIteratorNext() {
-// Iterator<Integer> testIt = testList.iterator();
-// for (int i = 0; i <= TEST_SIZE + 1; i++)
-// testIt.next();
-// }
-//
+    @Test
+    public void testIteratorRemove() {
+        Iterator<Integer> testIt = testList.iterator();
+        Iterator<Integer> referenceIt = referenceList.iterator();
+
+        while (testIt.hasNext()) {
+            testIt.next();
+            if (referenceIt.hasNext()) {
+                referenceIt.next();
+                referenceIt.remove();
+                testIt.remove();
+            } else {
+                Assert.fail("Reference Iterator has already reached end!");
+            }
+        }
+
+        // System.out.println("Remaining size of testList is:" + testList.size());
+        // System.out.println("Remaining size of referenceList is: " + referenceList.size());
+        Assert.assertEquals(testList.size(), referenceList.size());
+        Assert.assertTrue(testList.isEmpty());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testInvalidIteratorNext() {
+        Iterator<Integer> testIt = testList.iterator();
+        for (int i = 0; i <= TEST_SIZE + 1; i++)
+            testIt.next();
+    }
+
 // @Test
 // public void testListIteratorConstructor() {
 // for (int i = 0; i < TEST_SIZE; i++) {

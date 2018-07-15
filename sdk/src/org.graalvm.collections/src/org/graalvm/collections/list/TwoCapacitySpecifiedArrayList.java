@@ -518,6 +518,16 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
                 } else {
                     grow(minCapacity);
                 }
+            } else {
+                isArray = true;
+                if (size == 0) {
+                    return;
+                } else if (size == 1) {
+                    elementData[0] = elem0;
+                } else if (size == 2) {
+                    elementData[0] = elem0;
+                    elementData[1] = elem1;
+                }
             }
         }
 
@@ -587,8 +597,17 @@ public final class TwoCapacitySpecifiedArrayList<E> implements List<E> {
             if (i >= size)
                 throw new NoSuchElementException();
             if (!isArray) {
-                // TODO
-                return null;
+                if (cursor == 0) {
+                    cursor++;
+                    lastRet = 0;
+                    return castUnchecked(elem0);
+                } else if (cursor == 1) {
+                    cursor++;
+                    lastRet = 1;
+                    return castUnchecked(elem1);
+                } else {
+                    throw new IllegalStateException("Cursor greater thatn 1 in !isArray branch!");
+                }
             } else {
                 Object[] elementData = TwoCapacitySpecifiedArrayList.this.elementData;
                 if (i >= elementData.length)
