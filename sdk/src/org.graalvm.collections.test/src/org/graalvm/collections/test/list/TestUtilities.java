@@ -3,12 +3,16 @@ package org.graalvm.collections.test.list;
 import java.util.ArrayList;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 
 public class TestUtilities {
 
     public static boolean compareLists(SpecifiedArrayList<?> sar, ArrayList<?> ar) {
         return compareArrays(sar.toArray(), ar.toArray());
+    }
 
+    public static boolean compareLists(TwoCapacitySpecifiedArrayList<?> sar, ArrayList<?> ar) {
+        return compareArrays(sar.toArray(), ar.toArray());
     }
 
     public static boolean compareArrays(Object[] arr1, Object[] arr2) {

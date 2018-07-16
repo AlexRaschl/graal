@@ -1,5 +1,7 @@
 package org.graalvm.compiler.microbenchmarks.graal.collections;
 
+import java.util.Iterator;
+
 import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.collections.list.statistics.Statistics;
@@ -13,7 +15,7 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 
 public class TwoCapacitySpecifiedArrayListBenchmark extends GraalBenchmark {
-    private static final int N = 100;
+    private static final int N = 1000;
 
     @State(Scope.Benchmark)
     public static class ThreadState {
@@ -143,14 +145,14 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends GraalBenchmark {
         }
     }
 
-// @Benchmark
-// @Warmup(iterations = 20)
-// public void iteratorUsage(AddedClearedThreadState state) {
-// Iterator<Integer> itr = state.list.iterator();
-// while (itr.hasNext())
-// itr.next();
-// }
-//
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void iteratorUsage(AddedClearedThreadState state) {
+        Iterator<Integer> itr = state.list.iterator();
+        while (itr.hasNext())
+            itr.next();
+    }
+
 // @Benchmark
 // @Warmup(iterations = 20)
 // public void listIteratorUsage(AddedClearedThreadState state) {
