@@ -27,6 +27,7 @@ import java.util.function.ToDoubleFunction;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.common.SuppressFBWarnings;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.graph.NodeWorkList;
@@ -255,7 +256,7 @@ public class ComputeInliningRelevance {
      * the method returns immediately once a loop exit is discovered.
      */
     private double computeFastPathMinProbability(FixedNode scopeStart) {
-        SpecifiedArrayList<FixedNode> pathBeginNodes = SpecifiedArrayList.createNew();
+        TwoCapacitySpecifiedArrayList<FixedNode> pathBeginNodes = new TwoCapacitySpecifiedArrayList<>();
         pathBeginNodes.add(scopeStart);
         double minPathProbability = nodeProbabilities.applyAsDouble(scopeStart);
         boolean isLoopScope = scopeStart instanceof LoopBeginNode;
@@ -289,7 +290,7 @@ public class ComputeInliningRelevance {
      * Returns the most probable successor. If multiple successors share the maximum probability, one is
      * returned and the others are enqueued in pathBeginNodes.
      */
-    private static Node getMaxProbabilitySux(ControlSplitNode controlSplit, SpecifiedArrayList<FixedNode> pathBeginNodes) {
+    private static Node getMaxProbabilitySux(ControlSplitNode controlSplit, TwoCapacitySpecifiedArrayList<FixedNode> pathBeginNodes) {
         Node maxSux = null;
         double maxProbability = 0.0;
         int pathBeginCount = pathBeginNodes.size();
@@ -312,7 +313,7 @@ public class ComputeInliningRelevance {
      * Returns the most probable loop exit. If multiple successors share the maximum probability, one is
      * returned and the others are enqueued in pathBeginNodes.
      */
-    private Node getMaxProbabilityLoopExit(LoopBeginNode loopBegin, SpecifiedArrayList<FixedNode> pathBeginNodes) {
+    private Node getMaxProbabilityLoopExit(LoopBeginNode loopBegin, TwoCapacitySpecifiedArrayList<FixedNode> pathBeginNodes) {
         Node maxSux = null;
         double maxProbability = 0.0;
         int pathBeginCount = pathBeginNodes.size();
@@ -331,7 +332,7 @@ public class ComputeInliningRelevance {
         return maxSux;
     }
 
-    private static void truncate(SpecifiedArrayList<FixedNode> pathBeginNodes, int pathBeginCount) {
+    private static void truncate(TwoCapacitySpecifiedArrayList<FixedNode> pathBeginNodes, int pathBeginCount) {
         for (int i = pathBeginNodes.size() - pathBeginCount; i > 0; i--) {
             pathBeginNodes.remove(pathBeginNodes.size() - 1);
         }

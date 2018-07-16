@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig.AllocatableRegisters;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.util.Util;
@@ -143,7 +144,7 @@ class LinearScanWalker extends IntervalWalker {
                 if (!onlyProcessUsePos) {
                     List<Interval> list = spillIntervals[i];
                     if (list == EMPTY_LIST) {
-                        list = SpecifiedArrayList.createNew(2);
+                        list = new TwoCapacitySpecifiedArrayList<>();
                         spillIntervals[i] = list;
                     }
                     list.add(interval);

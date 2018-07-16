@@ -268,6 +268,7 @@ import java.util.List;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.Snippet;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.BytecodeDisassembler;
@@ -2418,7 +2419,7 @@ public class BytecodeParser implements GraphBuilderContext {
             append(new ReturnNode(realReturnVal));
         } else {
             if (returnDataList == null) {
-                returnDataList = SpecifiedArrayList.createNew();
+                returnDataList = new TwoCapacitySpecifiedArrayList<>();
             }
             returnDataList.add(new ReturnToCallerData(realReturnVal, lastInstr));
             lastInstr = null;

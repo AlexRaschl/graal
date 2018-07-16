@@ -28,6 +28,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.AbstractControlFlowGraph;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
@@ -110,7 +111,7 @@ public class ConstantTree extends PrintableDominatorOptimizationProblem<Constant
     private List<UseEntry> getOrInitList(AbstractBlockBase<?> block) {
         List<UseEntry> list = blockMap.get(block);
         if (list == null) {
-            list = SpecifiedArrayList.createNew();
+            list = new TwoCapacitySpecifiedArrayList<>();
             blockMap.put(block, list);
         }
         return list;

@@ -27,6 +27,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractControlFlowGraph;
 import org.graalvm.compiler.core.common.cfg.CFGVerifier;
 import org.graalvm.compiler.core.common.cfg.Loop;
@@ -585,7 +586,7 @@ public final class ControlFlowGraph implements AbstractControlFlowGraph<Block> {
     }
 
     private void computeLoopInformation() {
-        loops = SpecifiedArrayList.createNew();
+        loops = new TwoCapacitySpecifiedArrayList<>();
         if (graph.hasLoops()) {
             Block[] stack = new Block[this.reversePostOrder.length];
             for (Block block : reversePostOrder) {

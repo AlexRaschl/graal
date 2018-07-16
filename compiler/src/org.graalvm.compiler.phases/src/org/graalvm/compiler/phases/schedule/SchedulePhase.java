@@ -39,6 +39,7 @@ import java.util.function.Function;
 
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.common.SuppressFBWarnings;
 import org.graalvm.compiler.core.common.cfg.AbstractControlFlowGraph;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
@@ -189,7 +190,7 @@ public final class SchedulePhase extends Phase {
                 // For non-earliest schedules, we need to do a second pass.
                 BlockMap<List<Node>> latestBlockToNodesMap = new BlockMap<>(cfg);
                 for (Block b : cfg.getBlocks()) {
-                    latestBlockToNodesMap.put(b, SpecifiedArrayList.createNew());
+                    latestBlockToNodesMap.put(b, new TwoCapacitySpecifiedArrayList<>());
                 }
 
                 BlockMap<SpecifiedArrayList<FloatingReadNode>> watchListMap = calcLatestBlocks(selectedStrategy, currentNodeMap, earliestBlockToNodesMap, visited, latestBlockToNodesMap,

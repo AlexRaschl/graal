@@ -29,6 +29,7 @@ import static jdk.vm.ci.code.ValueUtil.isRegister;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -331,7 +332,7 @@ public class MoveResolver {
                 }
             }
 
-            SpecifiedArrayList<AllocatableValue> busySpillSlots = null;
+            TwoCapacitySpecifiedArrayList<AllocatableValue> busySpillSlots = null;
             while (mappingFrom.size() > 0) {
                 boolean processedInterval = false;
 
@@ -352,7 +353,7 @@ public class MoveResolver {
                         move.setComment(res, "MoveResolver resolve mapping");
                         if (LIRValueUtil.isStackSlotValue(toInterval.location())) {
                             if (busySpillSlots == null) {
-                                busySpillSlots = SpecifiedArrayList.createNew(2);
+                                busySpillSlots = new TwoCapacitySpecifiedArrayList<>();
                             }
                             busySpillSlots.add(toInterval.location());
                         }

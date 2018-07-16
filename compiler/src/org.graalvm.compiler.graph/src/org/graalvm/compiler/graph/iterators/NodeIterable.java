@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.TwoCapacitySpecifiedArrayList;
 import org.graalvm.compiler.graph.Node;
 
 public interface NodeIterable<T extends Node> extends Iterable<T> {
@@ -41,7 +42,7 @@ public interface NodeIterable<T extends Node> extends Iterable<T> {
     }
 
     default List<T> snapshot() {
-        SpecifiedArrayList<T> list = SpecifiedArrayList.createNew();
+        TwoCapacitySpecifiedArrayList<T> list = new TwoCapacitySpecifiedArrayList<>();
         snapshotTo(list);
         return list;
     }
