@@ -123,12 +123,22 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
         return new SimpleDoubleSpecifiedArrayList(initialCapacity);
     }
 
+    public static final int GROW_OFFSET;
+    static {
+        final String prop = System.getProperty("GROW_OFFSET");
+        int def = 32;
+        if (prop != null) {
+            def = Integer.parseInt(prop);
+        }
+        GROW_OFFSET = def;
+    }
+
     // -------------------------FIELDS-------------------------------------------------
 
     private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 32; // Capacity after first grow
+    private final static int NEXT_CAPACITY = GROW_OFFSET; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Trim factor
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
