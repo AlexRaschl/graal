@@ -3,6 +3,7 @@ package org.graalvm.compiler.microbenchmarks.graal.collections;
 import java.io.BufferedReader;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -21,72 +22,161 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.sun.prism.Image;
 
 public class TypeProfileBenchmark extends GraalBenchmark {
+
+    private static class A {
+        String foo() {
+            return "A";
+        }
+    }
+
+    private static class B extends A {
+        @Override
+        String foo() {
+            return "B";
+        }
+    }
+
+    private static class C extends B {
+        @Override
+        String foo() {
+            return "C";
+        }
+    }
+
+    private static class D extends A {
+        @Override
+        String foo() {
+            return "D";
+        }
+    }
+
     private static final int N = 100;
 
-    @State(Scope.Benchmark)
-    public static class ThreadState {
-        final ArrayList<Integer> list = new ArrayList<>();
-        final SpecifiedArrayList<Integer> sar = new SpecifiedArrayList<>();
-        final Object[] randomObjects = {
-                        new Integer(10),
-                        new Double(1),
-                        new HashMap<Object, String>(),
-                        new Object(),
-                        new String("foo"),
-                        new BufferedReader(null),
-                        new Boolean(true)
-        };
-        final Object[] intObjects = {
-                        new Integer(100000),
-                        new Integer(232100),
-                        new Integer(123500),
-                        new Integer(146123),
-                        new Integer(112636),
-                        new Integer(135412),
-                        new Integer(123512)
-        };
-    }
-
-    @Benchmark
-    @Warmup(iterations = 20)
-    public void containsPolluted(ThreadState state) {
-        for (Object o : state.randomObjects) {
-            state.list.contains(o);
-        }
-    }
-
-    @Benchmark
-    @Warmup(iterations = 20)
-    public void containsMonomorphic(ThreadState state) {
-        for (Object o : state.intObjects) {
-            state.list.contains(o);
-        }
-    }
-
 // @State(Scope.Benchmark)
-// public static class AddedClearedThreadState {
-// final ArrayList<Integer> list = new ArrayList<>();
-// final Integer[] integers = new Integer[N];
+// public static class ThreadState {
+// A a = new A();
+// B b = new B();
+// C c = new C();
+// D d = new D();
 //
-// // We don't want to measure the cost of list clearing
-// @Setup(Level.Invocation)
-// public void beforeInvocation() {
-// list.clear();
-// Integer curr;
-// for (int i = 0; i < N; ++i) {
-// curr = new Integer(i);
-// list.add(i);
-// integers[i] = curr;
+// A[] arr = new A[]{
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A(),
+// new A()
+// };
+//
+// final ArrayList<A> list = new ArrayList<>(Arrays.asList(arr));
+// final SpecifiedArrayList<A> sar = new SpecifiedArrayList<>(Arrays.asList(arr));
+//
 // }
+//
+// @Benchmark
+// @Warmup(iterations = 20)
+// public void containsPolluted(ThreadState state) {
+// state.list.contains(new B());
+// state.list.contains(new C());
+// state.list.contains(new D());
+// for (int i = 10; i < N; i++) {
+// state.list.contains(new A());
 // }
 // }
 //
 // @Benchmark
 // @Warmup(iterations = 20)
-// public void IndexOf(AddedClearedThreadState state) {
-// for (int i = 0; i < N; ++i) {
-// state.list.indexOf(state.integers[i]);
+// public void containsMonomorphic(ThreadState state) {
+// for (int i = 0; i < N; i++) {
+// state.list.contains(new A());
 // }
 // }
+//
+// @Benchmark
+// @Warmup(iterations = 20)
+// public void containsPollutedSAR(ThreadState state) {
+// state.sar.contains(new B());
+// state.sar.contains(new C());
+// state.sar.contains(new D());
+// for (int i = 10; i < N; i++) {
+// state.sar.contains(new A());
+// }
+// }
+//
+// @Benchmark
+// @Warmup(iterations = 20)
+// public void containsMonomorphicSAR(ThreadState state) {
+// for (int i = 0; i < N; i++) {
+// state.sar.contains(new A());
+// }
+// }
+
+    @State(Scope.Benchmark)
+    public static class NonPollutedThreadState {
+        final ArrayList<String> list = new ArrayList<>(N);
+
+        @Setup(Level.Invocation)
+        public void beforeInvocation() {
+            for (int i = 0; i < N; i++) {
+                list.add(Integer.toString(i));
+            }
+        }
+
+        @Setup(Level.Invocation)
+        public void afterInvocation() {
+            list.clear();
+        }
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void IndexOf(NonPollutedThreadState state) {
+        for (int i = 0; i < N; i++) {
+            state.list.contains(Integer.toString(i));
+        }
+    }
+
+    @State(Scope.Benchmark)
+    public static class AddedPollutedThreadState {
+        final ArrayList<String> list = new ArrayList<>(N);
+
+        @Setup(Level.Invocation)
+        public void beforeInvocation() {
+            for (int i = 0; i < N - 1; i++) {
+                list.add(Integer.toString(i));
+            }
+            list.add(null);
+
+        }
+
+        @Setup(Level.Invocation)
+        public void afterInvocation() {
+            list.clear();
+        }
+    }
+
+    @Benchmark
+    @Warmup(iterations = 20)
+    public void IndexOfPolluted(AddedPollutedThreadState state) {
+        for (int i = 0; i < N; i++) {
+            state.list.contains(Integer.toString(i));
+        }
+    }
 
 }
