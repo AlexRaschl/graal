@@ -39,7 +39,7 @@ import sun.misc.SharedSecrets;
  *
  */
 
-public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
+public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable {
 
     /**
      * Factory methods
@@ -124,8 +124,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     }
 
     // -------------------------FIELDS-------------------------------------------------
-
-    private static final long serialVersionUID = 9130616599645229594L;
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
     private final static int NEXT_CAPACITY = 32; // Capacity after first grow
@@ -721,60 +719,6 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
             sb.append(',').append(' ');
         }
     }
-
-// // ---------------------------SERIALIZATION METHODS------------------------------
-//
-// /**
-// * Save the state of the <tt>ArrayList</tt> instance to a stream (that is, serialize it).
-// *
-// * @serialData The length of the array backing the <tt>ArrayList</tt> instance is emitted (int),
-// * followed by all of its elements (each an <tt>Object</tt>) in the proper order.
-// */
-// private void writeObject(java.io.ObjectOutputStream s)
-// throws java.io.IOException {
-// // Write out element count, and any hidden stuff
-// final int expectedModCount = modCount;
-// s.defaultWriteObject();
-//
-// // Write out size as capacity for behavioural compatibility with clone()
-// s.writeInt(size);
-//
-// // Write out all elements in the proper order.
-// for (int i = 0; i < size; i++) {
-// s.writeObject(elementData[i]);
-// }
-//
-// if (modCount != expectedModCount) {
-// throw new ConcurrentModificationException();
-// }
-// }
-//
-// /**
-// * Reconstitute the <tt>ArrayList</tt> instance from a stream (that is, deserialize it).
-// */
-// private void readObject(java.io.ObjectInputStream s)
-// throws java.io.IOException, ClassNotFoundException {
-// elementData = EMPTY_ELEMENTDATA;
-//
-// // Read in size, and any hidden stuff
-// s.defaultReadObject();
-//
-// // Read in capacity
-// s.readInt(); // ignored
-//
-// if (size > 0) {
-// // be like clone(), allocate array based upon size not capacity
-// final int capacity = size; // TODO check if replace correct
-// SharedSecrets.getJavaOISAccess().checkArray(s, Object[].class, capacity);
-// ensureCapacity(size);
-//
-// final Object[] a = elementData;
-// // Read in all elements in the proper order.
-// for (int i = 0; i < size; i++) {
-// a[i] = s.readObject();
-// }
-// }
-// }
 
     // ------------------GROWING METHODS------------------------
 

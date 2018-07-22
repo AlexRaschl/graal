@@ -60,7 +60,6 @@ import org.graalvm.collections.list.SpecifiedArrayList;
 
 public class StatisticalSpecifiedArrayListImpl<E> extends SpecifiedArrayList<E> implements StatisticalCollection {
 
-    private static final long serialVersionUID = 2325200269334451909L;
     private final boolean isTracked = isTracked();
 
     /**

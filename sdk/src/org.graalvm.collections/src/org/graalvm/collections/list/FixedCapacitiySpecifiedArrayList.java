@@ -6,8 +6,6 @@ import sun.misc.SharedSecrets;
 
 final class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
 
-    private static final long serialVersionUID = 9130616599645229595L;
-
     FixedCapacitiySpecifiedArrayList(int capacity) {
         if (capacity < 0)
             throw new IllegalArgumentException("Negative Capacity");
