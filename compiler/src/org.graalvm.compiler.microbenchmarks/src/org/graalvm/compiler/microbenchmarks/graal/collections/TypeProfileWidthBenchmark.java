@@ -67,7 +67,7 @@ public class TypeProfileWidthBenchmark {
     @Warmup(iterations = 10, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
     @Measurement(iterations = 5, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
     // use community for basic inliner
-    @Fork(value = 1, jvmArgsAppend = {"-XX:TypeProfileWidth=2", "-Dgraal.CompilerConfiguration=community"})
+    @Fork(value = 1, jvmArgsAppend = {"-XX:TypeProfileWidth=2", "-Dgraal.CompilerConfiguration=core"})
     public int width2(Context c) {
         ArrayListClone a = c.list;
         int cc = 0;
@@ -109,7 +109,7 @@ public class TypeProfileWidthBenchmark {
     @Warmup(iterations = 10, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
     @Measurement(iterations = 5, time = 1000, timeUnit = TimeUnit.MILLISECONDS)
     // use community for basic inliner
-    @Fork(value = 1, jvmArgsAppend = {"-XX:TypeProfileWidth=4", "-Dgraal.CompilerConfiguration=community"})
+    @Fork(value = 1, jvmArgsAppend = {"-XX:TypeProfileWidth=4", "-Dgraal.CompilerConfiguration=core"})
     public int width4(Context c) {
         ArrayListClone a = c.list;
         int cc = 0;
