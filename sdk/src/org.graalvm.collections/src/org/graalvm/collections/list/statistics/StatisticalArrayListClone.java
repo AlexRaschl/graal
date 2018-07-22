@@ -234,11 +234,11 @@ public class StatisticalArrayListClone<E> extends ArrayListClone<E> implements S
         }
     }
 
-    @Override
-    public Object clone() {
-        countIfTracked(CLONE);
-        return super.clone();
-    }
+//    @Override
+//    public Object clone() {
+//        countIfTracked(CLONE);
+//        return super.clone();
+//    }
 
     @Override
     public Spliterator<E> spliterator() {

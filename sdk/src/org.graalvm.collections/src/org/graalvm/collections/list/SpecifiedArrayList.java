@@ -39,7 +39,7 @@ import sun.misc.SharedSecrets;
  *
  */
 
-public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
+public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable {
 
     /**
      * Factory methods
