@@ -1,8 +1,7 @@
-package org.graalvm.compiler.microbenchmarks.graal.collections;
+package micro.benchmarks;
 
 import java.util.concurrent.TimeUnit;
 
-import org.graalvm.collections.list.ArrayListClone;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Level;
@@ -12,6 +11,8 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
+
+import micro.benchmarks.list.ArrayListClone;
 
 @SuppressWarnings("rawtypes")
 public class TypeProfileWidthBenchmark {
