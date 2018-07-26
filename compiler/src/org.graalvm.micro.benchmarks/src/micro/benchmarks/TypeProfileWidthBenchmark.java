@@ -96,7 +96,7 @@ public class TypeProfileWidthBenchmark {
 
     static int bench(ArrayListClone a, Object o) {
         int contained = 0;
-        for (int i = 0; i < 1000_000; i++) {
+        for (int i = 0; i < 100_000; i++) {
             // here we can inline contains -> index of -> equals(only if we profile 4 types,
             // else this will stay a call as we only profiled 2 of our 4 types)
             if (a.contains(o)) {
