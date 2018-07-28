@@ -57,19 +57,22 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
 // return new ArrayListClone<>(c);
 // }
-//
-// public static <E> SpecifiedArrayList<E> createNew() {
-// return new StatisticalArrayListClone<>();
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-// return new StatisticalArrayListClone<>(initalCapacity);
-// }
-//
-// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-// return new StatisticalArrayListClone<>(c);
-// }
-//
+
+    public static <E> SpecifiedArrayList<E> createNew() {
+        return new StatisticalArrayListClone<>();
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(final int initialCapacity) {
+        return new StatisticalArrayListClone<>(initialCapacity);
+    }
+
+    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+        return new StatisticalArrayListClone<>(c);
+    }
+
+    public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
+        return new StatisticalArrayListClone<>(initialCapacity);
+    }
 
 // public static <E> SpecifiedArrayList<E> createNew() {
 // return new StatisticalSpecifiedArrayListImpl<>();
@@ -87,21 +90,21 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
 // }
 //
 
-    public static <E> SpecifiedArrayList<E> createNew() {
-        return new SpecifiedArrayList<>();
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
-        return new SpecifiedArrayList<>(initalCapacity);
-    }
-
-    public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
-        return new SpecifiedArrayList<>(c);
-    }
-
-    public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
-        return new FixedCapacitiySpecifiedArrayList<>(initialCapacity);
-    }
+// public static <E> SpecifiedArrayList<E> createNew() {
+// return new SpecifiedArrayList<>();
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(final int initalCapacity) {
+// return new SpecifiedArrayList<>(initalCapacity);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNew(Collection<E> c) {
+// return new SpecifiedArrayList<>(c);
+// }
+//
+// public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
+// return new FixedCapacitiySpecifiedArrayList<>(initialCapacity);
+// }
 
     // -------------------------FIELDS-------------------------------------------------
 

@@ -8,8 +8,8 @@ import org.graalvm.collections.list.statistics.Statistics.Operation;
 public class StatisticConfigs {
 
     // For CSVGenerator
-    public static final String MAIN_DIR_PATH = "/home/urzidil/Programming/CSV/";
-    public static final String FOLDER_NAME = "TEST";
+    public static final String MAIN_DIR_PATH = "/home/urzidil/Programming/CSV/AggregatedClone/Dacapo/";
+    public static final String FOLDER_NAME = "xalan";
     //
     public static final String NAME_ALL = "_ALL.csv";
     public static final String NAME_GBL = "_GLOBAL.csv";
@@ -29,7 +29,7 @@ public class StatisticConfigs {
 
     // Use the allocSite Tracker which is faster
     public static final boolean USE_ALLOC_SITE_TRACKING = true;
-    public static final boolean AGGREGATE_SAME_CLASSES = true;
+    public static final boolean AGGREGATE_SAME_CLASSES = false;
 
     // Enable Tracking
     public static final boolean TRACKING_ENABLED = true;
