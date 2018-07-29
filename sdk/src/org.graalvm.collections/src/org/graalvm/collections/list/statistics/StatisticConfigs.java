@@ -28,7 +28,7 @@ public class StatisticConfigs {
     public static final boolean APPEND_MODE = false;
 
     // Use the allocSite Tracker which is faster
-    public static final boolean USE_ALLOC_SITE_TRACKING = true;
+    public static final boolean USE_ALLOC_SITE_TRACKING = false;
     public static final boolean AGGREGATE_SAME_CLASSES = false;
 
     // Enable Tracking
