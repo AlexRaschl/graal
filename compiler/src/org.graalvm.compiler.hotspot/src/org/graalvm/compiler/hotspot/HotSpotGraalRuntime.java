@@ -314,15 +314,15 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
                     System.out.println(s);
                 System.out.println();
 
-                final String prefix = this.getClass().getSimpleName();
-                CSVGenerator.createFileOfAllocationSites(prefix);
-                CSVGenerator.createFileOfGlobalInfo(prefix);
-                CSVGenerator.createFileOfTrackerTypes(prefix);
-                CSVGenerator.createFileOfTrackerSizes(prefix);
-                CSVGenerator.createFileOfAllocationSites(prefix);
-                CSVGenerator.createFileOfTypeOperationDistributions(prefix);
-                CSVGenerator.createFileOfOperationDistributions(prefix);
-                // }
+// final String prefix = this.getClass().getSimpleName();
+// CSVGenerator.createFileOfAllocationSites(prefix);
+// CSVGenerator.createFileOfGlobalInfo(prefix);
+// CSVGenerator.createFileOfTrackerTypes(prefix);
+// CSVGenerator.createFileOfTrackerSizes(prefix);
+// CSVGenerator.createFileOfAllocationSites(prefix);
+// CSVGenerator.createFileOfTypeOperationDistributions(prefix);
+// CSVGenerator.createFileOfOperationDistributions(prefix);
+// }
             } finally {
                 Statistics.releaseReadLock();
             }
