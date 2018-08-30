@@ -38,7 +38,7 @@ import micro.benchmarks.BenchmarkBase;
 /**
  * Benchmarks cost of ArrayList.
  */
-public class ArrayListBenchmark extends BenchmarkBase {
+public class OriginalArrayListBenchmark extends BenchmarkBase {
 
     private static final int N = 1000;
 

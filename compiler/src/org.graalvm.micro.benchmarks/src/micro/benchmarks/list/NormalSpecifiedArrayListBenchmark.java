@@ -14,7 +14,7 @@ import org.openjdk.jmh.annotations.Warmup;
 import micro.benchmarks.BenchmarkBase;
 import micro.benchmarks.list.impl.SpecifiedArrayList;
 
-public class SpecifiedArrayListBenchmark extends BenchmarkBase {
+public class NormalSpecifiedArrayListBenchmark extends BenchmarkBase {
 
     private static final int N = 1000;
 
