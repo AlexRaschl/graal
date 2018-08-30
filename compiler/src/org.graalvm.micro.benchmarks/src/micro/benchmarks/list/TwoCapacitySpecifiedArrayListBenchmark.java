@@ -14,7 +14,7 @@ import micro.benchmarks.BenchmarkBase;
 import micro.benchmarks.list.impl.TwoCapacitySpecifiedArrayList;
 
 public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
-    private static final int N = 1000;
+    // private static final int N = 1000;
 
     @State(Scope.Benchmark)
     public static class ThreadState {
@@ -29,7 +29,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void addBoxedAndClear(ThreadState state) {
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.add(i);
         }
         state.list.clear();
@@ -38,7 +38,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void addNullAndClear(ThreadState state) {
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.add(null);
         }
         state.list.clear();
@@ -47,10 +47,10 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void addRemoveBoxedAndClear(ThreadState state) {
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.add(i);
         }
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.remove(new Integer(i));
         }
         state.list.clear();
@@ -75,7 +75,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void addNull(ClearedThreadState state) {
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.add(null);
         }
     }
@@ -83,14 +83,14 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @State(Scope.Benchmark)
     public static class AddedClearedThreadState {
         final TwoCapacitySpecifiedArrayList<Integer> list = new TwoCapacitySpecifiedArrayList<>();
-        final Integer[] integers = new Integer[N];
+        final Integer[] integers = new Integer[BMConstants.N];
 
         // We don't want to measure the cost of list clearing
         @Setup(Level.Invocation)
         public void beforeInvocation() {
             list.clear();
             Integer curr;
-            for (int i = 0; i < N; ++i) {
+            for (int i = 0; i < BMConstants.N; ++i) {
                 curr = new Integer(i);
                 list.add(i);
                 integers[i] = curr;
@@ -107,7 +107,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void IndexOf(AddedClearedThreadState state) {
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.indexOf(state.integers[i]);
         }
     }
@@ -115,7 +115,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void removeObj(AddedClearedThreadState state) {
-        for (int i = 0; i < N; ++i) { // Slow because SAR is not optimized for removals at end
+        for (int i = 0; i < BMConstants.N; ++i) { // Slow because SAR is not optimized for removals at end
             state.list.remove(new Integer(i));
         }
     }
@@ -123,7 +123,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void containsObj(AddedClearedThreadState state) {
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.contains(new Integer(i));
         }
     }
@@ -131,7 +131,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void getObj(AddedClearedThreadState state) {
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.get(i);
         }
     }
@@ -139,7 +139,7 @@ public class TwoCapacitySpecifiedArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void setAt(AddedClearedThreadState state) {
-        for (int i = 0; i < N; ++i) {
+        for (int i = 0; i < BMConstants.N; ++i) {
             state.list.set(i, i - 1);
         }
     }
