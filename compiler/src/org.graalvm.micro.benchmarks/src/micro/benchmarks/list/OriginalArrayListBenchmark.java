@@ -40,7 +40,7 @@ import micro.benchmarks.BenchmarkBase;
  */
 public class OriginalArrayListBenchmark extends BenchmarkBase {
 
-    // private static final int N = 1000;
+    private static final int N = 1000;
 
     @State(Scope.Benchmark)
     public static class ThreadState {
@@ -50,7 +50,7 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void addBoxedAndClear(ThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.add(i);
         }
         state.list.clear();
@@ -59,7 +59,7 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void addNullAndClear(ThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.add(null);
         }
         state.list.clear();
@@ -68,10 +68,10 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void addRemoveBoxedAndClear(ThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.add(i);
         }
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.remove(new Integer(i));
         }
         state.list.clear();
@@ -91,7 +91,7 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void addNull(ClearedThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.add(null);
         }
     }
@@ -99,14 +99,14 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @State(Scope.Benchmark)
     public static class AddedClearedThreadState {
         final ArrayList<Integer> list = new ArrayList<>();
-        final Integer[] integers = new Integer[BMConstants.N];
+        final Integer[] integers = new Integer[N];
 
         // We don't want to measure the cost of list clearing
         @Setup(Level.Invocation)
         public void beforeInvocation() {
             list.clear();
             Integer curr;
-            for (int i = 0; i < BMConstants.N; ++i) {
+            for (int i = 0; i < N; ++i) {
                 curr = new Integer(i);
                 list.add(i);
                 integers[i] = curr;
@@ -117,7 +117,7 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void IndexOf(AddedClearedThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.indexOf(state.integers[i]);
         }
     }
@@ -125,7 +125,7 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void removeObj(AddedClearedThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.remove(new Integer(i));
         }
     }
@@ -133,7 +133,7 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void containsObj(AddedClearedThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.contains(new Integer(i));
         }
     }
@@ -141,7 +141,7 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void getObj(AddedClearedThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.get(i);
         }
     }
@@ -149,7 +149,7 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
     @Benchmark
     @Warmup(iterations = 20)
     public void setAt(AddedClearedThreadState state) {
-        for (int i = 0; i < BMConstants.N; ++i) {
+        for (int i = 0; i < N; ++i) {
             state.list.set(i, i - 1);
         }
     }
@@ -173,11 +173,11 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
 // @Benchmark
 // @Warmup(iterations = 20)
 // public void addRemoveBoxed(ClearedThreadState state) {
-// for (int i = 0; i < BMConstants.N; ++i) {
+// for (int i = 0; i < N; ++i) {
 // state.list.add(i);
 // }
 //
-// for (int i = 0; i < BMConstants.N; ++i) {
+// for (int i = 0; i < N; ++i) {
 // state.list.remove(new Integer(i));
 // }
 // }
@@ -185,10 +185,10 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
 // @Benchmark
 // @Warmup(iterations = 20)
 // public void addIndexOfAndClear(ThreadState state) {
-// for (int i = 0; i < BMConstants.N; ++i) {
+// for (int i = 0; i < N; ++i) {
 // state.list.add(i);
 // }
-// for (int i = 0; i < BMConstants.N; ++i) {
+// for (int i = 0; i < N; ++i) {
 // state.list.indexOf(new Integer(i));
 // }
 // state.list.clear();
@@ -198,10 +198,10 @@ public class OriginalArrayListBenchmark extends BenchmarkBase {
 // @Benchmark
 // @Warmup(iterations = 20)
 // public void addIndexOf(ClearedThreadState state) {
-// for (int i = 0; i < BMConstants.N; ++i) {
+// for (int i = 0; i < N; ++i) {
 // state.list.add(i);
 // }
-// for (int i = 0; i < BMConstants.N; ++i) {
+// for (int i = 0; i < N; ++i) {
 // state.list.indexOf(new Integer(i));
 // }
 // }
