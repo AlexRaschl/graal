@@ -104,7 +104,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     }
 
     public static <E> SpecifiedArrayList<E> createNewFixed(final int initialCapacity) {
-        return new FixedCapacitiySpecifiedArrayList<>(initialCapacity);
+        return new FixedCapacitySpecifiedArrayList<>(initialCapacity);
     }
 
     public static SimpleIntSpecifiedArrayList createNewIntList(final int initialCapacity) {

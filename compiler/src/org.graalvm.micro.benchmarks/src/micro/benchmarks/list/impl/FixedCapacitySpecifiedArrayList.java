@@ -4,9 +4,9 @@ import java.util.Collection;
 
 import sun.misc.SharedSecrets;
 
-final class FixedCapacitiySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
+public final class FixedCapacitySpecifiedArrayList<E> extends SpecifiedArrayList<E> {
 
-    FixedCapacitiySpecifiedArrayList(int capacity) {
+    public FixedCapacitySpecifiedArrayList(int capacity) {
         if (capacity < 0)
             throw new IllegalArgumentException("Negative Capacity");
         this.size = 0;
