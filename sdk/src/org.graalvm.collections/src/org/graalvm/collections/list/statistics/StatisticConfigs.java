@@ -33,7 +33,7 @@ public class StatisticConfigs {
     public static final boolean AGGREGATE_SAME_CLASSES = false;
 
     // Enable Tracking
-    public static final boolean TRACKING_ENABLED = true;
+    public static final boolean TRACKING_ENABLED = false;
 
     // Track all Allocation Sites or only the Sites listed in trackedSites HashSet
     public static final boolean TRACKS_ALL = true;
