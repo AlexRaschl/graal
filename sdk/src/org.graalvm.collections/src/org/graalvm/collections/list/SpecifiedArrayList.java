@@ -126,7 +126,7 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     // -------------------------FIELDS-------------------------------------------------
 
     private final static int INITIAL_CAPACITY = 2; // Used on first insertion
-    private final static int NEXT_CAPACITY = 32; // Capacity after first grow
+    private final static int NEXT_CAPACITY = 4; // Capacity after first grow
     private final static int TRIM_FACTOR = 2; // Trim factor
     //
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
@@ -404,10 +404,10 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     /**
      * Copied 1:1 from ArrayList
      *
-     * Removes from this list all of the elements whose index is between {@code fromIndex},
-     * inclusive, and {@code toIndex}, exclusive. Shifts any succeeding elements to the left
-     * (reduces their index). This call shortens the list by {@code (toIndex - fromIndex)} elements.
-     * (If {@code toIndex==fromIndex}, this operation has no effect.)
+     * Removes from this list all of the elements whose index is between {@code fromIndex}, inclusive,
+     * and {@code toIndex}, exclusive. Shifts any succeeding elements to the left (reduces their index).
+     * This call shortens the list by {@code (toIndex - fromIndex)} elements. (If
+     * {@code toIndex==fromIndex}, this operation has no effect.)
      *
      * @throws IndexOutOfBoundsException if {@code fromIndex} or {@code toIndex} is out of range
      *             ({@code fromIndex < 0 ||
@@ -905,29 +905,28 @@ public class SpecifiedArrayList<E> extends AbstractList<E> implements List<E>, R
     /**
      * Returns a view of theensureCapacityInternalAl portion of this list between the specified
      * {@code fromIndex}, inclusive, and {@code toIndex}, exclusive. (If {@code fromIndex} and
-     * {@code toIndex} are equal, the returned list is empty.) The returned list is backed by this
-     * list, so non-structural changes in the returned list are reflected in this list, and
-     * vice-versa. The returned list supports all of the optional list operations.
+     * {@code toIndex} are equal, the returned list is empty.) The returned list is backed by this list,
+     * so non-structural changes in the returned list are reflected in this list, and vice-versa. The
+     * returned list supports all of the optional list operations.
      *
      * <p>
-     * This method eliminates the need for explicit range operations (of the sort that commonly
-     * exist for arrays). Any operation that expects a list can be used as a range operation by
-     * passing a subList view instead of a whole list. For example, the following idiom removes a
-     * range of elements from a list:
+     * This method eliminates the need for explicit range operations (of the sort that commonly exist
+     * for arrays). Any operation that expects a list can be used as a range operation by passing a
+     * subList view instead of a whole list. For example, the following idiom removes a range of
+     * elements from a list:
      *
      * <pre>
      * list.subList(from, to).clear();
      * </pre>
      *
-     * Similar idioms may be constructed for {@link #indexOf(Object)} and
-     * {@link #lastIndexOf(Object)}, and all of the algorithms in the {@link Collections} class can
-     * be applied to a subList.
+     * Similar idioms may be constructed for {@link #indexOf(Object)} and {@link #lastIndexOf(Object)},
+     * and all of the algorithms in the {@link Collections} class can be applied to a subList.
      *
      * <p>
      * The semantics of the list returned by this method become undefined if the backing list (i.e.,
      * this list) is <i>structurally modified</i> in any way other than via the returned list.
-     * (Structural modifications are those that change the size of this list, or otherwise perturb
-     * it in such a fashion that iterations in progress may yield incorrect results.)
+     * (Structural modifications are those that change the size of this list, or otherwise perturb it in
+     * such a fashion that iterations in progress may yield incorrect results.)
      *
      * @throws IndexOutOfBoundsException {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
