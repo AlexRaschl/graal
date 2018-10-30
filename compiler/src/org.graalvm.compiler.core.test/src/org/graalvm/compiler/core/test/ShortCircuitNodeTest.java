@@ -40,8 +40,8 @@ public class ShortCircuitNodeTest extends GraalCompilerTest {
     @SuppressWarnings("unused")
     public static void test1Snippet(int a, int b) {
         /*
-         * if a ShortCircuitOrNode is created for the check inside test2, then faulty handling of
-         * guards can create a cycle in the graph.
+         * if a ShortCircuitOrNode is created for the check inside test2, then faulty handling of guards can
+         * create a cycle in the graph.
          */
         int v;
         if (a == 1) {

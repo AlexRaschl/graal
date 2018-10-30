@@ -46,10 +46,9 @@ public final class CompilationPrinter {
 
     /**
      * Gets an object that will report statistics for a compilation if
-     * {@link GraalCompilerOptions#PrintCompilation} is enabled and {@link TTY} is not suppressed.
-     * This method should be called just before a compilation starts as it captures pre-compilation
-     * data for the purpose of {@linkplain #finish(CompilationResult) printing} the post-compilation
-     * statistics.
+     * {@link GraalCompilerOptions#PrintCompilation} is enabled and {@link TTY} is not suppressed. This
+     * method should be called just before a compilation starts as it captures pre-compilation data for
+     * the purpose of {@linkplain #finish(CompilationResult) printing} the post-compilation statistics.
      *
      * @param options used to get the value of {@link GraalCompilerOptions#PrintCompilation}
      * @param id the identifier for the compilation
@@ -96,8 +95,8 @@ public final class CompilationPrinter {
     }
 
     /**
-     * Notifies this object that the compilation finished and the informational line should be
-     * printed to {@link TTY}.
+     * Notifies this object that the compilation finished and the informational line should be printed
+     * to {@link TTY}.
      */
     public void finish(CompilationResult result) {
         if (id != null) {

@@ -52,9 +52,9 @@ public interface InlineInfo {
     Invoke invoke();
 
     /**
-     * Returns the number of methods that may be inlined by the {@link #invoke() invocation}. This
-     * may be more than one in the case of a invocation profile showing a number of "hot" concrete
-     * methods dispatched to by the invocation.
+     * Returns the number of methods that may be inlined by the {@link #invoke() invocation}. This may
+     * be more than one in the case of a invocation profile showing a number of "hot" concrete methods
+     * dispatched to by the invocation.
      */
     int numberOfMethods();
 
@@ -69,9 +69,9 @@ public interface InlineInfo {
     void setInlinableElement(int index, Inlineable inlineableElement);
 
     /**
-     * Performs the inlining described by this object and returns the node that represents the
-     * return value of the inlined method (or null for void methods and methods that have no
-     * non-exceptional exit).
+     * Performs the inlining described by this object and returns the node that represents the return
+     * value of the inlined method (or null for void methods and methods that have no non-exceptional
+     * exit).
      *
      * @return a collection of nodes that need to be canonicalized after the inlining
      */

@@ -34,7 +34,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -43,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.options.OptionDescriptor;
 import org.graalvm.compiler.options.OptionDescriptors;
 import org.graalvm.compiler.options.OptionKey;
@@ -79,7 +79,7 @@ public class OptionsVerifierTest {
         private final Map<String, Object> entries = new LinkedHashMap<>();
 
         Classpath() throws IOException {
-            List<String> names = new ArrayList<>(Arrays.asList(System.getProperty("java.class.path").split(File.pathSeparator)));
+            List<String> names = SpecifiedArrayList.createNew(Arrays.asList(System.getProperty("java.class.path").split(File.pathSeparator)));
             if (GraalTest.Java8OrEarlier) {
                 names.addAll(Arrays.asList(System.getProperty("sun.boot.class.path").split(File.pathSeparator)));
             } else {
@@ -158,8 +158,8 @@ public class OptionsVerifierTest {
         private final OptionDescriptor option;
 
         /**
-         * The class in which {@link #option} is declared or a super-class of that class. This is
-         * the class whose {@code <clinit>} method is being verified.
+         * The class in which {@link #option} is declared or a super-class of that class. This is the class
+         * whose {@code <clinit>} method is being verified.
          */
         private final Class<?> cls;
 

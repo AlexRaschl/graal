@@ -69,8 +69,8 @@ public class AMD64Binary {
         @Def({REG, HINT}) protected AllocatableValue result;
         @Use({REG}) protected AllocatableValue x;
         /**
-         * This argument must be Alive to ensure that result and y are not assigned to the same
-         * register, which would break the code generation by destroying y too early.
+         * This argument must be Alive to ensure that result and y are not assigned to the same register,
+         * which would break the code generation by destroying y too early.
          */
         @Alive({REG, STACK}) protected AllocatableValue y;
 
@@ -241,8 +241,8 @@ public class AMD64Binary {
     }
 
     /**
-     * Instruction that has one {@link AllocatableValue} operand and one
-     * {@link DataSectionReference} operand.
+     * Instruction that has one {@link AllocatableValue} operand and one {@link DataSectionReference}
+     * operand.
      */
     public static class DataTwoOp extends AMD64LIRInstruction {
         public static final LIRInstructionClass<DataTwoOp> TYPE = LIRInstructionClass.create(DataTwoOp.class);
@@ -280,8 +280,8 @@ public class AMD64Binary {
     }
 
     /**
-     * Instruction that has two {@link AllocatableValue} operands and one
-     * {@link DataSectionReference} operand.
+     * Instruction that has two {@link AllocatableValue} operands and one {@link DataSectionReference}
+     * operand.
      */
     public static class DataThreeOp extends AMD64LIRInstruction {
         public static final LIRInstructionClass<DataThreeOp> TYPE = LIRInstructionClass.create(DataThreeOp.class);

@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.nodes.cfg;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.word.LocationIdentity;
 
 public class LocationSet {
@@ -39,13 +39,13 @@ public class LocationSet {
     public LocationSet(LocationSet other) {
         this.firstLocation = other.firstLocation;
         if (other.list != null && other.list.size() > 0) {
-            list = new ArrayList<>(other.list);
+            list = SpecifiedArrayList.createNew(other.list);
         }
     }
 
     private void initList() {
         if (list == null) {
-            list = new ArrayList<>(4);
+            list = SpecifiedArrayList.createNew(4);
         }
     }
 
@@ -117,7 +117,7 @@ public class LocationSet {
     }
 
     public List<LocationIdentity> getCopyAsList() {
-        ArrayList<LocationIdentity> result = new ArrayList<>();
+        SpecifiedArrayList<LocationIdentity> result = SpecifiedArrayList.createNew();
         if (firstLocation != null) {
             result.add(firstLocation);
         }

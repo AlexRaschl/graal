@@ -712,8 +712,8 @@ public class AMD64ArithmeticLIRGenerator extends ArithmeticLIRGenerator implemen
                 getLIRGen().append(new AMD64Unary.MOp(op.m1Op, size, result, input));
             } else {
                 /*
-                 * c is implicitly masked to 5 or 6 bits by the CPU, so casting it to (int) is
-                 * always correct, even without the NumUtil.is32bit() test.
+                 * c is implicitly masked to 5 or 6 bits by the CPU, so casting it to (int) is always correct, even
+                 * without the NumUtil.is32bit() test.
                  */
                 getLIRGen().append(new AMD64Binary.ConstOp(op.miOp, size, result, input, (int) c.asLong()));
             }
@@ -803,8 +803,7 @@ public class AMD64ArithmeticLIRGenerator extends ArithmeticLIRGenerator implemen
 
         AllocatableValue input = getLIRGen().asAllocatable(inputVal);
         /*
-         * Conversions between integer to floating point types require moves between CPU and FPU
-         * registers.
+         * Conversions between integer to floating point types require moves between CPU and FPU registers.
          */
         AMD64Kind fromKind = (AMD64Kind) from.getPlatformKind();
         switch ((AMD64Kind) to.getPlatformKind()) {
@@ -926,10 +925,9 @@ public class AMD64ArithmeticLIRGenerator extends ArithmeticLIRGenerator implemen
             }
 
             /*
-             * Always emit DWORD operations, even if the resultKind is Long. On AMD64, all DWORD
-             * operations implicitly set the upper half of the register to 0, which is what we want
-             * anyway. Compared to the QWORD oparations, the encoding of the DWORD operations is
-             * sometimes one byte shorter.
+             * Always emit DWORD operations, even if the resultKind is Long. On AMD64, all DWORD operations
+             * implicitly set the upper half of the register to 0, which is what we want anyway. Compared to the
+             * QWORD oparations, the encoding of the DWORD operations is sometimes one byte shorter.
              */
             switch (fromBits) {
                 case 8:

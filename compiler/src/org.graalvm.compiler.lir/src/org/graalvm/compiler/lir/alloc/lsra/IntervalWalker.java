@@ -60,8 +60,8 @@ public class IntervalWalker {
     protected RegisterBinding currentBinding;
 
     /**
-     * Processes the {@code currentInterval} interval in an attempt to allocate a physical register
-     * to it and thus allow it to be moved to a list of {@linkplain #activeLists active} intervals.
+     * Processes the {@code currentInterval} interval in an attempt to allocate a physical register to
+     * it and thus allow it to be moved to a list of {@linkplain #activeLists active} intervals.
      *
      * @return {@code true} if a register was allocated to the {@code currentInterval} interval
      */
@@ -81,10 +81,8 @@ public class IntervalWalker {
      * Creates a new interval walker.
      *
      * @param allocator the register allocator context
-     * @param unhandledFixed the list of unhandled {@linkplain RegisterBinding#Fixed fixed}
-     *            intervals
-     * @param unhandledAny the list of unhandled {@linkplain RegisterBinding#Any non-fixed}
-     *            intervals
+     * @param unhandledFixed the list of unhandled {@linkplain RegisterBinding#Fixed fixed} intervals
+     * @param unhandledAny the list of unhandled {@linkplain RegisterBinding#Any non-fixed} intervals
      */
     IntervalWalker(LinearScan allocator, Interval unhandledFixed, Interval unhandledAny) {
         this.allocator = allocator;
@@ -171,13 +169,13 @@ public class IntervalWalker {
     }
 
     /**
-     * Get the next interval from {@linkplain #unhandledLists} which starts before or at
-     * {@code toOpId}. The returned interval is removed and {@link #currentBinding} is set.
+     * Get the next interval from {@linkplain #unhandledLists} which starts before or at {@code toOpId}.
+     * The returned interval is removed and {@link #currentBinding} is set.
      *
      * @postcondition all intervals in {@linkplain #unhandledLists} start after {@code toOpId}.
      *
-     * @return The next interval or null if there is no {@linkplain #unhandledLists unhandled}
-     *         interval at position {@code toOpId}.
+     * @return The next interval or null if there is no {@linkplain #unhandledLists unhandled} interval
+     *         at position {@code toOpId}.
      */
     private Interval nextInterval(int toOpId) {
         RegisterBinding binding;
@@ -214,8 +212,7 @@ public class IntervalWalker {
      * Walk up to {@code toOpId}.
      *
      * @postcondition {@link #currentPosition} is set to {@code toOpId}, {@link #activeLists} and
-     *                {@link #inactiveLists} are populated and {@link Interval#state}s are up to
-     *                date.
+     *                {@link #inactiveLists} are populated and {@link Interval#state}s are up to date.
      */
     @SuppressWarnings("try")
     protected void walkTo(int toOpId) {
@@ -268,8 +265,8 @@ public class IntervalWalker {
      * Move {@linkplain #unhandledLists unhandled} stack intervals to
      * {@linkplain IntervalWalker #activeLists active}.
      *
-     * Note that for {@linkplain RegisterBinding#Fixed fixed} and {@linkplain RegisterBinding#Any
-     * any} intervals this is done in {@link #nextInterval(int)}.
+     * Note that for {@linkplain RegisterBinding#Fixed fixed} and {@linkplain RegisterBinding#Any any}
+     * intervals this is done in {@link #nextInterval(int)}.
      */
     private void updateUnhandledStackIntervals(int opId) {
         Interval currentInterval = unhandledLists.get(RegisterBinding.Stack);

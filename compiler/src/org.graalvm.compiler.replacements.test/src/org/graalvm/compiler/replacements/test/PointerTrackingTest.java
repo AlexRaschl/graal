@@ -63,15 +63,15 @@ public class PointerTrackingTest extends ReplacementsTest implements Snippets {
 
         if (untrackedBeforeGC == untrackedAfterGC) {
             /*
-             * The untracked pointer isn't supposed to be updated, so it should be different before
-             * and after GC.
+             * The untracked pointer isn't supposed to be updated, so it should be different before and after
+             * GC.
              */
             return "untrackedBeforeGC == untrackedAfterGC";
         }
         if (trackedBeforeGC != trackedAfterGC) {
             /*
-             * The trackedBeforeGC variable should be updated to the new location by the GC, so it
-             * should be equal to trackedAfterGC.
+             * The trackedBeforeGC variable should be updated to the new location by the GC, so it should be
+             * equal to trackedAfterGC.
              */
             return "trackedBeforeGC != trackedAfterGC";
         }
@@ -92,9 +92,8 @@ public class PointerTrackingTest extends ReplacementsTest implements Snippets {
         long value = getTrackedPointer(obj) * 7 + 3;
 
         /*
-         * Ensure usage before and after GC to force the value to be alive across the safepoint.
-         * This should lead to a compiler error, since value can not be tracked in the reference
-         * map.
+         * Ensure usage before and after GC to force the value to be alive across the safepoint. This should
+         * lead to a compiler error, since value can not be tracked in the reference map.
          */
         GraalDirectives.blackhole(value);
         System.gc();

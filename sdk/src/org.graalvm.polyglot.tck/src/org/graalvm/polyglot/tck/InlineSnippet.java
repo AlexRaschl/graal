@@ -59,8 +59,8 @@ public final class InlineSnippet {
     }
 
     /**
-     * Returns a script to be executed. The {@link #getCode() source code} is executed inlined in
-     * this script.
+     * Returns a script to be executed. The {@link #getCode() source code} is executed inlined in this
+     * script.
      *
      * @since 0.32
      */
@@ -69,9 +69,8 @@ public final class InlineSnippet {
     }
 
     /**
-     * Returns an inline source code that is to be executed at specific
-     * {@link #getLocationPredicate() locations}, or at all statement and call locations if the
-     * predicate is <code>null</code>.
+     * Returns an inline source code that is to be executed at specific {@link #getLocationPredicate()
+     * locations}, or at all statement and call locations if the predicate is <code>null</code>.
      *
      * @since 0.32
      */
@@ -80,12 +79,11 @@ public final class InlineSnippet {
     }
 
     /**
-     * Returns a testing predicate for locations at which {@link #getCode() source code} is
-     * executed.
+     * Returns a testing predicate for locations at which {@link #getCode() source code} is executed.
      *
      * @return the predicate that returns <code>true</code> for {@link SourceSection}s where the
-     *         {@link #getCode() source code} is to be executed, or <code>null</code> if the source
-     *         code should be executed at all instrumentable statement and call locations.
+     *         {@link #getCode() source code} is to be executed, or <code>null</code> if the source code
+     *         should be executed at all instrumentable statement and call locations.
      * @since 0.32
      */
     public Predicate<SourceSection> getLocationPredicate() {
@@ -151,11 +149,11 @@ public final class InlineSnippet {
         }
 
         /**
-         * Sets a testing predicate for locations at which the source is executed. By default, the
-         * source is executed at all instrumentable statement and call locations in the script.
+         * Sets a testing predicate for locations at which the source is executed. By default, the source is
+         * executed at all instrumentable statement and call locations in the script.
          *
-         * @return the predicate that returns <code>true</code> for {@link SourceSection}s where
-         *         source is to be executed
+         * @return the predicate that returns <code>true</code> for {@link SourceSection}s where source is
+         *         to be executed
          * @since 0.32
          */
         public Builder locationPredicate(final Predicate<SourceSection> locationPredicate) {

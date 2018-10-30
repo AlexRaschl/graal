@@ -90,22 +90,22 @@ public class InvokeGraal {
         try (DebugContext.Scope s = debug.scope("compileAndInstallMethod", new DebugDumpScope(String.valueOf(compilationId), true))) {
 
             /*
-             * The graph that is compiled. We leave it empty (no nodes added yet). This means that
-             * it will be filled according to the graphBuilderSuite defined below. We also specify
-             * that we want the compilation to make optimistic assumptions about runtime state such
-             * as the loaded class hierarchy.
+             * The graph that is compiled. We leave it empty (no nodes added yet). This means that it will be
+             * filled according to the graphBuilderSuite defined below. We also specify that we want the
+             * compilation to make optimistic assumptions about runtime state such as the loaded class
+             * hierarchy.
              */
             StructuredGraph graph = new StructuredGraph.Builder(options, debug, AllowAssumptions.YES).method(method).compilationId(compilationId).build();
 
             /*
-             * The phases used to build the graph. Usually this is just the GraphBuilderPhase. If
-             * the graph already contains nodes, it is ignored.
+             * The phases used to build the graph. Usually this is just the GraphBuilderPhase. If the graph
+             * already contains nodes, it is ignored.
              */
             PhaseSuite<HighTierContext> graphBuilderSuite = backend.getSuites().getDefaultGraphBuilderSuite();
 
             /*
-             * The optimization phases that are applied to the graph. This is the main configuration
-             * point for Graal. Add or remove phases to customize your compilation.
+             * The optimization phases that are applied to the graph. This is the main configuration point for
+             * Graal. Add or remove phases to customize your compilation.
              */
             Suites suites = backend.getSuites().getDefaultSuites(options);
 
@@ -115,9 +115,8 @@ public class InvokeGraal {
             LIRSuites lirSuites = backend.getSuites().getDefaultLIRSuites(options);
 
             /*
-             * We want Graal to perform all speculative optimistic optimizations, using the
-             * profiling information that comes with the method (collected by the interpreter) for
-             * speculation.
+             * We want Graal to perform all speculative optimistic optimizations, using the profiling
+             * information that comes with the method (collected by the interpreter) for speculation.
              */
             OptimisticOptimizations optimisticOpts = OptimisticOptimizations.ALL;
             ProfilingInfo profilingInfo = graph.getProfilingInfo(method);
@@ -130,8 +129,8 @@ public class InvokeGraal {
             GraalCompiler.compileGraph(graph, method, providers, backend, graphBuilderSuite, optimisticOpts, profilingInfo, suites, lirSuites, compilationResult, factory);
 
             /*
-             * Install the compilation result into the VM, i.e., copy the byte[] array that contains
-             * the machine code into an actual executable memory location.
+             * Install the compilation result into the VM, i.e., copy the byte[] array that contains the machine
+             * code into an actual executable memory location.
              */
             return backend.addInstalledCode(debug, method, asCompilationRequest(compilationId), compilationResult);
         } catch (Throwable ex) {

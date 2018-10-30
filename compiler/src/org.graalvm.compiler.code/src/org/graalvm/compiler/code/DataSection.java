@@ -25,11 +25,11 @@ package org.graalvm.compiler.code;
 import static jdk.vm.ci.meta.MetaUtil.identityHashCodeString;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.code.DataSection.Data;
 
 import jdk.vm.ci.code.site.DataSectionReference;
@@ -225,7 +225,7 @@ public final class DataSection implements Iterable<Data> {
         }
     }
 
-    private final ArrayList<Data> dataItems = new ArrayList<>();
+    private final SpecifiedArrayList<Data> dataItems = SpecifiedArrayList.createNew();
 
     private boolean closed;
     private int sectionAlignment;
@@ -257,8 +257,8 @@ public final class DataSection implements Iterable<Data> {
     }
 
     /**
-     * Inserts a {@link Data} item into the data section. If the item is already in the data
-     * section, the same {@link DataSectionReference} is returned.
+     * Inserts a {@link Data} item into the data section. If the item is already in the data section,
+     * the same {@link DataSectionReference} is returned.
      *
      * @param data the {@link Data} item to be inserted
      * @return a unique {@link DataSectionReference} identifying the {@link Data} item
@@ -347,10 +347,10 @@ public final class DataSection implements Iterable<Data> {
      *
      * This must only be called once this object has been {@linkplain #closed() closed}.
      *
-     * @param buffer the {@link ByteBuffer} where the data section should be built. The buffer must
-     *            hold at least {@link #getSectionSize()} bytes.
-     * @param patch a {@link Patches} instance to receive {@link VMConstant constants} for
-     *            relocations in the data section
+     * @param buffer the {@link ByteBuffer} where the data section should be built. The buffer must hold
+     *            at least {@link #getSectionSize()} bytes.
+     * @param patch a {@link Patches} instance to receive {@link VMConstant constants} for relocations
+     *            in the data section
      */
     public void buildDataSection(ByteBuffer buffer, Patches patch) {
         buildDataSection(buffer, patch, (r, s) -> {
@@ -363,8 +363,8 @@ public final class DataSection implements Iterable<Data> {
      * This must only be called once this object has been {@linkplain #closed() closed}. When this
      * method returns, the buffers' position is just after the last data item.
      *
-     * @param buffer the {@link ByteBuffer} where the data section should be built. The buffer must
-     *            hold at least {@link #getSectionSize()} bytes.
+     * @param buffer the {@link ByteBuffer} where the data section should be built. The buffer must hold
+     *            at least {@link #getSectionSize()} bytes.
      * @param patch a {@link Patches} instance to receive {@link VMConstant constants} for
      * @param onEmit a function that is called before emitting each data item with the
      *            {@link DataSectionReference} and the size of the data.

@@ -128,8 +128,8 @@ public class AMD64BinaryConsumer {
     }
 
     /**
-     * Instruction that has one {@link AllocatableValue} operand and one 32-bit immediate operand
-     * that needs to be patched at runtime.
+     * Instruction that has one {@link AllocatableValue} operand and one 32-bit immediate operand that
+     * needs to be patched at runtime.
      */
     public static class VMConstOp extends ConstOp {
         public static final LIRInstructionClass<VMConstOp> TYPE = LIRInstructionClass.create(VMConstOp.class);
@@ -149,8 +149,8 @@ public class AMD64BinaryConsumer {
     }
 
     /**
-     * Instruction that has one {@link AllocatableValue} operand and one
-     * {@link DataSectionReference} operand.
+     * Instruction that has one {@link AllocatableValue} operand and one {@link DataSectionReference}
+     * operand.
      */
     public static class DataOp extends AMD64LIRInstruction {
         public static final LIRInstructionClass<DataOp> TYPE = LIRInstructionClass.create(DataOp.class);
@@ -185,8 +185,8 @@ public class AMD64BinaryConsumer {
     }
 
     /**
-     * Instruction that has an {@link AllocatableValue} as first input and a
-     * {@link AMD64AddressValue memory} operand as second input.
+     * Instruction that has an {@link AllocatableValue} as first input and a {@link AMD64AddressValue
+     * memory} operand as second input.
      */
     public static class MemoryRMOp extends AMD64LIRInstruction implements ImplicitNullCheck {
         public static final LIRInstructionClass<MemoryRMOp> TYPE = LIRInstructionClass.create(MemoryRMOp.class);

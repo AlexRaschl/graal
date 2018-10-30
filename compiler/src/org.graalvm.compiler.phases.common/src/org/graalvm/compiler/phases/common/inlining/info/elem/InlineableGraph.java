@@ -24,9 +24,9 @@ package org.graalvm.compiler.phases.common.inlining.info.elem;
 
 import static org.graalvm.compiler.phases.common.DeadCodeEliminationPhase.Optionality.Optional;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.Stamp;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.graph.Node;
@@ -74,9 +74,8 @@ public class InlineableGraph implements Inlineable {
     }
 
     /**
-     * This method looks up in a cache the graph for the argument, if not found bytecode is parsed.
-     * The graph thus obtained is returned, ie the caller is responsible for cloning before
-     * modification.
+     * This method looks up in a cache the graph for the argument, if not found bytecode is parsed. The
+     * graph thus obtained is returned, ie the caller is responsible for cloning before modification.
      */
     private static StructuredGraph getOriginalGraph(final ResolvedJavaMethod method, final HighTierContext context, CanonicalizerPhase canonicalizer, StructuredGraph caller, int callerBci,
                     boolean trackNodeSourcePosition) {
@@ -88,15 +87,15 @@ public class InlineableGraph implements Inlineable {
     }
 
     /**
-     * @return true iff one or more parameters <code>newGraph</code> were specialized to account for
-     *         a constant argument, or an argument with a more specific stamp.
+     * @return true iff one or more parameters <code>newGraph</code> were specialized to account for a
+     *         constant argument, or an argument with a more specific stamp.
      */
     @SuppressWarnings("try")
     private boolean specializeGraphToArguments(final Invoke invoke, final HighTierContext context, CanonicalizerPhase canonicalizer) {
         DebugContext debug = graph.getDebug();
         try (DebugContext.Scope s = debug.scope("InlineGraph", graph)) {
 
-            ArrayList<Node> parameterUsages = replaceParamsWithMoreInformativeArguments(invoke, context);
+            SpecifiedArrayList<Node> parameterUsages = replaceParamsWithMoreInformativeArguments(invoke, context);
             if (parameterUsages != null) {
                 assert !parameterUsages.isEmpty() : "The caller didn't have more information about arguments after all";
                 canonicalizer.applyIncremental(graph, context, parameterUsages);
@@ -137,24 +136,22 @@ public class InlineableGraph implements Inlineable {
      * </ul>
      *
      * <p>
-     * The corresponding parameters are updated to reflect the above information. Before doing so,
-     * their usages are added to <code>parameterUsages</code> for later incremental
-     * canonicalization.
+     * The corresponding parameters are updated to reflect the above information. Before doing so, their
+     * usages are added to <code>parameterUsages</code> for later incremental canonicalization.
      * </p>
      *
      * @return null if no incremental canonicalization is need, a list of nodes for such
      *         canonicalization otherwise.
      */
-    private ArrayList<Node> replaceParamsWithMoreInformativeArguments(final Invoke invoke, final HighTierContext context) {
+    private SpecifiedArrayList<Node> replaceParamsWithMoreInformativeArguments(final Invoke invoke, final HighTierContext context) {
         NodeInputList<ValueNode> args = invoke.callTarget().arguments();
-        ArrayList<Node> parameterUsages = null;
+        SpecifiedArrayList<Node> parameterUsages = null;
         List<ParameterNode> params = graph.getNodes(ParameterNode.TYPE).snapshot();
         assert params.size() <= args.size();
         /*
-         * param-nodes that aren't used (eg, as a result of canonicalization) don't occur in
-         * `params`. Thus, in general, the sizes of `params` and `args` don't always match. Still,
-         * it's always possible to pair a param-node with its corresponding arg-node using
-         * param.index() as index into `args`.
+         * param-nodes that aren't used (eg, as a result of canonicalization) don't occur in `params`. Thus,
+         * in general, the sizes of `params` and `args` don't always match. Still, it's always possible to
+         * pair a param-node with its corresponding arg-node using param.index() as index into `args`.
          */
         for (ParameterNode param : params) {
             if (param.usages().isNotEmpty()) {
@@ -181,16 +178,16 @@ public class InlineableGraph implements Inlineable {
         return parameterUsages;
     }
 
-    private static ArrayList<Node> trackParameterUsages(ParameterNode param, ArrayList<Node> parameterUsages) {
-        ArrayList<Node> result = (parameterUsages == null) ? new ArrayList<>() : parameterUsages;
+    private static SpecifiedArrayList<Node> trackParameterUsages(ParameterNode param, SpecifiedArrayList<Node> parameterUsages) {
+        SpecifiedArrayList<Node> result = (parameterUsages == null) ? SpecifiedArrayList.createNew() : parameterUsages;
         param.usages().snapshotTo(result);
         return result;
     }
 
     /**
      * This method builds the IR nodes for the given <code>method</code> and canonicalizes them.
-     * Provided profiling info is mature, the resulting graph is cached. The caller is responsible
-     * for cloning before modification.
+     * Provided profiling info is mature, the resulting graph is cached. The caller is responsible for
+     * cloning before modification.
      * </p>
      */
     @SuppressWarnings("try")

@@ -64,8 +64,7 @@ final class LibFFISignature {
 
         switch (retType.allowedDataFlowDirection) {
             /*
-             * If the call goes from Java to native, the return value flows from native-to-Java, and
-             * vice-versa.
+             * If the call goes from Java to native, the return value flows from native-to-Java, and vice-versa.
              */
             case JAVA_TO_NATIVE_ONLY:
                 allowJavaToNativeCall = false;

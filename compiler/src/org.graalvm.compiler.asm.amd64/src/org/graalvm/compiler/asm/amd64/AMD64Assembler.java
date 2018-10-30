@@ -331,8 +331,8 @@ public class AMD64Assembler extends Assembler {
         }
 
         /**
-         * Emit an immediate of this size. Note that immediate {@link #QWORD} operands are encoded
-         * as sign-extended 32-bit values.
+         * Emit an immediate of this size. Note that immediate {@link #QWORD} operands are encoded as
+         * sign-extended 32-bit values.
          *
          * @param asm
          * @param imm
@@ -455,9 +455,9 @@ public class AMD64Assembler extends Assembler {
     }
 
     /**
-     * Get RXB bits for register-register instruction. In that encoding, ModRM.rm contains a
-     * register index. The R bit extends the ModRM.reg field and the B bit extends the ModRM.rm
-     * field. The X bit must be 0.
+     * Get RXB bits for register-register instruction. In that encoding, ModRM.rm contains a register
+     * index. The R bit extends the ModRM.reg field and the B bit extends the ModRM.rm field. The X bit
+     * must be 0.
      */
     protected static int getRXB(Register reg, Register rm) {
         int rxb = (reg == null ? 0 : reg.encoding & 0x08) >> 1;
@@ -466,10 +466,9 @@ public class AMD64Assembler extends Assembler {
     }
 
     /**
-     * Get RXB bits for register-memory instruction. The R bit extends the ModRM.reg field. There
-     * are two cases for the memory operand:<br>
-     * ModRM.rm contains the base register: In that case, B extends the ModRM.rm field and X = 0.
-     * <br>
+     * Get RXB bits for register-memory instruction. The R bit extends the ModRM.reg field. There are
+     * two cases for the memory operand:<br>
+     * ModRM.rm contains the base register: In that case, B extends the ModRM.rm field and X = 0. <br>
      * There is an SIB byte: In that case, X extends SIB.index and B extends SIB.base.
      */
     protected static int getRXB(Register reg, AMD64Address rm) {
@@ -522,13 +521,13 @@ public class AMD64Assembler extends Assembler {
     }
 
     /**
-     * Emits the ModR/M byte and optionally the SIB byte for one memory operand and an opcode
-     * extension in the R field.
+     * Emits the ModR/M byte and optionally the SIB byte for one memory operand and an opcode extension
+     * in the R field.
      *
      * @param force4Byte use 4 byte encoding for displacements that would normally fit in a byte
-     * @param additionalInstructionSize the number of bytes that will be emitted after the operand,
-     *            so that the start position of the next instruction can be computed even though
-     *            this instruction has not been completely emitted yet.
+     * @param additionalInstructionSize the number of bytes that will be emitted after the operand, so
+     *            that the start position of the next instruction can be computed even though this
+     *            instruction has not been completely emitted yet.
      */
     protected void emitOperandHelper(int reg, AMD64Address addr, boolean force4Byte, int additionalInstructionSize) {
         assert (reg & 0x07) == reg;
@@ -2064,8 +2063,8 @@ public class AMD64Assembler extends Assembler {
     }
 
     /**
-     * New CPUs require use of movsd and movss to avoid partial register stall when loading from
-     * memory. But for old Opteron use movlpd instead of movsd. The selection is done in
+     * New CPUs require use of movsd and movss to avoid partial register stall when loading from memory.
+     * But for old Opteron use movlpd instead of movsd. The selection is done in
      * {@link AMD64MacroAssembler#movdbl(Register, AMD64Address)} and
      * {@link AMD64MacroAssembler#movflt(Register, Register)}.
      */
@@ -3619,8 +3618,8 @@ public class AMD64Assembler extends Assembler {
             // short offset operators (jmp and jcc)
             final int imm8 = branchTarget - (branch + 2);
             /*
-             * Since a wrongly patched short branch can potentially lead to working but really bad
-             * behaving code we should always fail with an exception instead of having an assert.
+             * Since a wrongly patched short branch can potentially lead to working but really bad behaving code
+             * we should always fail with an exception instead of having an assert.
              */
             if (!NumUtil.isByte(imm8)) {
                 throw new InternalError("branch displacement out of range: " + imm8);
@@ -3651,8 +3650,8 @@ public class AMD64Assembler extends Assembler {
     }
 
     /**
-     * Emits a direct call instruction. Note that the actual call target is not specified, because
-     * all calls need patching anyway. Therefore, 0 is emitted as the call target, and the user is
+     * Emits a direct call instruction. Note that the actual call target is not specified, because all
+     * calls need patching anyway. Therefore, 0 is emitted as the call target, and the user is
      * responsible to add the call address to the appropriate patching tables.
      */
     public final void call() {
@@ -3836,8 +3835,8 @@ public class AMD64Assembler extends Assembler {
     }
 
     /**
-     * Emits an instruction which is considered to be illegal. This is used if we deliberately want
-     * to crash the program (debugging etc.).
+     * Emits an instruction which is considered to be illegal. This is used if we deliberately want to
+     * crash the program (debugging etc.).
      */
     public void illegal() {
         emitByte(0x0f);

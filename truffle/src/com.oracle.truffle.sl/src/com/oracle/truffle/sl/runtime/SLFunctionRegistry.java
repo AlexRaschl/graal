@@ -76,8 +76,8 @@ public final class SLFunctionRegistry {
     }
 
     /**
-     * Returns the canonical {@link SLFunction} object for the given name. If it does not exist yet,
-     * it is created.
+     * Returns the canonical {@link SLFunction} object for the given name. If it does not exist yet, it
+     * is created.
      */
     public SLFunction lookup(String name, boolean createIfNotPresent) {
         SLFunction result = functionsObject.functions.get(name);
@@ -89,9 +89,9 @@ public final class SLFunctionRegistry {
     }
 
     /**
-     * Associates the {@link SLFunction} with the given name with the given implementation root
-     * node. If the function did not exist before, it defines the function. If the function existed
-     * before, it redefines the function and the old implementation is discarded.
+     * Associates the {@link SLFunction} with the given name with the given implementation root node. If
+     * the function did not exist before, it defines the function. If the function existed before, it
+     * redefines the function and the old implementation is discarded.
      */
     public SLFunction register(String name, SLRootNode rootNode) {
         SLFunction function = lookup(name, true);

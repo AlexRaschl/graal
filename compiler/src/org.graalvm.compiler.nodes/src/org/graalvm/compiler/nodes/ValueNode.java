@@ -72,8 +72,8 @@ public abstract class ValueNode extends org.graalvm.compiler.graph.Node implemen
 
     /**
      * Checks if the given stamp is different than the current one (
-     * {@code newStamp.equals(oldStamp) == false}). If it is different then the new stamp will
-     * become the current stamp for this node.
+     * {@code newStamp.equals(oldStamp) == false}). If it is different then the new stamp will become
+     * the current stamp for this node.
      *
      * @return true if the stamp has changed, false otherwise.
      */
@@ -87,10 +87,9 @@ public abstract class ValueNode extends org.graalvm.compiler.graph.Node implemen
     }
 
     /**
-     * This method can be overridden by subclasses of {@link ValueNode} if they need to recompute
-     * their stamp if their inputs change. A typical implementation will compute the stamp and pass
-     * it to {@link #updateStamp(Stamp)}, whose return value can be used as the result of this
-     * method.
+     * This method can be overridden by subclasses of {@link ValueNode} if they need to recompute their
+     * stamp if their inputs change. A typical implementation will compute the stamp and pass it to
+     * {@link #updateStamp(Stamp)}, whose return value can be used as the result of this method.
      *
      * @return true if the stamp has changed, false otherwise.
      */

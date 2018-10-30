@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.graph.iterators;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.graph.Node;
 
 public interface NodeIterable<T extends Node> extends Iterable<T> {
@@ -41,7 +41,7 @@ public interface NodeIterable<T extends Node> extends Iterable<T> {
     }
 
     default List<T> snapshot() {
-        ArrayList<T> list = new ArrayList<>();
+        SpecifiedArrayList<T> list = SpecifiedArrayList.createNew();
         snapshotTo(list);
         return list;
     }

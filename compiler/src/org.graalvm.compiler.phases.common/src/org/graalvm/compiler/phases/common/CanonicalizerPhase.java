@@ -111,9 +111,8 @@ public class CanonicalizerPhase extends BasePhase<PhaseContext> {
     @Override
     public boolean checkContract() {
         /*
-         * There are certain canonicalizations we make that heavily increase code size by e.g.
-         * replacing a merge followed by a return of the merge's phi with returns in each
-         * predecessor.
+         * There are certain canonicalizations we make that heavily increase code size by e.g. replacing a
+         * merge followed by a return of the merge's phi with returns in each predecessor.
          */
         return false;
     }
@@ -136,8 +135,8 @@ public class CanonicalizerPhase extends BasePhase<PhaseContext> {
     }
 
     /**
-     * @param workingSet the initial working set of nodes on which the canonicalizer works, should
-     *            be an auto-grow node bitmap
+     * @param workingSet the initial working set of nodes on which the canonicalizer works, should be an
+     *            auto-grow node bitmap
      */
     public void applyIncremental(StructuredGraph graph, PhaseContext context, Iterable<? extends Node> workingSet) {
         applyIncremental(graph, context, workingSet, true);
@@ -429,10 +428,10 @@ public class CanonicalizerPhase extends BasePhase<PhaseContext> {
         }
 
         /**
-         * Calls {@link ValueNode#inferStamp()} on the node and, if it returns true (which means
-         * that the stamp has changed), re-queues the node's usages. If the stamp has changed then
-         * this method also checks if the stamp now describes a constant integer value, in which
-         * case the node is replaced with a constant.
+         * Calls {@link ValueNode#inferStamp()} on the node and, if it returns true (which means that the
+         * stamp has changed), re-queues the node's usages. If the stamp has changed then this method also
+         * checks if the stamp now describes a constant integer value, in which case the node is replaced
+         * with a constant.
          */
         private boolean tryInferStamp(ValueNode node) {
             if (node.isAlive()) {

@@ -28,7 +28,6 @@ import static org.graalvm.compiler.core.common.GraalOptions.HotSpotPrintInlining
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -38,6 +37,7 @@ import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.UnmodifiableEconomicMap;
 import org.graalvm.collections.UnmodifiableMapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.MethodSubstitution;
 import org.graalvm.compiler.api.replacements.Snippet;
 import org.graalvm.compiler.core.common.GraalOptions;
@@ -310,9 +310,9 @@ public class InliningUtil extends ValueMergeUtil {
             nonNullReceiver(invoke);
         }
 
-        ArrayList<Node> nodes = new ArrayList<>(inlineGraph.getNodes().count());
-        ArrayList<ReturnNode> returnNodes = new ArrayList<>(4);
-        ArrayList<Invoke> partialIntrinsicExits = new ArrayList<>();
+        SpecifiedArrayList<Node> nodes = SpecifiedArrayList.createNew(inlineGraph.getNodes().count());
+        SpecifiedArrayList<ReturnNode> returnNodes = SpecifiedArrayList.createNew(4);
+        SpecifiedArrayList<Invoke> partialIntrinsicExits = SpecifiedArrayList.createNew();
         UnwindNode unwindNode = null;
         final StartNode entryPointNode = inlineGraph.start();
         FixedNode firstCFGNode = entryPointNode.next();
@@ -421,10 +421,9 @@ public class InliningUtil extends ValueMergeUtil {
     }
 
     /**
-     * Inline {@code inlineGraph} into the current replacing the node {@code Invoke} and return the
-     * set of nodes which should be canonicalized. The set should only contain nodes which modified
-     * by the inlining since the current graph and {@code inlineGraph} are expected to already be
-     * canonical.
+     * Inline {@code inlineGraph} into the current replacing the node {@code Invoke} and return the set
+     * of nodes which should be canonicalized. The set should only contain nodes which modified by the
+     * inlining since the current graph and {@code inlineGraph} are expected to already be canonical.
      *
      * @param invoke
      * @param inlineGraph
@@ -447,9 +446,9 @@ public class InliningUtil extends ValueMergeUtil {
                     Consumer<UnmodifiableEconomicMap<Node, Node>> duplicatesConsumer, String reason, String phase) {
         HashSetNodeEventListener listener = new HashSetNodeEventListener();
         /*
-         * This code relies on the fact that Graph.addDuplicates doesn't trigger the
-         * NodeEventListener to track only nodes which were modified into the process of inlining
-         * the graph into the current graph.
+         * This code relies on the fact that Graph.addDuplicates doesn't trigger the NodeEventListener to
+         * track only nodes which were modified into the process of inlining the graph into the current
+         * graph.
          */
         try (NodeEventScope nes = invoke.asNode().graph().trackNodeEvents(listener)) {
             UnmodifiableEconomicMap<Node, Node> duplicates = InliningUtil.inline(invoke, inlineGraph, receiverNullCheck, inlineeMethod, reason, phase);
@@ -619,8 +618,8 @@ public class InliningUtil extends ValueMergeUtil {
 
     public static void updateSourcePosition(StructuredGraph invokeGraph, UnmodifiableEconomicMap<Node, Node> duplicates, Mark mark, NodeSourcePosition invokePos, boolean isSubstitution) {
         /*
-         * Not every duplicate node is newly created, so only update the position of the newly
-         * created nodes.
+         * Not every duplicate node is newly created, so only update the position of the newly created
+         * nodes.
          */
         EconomicSet<Node> newNodes = EconomicSet.create(Equivalence.DEFAULT);
         newNodes.addAll(invokeGraph.getNewNodes(mark));
@@ -641,8 +640,7 @@ public class InliningUtil extends ValueMergeUtil {
             } else {
                 if (isSubstitution) {
                     /*
-                     * If no other position is provided at least attribute the substituted node to
-                     * the original invoke.
+                     * If no other position is provided at least attribute the substituted node to the original invoke.
                      */
                     cursor.getValue().setNodeSourcePosition(invokePos);
                 }
@@ -843,8 +841,8 @@ public class InliningUtil extends ValueMergeUtil {
 
     /**
      * Ensure that all states are either {@link BytecodeFrame#INVALID_FRAMESTATE_BCI} or one of
-     * {@link BytecodeFrame#AFTER_BCI} or {@link BytecodeFrame#BEFORE_BCI}. Mixing of before and
-     * after isn't allowed.
+     * {@link BytecodeFrame#AFTER_BCI} or {@link BytecodeFrame#BEFORE_BCI}. Mixing of before and after
+     * isn't allowed.
      */
     private static boolean checkContainsOnlyInvalidOrAfterFrameState(UnmodifiableEconomicMap<Node, Node> duplicates) {
         int okBci = BytecodeFrame.INVALID_FRAMESTATE_BCI;

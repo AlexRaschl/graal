@@ -93,8 +93,8 @@ public class LoadJavaMirrorWithKlassPhase extends BasePhase<PhaseContext> {
                     }
                 } else {
                     /*
-                     * Primitive classes are more difficult since they don't have a corresponding
-                     * Klass* so get them from Class.TYPE for the java box type.
+                     * Primitive classes are more difficult since they don't have a corresponding Klass* so get them
+                     * from Class.TYPE for the java box type.
                      */
                     HotSpotResolvedPrimitiveType primitive = (HotSpotResolvedPrimitiveType) type;
                     ResolvedJavaType boxingClass = metaAccess.lookupJavaType(primitive.getJavaKind().toBoxedJavaClass());

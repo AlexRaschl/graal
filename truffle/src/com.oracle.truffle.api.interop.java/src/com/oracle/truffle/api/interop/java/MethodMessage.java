@@ -75,11 +75,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MethodMessage {
     /**
-     * Identification of the {@link Message message} to send. Well known messages include fields of
-     * the {@link Message} class (e.g. <em>"READ"</em>, <em>"WRITE"</em>, <em>"UNBOX"</em>,
+     * Identification of the {@link Message message} to send. Well known messages include fields of the
+     * {@link Message} class (e.g. <em>"READ"</em>, <em>"WRITE"</em>, <em>"UNBOX"</em>,
      * <em>IS_NULL</em>) or slightly mangled names of {@link Message} class factory methods (
-     * <em>EXECUTE</em>, <em>INVOKE</em>). For more details on the string encoding of message names
-     * see {@link Message#valueOf(java.lang.String)} method.
+     * <em>EXECUTE</em>, <em>INVOKE</em>). For more details on the string encoding of message names see
+     * {@link Message#valueOf(java.lang.String)} method.
      * 
      * @return string identification of an inter-operability message
      * @see Message#valueOf(java.lang.String)

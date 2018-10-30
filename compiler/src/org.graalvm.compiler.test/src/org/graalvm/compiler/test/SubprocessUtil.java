@@ -97,8 +97,8 @@ public final class SubprocessUtil {
 
     /**
      * Gets the command line used to start the current Java VM, including all VM arguments, but not
-     * including the main class or any Java arguments. This can be used to spawn an identical VM,
-     * but running different Java code.
+     * including the main class or any Java arguments. This can be used to spawn an identical VM, but
+     * running different Java code.
      */
     public static List<String> getVMCommandLine() {
         List<String> args = getProcessCommandLine();
@@ -159,8 +159,7 @@ public final class SubprocessUtil {
         }
 
         /**
-         * Returns the command followed by the output as a string delimited by
-         * {@value #DASHES_DELIMITER}.
+         * Returns the command followed by the output as a string delimited by {@value #DASHES_DELIMITER}.
          */
         @Override
         public String toString() {

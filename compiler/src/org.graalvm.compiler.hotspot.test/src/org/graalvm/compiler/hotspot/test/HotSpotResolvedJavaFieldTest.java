@@ -73,8 +73,8 @@ public class HotSpotResolvedJavaFieldTest extends HotSpotGraalCompilerTest {
     }
 
     /**
-     * Same as {@code HotSpotModifiers.jvmFieldModifiers()} but works when using a JVMCI version
-     * prior to the introduction of that method.
+     * Same as {@code HotSpotModifiers.jvmFieldModifiers()} but works when using a JVMCI version prior
+     * to the introduction of that method.
      */
     private int jvmFieldModifiers() {
         GraalHotSpotVMConfig config = runtime().getVMConfig();
@@ -84,8 +84,8 @@ public class HotSpotResolvedJavaFieldTest extends HotSpotGraalCompilerTest {
     }
 
     /**
-     * Tests that {@link HotSpotResolvedJavaField#getModifiers()} only includes the modifiers
-     * returned by {@link Field#getModifiers()}. Namely, it must not include
+     * Tests that {@link HotSpotResolvedJavaField#getModifiers()} only includes the modifiers returned
+     * by {@link Field#getModifiers()}. Namely, it must not include
      * {@code HotSpotResolvedJavaField#FIELD_INTERNAL_FLAG}.
      */
     @Test
@@ -102,8 +102,7 @@ public class HotSpotResolvedJavaFieldTest extends HotSpotGraalCompilerTest {
 
     /**
      * Tests that {@code HotSpotResolvedObjectType#createField(String, JavaType, long, int)} always
-     * returns an {@linkplain ResolvedJavaField#equals(Object) equivalent} object for an internal
-     * field.
+     * returns an {@linkplain ResolvedJavaField#equals(Object) equivalent} object for an internal field.
      *
      * @throws InvocationTargetException
      * @throws IllegalArgumentException

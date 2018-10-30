@@ -28,11 +28,11 @@ import static jdk.vm.ci.code.ValueUtil.isRegister;
 import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig.AllocatableRegisters;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.util.Util;
@@ -68,10 +68,10 @@ class LinearScanWalker extends IntervalWalker {
     private int maxReg;
 
     /**
-     * Only 10% of the lists in {@link #spillIntervals} are actually used. But when they are used,
-     * they can grow quite long. The maximum length observed was 45 (all numbers taken from a
-     * bootstrap run of Graal). Therefore, we initialize {@link #spillIntervals} with this marker
-     * value, and allocate a "real" list only on demand in {@link #setUsePos}.
+     * Only 10% of the lists in {@link #spillIntervals} are actually used. But when they are used, they
+     * can grow quite long. The maximum length observed was 45 (all numbers taken from a bootstrap run
+     * of Graal). Therefore, we initialize {@link #spillIntervals} with this marker value, and allocate
+     * a "real" list only on demand in {@link #setUsePos}.
      */
     private static final List<Interval> EMPTY_LIST = Collections.emptyList();
 
@@ -143,7 +143,7 @@ class LinearScanWalker extends IntervalWalker {
                 if (!onlyProcessUsePos) {
                     List<Interval> list = spillIntervals[i];
                     if (list == EMPTY_LIST) {
-                        list = new ArrayList<>(2);
+                        list = SpecifiedArrayList.createNew(2);
                         spillIntervals[i] = list;
                     }
                     list.add(interval);
@@ -276,7 +276,7 @@ class LinearScanWalker extends IntervalWalker {
         // numbering of instructions is known.
         // When the block already contains spill moves, the index must be increased until the
         // correct index is reached.
-        ArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(opBlock);
+        SpecifiedArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(opBlock);
         int index = (opId - instructions.get(0).id()) >> 1;
         assert instructions.get(index).id() <= opId : "error in calculation";
 
@@ -499,9 +499,9 @@ class LinearScanWalker extends IntervalWalker {
         int previousUsage = interval.previousUsage(RegisterPriority.ShouldHaveRegister, maxSplitPos);
         if (previousUsage == currentPosition) {
             /*
-             * If there is a usage with ShouldHaveRegister priority at the current position fall
-             * back to MustHaveRegister priority. This only happens if register priority was
-             * downgraded to MustHaveRegister in #allocLockedRegister.
+             * If there is a usage with ShouldHaveRegister priority at the current position fall back to
+             * MustHaveRegister priority. This only happens if register priority was downgraded to
+             * MustHaveRegister in #allocLockedRegister.
              */
             previousUsage = interval.previousUsage(RegisterPriority.MustHaveRegister, maxSplitPos);
         }
@@ -602,8 +602,8 @@ class LinearScanWalker extends IntervalWalker {
 
                 if (defLoopDepth < spillLoopDepth) {
                     /*
-                     * The loop depth of the spilling position is higher then the loop depth at the
-                     * definition of the interval. Move write to memory out of loop.
+                     * The loop depth of the spilling position is higher then the loop depth at the definition of the
+                     * interval. Move write to memory out of loop.
                      */
                     if (LinearScan.Options.LIROptLSRAOptimizeSpillPosition.getValue(allocator.getOptions())) {
                         // find best spill position in dominator the tree
@@ -614,8 +614,8 @@ class LinearScanWalker extends IntervalWalker {
                     }
                 } else {
                     /*
-                     * The interval is currently spilled only once, so for now there is no reason to
-                     * store the interval at the definition.
+                     * The interval is currently spilled only once, so for now there is no reason to store the interval
+                     * at the definition.
                      */
                     interval.setSpillState(SpillState.OneSpillStore);
                 }
@@ -811,10 +811,10 @@ class LinearScanWalker extends IntervalWalker {
             Register reg;
             Register ignore;
             /*
-             * In the common case we don't spill registers that have _any_ use position that is
-             * closer than the next use of the current interval, but if we can't spill the current
-             * interval we weaken this strategy and also allow spilling of intervals that have a
-             * non-mandatory requirements (no MustHaveRegister use position).
+             * In the common case we don't spill registers that have _any_ use position that is closer than the
+             * next use of the current interval, but if we can't spill the current interval we weaken this
+             * strategy and also allow spilling of intervals that have a non-mandatory requirements (no
+             * MustHaveRegister use position).
              */
             for (RegisterPriority registerPriority = RegisterPriority.LiveAtLoopEnd; true; registerPriority = RegisterPriority.MustHaveRegister) {
                 // collect current usage of registers
@@ -852,17 +852,15 @@ class LinearScanWalker extends IntervalWalker {
                     if (firstUsage <= interval.from() + 1) {
                         if (registerPriority.equals(RegisterPriority.LiveAtLoopEnd)) {
                             /*
-                             * Tool of last resort: we can not spill the current interval so we try
-                             * to spill an active interval that has a usage but do not require a
-                             * register.
+                             * Tool of last resort: we can not spill the current interval so we try to spill an active interval
+                             * that has a usage but do not require a register.
                              */
                             debug.log("retry with register priority must have register");
                             continue;
                         }
                         String description = generateOutOfRegErrorMsg(interval, firstUsage, availableRegs);
                         /*
-                         * assign a reasonable register and do a bailout in product mode to avoid
-                         * errors
+                         * assign a reasonable register and do a bailout in product mode to avoid errors
                          */
                         allocator.assignSpillSlot(interval);
                         debug.dump(DebugContext.INFO_LEVEL, allocator.getLIR(), description);

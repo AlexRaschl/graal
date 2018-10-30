@@ -115,15 +115,15 @@ public final class LoadMethodNode extends FixedWithNextNode implements Lowerable
      *
      * @param tool
      * @param type the exact type of object being loaded from
-     * @return the method which would be invoked for {@code type} or null if it doesn't implement
-     *         the method
+     * @return the method which would be invoked for {@code type} or null if it doesn't implement the
+     *         method
      */
     private Node resolveExactMethod(CanonicalizerTool tool, ResolvedJavaType type) {
         ResolvedJavaMethod newMethod = type.resolveConcreteMethod(method, callerType);
         if (newMethod == null) {
             /*
-             * This really represent a misuse of LoadMethod since we're loading from a class which
-             * isn't known to implement the original method but for now at least fold it away.
+             * This really represent a misuse of LoadMethod since we're loading from a class which isn't known
+             * to implement the original method but for now at least fold it away.
              */
             return ConstantNode.forConstant(stamp(NodeView.DEFAULT), JavaConstant.NULL_POINTER, null);
         } else {

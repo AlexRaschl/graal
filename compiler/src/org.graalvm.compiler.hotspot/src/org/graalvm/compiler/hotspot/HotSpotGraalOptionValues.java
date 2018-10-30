@@ -75,12 +75,12 @@ public class HotSpotGraalOptionValues implements OptionValuesAccess {
     public static final OptionValues HOTSPOT_OPTIONS = initializeOptions();
 
     /**
-     * Global options. The values for these options are initialized by parsing the file denoted by
-     * the {@code VM.getSavedProperty(String) saved} system property named
+     * Global options. The values for these options are initialized by parsing the file denoted by the
+     * {@code VM.getSavedProperty(String) saved} system property named
      * {@value #GRAAL_OPTIONS_FILE_PROPERTY_NAME} if the file exists followed by parsing the options
-     * encoded in saved system properties whose names start with
-     * {@value #GRAAL_OPTION_PROPERTY_PREFIX}. Key/value pairs are parsed from the aforementioned
-     * file with {@link Properties#load(java.io.Reader)}.
+     * encoded in saved system properties whose names start with {@value #GRAAL_OPTION_PROPERTY_PREFIX}.
+     * Key/value pairs are parsed from the aforementioned file with
+     * {@link Properties#load(java.io.Reader)}.
      */
     @SuppressWarnings("try")
     private static OptionValues initializeOptions() {

@@ -79,8 +79,8 @@ public class OptionKey<T> {
     }
 
     /**
-     * Mechanism for lazily loading all available options which has the side effect of assigning
-     * names to the options.
+     * Mechanism for lazily loading all available options which has the side effect of assigning names
+     * to the options.
      */
     static class Lazy {
         static {
@@ -123,8 +123,8 @@ public class OptionKey<T> {
     }
 
     /**
-     * Returns true if the option has been set in any way. Note that this doesn't mean that the
-     * current value is different than the default.
+     * Returns true if the option has been set in any way. Note that this doesn't mean that the current
+     * value is different than the default.
      */
     public boolean hasBeenSet(OptionValues values) {
         return values.containsKey(this);
@@ -167,8 +167,7 @@ public class OptionKey<T> {
     }
 
     /**
-     * Notifies this object when a value associated with this key is set or updated in
-     * {@code values}.
+     * Notifies this object when a value associated with this key is set or updated in {@code values}.
      *
      * @param values
      * @param oldValue

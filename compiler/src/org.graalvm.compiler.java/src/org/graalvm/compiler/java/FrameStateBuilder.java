@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.ResolvedJavaMethodBytecode;
 import org.graalvm.compiler.core.common.GraalOptions;
@@ -105,8 +106,8 @@ public final class FrameStateBuilder implements SideEffectsState {
     private NodeSourcePosition outerSourcePosition;
 
     /**
-     * The closest {@link StateSplit#hasSideEffect() side-effect} predecessors. There will be more
-     * than one when the current block contains no side-effects but merging predecessor blocks do.
+     * The closest {@link StateSplit#hasSideEffect() side-effect} predecessors. There will be more than
+     * one when the current block contains no side-effects but merging predecessor blocks do.
      */
     private List<StateSplit> sideEffects;
 
@@ -314,8 +315,8 @@ public final class FrameStateBuilder implements SideEffectsState {
     }
 
     /**
-     * @param pushedValues if non-null, values to {@link #push(JavaKind, ValueNode)} to the stack
-     *            before creating the {@link FrameState}
+     * @param pushedValues if non-null, values to {@link #push(JavaKind, ValueNode)} to the stack before
+     *            creating the {@link FrameState}
      */
     public FrameState create(int bci, BytecodeParser parent, boolean duringCall, JavaKind[] pushedSlotKinds, ValueNode[] pushedValues) {
         if (outerFrameState == null && parent != null) {
@@ -616,10 +617,10 @@ public final class FrameStateBuilder implements SideEffectsState {
 
     public void clearNonLiveLocals(BciBlock block, LocalLiveness liveness, boolean liveIn) {
         /*
-         * (lstadler) if somebody is tempted to remove/disable this clearing code: it's possible to
-         * remove it for normal compilations, but not for OSR compilations - otherwise dead object
-         * slots at the OSR entry aren't cleared. it is also not enough to rely on PiNodes with
-         * Kind.Illegal, because the conflicting branch might not have been parsed.
+         * (lstadler) if somebody is tempted to remove/disable this clearing code: it's possible to remove
+         * it for normal compilations, but not for OSR compilations - otherwise dead object slots at the OSR
+         * entry aren't cleared. it is also not enough to rely on PiNodes with Kind.Illegal, because the
+         * conflicting branch might not have been parsed.
          */
         if (!clearNonLiveLocals) {
             return;
@@ -692,8 +693,8 @@ public final class FrameStateBuilder implements SideEffectsState {
     }
 
     /**
-     * Loads the local variable at the specified index, checking that the returned value is non-null
-     * and that two-stack values are properly handled.
+     * Loads the local variable at the specified index, checking that the returned value is non-null and
+     * that two-stack values are properly handled.
      *
      * @param i the index of the local variable to load
      * @param slotKind the kind of the local variable from the point of view of the bytecodes
@@ -707,8 +708,8 @@ public final class FrameStateBuilder implements SideEffectsState {
     }
 
     /**
-     * Stores a given local variable at the specified index. If the value occupies two slots, then
-     * the next local variable index is also overwritten.
+     * Stores a given local variable at the specified index. If the value occupies two slots, then the
+     * next local variable index is also overwritten.
      *
      * @param i the index at which to store
      * @param slotKind the kind of the local variable from the point of view of the bytecodes
@@ -727,8 +728,8 @@ public final class FrameStateBuilder implements SideEffectsState {
             locals[i + 1] = TWO_SLOT_MARKER;
         } else if (i < locals.length - 1 && locals[i + 1] == TWO_SLOT_MARKER) {
             /*
-             * Writing a one-slot value to an index previously occupied by a two-slot value: clear
-             * the old marker of the second slot.
+             * Writing a one-slot value to an index previously occupied by a two-slot value: clear the old
+             * marker of the second slot.
              */
             locals[i + 1] = null;
         }
@@ -789,8 +790,7 @@ public final class FrameStateBuilder implements SideEffectsState {
     }
 
     /**
-     * Pop the specified number of slots off of this stack and return them as an array of
-     * instructions.
+     * Pop the specified number of slots off of this stack and return them as an array of instructions.
      *
      * @return an array containing the arguments off of the stack
      */
@@ -978,7 +978,7 @@ public final class FrameStateBuilder implements SideEffectsState {
         assert sideEffect != null;
         assert sideEffect.hasSideEffect();
         if (sideEffects == null) {
-            sideEffects = new ArrayList<>(4);
+            sideEffects = SpecifiedArrayList.createNew(4);
         }
         sideEffects.add(sideEffect);
     }

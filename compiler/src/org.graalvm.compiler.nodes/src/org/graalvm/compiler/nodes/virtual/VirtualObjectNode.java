@@ -72,14 +72,14 @@ public abstract class VirtualObjectNode extends ValueNode implements LIRLowerabl
     }
 
     /**
-     * The type of object described by this {@link VirtualObjectNode}. In case of arrays, this is
-     * the array type (and not the component type).
+     * The type of object described by this {@link VirtualObjectNode}. In case of arrays, this is the
+     * array type (and not the component type).
      */
     public abstract ResolvedJavaType type();
 
     /**
-     * The number of entries this virtual object has. Either the number of fields or the number of
-     * array elements.
+     * The number of entries this virtual object has. Either the number of fields or the number of array
+     * elements.
      */
     public abstract int entryCount();
 
@@ -89,12 +89,12 @@ public abstract class VirtualObjectNode extends ValueNode implements LIRLowerabl
     public abstract String entryName(int i);
 
     /**
-     * If the given index denotes an entry in this virtual object, the index of this entry is
-     * returned. If no such entry can be found, this method returns -1.
+     * If the given index denotes an entry in this virtual object, the index of this entry is returned.
+     * If no such entry can be found, this method returns -1.
      *
      * @param constantOffset offset, where the value is placed.
-     * @param expectedEntryKind Specifies which type is expected at this offset (Is important when
-     *            doing implicit casts, especially on big endian systems.
+     * @param expectedEntryKind Specifies which type is expected at this offset (Is important when doing
+     *            implicit casts, especially on big endian systems.
      */
     public abstract int entryIndexForOffset(ArrayOffsetProvider arrayOffsetProvider, long constantOffset, JavaKind expectedEntryKind);
 
@@ -123,8 +123,8 @@ public abstract class VirtualObjectNode extends ValueNode implements LIRLowerabl
 
     /**
      * Returns a node that can be used to materialize this virtual object. If this returns an
-     * {@link AllocatedObjectNode} then this node will be attached to a {@link CommitAllocationNode}
-     * , otherwise the node will just be added to the graph.
+     * {@link AllocatedObjectNode} then this node will be attached to a {@link CommitAllocationNode} ,
+     * otherwise the node will just be added to the graph.
      */
     public abstract ValueNode getMaterializedRepresentation(FixedNode fixed, ValueNode[] entries, LockState locks);
 

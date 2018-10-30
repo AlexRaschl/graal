@@ -195,8 +195,8 @@ public class Breakpoint {
     }
 
     /**
-     * @return whether at least one source has been loaded that contains a match for this
-     *         breakpoint's location.
+     * @return whether at least one source has been loaded that contains a match for this breakpoint's
+     *         location.
      *
      * @since 0.17
      */
@@ -212,9 +212,9 @@ public class Breakpoint {
      * Breakpoints are by default unconditional.
      * </p>
      * <p>
-     * <strong>Evaluation:</strong> expressions are parsed and evaluated in the lexical context of
-     * the breakpoint's location. A conditional breakpoint that applies to multiple code locations
-     * will be parsed and evaluated separately for each location.
+     * <strong>Evaluation:</strong> expressions are parsed and evaluated in the lexical context of the
+     * breakpoint's location. A conditional breakpoint that applies to multiple code locations will be
+     * parsed and evaluated separately for each location.
      * </p>
      * <p>
      * <strong>Evaluation failure:</strong> when evaluation of a condition fails for any reason,
@@ -222,13 +222,13 @@ public class Breakpoint {
      * <ul>
      * <li>execution suspends, as if evaluation had returned {@code true}, and</li>
      * <li>a message is logged that can be
-     * {@linkplain SuspendedEvent#getBreakpointConditionException(Breakpoint) retrieved} while
-     * execution is suspended.</li>
+     * {@linkplain SuspendedEvent#getBreakpointConditionException(Breakpoint) retrieved} while execution
+     * is suspended.</li>
      * </ul>
      * When not {@link #isModifiable() modifiable}, {@link IllegalStateException} is thrown.
      *
-     * @param expression if non{@code -null}, a boolean expression, expressed in the guest language
-     *            of the breakpoint's location.
+     * @param expression if non{@code -null}, a boolean expression, expressed in the guest language of
+     *            the breakpoint's location.
      * @see SuspendedEvent#getBreakpointConditionException(Breakpoint)
      *
      * @since 0.9
@@ -251,8 +251,7 @@ public class Breakpoint {
     }
 
     /**
-     * Returns the expression used to create the current breakpoint condition, null if no condition
-     * set.
+     * Returns the expression used to create the current breakpoint condition, null if no condition set.
      *
      * @since 0.20
      */
@@ -262,8 +261,8 @@ public class Breakpoint {
     }
 
     /**
-     * Permanently prevents this breakpoint from affecting execution. When not
-     * {@link #isModifiable() modifiable}, {@link IllegalStateException} is thrown.
+     * Permanently prevents this breakpoint from affecting execution. When not {@link #isModifiable()
+     * modifiable}, {@link IllegalStateException} is thrown.
      *
      * @since 0.9
      */
@@ -653,8 +652,8 @@ public class Breakpoint {
         }
 
         /**
-         * Specify the breakpoint suspension anchor within the guest language source location. By
-         * default, the breakpoint suspends {@link SuspendAnchor#BEFORE before} the source location.
+         * Specify the breakpoint suspension anchor within the guest language source location. By default,
+         * the breakpoint suspends {@link SuspendAnchor#BEFORE before} the source location.
          *
          * @param anchor the breakpoint suspension anchor
          * @since 0.32
@@ -665,8 +664,7 @@ public class Breakpoint {
         }
 
         /**
-         * Specifies the number of times a breakpoint is ignored until it hits (i.e. suspends
-         * execution}.
+         * Specifies the number of times a breakpoint is ignored until it hits (i.e. suspends execution}.
          *
          * @see Breakpoint#setIgnoreCount(int)
          *
@@ -681,11 +679,10 @@ public class Breakpoint {
         }
 
         /**
-         * Specifies that the breakpoint will {@linkplain Breakpoint#setEnabled(boolean) disable}
-         * itself after suspending execution, i.e. on first hit.
+         * Specifies that the breakpoint will {@linkplain Breakpoint#setEnabled(boolean) disable} itself
+         * after suspending execution, i.e. on first hit.
          * <p>
-         * Disabled one-shot breakpoints can be {@linkplain Breakpoint#setEnabled(boolean)
-         * re-enabled}.
+         * Disabled one-shot breakpoints can be {@linkplain Breakpoint#setEnabled(boolean) re-enabled}.
          *
          * @since 0.17
          */

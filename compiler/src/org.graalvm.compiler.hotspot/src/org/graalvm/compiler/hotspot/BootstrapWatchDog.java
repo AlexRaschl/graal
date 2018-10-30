@@ -66,8 +66,8 @@ final class BootstrapWatchDog extends Thread {
     }
 
     /**
-     * Count of completed compilations. This is updated by the compiler threads and read by the
-     * watch dog thread.
+     * Count of completed compilations. This is updated by the compiler threads and read by the watch
+     * dog thread.
      */
     private final AtomicInteger compilations = new AtomicInteger();
 
@@ -124,8 +124,8 @@ final class BootstrapWatchDog extends Thread {
     private final int timeout;
 
     /**
-     * The watch dog {@link #hitCriticalCompilationRateOrTimeout() hits} a critical compilation rate
-     * if the current compilation rate falls below this ratio of the maximum compilation rate.
+     * The watch dog {@link #hitCriticalCompilationRateOrTimeout() hits} a critical compilation rate if
+     * the current compilation rate falls below this ratio of the maximum compilation rate.
      */
     private final double maxRateDecrease;
 
@@ -224,10 +224,9 @@ final class BootstrapWatchDog extends Thread {
      * Opens a scope for watching the compilation of a given method.
      *
      * @param request a compilation request about to be processed
-     * @return {@code null} if the compilation watch dog is disabled otherwise this object. The
-     *         returned value should be used in a {@code try}-with-resources statement whose scope
-     *         is the whole compilation so that leaving the scope will cause {@link Watch#close()}
-     *         to be called.
+     * @return {@code null} if the compilation watch dog is disabled otherwise this object. The returned
+     *         value should be used in a {@code try}-with-resources statement whose scope is the whole
+     *         compilation so that leaving the scope will cause {@link Watch#close()} to be called.
      */
     Watch watch(CompilationRequest request) {
         Watch watch = requestForThread.get();

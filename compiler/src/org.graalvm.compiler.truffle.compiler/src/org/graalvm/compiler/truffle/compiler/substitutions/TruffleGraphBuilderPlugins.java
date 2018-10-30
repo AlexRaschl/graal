@@ -246,15 +246,13 @@ public class TruffleGraphBuilderPlugins {
             public boolean apply(GraphBuilderContext b, ResolvedJavaMethod targetMethod, Receiver receiver, ValueNode message) {
                 if (canDelayIntrinsification) {
                     /*
-                     * We do not want to bailout yet, since we are still parsing individual methods
-                     * and constant folding could still eliminate the call to bailout(). However, we
-                     * also want to stop parsing, since we are sure that we will never need the
-                     * graph beyond the bailout point.
+                     * We do not want to bailout yet, since we are still parsing individual methods and constant folding
+                     * could still eliminate the call to bailout(). However, we also want to stop parsing, since we are
+                     * sure that we will never need the graph beyond the bailout point.
                      *
-                     * Therefore, we manually emit the call to bailout, which will be intrinsified
-                     * later when intrinsifications can no longer be delayed. The call is followed
-                     * by a NeverPartOfCompilationNode, which is a control sink and therefore stops
-                     * any further parsing.
+                     * Therefore, we manually emit the call to bailout, which will be intrinsified later when
+                     * intrinsifications can no longer be delayed. The call is followed by a NeverPartOfCompilationNode,
+                     * which is a control sink and therefore stops any further parsing.
                      */
                     StampPair returnStamp = b.getInvokeReturnStamp(b.getAssumptions());
                     CallTargetNode callTarget = b.add(new MethodCallTargetNode(InvokeKind.Static, targetMethod, new ValueNode[]{message}, returnStamp, null));
@@ -426,21 +424,20 @@ public class TruffleGraphBuilderPlugins {
     }
 
     /**
-     * We intrinsify the getXxx, setXxx, and isXxx methods for all type tags. The intrinsic nodes
-     * are lightweight fixed nodes without a {@link FrameState}. No {@link FrameState} is important
-     * for partial evaluation performance, because creating and later on discarding FrameStates for
-     * the setXxx methods have a high compile time cost.
+     * We intrinsify the getXxx, setXxx, and isXxx methods for all type tags. The intrinsic nodes are
+     * lightweight fixed nodes without a {@link FrameState}. No {@link FrameState} is important for
+     * partial evaluation performance, because creating and later on discarding FrameStates for the
+     * setXxx methods have a high compile time cost.
      *
      * Intrinsification requires the following conditions: (1) the accessed frame is directly the
-     * {@link NewFrameNode}, (2) the accessed FrameSlot is a constant, and (3) the FrameDescriptor
-     * was never materialized before. All three conditions together guarantee that the escape
-     * analysis can virtualize the access. The condition (3) is necessary because a possible
-     * materialization of the frame can prevent escape analysis - so in that case a FrameState for
-     * setXxx methods is actually necessary since they stores can be state-changing memory
-     * operations.
+     * {@link NewFrameNode}, (2) the accessed FrameSlot is a constant, and (3) the FrameDescriptor was
+     * never materialized before. All three conditions together guarantee that the escape analysis can
+     * virtualize the access. The condition (3) is necessary because a possible materialization of the
+     * frame can prevent escape analysis - so in that case a FrameState for setXxx methods is actually
+     * necessary since they stores can be state-changing memory operations.
      *
-     * Note that we do not register an intrinsification for {@code FrameWithoutBoxing.getValue()}.
-     * It is a complicated method to intrinsify, and it is not used frequently enough to justify the
+     * Note that we do not register an intrinsification for {@code FrameWithoutBoxing.getValue()}. It is
+     * a complicated method to intrinsify, and it is not used frequently enough to justify the
      * complexity of an intrinsification.
      */
     private static void registerFrameAccessors(Registration r, JavaKind accessKind, ConstantReflectionProvider constantReflection, KnownTruffleTypes types) {

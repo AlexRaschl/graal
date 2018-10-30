@@ -26,7 +26,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
 import static jdk.vm.ci.meta.MetaUtil.identityHashCodeString;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,6 +33,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.graalvm.collections.EconomicSet;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.CompilationIdentifier;
 import org.graalvm.compiler.graph.NodeSourcePosition;
 
@@ -121,9 +121,9 @@ public class CompilationResult {
 
     /**
      * Describes a table of signed offsets embedded in the code. The offsets are relative to the
-     * starting address of the table. This type of table maybe generated when translating a
-     * multi-way branch based on a key value from a dense value set (e.g. the {@code tableswitch}
-     * JVM instruction).
+     * starting address of the table. This type of table maybe generated when translating a multi-way
+     * branch based on a key value from a dense value set (e.g. the {@code tableswitch} JVM
+     * instruction).
      *
      * The table is indexed by the contiguous range of integers from {@link #low} to {@link #high}
      * inclusive.
@@ -178,11 +178,11 @@ public class CompilationResult {
 
     private final DataSection dataSection = new DataSection();
 
-    private final List<Infopoint> infopoints = new ArrayList<>();
-    private final List<SourceMapping> sourceMapping = new ArrayList<>();
-    private final List<DataPatch> dataPatches = new ArrayList<>();
-    private final List<ExceptionHandler> exceptionHandlers = new ArrayList<>();
-    private final List<Mark> marks = new ArrayList<>();
+    private final List<Infopoint> infopoints = SpecifiedArrayList.createNew();
+    private final List<SourceMapping> sourceMapping = SpecifiedArrayList.createNew();
+    private final List<DataPatch> dataPatches = SpecifiedArrayList.createNew();
+    private final List<ExceptionHandler> exceptionHandlers = SpecifiedArrayList.createNew();
+    private final List<Mark> marks = SpecifiedArrayList.createNew();
 
     private int totalFrameSize = -1;
     private int maxInterpreterFrameSize = -1;
@@ -203,14 +203,14 @@ public class CompilationResult {
      */
     private int targetCodeSize;
 
-    private ArrayList<CodeAnnotation> annotations;
+    private SpecifiedArrayList<CodeAnnotation> annotations;
 
     private Assumption[] assumptions;
 
     /**
-     * The list of the methods whose bytecodes were used as input to the compilation. If
-     * {@code null}, then the compilation did not record method dependencies. Otherwise, the first
-     * element of this array is the root method of the compilation.
+     * The list of the methods whose bytecodes were used as input to the compilation. If {@code null},
+     * then the compilation did not record method dependencies. Otherwise, the first element of this
+     * array is the root method of the compilation.
      */
     private ResolvedJavaMethod[] methods;
 
@@ -358,9 +358,9 @@ public class CompilationResult {
      *
      * The caller must not modify the contents of the returned array.
      *
-     * @return {@code null} if the compilation did not record method dependencies otherwise the
-     *         methods whose bytecodes were used as input to the compilation with the first element
-     *         being the root method of the compilation
+     * @return {@code null} if the compilation did not record method dependencies otherwise the methods
+     *         whose bytecodes were used as input to the compilation with the first element being the
+     *         root method of the compilation
      */
     public ResolvedJavaMethod[] getMethods() {
         return methods;
@@ -379,13 +379,12 @@ public class CompilationResult {
     }
 
     /**
-     * Gets the fields that were referenced from bytecodes that were used as input to the
-     * compilation.
+     * Gets the fields that were referenced from bytecodes that were used as input to the compilation.
      *
      * The caller must not modify the contents of the returned array.
      *
-     * @return {@code null} if the compilation did not record fields dependencies otherwise the
-     *         fields that were accessed from bytecodes were used as input to the compilation.
+     * @return {@code null} if the compilation did not record fields dependencies otherwise the fields
+     *         that were accessed from bytecodes were used as input to the compilation.
      */
     public ResolvedJavaField[] getFields() {
         return fields;
@@ -416,8 +415,8 @@ public class CompilationResult {
     }
 
     /**
-     * Sets the total frame size in bytes. This includes the return address pushed onto the stack,
-     * if any.
+     * Sets the total frame size in bytes. This includes the return address pushed onto the stack, if
+     * any.
      *
      * @param size the size of the frame in bytes
      */
@@ -620,7 +619,7 @@ public class CompilationResult {
         checkOpen();
         assert annotation != null;
         if (annotations == null) {
-            annotations = new ArrayList<>();
+            annotations = SpecifiedArrayList.createNew();
         }
         annotations.add(annotation);
     }

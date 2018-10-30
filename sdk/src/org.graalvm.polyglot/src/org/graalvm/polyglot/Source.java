@@ -135,9 +135,8 @@ public final class Source {
     }
 
     /**
-     * Returns the name of this resource holding a guest language program. An example would be the
-     * name of a guest language source code file. Name is supposed to be shorter than
-     * {@link #getPath()}.
+     * Returns the name of this resource holding a guest language program. An example would be the name
+     * of a guest language source code file. Name is supposed to be shorter than {@link #getPath()}.
      *
      * @return the name of the guest language program
      * @since 1.0
@@ -147,8 +146,8 @@ public final class Source {
     }
 
     /**
-     * The fully qualified name of the source. In case this source originates from a {@link File},
-     * then the default path is the normalized, {@link File#getCanonicalPath() canonical path}.
+     * The fully qualified name of the source. In case this source originates from a {@link File}, then
+     * the default path is the normalized, {@link File#getCanonicalPath() canonical path}.
      *
      * @since 1.0
      */
@@ -158,11 +157,11 @@ public final class Source {
 
     /**
      * Check whether this source has been marked as <em>interactive</em>. Interactive sources are
-     * provided by an entity which is able to interactively read output and provide an input during
-     * the source execution; that can be a user I/O through an interactive shell for instance.
+     * provided by an entity which is able to interactively read output and provide an input during the
+     * source execution; that can be a user I/O through an interactive shell for instance.
      * <p>
-     * One can specify whether a source is interactive when {@link Builder#interactive(boolean)
-     * building it}.
+     * One can specify whether a source is interactive when {@link Builder#interactive(boolean) building
+     * it}.
      *
      * @return whether this source is marked as <em>interactive</em>
      * @since 1.0
@@ -185,8 +184,8 @@ public final class Source {
      * Get the URI of the source. Every source has an associated {@link URI}, which can be used as a
      * persistent identification of the source. The {@link URI} returned by this method should be as
      * unique as possible, yet it can happen that different {@link Source sources} return the same
-     * {@link #getURI} - for example when content of a
-     * {@link Source#newBuilder(String, java.io.File) file on a disk} changes and is re-loaded.
+     * {@link #getURI} - for example when content of a {@link Source#newBuilder(String, java.io.File)
+     * file on a disk} changes and is re-loaded.
      *
      * @return a URI, never <code>null</code>
      * @since 1.0
@@ -205,8 +204,8 @@ public final class Source {
     }
 
     /**
-     * Access to the source contents. Causes the contents of this source to be loaded if they are
-     * loaded lazily.
+     * Access to the source contents. Causes the contents of this source to be loaded if they are loaded
+     * lazily.
      *
      * @since 1.0
      */
@@ -215,8 +214,8 @@ public final class Source {
     }
 
     /**
-     * Gets the number of characters in the source. Causes the contents of this source to be loaded
-     * if they are loaded lazily.
+     * Gets the number of characters in the source. Causes the contents of this source to be loaded if
+     * they are loaded lazily.
      *
      * @since 1.0
      */
@@ -225,8 +224,8 @@ public final class Source {
     }
 
     /**
-     * Returns the complete text of the code. Causes the contents of this source to be loaded if
-     * they are loaded lazily.
+     * Returns the complete text of the code. Causes the contents of this source to be loaded if they
+     * are loaded lazily.
      *
      * @since 1.0
      */
@@ -244,8 +243,8 @@ public final class Source {
     }
 
     /**
-     * Gets the text (not including a possible terminating newline) in a (1-based) numbered line.
-     * Causes the contents of this source to be loaded if they are loaded lazily.
+     * Gets the text (not including a possible terminating newline) in a (1-based) numbered line. Causes
+     * the contents of this source to be loaded if they are loaded lazily.
      *
      * @since 1.0
      */
@@ -264,8 +263,8 @@ public final class Source {
 
     /**
      * The number of text lines in the source, including empty lines; characters at the end of the
-     * source without a terminating newline count as a line. Causes the contents of this source to
-     * be loaded if they are loaded lazily.
+     * source without a terminating newline count as a line. Causes the contents of this source to be
+     * loaded if they are loaded lazily.
      *
      * @since 1.0
      */
@@ -285,8 +284,8 @@ public final class Source {
     }
 
     /**
-     * Given a 0-based character offset, return the 1-based number of the column at the position.
-     * Causes the contents of this source to be loaded if they are loaded lazily.
+     * Given a 0-based character offset, return the 1-based number of the column at the position. Causes
+     * the contents of this source to be loaded if they are loaded lazily.
      *
      * @throws IllegalArgumentException if the offset is outside the text contents
      * @since 1.0
@@ -306,8 +305,8 @@ public final class Source {
     }
 
     /**
-     * The number of characters (not counting a possible terminating newline) in a (1-based)
-     * numbered line. Causes the contents of this source to be loaded if they are loaded lazily.
+     * The number of characters (not counting a possible terminating newline) in a (1-based) numbered
+     * line. Causes the contents of this source to be loaded if they are loaded lazily.
      *
      * @throws IllegalArgumentException if there is no such line in the text
      * @since 1.0
@@ -317,16 +316,15 @@ public final class Source {
     }
 
     /**
-     * Gets whether this source has been marked as <em>internal</em>, meaning that it has been
-     * provided by the infrastructure, language implementation, or system library. <em>Internal</em>
-     * sources are presumed to be irrelevant to guest language programmers, as well as possibly
-     * confusing and revealing of language implementation details.
+     * Gets whether this source has been marked as <em>internal</em>, meaning that it has been provided
+     * by the infrastructure, language implementation, or system library. <em>Internal</em> sources are
+     * presumed to be irrelevant to guest language programmers, as well as possibly confusing and
+     * revealing of language implementation details.
      * <p>
-     * On the other hand, tools should be free to make <em>internal</em> sources visible in
-     * (possibly privileged) modes that are useful for language implementors.
+     * On the other hand, tools should be free to make <em>internal</em> sources visible in (possibly
+     * privileged) modes that are useful for language implementors.
      * <p>
-     * One can specify whether a source is internal when {@link Builder#internal(boolean) building
-     * it}.
+     * One can specify whether a source is internal when {@link Builder#internal(boolean) building it}.
      *
      * @return whether this source is marked as <em>internal</em>
      * @since 1.0
@@ -419,8 +417,8 @@ public final class Source {
 
     /**
      * Finds a language for a given {@link File file} instance. Typically the language is identified
-     * using the file extension and/or using it contents. Returns <code>null</code> if the language
-     * of the given file could not be detected.
+     * using the file extension and/or using it contents. Returns <code>null</code> if the language of
+     * the given file could not be detected.
      *
      * @throws IOException if an error opening the file occurred.
      * @since 1.0
@@ -430,8 +428,8 @@ public final class Source {
     }
 
     /**
-     * Finds an installed language using a given mime-type. Returns <code>null</code> if no language
-     * was found for a given mime-type.
+     * Finds an installed language using a given mime-type. Returns <code>null</code> if no language was
+     * found for a given mime-type.
      *
      * @since 1.0
      */
@@ -475,9 +473,9 @@ public final class Source {
         }
 
         /**
-         * Specifies content of {@link #build() to-be-built} {@link Source}. Using this method one
-         * can ignore the real content of a file or URL and use already read one, or completely
-         * different one. Example:
+         * Specifies content of {@link #build() to-be-built} {@link Source}. Using this method one can
+         * ignore the real content of a file or URL and use already read one, or completely different one.
+         * Example:
          *
          * {@link SourceSnippets#fromURLWithOwnContent}
          *
@@ -490,10 +488,9 @@ public final class Source {
         }
 
         /**
-         * Specifies content of {@link #build() to-be-built} {@link Source}. Using this method one
-         * can ignore the real content of a file or URL and use already read one, or completely
-         * different one. The given characters must not mutate after they were accessed for the
-         * first time. Example:
+         * Specifies content of {@link #build() to-be-built} {@link Source}. Using this method one can
+         * ignore the real content of a file or URL and use already read one, or completely different one.
+         * The given characters must not mutate after they were accessed for the first time. Example:
          *
          * {@link SourceSnippets#fromURLWithOwnContent}
          *
@@ -508,13 +505,12 @@ public final class Source {
         }
 
         /**
-         * Marks the source as interactive. {@link Context#eval Evaluation} of interactive sources
-         * by an {@link Language#isInteractive() interactive language} can use the {@link Context}
-         * output streams to print the result and read an input. However, non-interactive languages
-         * are expected to ignore the interactive property of sources and not use the polyglot
-         * engine streams. Any desired printing of the evaluated result provided by a
-         * non-interactive language needs to be handled by the caller. Calling of this method
-         * influences the result of {@link Source#isInteractive()}.
+         * Marks the source as interactive. {@link Context#eval Evaluation} of interactive sources by an
+         * {@link Language#isInteractive() interactive language} can use the {@link Context} output streams
+         * to print the result and read an input. However, non-interactive languages are expected to ignore
+         * the interactive property of sources and not use the polyglot engine streams. Any desired printing
+         * of the evaluated result provided by a non-interactive language needs to be handled by the caller.
+         * Calling of this method influences the result of {@link Source#isInteractive()}.
          *
          * @return the instance of this builder
          * @since 1.0
@@ -525,9 +521,9 @@ public final class Source {
         }
 
         /**
-         * Marks the source as internal. Internal sources are those that aren't created by user, but
-         * rather inherently present by the language system. Calling this method influences result
-         * of create {@link Source#isInternal()}
+         * Marks the source as internal. Internal sources are those that aren't created by user, but rather
+         * inherently present by the language system. Calling this method influences result of create
+         * {@link Source#isInternal()}
          *
          * @return the instance of this builder
          * @since 1.0
@@ -539,9 +535,9 @@ public final class Source {
 
         /**
          * Assigns new {@link URI} to the {@link #build() to-be-created} {@link Source}. Each source
-         * provides {@link Source#getURI()} as a persistent identification of its location. A
-         * default value for the method is deduced from the location or content, but one can change
-         * it by using this method
+         * provides {@link Source#getURI()} as a persistent identification of its location. A default value
+         * for the method is deduced from the location or content, but one can change it by using this
+         * method
          *
          * @param newUri the URL to use instead of default one, cannot be <code>null</code>
          * @return the instance of this builder
@@ -554,8 +550,8 @@ public final class Source {
         }
 
         /**
-         * Uses configuration of this builder to create new {@link Source} object. The method throws
-         * an {@link IOException} if an error loading the source occured.
+         * Uses configuration of this builder to create new {@link Source} object. The method throws an
+         * {@link IOException} if an error loading the source occured.
          *
          * @return the source object
          * @since 1.0
@@ -565,10 +561,9 @@ public final class Source {
         }
 
         /**
-         * Uses configuration of this builder to create new {@link Source} object. This method can
-         * only be used if the builder was created as
-         * {@link Source#newBuilder(String, CharSequence, String) string literal} builder and
-         * otherwise throws an {@link UnsupportedOperationException}.
+         * Uses configuration of this builder to create new {@link Source} object. This method can only be
+         * used if the builder was created as {@link Source#newBuilder(String, CharSequence, String) string
+         * literal} builder and otherwise throws an {@link UnsupportedOperationException}.
          *
          * @return the source object
          * @since 1.0

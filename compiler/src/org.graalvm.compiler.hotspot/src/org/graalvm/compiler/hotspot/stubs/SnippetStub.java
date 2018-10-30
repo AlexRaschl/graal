@@ -71,8 +71,8 @@ public abstract class SnippetStub extends Stub implements Snippets {
     /**
      * Creates a new snippet stub.
      *
-     * @param snippetMethodName name of the single {@link Snippet} annotated method in the class of
-     *            this object
+     * @param snippetMethodName name of the single {@link Snippet} annotated method in the class of this
+     *            object
      * @param linkage linkage details for a call to the stub
      */
     public SnippetStub(String snippetMethodName, OptionValues options, HotSpotProviders providers, HotSpotForeignCallLinkage linkage) {

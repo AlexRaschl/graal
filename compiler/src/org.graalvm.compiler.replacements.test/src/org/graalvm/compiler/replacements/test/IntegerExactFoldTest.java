@@ -24,10 +24,10 @@ package org.graalvm.compiler.replacements.test;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.IntegerStamp;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
@@ -143,13 +143,13 @@ public class IntegerExactFoldTest extends GraalCompilerTest {
         return graph;
     }
 
-    private static void addTest(ArrayList<Object[]> tests, long lowerBound1, long upperBound1, long lowerBound2, long upperBound2, int bits, Operation operation) {
+    private static void addTest(SpecifiedArrayList<Object[]> tests, long lowerBound1, long upperBound1, long lowerBound2, long upperBound2, int bits, Operation operation) {
         tests.add(new Object[]{lowerBound1, upperBound1, lowerBound2, upperBound2, bits, operation});
     }
 
     @Parameters(name = "a[{0} / {1}], b[{2} / {3}], bits={4}, operation={5}")
     public static Collection<Object[]> data() {
-        ArrayList<Object[]> tests = new ArrayList<>();
+        SpecifiedArrayList<Object[]> tests = SpecifiedArrayList.createNew();
 
         Operation[] operations = new Operation[]{new AddOperation(), new SubOperation(), new MulOperation()};
         for (Operation operation : operations) {

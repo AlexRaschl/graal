@@ -60,9 +60,9 @@ public abstract class SLReadlnBuiltin extends SLBuiltinNode {
         String result = doRead(getContext().getInput());
         if (result == null) {
             /*
-             * We do not have a sophisticated end of file handling, so returning an empty string is
-             * a reasonable alternative. Note that the Java null value should never be used, since
-             * it can interfere with the specialization logic in generated source code.
+             * We do not have a sophisticated end of file handling, so returning an empty string is a reasonable
+             * alternative. Note that the Java null value should never be used, since it can interfere with the
+             * specialization logic in generated source code.
              */
             result = "";
         }

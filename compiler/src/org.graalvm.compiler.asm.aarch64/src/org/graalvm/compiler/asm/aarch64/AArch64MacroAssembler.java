@@ -117,13 +117,13 @@ public class AArch64MacroAssembler extends AArch64Assembler {
 
     /**
      * Generates an addressplan for an address of the form
-     * {@code base + displacement [+ index [<< log2(transferSize)]]} with the index register and
-     * scaling being optional.
+     * {@code base + displacement [+ index [<< log2(transferSize)]]} with the index register and scaling
+     * being optional.
      *
      * @param displacement an arbitrary displacement.
      * @param hasIndexRegister true if the address uses an index register, false otherwise. non null
-     * @param transferSize the memory transfer size in bytes. The log2 of this specifies how much
-     *            the index register is scaled. If 0 no scaling is assumed. Can be 0, 1, 2, 4 or 8.
+     * @param transferSize the memory transfer size in bytes. The log2 of this specifies how much the
+     *            index register is scaled. If 0 no scaling is assumed. Can be 0, 1, 2, 4 or 8.
      * @return AddressGenerationPlan that specifies the actions necessary to generate a valid
      *         AArch64Address for the given parameters.
      */
@@ -159,19 +159,18 @@ public class AArch64MacroAssembler extends AArch64Assembler {
     }
 
     /**
-     * Returns an AArch64Address pointing to
-     * {@code base + displacement + index << log2(transferSize)}.
+     * Returns an AArch64Address pointing to {@code base + displacement + index << log2(transferSize)}.
      *
      * @param base general purpose register. May not be null or the zero register.
      * @param displacement arbitrary displacement added to base.
      * @param index general purpose register. May not be null or the stack pointer.
      * @param signExtendIndex if true consider index register a word register that should be
      *            sign-extended before being added.
-     * @param transferSize the memory transfer size in bytes. The log2 of this specifies how much
-     *            the index register is scaled. If 0 no scaling is assumed. Can be 0, 1, 2, 4 or 8.
+     * @param transferSize the memory transfer size in bytes. The log2 of this specifies how much the
+     *            index register is scaled. If 0 no scaling is assumed. Can be 0, 1, 2, 4 or 8.
      * @param additionalReg additional register used either as a scratch register or as part of the
-     *            final address, depending on whether allowOverwrite is true or not. May not be null
-     *            or stackpointer.
+     *            final address, depending on whether allowOverwrite is true or not. May not be null or
+     *            stackpointer.
      * @param allowOverwrite if true allows to change value of base or index register to generate
      *            address.
      * @return AArch64Address pointing to memory at
@@ -233,15 +232,15 @@ public class AArch64MacroAssembler extends AArch64Assembler {
     }
 
     /**
-     * Returns an AArch64Address pointing to {@code base + displacement}. Specifies the memory
-     * transfer size to allow some optimizations when building the address.
+     * Returns an AArch64Address pointing to {@code base + displacement}. Specifies the memory transfer
+     * size to allow some optimizations when building the address.
      *
      * @param base general purpose register. May not be null or the zero register.
      * @param displacement arbitrary displacement added to base.
      * @param transferSize the memory transfer size in bytes.
      * @param additionalReg additional register used either as a scratch register or as part of the
-     *            final address, depending on whether allowOverwrite is true or not. May not be
-     *            null, zero register or stackpointer.
+     *            final address, depending on whether allowOverwrite is true or not. May not be null,
+     *            zero register or stackpointer.
      * @param allowOverwrite if true allows to change value of base or index register to generate
      *            address.
      * @return AArch64Address pointing to memory at {@code base + displacement}.
@@ -257,8 +256,8 @@ public class AArch64MacroAssembler extends AArch64Assembler {
      *
      * @param base general purpose register. May not be null or the zero register.
      * @param displacement arbitrary displacement added to base.
-     * @param transferSize the memory transfer size in bytes. The log2 of this specifies how much
-     *            the index register is scaled. If 0 no scaling is assumed. Can be 0, 1, 2, 4 or 8.
+     * @param transferSize the memory transfer size in bytes. The log2 of this specifies how much the
+     *            index register is scaled. If 0 no scaling is assumed. Can be 0, 1, 2, 4 or 8.
      * @return AArch64Address pointing to memory at {@code base + displacement}.
      */
     public AArch64Address makeAddress(Register base, long displacement, int transferSize) {
@@ -274,8 +273,8 @@ public class AArch64MacroAssembler extends AArch64Assembler {
      *            POST_INDEXED} or
      *            {@link org.graalvm.compiler.asm.aarch64.AArch64Address.AddressingMode#IMMEDIATE_PRE_INDEXED
      *            IMMEDIATE_PRE_INDEXED}
-     * @param transferSize the memory transfer size in bytes. The log2 of this specifies how much
-     *            the index register is scaled. Can be 1, 2, 4 or 8.
+     * @param transferSize the memory transfer size in bytes. The log2 of this specifies how much the
+     *            index register is scaled. Can be 1, 2, 4 or 8.
      */
     public void loadAddress(Register dst, AArch64Address address, int transferSize) {
         assert transferSize == 1 || transferSize == 2 || transferSize == 4 || transferSize == 8;
@@ -388,11 +387,10 @@ public class AArch64MacroAssembler extends AArch64Assembler {
     }
 
     /**
-     * Generates a 48-bit immediate move code sequence. The immediate may later be updated by
-     * HotSpot.
+     * Generates a 48-bit immediate move code sequence. The immediate may later be updated by HotSpot.
      *
-     * In AArch64 mode the virtual address space is 48-bits in size, so we only need three
-     * instructions to create a patchable instruction sequence that can reach anywhere.
+     * In AArch64 mode the virtual address space is 48-bits in size, so we only need three instructions
+     * to create a patchable instruction sequence that can reach anywhere.
      *
      * @param dst general purpose register. May not be null, stackpointer or zero-register.
      * @param imm
@@ -414,8 +412,7 @@ public class AArch64MacroAssembler extends AArch64Assembler {
     }
 
     /**
-     * Generates a 32-bit immediate move code sequence. The immediate may later be updated by
-     * HotSpot.
+     * Generates a 32-bit immediate move code sequence. The immediate may later be updated by HotSpot.
      *
      * @param dst general purpose register. May not be null, stackpointer or zero-register.
      * @param imm
@@ -836,8 +833,8 @@ public class AArch64MacroAssembler extends AArch64Assembler {
         // int nextMultiple = NumUtil.roundUp(start, 16);
         // return start - prevMultiple <= tolerance || nextMultiple - start <= tolerance;
         /*
-         * This is a bit optimistic because the constant could also be for an arithmetic instruction
-         * which only supports 12-bits. That case needs to be handled in the backend.
+         * This is a bit optimistic because the constant could also be for an arithmetic instruction which
+         * only supports 12-bits. That case needs to be handled in the backend.
          */
         return NumUtil.isInt(Math.abs(imm)) && NumUtil.isUnsignedNbit(16, (int) Math.abs(imm));
     }
@@ -922,8 +919,7 @@ public class AArch64MacroAssembler extends AArch64Assembler {
      *
      * @param size size of operation.
      * @param shiftAmt arbitrary shift amount.
-     * @return value between 0 and size - 1 inclusive that is equivalent to shiftAmt according to
-     *         JLS.
+     * @return value between 0 and size - 1 inclusive that is equivalent to shiftAmt according to JLS.
      */
     private static int clampShiftAmt(int size, long shiftAmt) {
         return (int) (shiftAmt & (size - 1));
@@ -1031,14 +1027,14 @@ public class AArch64MacroAssembler extends AArch64Assembler {
     /* Float instructions */
 
     /**
-     * Moves integer to float, float to integer, or float to float. Does not support integer to
-     * integer moves.
+     * Moves integer to float, float to integer, or float to float. Does not support integer to integer
+     * moves.
      *
      * @param size register size. Has to be 32 or 64.
-     * @param dst Either floating-point or general-purpose register. If general-purpose register may
-     *            not be stackpointer or zero register. Cannot be null in any case.
-     * @param src Either floating-point or general-purpose register. If general-purpose register may
-     *            not be stackpointer. Cannot be null in any case.
+     * @param dst Either floating-point or general-purpose register. If general-purpose register may not
+     *            be stackpointer or zero register. Cannot be null in any case.
+     * @param src Either floating-point or general-purpose register. If general-purpose register may not
+     *            be stackpointer. Cannot be null in any case.
      */
     @Override
     public void fmov(int size, Register dst, Register src) {
@@ -1056,10 +1052,9 @@ public class AArch64MacroAssembler extends AArch64Assembler {
      *
      * @param size register size. Has to be 32 or 64.
      * @param dst floating point register. May not be null.
-     * @param imm immediate that is loaded into dst. If size is 32 only float immediates can be
-     *            loaded, i.e. (float) imm == imm must be true. In all cases
-     *            {@code isFloatImmediate}, respectively {@code #isDoubleImmediate} must be true
-     *            depending on size.
+     * @param imm immediate that is loaded into dst. If size is 32 only float immediates can be loaded,
+     *            i.e. (float) imm == imm must be true. In all cases {@code isFloatImmediate},
+     *            respectively {@code #isDoubleImmediate} must be true depending on size.
      */
     @Override
     public void fmov(int size, Register dst, double imm) {
@@ -1073,8 +1068,7 @@ public class AArch64MacroAssembler extends AArch64Assembler {
 
     /**
      *
-     * @return true if immediate can be loaded directly into floating-point register, false
-     *         otherwise.
+     * @return true if immediate can be loaded directly into floating-point register, false otherwise.
      */
     public static boolean isDoubleImmediate(double imm) {
         return Double.doubleToRawLongBits(imm) == 0L || AArch64Assembler.isDoubleImmediate(imm);
@@ -1082,8 +1076,7 @@ public class AArch64MacroAssembler extends AArch64Assembler {
 
     /**
      *
-     * @return true if immediate can be loaded directly into floating-point register, false
-     *         otherwise.
+     * @return true if immediate can be loaded directly into floating-point register, false otherwise.
      */
     public static boolean isFloatImmediate(float imm) {
         return Float.floatToRawIntBits(imm) == 0 || AArch64Assembler.isFloatImmediate(imm);
@@ -1222,8 +1215,8 @@ public class AArch64MacroAssembler extends AArch64Assembler {
         ADR(0x7);
 
         /**
-         * Offset by which additional information for branch conditionally, branch zero and branch
-         * non zero has to be shifted.
+         * Offset by which additional information for branch conditionally, branch zero and branch non zero
+         * has to be shifted.
          */
         public static final int INFORMATION_OFFSET = 5;
 
@@ -1547,8 +1540,8 @@ public class AArch64MacroAssembler extends AArch64Assembler {
     /**
      * Generates an address of the form {@code base + displacement}.
      *
-     * Does not change base register to fulfill this requirement. Will fail if displacement cannot
-     * be represented directly as address.
+     * Does not change base register to fulfill this requirement. Will fail if displacement cannot be
+     * represented directly as address.
      *
      * @param base general purpose register. May not be null or the zero register.
      * @param displacement arbitrary displacement added to base.

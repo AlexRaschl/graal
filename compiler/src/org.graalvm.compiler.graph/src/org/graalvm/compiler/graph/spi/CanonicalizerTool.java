@@ -43,8 +43,8 @@ public interface CanonicalizerTool {
     boolean canonicalizeReads();
 
     /**
-     * If this method returns false, not all {@link Node#usages() usages of a node} are yet
-     * available. So a node must not be canonicalized base on, e.g., information returned from
+     * If this method returns false, not all {@link Node#usages() usages of a node} are yet available.
+     * So a node must not be canonicalized base on, e.g., information returned from
      * {@link Node#hasNoUsages()}.
      */
     boolean allUsagesAvailable();

@@ -24,7 +24,6 @@
  */
 package com.oracle.truffle.api.vm;
 
-import com.oracle.truffle.api.CompilerAsserts;
 import static com.oracle.truffle.api.vm.VMAccessor.INSTRUMENT;
 import static com.oracle.truffle.api.vm.VMAccessor.LANGUAGE;
 import static com.oracle.truffle.api.vm.VMAccessor.NODES;
@@ -56,6 +55,7 @@ import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.Instrument;
 import org.graalvm.polyglot.Language;
 
+import com.oracle.truffle.api.CompilerAsserts;
 import com.oracle.truffle.api.CompilerDirectives.TruffleBoundary;
 import com.oracle.truffle.api.InstrumentInfo;
 import com.oracle.truffle.api.TruffleException;
@@ -588,8 +588,7 @@ class PolyglotEngineImpl extends org.graalvm.polyglot.impl.AbstractPolyglotImpl.
         if (!closed) {
             PolyglotContextImpl[] localContexts = contexts.toArray(new PolyglotContextImpl[0]);
             /*
-             * Check ahead of time for open contexts to fail early and avoid closing only some
-             * contexts.
+             * Check ahead of time for open contexts to fail early and avoid closing only some contexts.
              */
             if (!cancelIfExecuting && !ignoreCloseFailure) {
                 for (PolyglotContextImpl context : localContexts) {

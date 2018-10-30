@@ -51,9 +51,8 @@ import org.graalvm.word.WordBase;
 public @interface CFieldAddress {
 
     /**
-     * Specifies the field name inside the {@link CStruct C struct}. If no name is provided, the
-     * method name is used as the field name. A possible "addressOf" prefix of the method name is
-     * removed.
+     * Specifies the field name inside the {@link CStruct C struct}. If no name is provided, the method
+     * name is used as the field name. A possible "addressOf" prefix of the method name is removed.
      */
     String value() default "";
 }

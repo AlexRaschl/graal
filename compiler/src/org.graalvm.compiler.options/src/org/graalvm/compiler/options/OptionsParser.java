@@ -22,7 +22,6 @@
  */
 package org.graalvm.compiler.options;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Formatter;
 import java.util.List;
@@ -30,6 +29,7 @@ import java.util.ServiceLoader;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.MapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.util.CollectionsUtil;
 
 /**
@@ -49,10 +49,10 @@ public class OptionsParser {
             return graalLoader;
         } else {
             /*
-             * The Graal module (i.e., jdk.internal.vm.compiler) is loaded by the platform class
-             * loader on JDK 9. Other modules that extend Graal or are Graal dependencies (such as
-             * Truffle) are supplied via --module-path which means they are loaded by the app class
-             * loader. As such, we need to search the app class loader path as well.
+             * The Graal module (i.e., jdk.internal.vm.compiler) is loaded by the platform class loader on JDK
+             * 9. Other modules that extend Graal or are Graal dependencies (such as Truffle) are supplied via
+             * --module-path which means they are loaded by the app class loader. As such, we need to search the
+             * app class loader path as well.
              */
             ServiceLoader<OptionDescriptors> truffleLoader = ServiceLoader.load(OptionDescriptors.class, ClassLoader.getSystemClassLoader());
             return CollectionsUtil.concat(graalLoader, truffleLoader);
@@ -224,7 +224,7 @@ public class OptionsParser {
      * Returns the set of options that fuzzy match a given option name.
      */
     private static List<OptionDescriptor> fuzzyMatch(Iterable<OptionDescriptors> loader, String optionName) {
-        List<OptionDescriptor> matches = new ArrayList<>();
+        List<OptionDescriptor> matches = SpecifiedArrayList.createNew();
         for (OptionDescriptors options : loader) {
             collectFuzzyMatches(options, optionName, matches);
         }

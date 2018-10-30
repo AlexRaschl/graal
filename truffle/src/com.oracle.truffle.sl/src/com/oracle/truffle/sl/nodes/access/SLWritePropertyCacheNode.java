@@ -146,12 +146,12 @@ public abstract class SLWritePropertyCacheNode extends SLPropertyCacheNode {
     }
 
     /**
-     * There is a subtle difference between {@link Location#canSet} and {@link Location#canStore}.
-     * We need {@link Location#canSet} for the guard of {@link #writeExistingPropertyCached} because
-     * there we call {@link Location#set}. We use the more relaxed {@link Location#canStore} for the
-     * guard of {@link SLWritePropertyCacheNode#writeNewPropertyCached} because there we perform a
-     * shape transition, i.e., we are not actually setting the value of the new location - we only
-     * transition to this location as part of the shape change.
+     * There is a subtle difference between {@link Location#canSet} and {@link Location#canStore}. We
+     * need {@link Location#canSet} for the guard of {@link #writeExistingPropertyCached} because there
+     * we call {@link Location#set}. We use the more relaxed {@link Location#canStore} for the guard of
+     * {@link SLWritePropertyCacheNode#writeNewPropertyCached} because there we perform a shape
+     * transition, i.e., we are not actually setting the value of the new location - we only transition
+     * to this location as part of the shape change.
      */
     protected static boolean canSet(Location location, Object value) {
         return location.canSet(value);
@@ -163,8 +163,8 @@ public abstract class SLWritePropertyCacheNode extends SLPropertyCacheNode {
     }
 
     /**
-     * The generic case is used if the number of shapes accessed overflows the limit of the
-     * polymorphic inline cache.
+     * The generic case is used if the number of shapes accessed overflows the limit of the polymorphic
+     * inline cache.
      */
     @TruffleBoundary
     @Specialization(replaces = {"writeExistingPropertyCached", "writeNewPropertyCached"}, guards = {"receiver.getShape().isValid()"})
@@ -176,8 +176,7 @@ public abstract class SLWritePropertyCacheNode extends SLPropertyCacheNode {
     @Specialization(guards = {"!receiver.getShape().isValid()"})
     protected void updateShape(DynamicObject receiver, Object name, Object value) {
         /*
-         * Slow path that we do not handle in compiled code. But no need to invalidate compiled
-         * code.
+         * Slow path that we do not handle in compiled code. But no need to invalidate compiled code.
          */
         CompilerDirectives.transferToInterpreter();
         receiver.updateShape();

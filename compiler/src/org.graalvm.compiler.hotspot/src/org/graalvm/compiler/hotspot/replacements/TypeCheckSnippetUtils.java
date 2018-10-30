@@ -154,8 +154,8 @@ public class TypeCheckSnippetUtils {
         public final ConstantNode[] hubs;
 
         /**
-         * A predicate over {@link #hubs} specifying whether the corresponding hint type is a
-         * sub-type of the checked type.
+         * A predicate over {@link #hubs} specifying whether the corresponding hint type is a sub-type of
+         * the checked type.
          */
         public final boolean[] isPositive;
 

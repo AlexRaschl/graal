@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.lir;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.AbstractControlFlowGraph;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
@@ -54,10 +54,10 @@ public final class LIR extends LIRGenerator.VariableProvider {
     private final AbstractBlockBase<?>[] codeEmittingOrder;
 
     /**
-     * Map from {@linkplain AbstractBlockBase block} to {@linkplain LIRInstruction}s. Note that we
-     * are using {@link ArrayList} instead of {@link List} to avoid interface dispatch.
+     * Map from {@linkplain AbstractBlockBase block} to {@linkplain LIRInstruction}s. Note that we are
+     * using {@link SpecifiedArrayList} instead of {@link List} to avoid interface dispatch.
      */
-    private final BlockMap<ArrayList<LIRInstruction>> lirInstructions;
+    private final BlockMap<SpecifiedArrayList<LIRInstruction>> lirInstructions;
 
     private boolean hasArgInCallerFrame;
 
@@ -103,11 +103,11 @@ public final class LIR extends LIRGenerator.VariableProvider {
         return false;
     }
 
-    public ArrayList<LIRInstruction> getLIRforBlock(AbstractBlockBase<?> block) {
+    public SpecifiedArrayList<LIRInstruction> getLIRforBlock(AbstractBlockBase<?> block) {
         return lirInstructions.get(block);
     }
 
-    public void setLIRforBlock(AbstractBlockBase<?> block, ArrayList<LIRInstruction> list) {
+    public void setLIRforBlock(AbstractBlockBase<?> block, SpecifiedArrayList<LIRInstruction> list) {
         assert getLIRforBlock(block) == null : "lir instruction list should only be initialized once";
         lirInstructions.put(block, list);
     }
@@ -130,8 +130,8 @@ public final class LIR extends LIRGenerator.VariableProvider {
     }
 
     /**
-     * Determines if any of the parameters to the method are passed via the stack where the
-     * parameters are located in the caller's frame.
+     * Determines if any of the parameters to the method are passed via the stack where the parameters
+     * are located in the caller's frame.
      */
     public boolean hasArgInCallerFrame() {
         return hasArgInCallerFrame;
@@ -142,8 +142,8 @@ public final class LIR extends LIRGenerator.VariableProvider {
      *
      * @param blocks list of blocks
      * @param blockIndex index of the current block
-     * @return the next block in the list that is none {@code null} or {@code null} if there is no
-     *         such block
+     * @return the next block in the list that is none {@code null} or {@code null} if there is no such
+     *         block
      */
     public static AbstractBlockBase<?> getNextBlock(AbstractBlockBase<?>[] blocks, int blockIndex) {
         for (int nextIndex = blockIndex + 1; nextIndex > 0 && nextIndex < blocks.length; nextIndex++) {
@@ -170,19 +170,19 @@ public final class LIR extends LIRGenerator.VariableProvider {
     }
 
     /**
-     * The maximum distance an operation with an {@linkplain #getExceptionEdge(LIRInstruction)
-     * exception edge} can be from the last instruction of a LIR block. The value of 3 is based on a
-     * non-void call operation that has an exception edge. Such a call may move the result to
-     * another register and then spill it.
+     * The maximum distance an operation with an {@linkplain #getExceptionEdge(LIRInstruction) exception
+     * edge} can be from the last instruction of a LIR block. The value of 3 is based on a non-void call
+     * operation that has an exception edge. Such a call may move the result to another register and
+     * then spill it.
      * <p>
-     * The rationale for such a constant is to limit the search for an insertion point when adding
-     * move operations at the end of a block. Such moves must be inserted before all control flow
+     * The rationale for such a constant is to limit the search for an insertion point when adding move
+     * operations at the end of a block. Such moves must be inserted before all control flow
      * instructions.
      */
     public static final int MAX_EXCEPTION_EDGE_OP_DISTANCE_FROM_END = 3;
 
     public static boolean verifyBlock(LIR lir, AbstractBlockBase<?> block) {
-        ArrayList<LIRInstruction> ops = lir.getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> ops = lir.getLIRforBlock(block);
         if (ops.size() == 0) {
             return false;
         }

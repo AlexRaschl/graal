@@ -75,19 +75,18 @@ public abstract class ValueProfile extends Profile {
 
     /**
      * <p>
-     * Returns a value profile that profiles the exact class of a value. It will check the class of
-     * the profiled value and provide additional information to the compiler if only non-null values
-     * of exactly one concrete Java class are passed as a parameter to the
-     * {@link ValueProfile#profile} method. This can be beneficial if subsequent code can take
-     * advantage of knowing the concrete class of the value. The profile will degrade to the generic
-     * case if a null value or if at least two instances of two different Java classes are
-     * registered.
+     * Returns a value profile that profiles the exact class of a value. It will check the class of the
+     * profiled value and provide additional information to the compiler if only non-null values of
+     * exactly one concrete Java class are passed as a parameter to the {@link ValueProfile#profile}
+     * method. This can be beneficial if subsequent code can take advantage of knowing the concrete
+     * class of the value. The profile will degrade to the generic case if a null value or if at least
+     * two instances of two different Java classes are registered.
      * </p>
      *
      * <p>
-     * <b>Compilation notes:</b> Value profiles require a runtime check in their initialized state
-     * to verify their profiled class. If two classes have been seen on a single profile instance
-     * then this profile will transition to a generic state with no overhead.
+     * <b>Compilation notes:</b> Value profiles require a runtime check in their initialized state to
+     * verify their profiled class. If two classes have been seen on a single profile instance then this
+     * profile will transition to a generic state with no overhead.
      * </P>
      *
      * @see ValueProfile usage example
@@ -103,14 +102,14 @@ public abstract class ValueProfile extends Profile {
 
     /**
      * <p>
-     * Returns a value profile that profiles the object identity of a value. A single instance can
-     * only profile one particular instance.
+     * Returns a value profile that profiles the object identity of a value. A single instance can only
+     * profile one particular instance.
      * </p>
      *
      * <p>
      * <b>Compilation notes:</b> Identity profiles require a runtime check to verify their profiled
-     * object identity. If two identities have been seen on a single profile instance then this
-     * profile will transition to a generic state with no overhead.
+     * object identity. If two identities have been seen on a single profile instance then this profile
+     * will transition to a generic state with no overhead.
      * </p>
      * 
      * @since 0.10
@@ -125,17 +124,16 @@ public abstract class ValueProfile extends Profile {
 
     /**
      * <p>
-     * Returns a value profile that profiles the object equality of a value. A single instance can
-     * only profile one set of equal values.
+     * Returns a value profile that profiles the object equality of a value. A single instance can only
+     * profile one set of equal values.
      * </p>
      *
      * <p>
      * <b>Compilation notes:</b> Equality profiles inline the body of the equal method of the first
      * profiled value in order to verify its assumption. Please take care that you do this only for
-     * equals implementations that your guest language actually has control over otherwise your
-     * compiled code might contain recursions or too much code. If two non equal objects have been
-     * seen on a single profile instance then this profile will transition to a generic state with
-     * no overhead.
+     * equals implementations that your guest language actually has control over otherwise your compiled
+     * code might contain recursions or too much code. If two non equal objects have been seen on a
+     * single profile instance then this profile will transition to a generic state with no overhead.
      * </p>
      * 
      * @since 0.10
@@ -297,8 +295,8 @@ public abstract class ValueProfile extends Profile {
             if (clazz != Object.class) {
                 if (clazz != null && value != null && clazz == value.getClass()) {
                     /*
-                     * The cast is really only for the compiler relevant. It does not perform any
-                     * useful action in the interpreter and only takes time.
+                     * The cast is really only for the compiler relevant. It does not perform any useful action in the
+                     * interpreter and only takes time.
                      */
                     if (CompilerDirectives.inInterpreter()) {
                         return value;

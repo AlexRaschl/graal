@@ -107,8 +107,8 @@ public class RegisterAllocationConfig {
     }
 
     /**
-     * Gets the set of registers that can be used by the register allocator for a value of a
-     * particular kind.
+     * Gets the set of registers that can be used by the register allocator for a value of a particular
+     * kind.
      */
     public AllocatableRegisters getAllocatableRegisters(PlatformKind kind) {
         PlatformKind.Key key = kind.getKey();

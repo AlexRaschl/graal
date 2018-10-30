@@ -24,7 +24,6 @@ package org.graalvm.compiler.replacements.verifier;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -34,6 +33,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 public abstract class AbstractVerifier {
 
@@ -53,7 +54,7 @@ public abstract class AbstractVerifier {
             return null;
         }
         if (expectedType.isArray()) {
-            ArrayList<Object> result = new ArrayList<>();
+            SpecifiedArrayList<Object> result = SpecifiedArrayList.createNew();
             List<AnnotationValue> l = (List<AnnotationValue>) value.getValue();
             for (AnnotationValue el : l) {
                 result.add(resolveAnnotationValue(expectedType.getComponentType(), el));
@@ -64,8 +65,8 @@ public abstract class AbstractVerifier {
         if (unboxedValue != null) {
             if (expectedType == TypeMirror.class && unboxedValue instanceof String) {
                 /*
-                 * Happens if type is invalid when using the ECJ compiler. The ECJ does not match
-                 * AP-API specification here.
+                 * Happens if type is invalid when using the ECJ compiler. The ECJ does not match AP-API
+                 * specification here.
                  */
                 return null;
             }

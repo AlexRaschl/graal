@@ -42,8 +42,8 @@ public interface EconomicSet<E> extends UnmodifiableEconomicSet<E> {
     boolean add(E element);
 
     /**
-     * Removes {@code element} from this set if it is present. This set will not contain
-     * {@code element} once the call returns.
+     * Removes {@code element} from this set if it is present. This set will not contain {@code element}
+     * once the call returns.
      *
      * @since 1.0
      */
@@ -131,8 +131,8 @@ public interface EconomicSet<E> extends UnmodifiableEconomicSet<E> {
     }
 
     /**
-     * Creates a new set guaranteeing insertion order when iterating over its elements with the
-     * default {@link Equivalence#DEFAULT} comparison strategy.
+     * Creates a new set guaranteeing insertion order when iterating over its elements with the default
+     * {@link Equivalence#DEFAULT} comparison strategy.
      *
      * @since 1.0
      */
@@ -150,9 +150,9 @@ public interface EconomicSet<E> extends UnmodifiableEconomicSet<E> {
     }
 
     /**
-     * Creates a new set guaranteeing insertion order when iterating over its elements with the
-     * default {@link Equivalence#DEFAULT} comparison strategy and inserts all elements of the
-     * specified collection.
+     * Creates a new set guaranteeing insertion order when iterating over its elements with the default
+     * {@link Equivalence#DEFAULT} comparison strategy and inserts all elements of the specified
+     * collection.
      *
      * @since 1.0
      */
@@ -161,9 +161,9 @@ public interface EconomicSet<E> extends UnmodifiableEconomicSet<E> {
     }
 
     /**
-     * Creates a new set guaranteeing insertion order when iterating over its elements with the
-     * default {@link Equivalence#DEFAULT} comparison strategy and inserts all elements of the
-     * specified collection.
+     * Creates a new set guaranteeing insertion order when iterating over its elements with the default
+     * {@link Equivalence#DEFAULT} comparison strategy and inserts all elements of the specified
+     * collection.
      *
      * @since 1.0
      */
@@ -172,8 +172,8 @@ public interface EconomicSet<E> extends UnmodifiableEconomicSet<E> {
     }
 
     /**
-     * Creates a new set guaranteeing insertion order when iterating over its elements and
-     * initializes with the given capacity.
+     * Creates a new set guaranteeing insertion order when iterating over its elements and initializes
+     * with the given capacity.
      *
      * @since 1.0
      */
@@ -182,8 +182,8 @@ public interface EconomicSet<E> extends UnmodifiableEconomicSet<E> {
     }
 
     /**
-     * Creates a new set guaranteeing insertion order when iterating over its elements and inserts
-     * all elements of the specified collection.
+     * Creates a new set guaranteeing insertion order when iterating over its elements and inserts all
+     * elements of the specified collection.
      *
      * @since 1.0
      */

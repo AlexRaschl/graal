@@ -53,8 +53,8 @@ public class CompiledExceptionHandlerTest extends GraalCompilerTest {
     @Override
     protected InlineInfo bytecodeParserShouldInlineInvoke(GraphBuilderContext b, ResolvedJavaMethod method, ValueNode[] args) {
         /*
-         * We don't care whether other invokes are inlined or not, but we definitely don't want
-         * another explicit exception handler in the graph.
+         * We don't care whether other invokes are inlined or not, but we definitely don't want another
+         * explicit exception handler in the graph.
          */
         return InlineInfo.DO_NOT_INLINE_NO_EXCEPTION;
     }

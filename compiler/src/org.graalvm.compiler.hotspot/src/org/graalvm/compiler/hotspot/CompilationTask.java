@@ -41,6 +41,7 @@ import org.graalvm.compiler.debug.DebugCloseable;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.DebugDumpScope;
 import org.graalvm.compiler.debug.GraalError;
+import org.graalvm.compiler.debug.MemUseTrackerKey;
 import org.graalvm.compiler.debug.TimerKey;
 import org.graalvm.compiler.debug.MemUseTrackerKey;
 import org.graalvm.compiler.options.EnumOptionKey;

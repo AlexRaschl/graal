@@ -93,8 +93,7 @@ public class LIRGenerationResult {
     }
 
     /**
-     * Returns the {@link FrameMapBuilder} for collecting the information to build a
-     * {@link FrameMap}.
+     * Returns the {@link FrameMapBuilder} for collecting the information to build a {@link FrameMap}.
      *
      * This method can only be used prior calling {@link #buildFrameMap}.
      */
@@ -104,8 +103,8 @@ public class LIRGenerationResult {
     }
 
     /**
-     * Creates a {@link FrameMap} out of the {@link FrameMapBuilder}. This method should only be
-     * called once. After calling it, {@link #getFrameMapBuilder()} can no longer be used.
+     * Creates a {@link FrameMap} out of the {@link FrameMapBuilder}. This method should only be called
+     * once. After calling it, {@link #getFrameMapBuilder()} can no longer be used.
      *
      * @see FrameMapBuilder#buildFrameMap
      */

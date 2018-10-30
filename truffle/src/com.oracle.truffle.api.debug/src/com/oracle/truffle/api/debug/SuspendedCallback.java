@@ -37,9 +37,9 @@ package com.oracle.truffle.api.debug;
 public interface SuspendedCallback {
 
     /**
-     * Called whenever the {@link Debugger debugger} suspends for a particular
-     * {@link DebuggerSession session}. If multiple threads would trigger a suspended event then
-     * each thread is going to get notified separately.
+     * Called whenever the {@link Debugger debugger} suspends for a particular {@link DebuggerSession
+     * session}. If multiple threads would trigger a suspended event then each thread is going to get
+     * notified separately.
      *
      * @param event the suspended event
      * @since 0.17

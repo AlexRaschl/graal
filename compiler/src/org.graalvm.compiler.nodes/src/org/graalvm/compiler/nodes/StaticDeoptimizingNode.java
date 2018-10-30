@@ -39,8 +39,7 @@ public interface StaticDeoptimizingNode extends ValueNodeInterface {
     /**
      * Describes how much information is gathered when deoptimization triggers.
      *
-     * This enum is {@link Comparable} and orders its element from highest priority to lowest
-     * priority.
+     * This enum is {@link Comparable} and orders its element from highest priority to lowest priority.
      */
     enum GuardPriority {
         Speculation,

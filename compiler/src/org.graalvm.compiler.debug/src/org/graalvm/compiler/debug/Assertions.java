@@ -42,8 +42,8 @@ public class Assertions {
     }
 
     /**
-     * Determines if detailed assertions are enabled. This requires that the normal assertions are
-     * also enabled.
+     * Determines if detailed assertions are enabled. This requires that the normal assertions are also
+     * enabled.
      *
      * @param values the current OptionValues that might define a value for DetailAsserts.
      */

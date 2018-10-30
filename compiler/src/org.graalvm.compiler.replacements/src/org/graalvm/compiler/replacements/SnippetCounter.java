@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.replacements;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.GraalOptions;
 
 /**
@@ -40,8 +40,8 @@ public final class SnippetCounter implements Comparable<SnippetCounter> {
 
         public interface Factory {
             /**
-             * If snippet counters are {@linkplain GraalOptions#SnippetCounters enabled}, creates
-             * and registers a {@link Group} with the given name. Otherwise, returns null.
+             * If snippet counters are {@linkplain GraalOptions#SnippetCounters enabled}, creates and registers
+             * a {@link Group} with the given name. Otherwise, returns null.
              *
              * @param name name of the counter group
              */
@@ -61,7 +61,7 @@ public final class SnippetCounter implements Comparable<SnippetCounter> {
 
         public Group(String name) {
             this.name = name;
-            this.counters = new ArrayList<>();
+            this.counters = SpecifiedArrayList.createNew();
         }
 
         @Override
@@ -104,8 +104,8 @@ public final class SnippetCounter implements Comparable<SnippetCounter> {
     /**
      * Creates a counter.
      *
-     * @param group the group to which the counter belongs. If this is null, the newly created
-     *            counter is disabled and {@linkplain #inc() incrementing} is a no-op.
+     * @param group the group to which the counter belongs. If this is null, the newly created counter
+     *            is disabled and {@linkplain #inc() incrementing} is a no-op.
      * @param name the name of the counter
      * @param description a brief comment describing the metric represented by the counter
      */
@@ -124,8 +124,8 @@ public final class SnippetCounter implements Comparable<SnippetCounter> {
     }
 
     /**
-     * Increments the value of this counter. This method can only be used in a snippet on a
-     * compile-time constant {@link SnippetCounter} object.
+     * Increments the value of this counter. This method can only be used in a snippet on a compile-time
+     * constant {@link SnippetCounter} object.
      */
     public void inc() {
         if (group != null) {
@@ -134,8 +134,8 @@ public final class SnippetCounter implements Comparable<SnippetCounter> {
     }
 
     /**
-     * Increments the value of this counter. This method can only be used in a snippet on a
-     * compile-time constant {@link SnippetCounter} object.
+     * Increments the value of this counter. This method can only be used in a snippet on a compile-time
+     * constant {@link SnippetCounter} object.
      */
     public void add(int increment) {
         if (group != null) {

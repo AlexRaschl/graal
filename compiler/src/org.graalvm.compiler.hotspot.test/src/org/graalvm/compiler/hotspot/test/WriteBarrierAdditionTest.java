@@ -139,8 +139,8 @@ public class WriteBarrierAdditionTest extends HotSpotGraalCompilerTest {
 
     /**
      * Expected 2 barriers for the Serial GC and 5 for G1 (3 pre + 2 post) The (2 or 4) barriers are
-     * emitted while initializing the fields of the WeakReference instance. The extra pre barrier of
-     * G1 concerns the read of the referent field.
+     * emitted while initializing the fields of the WeakReference instance. The extra pre barrier of G1
+     * concerns the read of the referent field.
      */
     @Test
     public void test4() throws Exception {
@@ -157,8 +157,8 @@ public class WriteBarrierAdditionTest extends HotSpotGraalCompilerTest {
 
     /**
      * Expected 4 barriers for the Serial GC and 9 for G1 (1 ref + 4 pre + 4 post). In this test, we
-     * load the correct offset of the WeakReference object so naturally we assert the presence of
-     * the pre barrier.
+     * load the correct offset of the WeakReference object so naturally we assert the presence of the
+     * pre barrier.
      */
     @Test
     public void test5() throws Exception {
@@ -189,8 +189,8 @@ public class WriteBarrierAdditionTest extends HotSpotGraalCompilerTest {
 
     /**
      * The following test concerns the runtime checks of the unsafe loads. In this test, we unsafely
-     * load a non-matching offset field of the java.lang.ref.Reference object so the pre barier must
-     * not be executed.
+     * load a non-matching offset field of the java.lang.ref.Reference object so the pre barier must not
+     * be executed.
      */
     @Test
     public void test8() throws Exception {
@@ -199,8 +199,8 @@ public class WriteBarrierAdditionTest extends HotSpotGraalCompilerTest {
 
     /**
      * The following test concerns the runtime checks of the unsafe loads. In this test, we unsafely
-     * load a matching offset+disp field of the java.lang.ref.Reference object so the pre barier
-     * must be executed.
+     * load a matching offset+disp field of the java.lang.ref.Reference object so the pre barier must be
+     * executed.
      */
     @Test
     public void test10() throws Exception {

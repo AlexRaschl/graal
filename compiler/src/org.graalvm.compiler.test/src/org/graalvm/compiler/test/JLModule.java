@@ -151,8 +151,8 @@ public class JLModule {
     }
 
     /**
-     * Updates module m1 to export a package to module m2. Same as m1.addExports(pn, m2) but without
-     * a caller check
+     * Updates module m1 to export a package to module m2. Same as m1.addExports(pn, m2) but without a
+     * caller check
      */
     public static void uncheckedAddExports(Object m1, String pn, Object m2) {
         try {

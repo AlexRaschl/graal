@@ -24,7 +24,6 @@
 package org.graalvm.compiler.hotspot.test;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Assert;
 import org.junit.Test;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
 
 import jdk.vm.ci.hotspot.HotSpotInstalledCode;
@@ -225,7 +224,7 @@ public class CompressedOopTest extends GraalCompilerTest {
     @Test
     public void test8() throws Exception {
         HotSpotInstalledCode installedBenchmarkCode = getInstalledCode("unmodListTest", Object.class);
-        List<Object> list = new ArrayList<>();
+        List<Object> list = SpecifiedArrayList.createNew();
         for (int i = 0; i < 512; i++) {
             list.add(new Object());
         }
@@ -240,7 +239,7 @@ public class CompressedOopTest extends GraalCompilerTest {
 
     @SuppressWarnings("unchecked")
     public static Object[] unmodListTest(Object c1) {
-        List<Object> queue = (ArrayList<Object>) c1;
+        List<Object> queue = (SpecifiedArrayList<Object>) c1;
         Object[] result = Collections.unmodifiableCollection(queue).toArray(new Object[queue.size()]);
         return result;
     }
@@ -248,7 +247,7 @@ public class CompressedOopTest extends GraalCompilerTest {
     @Test
     public void test9() throws Exception {
         HotSpotInstalledCode installedBenchmarkCode = getInstalledCode("unmodListTest", Object.class);
-        List<Object> list = new ArrayList<>();
+        List<Object> list = SpecifiedArrayList.createNew();
         Object[] array = (Object[]) installedBenchmarkCode.executeVarargs(list);
         Assert.assertTrue(list.size() == array.length);
     }
@@ -291,7 +290,7 @@ public class CompressedOopTest extends GraalCompilerTest {
 
     @SuppressWarnings("unchecked")
     public static Object[] unmodListTestByte(Object c1) {
-        List<Byte> queue = (ArrayList<Byte>) c1;
+        List<Byte> queue = (SpecifiedArrayList<Byte>) c1;
         Byte[] result = Collections.unmodifiableCollection(queue).toArray(new Byte[queue.size()]);
         return result;
     }
@@ -299,7 +298,7 @@ public class CompressedOopTest extends GraalCompilerTest {
     @Test
     public void test13() throws Exception {
         HotSpotInstalledCode installedBenchmarkCode = getInstalledCode("unmodListTestByte", Object.class);
-        List<Byte> list = new ArrayList<>();
+        List<Byte> list = SpecifiedArrayList.createNew();
         Byte[] array = (Byte[]) installedBenchmarkCode.executeVarargs(list);
         Assert.assertTrue(list.size() == array.length);
     }

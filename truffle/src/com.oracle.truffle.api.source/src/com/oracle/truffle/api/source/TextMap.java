@@ -191,8 +191,8 @@ final class TextMap {
     }
 
     /**
-     * Converts 1-based line number to the 0-based offset of the line's first character; this would
-     * be the offset of a newline if the line is empty.
+     * Converts 1-based line number to the 0-based offset of the line's first character; this would be
+     * the offset of a newline if the line is empty.
      *
      * @throws IllegalArgumentException if there is no such line in the text.
      */

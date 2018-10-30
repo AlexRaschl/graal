@@ -50,8 +50,8 @@ public abstract class PureFunctionMacroNode extends MacroStateSplitNode implemen
     }
 
     /**
-     * This method should return either a constant that represents the result of the function, or
-     * null if no such result could be determined.
+     * This method should return either a constant that represents the result of the function, or null
+     * if no such result could be determined.
      */
     protected abstract JavaConstant evaluate(JavaConstant param, MetaAccessProvider metaAccess);
 

@@ -111,8 +111,8 @@ public abstract class RootNode extends ExecutableNode {
 
     /*
      * Since languages were singletons in the past, we cannot use the Env instance stored in
-     * TruffleLanguage for languages that are not yet migrated. We use this env reference instead
-     * for compatibility.
+     * TruffleLanguage for languages that are not yet migrated. We use this env reference instead for
+     * compatibility.
      */
     final Object sourceVM;
     private RootCallTarget callTarget;
@@ -123,12 +123,12 @@ public abstract class RootNode extends ExecutableNode {
     volatile byte instrumentationBits;
 
     /**
-     * Creates new root node with a given language instance. The language instance is obtainable
-     * while {@link TruffleLanguage#createContext(Env)} or
-     * {@link TruffleLanguage#parse(ParsingRequest)} is executed. If no language environment is
-     * available, then <code>null</code> can be passed. Please note that root nodes with
-     * <code>null</code> language are considered not instrumentable and have no access to the
-     * {@link #getLanguage(Class) language} or its public {@link #getLanguageInfo() information}.
+     * Creates new root node with a given language instance. The language instance is obtainable while
+     * {@link TruffleLanguage#createContext(Env)} or {@link TruffleLanguage#parse(ParsingRequest)} is
+     * executed. If no language environment is available, then <code>null</code> can be passed. Please
+     * note that root nodes with <code>null</code> language are considered not instrumentable and have
+     * no access to the {@link #getLanguage(Class) language} or its public {@link #getLanguageInfo()
+     * information}.
      *
      * @param language the language this root node is associated with
      * @since 0.25
@@ -138,8 +138,8 @@ public abstract class RootNode extends ExecutableNode {
     }
 
     /**
-     * Creates new root node given an language environment and frame descriptor. The language
-     * instance is obtainable while {@link TruffleLanguage#createContext(Env)} or
+     * Creates new root node given an language environment and frame descriptor. The language instance
+     * is obtainable while {@link TruffleLanguage#createContext(Env)} or
      * {@link TruffleLanguage#parse(ParsingRequest)} is executed. If no language environment is
      * available, then <code>null</code> can be passed. Please note that root nodes with
      * <code>null</code> language are considered not instrumentable and have no access to the
@@ -170,13 +170,13 @@ public abstract class RootNode extends ExecutableNode {
     }
 
     /**
-     * Returns the current context associated with the root node {@link #getLanguage(Class)
-     * language} and {@link Thread thread}. The current context is <code>null</code> if the root
-     * node is associated with a <code>null</code> language. This is a short-cut for
-     * <code>this</code>. {@link #getLanguage(Class) getLanguage(languageClass)}.
+     * Returns the current context associated with the root node {@link #getLanguage(Class) language}
+     * and {@link Thread thread}. The current context is <code>null</code> if the root node is
+     * associated with a <code>null</code> language. This is a short-cut for <code>this</code>.
+     * {@link #getLanguage(Class) getLanguage(languageClass)}.
      * {@link TruffleLanguage#getContextReference() getContextReference()}.
-     * {@link ContextReference#get() get()}. If invoked on the fast-path then
-     * <code>languageClass</code> must be a compilation final value.
+     * {@link ContextReference#get() get()}. If invoked on the fast-path then <code>languageClass</code>
+     * must be a compilation final value.
      *
      * @see #getLanguage(Class)
      * @see TruffleLanguage#getContextReference()
@@ -198,8 +198,8 @@ public abstract class RootNode extends ExecutableNode {
     }
 
     /**
-     * Returns the source section associated with this {@link RootNode}. Returns <code>null</code>
-     * if by default. Can be called on any thread and without a language context.
+     * Returns the source section associated with this {@link RootNode}. Returns <code>null</code> if by
+     * default. Can be called on any thread and without a language context.
      *
      * @since 0.13
      */
@@ -210,19 +210,18 @@ public abstract class RootNode extends ExecutableNode {
 
     /**
      * A description of the AST (expected to be a method or procedure name in most languages) that
-     * identifies the AST for the benefit of guest language programmers using tools; it might
-     * appear, for example in the context of a stack dump or trace and is not expected to be called
-     * often. Can be called on any thread and without a language context.
+     * identifies the AST for the benefit of guest language programmers using tools; it might appear,
+     * for example in the context of a stack dump or trace and is not expected to be called often. Can
+     * be called on any thread and without a language context.
      * <p>
      * In some languages AST "compilation units" may have no intrinsic names. When no information is
      * available, language implementations might simply use the first few characters of the code,
-     * followed by "{@code ...}". Language implementations should assign a more helpful name
-     * whenever it becomes possible, for example when a functional value is assigned. This means
-     * that the name might not be stable over time.
+     * followed by "{@code ...}". Language implementations should assign a more helpful name whenever it
+     * becomes possible, for example when a functional value is assigned. This means that the name might
+     * not be stable over time.
      * <p>
      * Language execution semantics should not depend on either this name or the way that it is
-     * formatted. The name should be presented in the way expected to be most useful for
-     * programmers.
+     * formatted. The name should be presented in the way expected to be most useful for programmers.
      *
      * @return a name that helps guest language programmers identify code corresponding to the AST,
      *         possibly {@code null} if the language implementation is unable to provide any useful
@@ -234,13 +233,12 @@ public abstract class RootNode extends ExecutableNode {
     }
 
     /**
-     * Returns <code>true</code> if this root node should be considered internal and not be shown to
-     * a guest language programmer. This method has effect on tools and guest language stack traces.
-     * By default a {@link RootNode} is internal if no language was passed in the constructor or if
-     * the {@link #getSourceSection() root source section} is set and points to an internal source.
-     * This method is intended to be overwritten by guest languages, when the node's source is
-     * internal, the implementation should respect that. Can be called on any thread and without a
-     * language context.
+     * Returns <code>true</code> if this root node should be considered internal and not be shown to a
+     * guest language programmer. This method has effect on tools and guest language stack traces. By
+     * default a {@link RootNode} is internal if no language was passed in the constructor or if the
+     * {@link #getSourceSection() root source section} is set and points to an internal source. This
+     * method is intended to be overwritten by guest languages, when the node's source is internal, the
+     * implementation should respect that. Can be called on any thread and without a language context.
      *
      * @since 0.27
      */
@@ -256,10 +254,10 @@ public abstract class RootNode extends ExecutableNode {
     }
 
     /**
-     * Returns <code>true</code> if a TruffleException leaving this node should capture
-     * {@link Frame} objects in its stack trace in addition to the default information. This is
-     * <code>false</code> by default to avoid the attached overhead. The captured frames are then
-     * accessible through {@link TruffleStackTraceElement#getFrame()}
+     * Returns <code>true</code> if a TruffleException leaving this node should capture {@link Frame}
+     * objects in its stack trace in addition to the default information. This is <code>false</code> by
+     * default to avoid the attached overhead. The captured frames are then accessible through
+     * {@link TruffleStackTraceElement#getFrame()}
      *
      * @since 0.31
      */
@@ -268,12 +266,11 @@ public abstract class RootNode extends ExecutableNode {
     }
 
     /**
-     * Returns <code>true</code> if this {@link RootNode} is allowed to be cloned. The runtime
-     * system might decide to create deep copies of the {@link RootNode} in order to gather context
-     * sensitive profiling feedback. The default implementation returns <code>false</code>. Guest
-     * language specific implementations may want to return <code>true</code> here to indicate that
-     * gathering call site specific profiling information might make sense for this {@link RootNode}
-     * .
+     * Returns <code>true</code> if this {@link RootNode} is allowed to be cloned. The runtime system
+     * might decide to create deep copies of the {@link RootNode} in order to gather context sensitive
+     * profiling feedback. The default implementation returns <code>false</code>. Guest language
+     * specific implementations may want to return <code>true</code> here to indicate that gathering
+     * call site specific profiling information might make sense for this {@link RootNode} .
      *
      * @return <code>true</code> if cloning is allowed else <code>false</code>.
      * @since 0.8 or earlier
@@ -283,14 +280,14 @@ public abstract class RootNode extends ExecutableNode {
     }
 
     /**
-     * Returns <code>true</code> if {@link #cloneUninitialized()} can be used to create
-     * uninitialized copies of an already initialized / executed root node. By default, or if this
-     * method returns <code>false</code>, an optimizing Truffle runtime might need to copy the AST
-     * before it is executed for the first time to ensure it is able to create new uninitialized
-     * copies when needed. By returning <code>true</code> and therefore supporting uninitialized
-     * copies an optimizing runtime does not need to keep a reference to an uninitialized copy on
-     * its own and might therefore be able to save memory. The returned boolean needs to be
-     * immutable for a {@link RootNode} instance.
+     * Returns <code>true</code> if {@link #cloneUninitialized()} can be used to create uninitialized
+     * copies of an already initialized / executed root node. By default, or if this method returns
+     * <code>false</code>, an optimizing Truffle runtime might need to copy the AST before it is
+     * executed for the first time to ensure it is able to create new uninitialized copies when needed.
+     * By returning <code>true</code> and therefore supporting uninitialized copies an optimizing
+     * runtime does not need to keep a reference to an uninitialized copy on its own and might therefore
+     * be able to save memory. The returned boolean needs to be immutable for a {@link RootNode}
+     * instance.
      *
      * @return <code>true</code> if calls to {@link #cloneUninitialized() uninitialized copies} are
      *         supported.
@@ -306,18 +303,18 @@ public abstract class RootNode extends ExecutableNode {
      * {@link #isCloneUninitializedSupported() supported}. Throws an
      * {@link UnsupportedOperationException} exception by default. By default, or if
      * {@link #isCloneUninitializedSupported()} returns <code>false</code>, an optimizing Truffle
-     * runtime might need to copy the root node before it is executed for the first time to ensure
-     * it is able to create new uninitialized copies when needed. By supporting uninitialized copies
-     * an optimizing runtime does not need to keep a reference to an uninitialized copy on its own
-     * and might therefore be able to save memory.
+     * runtime might need to copy the root node before it is executed for the first time to ensure it is
+     * able to create new uninitialized copies when needed. By supporting uninitialized copies an
+     * optimizing runtime does not need to keep a reference to an uninitialized copy on its own and
+     * might therefore be able to save memory.
      *
      * <p>
      * Two common strategies to implement {@link #cloneUninitialized()} are:
      * <ul>
-     * <li><b>Reparsing:</b> Support it by keeping a reference to the original source code including
-     * the lexical scope and create the uninitialized copy of the root node by reparsing the source.
-     * <li><b>Resetting:</b> Support it by traversing the {@link Node} tree and derive an
-     * uninitialized copy from each initialized node.
+     * <li><b>Reparsing:</b> Support it by keeping a reference to the original source code including the
+     * lexical scope and create the uninitialized copy of the root node by reparsing the source.
+     * <li><b>Resetting:</b> Support it by traversing the {@link Node} tree and derive an uninitialized
+     * copy from each initialized node.
      * </ul>
      *
      * @return an uninitialized copy of this root node if supported.
@@ -360,8 +357,8 @@ public abstract class RootNode extends ExecutableNode {
 
     /**
      * @since 0.8 or earlier
-     * @deprecated No replacement. Changing {@link CallTarget} of an existing {@link RootNode} isn't
-     *             a supported operation
+     * @deprecated No replacement. Changing {@link CallTarget} of an existing {@link RootNode} isn't a
+     *             supported operation
      */
     @Deprecated
     public final void setCallTarget(RootCallTarget callTarget) {
@@ -370,10 +367,9 @@ public abstract class RootNode extends ExecutableNode {
 
     /**
      * Returns the {@link com.oracle.truffle.api.ExecutionContext} associated with this
-     * <code>RootNode</code>. This allows the correct <code>ExecutionContext</code> to be determined
-     * for a <code>RootNode</code> (and so also for a {@link RootCallTarget} and a
-     * {@link FrameInstance} obtained from the call stack) without prior knowledge of the language
-     * it has come from.
+     * <code>RootNode</code>. This allows the correct <code>ExecutionContext</code> to be determined for
+     * a <code>RootNode</code> (and so also for a {@link RootCallTarget} and a {@link FrameInstance}
+     * obtained from the call stack) without prior knowledge of the language it has come from.
      *
      * Returns <code>null</code> by default.
      *
@@ -405,8 +401,8 @@ public abstract class RootNode extends ExecutableNode {
     }
 
     /**
-     * Does this contain AST content that it is possible to instrument. Can be called on any thread
-     * and without a language context.
+     * Does this contain AST content that it is possible to instrument. Can be called on any thread and
+     * without a language context.
      *
      * @since 0.8 or earlier
      */
@@ -417,8 +413,8 @@ public abstract class RootNode extends ExecutableNode {
     /**
      * Helper method to create a root node that always returns the same value. Certain operations
      * (especially {@link com.oracle.truffle.api.interop inter-operability} API) require return of
-     * stable {@link RootNode root nodes}. To simplify creation of such nodes, here is a factory
-     * method that can create {@link RootNode} that returns always the same value.
+     * stable {@link RootNode root nodes}. To simplify creation of such nodes, here is a factory method
+     * that can create {@link RootNode} that returns always the same value.
      *
      * @param constant the constant to return
      * @return root node returning the constant

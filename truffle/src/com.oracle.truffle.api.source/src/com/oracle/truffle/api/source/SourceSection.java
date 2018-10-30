@@ -51,11 +51,11 @@ public final class SourceSection {
     }
 
     /**
-     * Returns whether this is a special instance that signifies that source information is
-     * available. Unavailable source sections can be created using
-     * {@link Source#createUnavailableSection()}. Available source sections are never equal to
-     * unavailable source sections. Unavailable source sections return the same indices and lengths
-     * as empty source sections starting at character index <code>0</code>.
+     * Returns whether this is a special instance that signifies that source information is available.
+     * Unavailable source sections can be created using {@link Source#createUnavailableSection()}.
+     * Available source sections are never equal to unavailable source sections. Unavailable source
+     * sections return the same indices and lengths as empty source sections starting at character index
+     * <code>0</code>.
      *
      * @see Source#createUnavailableSection()
      * @since 0.18
@@ -67,8 +67,8 @@ public final class SourceSection {
     /**
      * Returns whether the source section is in bounds of the {@link #getSource() source}
      * {@link Source#getCharacters() code}. Please note that calling this method causes the
-     * {@link Source#getCharacters() code} of the {@link #getSource() source} to be loaded if it was
-     * not yet loaded.
+     * {@link Source#getCharacters() code} of the {@link #getSource() source} to be loaded if it was not
+     * yet loaded.
      */
     boolean isValid() {
         return isAvailable() ? (charIndex + charLength <= getSource().getCharacters().length()) : false;
@@ -86,8 +86,8 @@ public final class SourceSection {
 
     /**
      * Returns 1-based line number of the first character in this section (inclusive). Returns
-     * <code>1</code> for out of bounds or {@link #isAvailable() unavailable} source sections.
-     * Please note that calling this method causes the {@link Source#getCharacters() code} of the
+     * <code>1</code> for out of bounds or {@link #isAvailable() unavailable} source sections. Please
+     * note that calling this method causes the {@link Source#getCharacters() code} of the
      * {@link #getSource() source} to be loaded if it was not yet loaded.
      *
      * @return the starting line number
@@ -105,8 +105,8 @@ public final class SourceSection {
 
     /**
      * Returns the 1-based column number of the first character in this section (inclusive). Returns
-     * <code>1</code> for out of bounds or {@link #isAvailable() unavailable} source sections.
-     * Please note that calling this method causes the {@link Source#getCharacters() code} of the
+     * <code>1</code> for out of bounds or {@link #isAvailable() unavailable} source sections. Please
+     * note that calling this method causes the {@link Source#getCharacters() code} of the
      * {@link #getSource() source} to be loaded if it was not yet loaded.
      *
      * @return the starting column number
@@ -124,8 +124,8 @@ public final class SourceSection {
 
     /**
      * Returns 1-based line number of the last character in this section (inclusive). Returns
-     * <code>1</code> for out of bounds or {@link #isAvailable() unavailable} source sections.
-     * Please note that calling this method causes the {@link Source#getCharacters() code} of the
+     * <code>1</code> for out of bounds or {@link #isAvailable() unavailable} source sections. Please
+     * note that calling this method causes the {@link Source#getCharacters() code} of the
      * {@link #getSource() source} to be loaded if it was not yet loaded.
      *
      * @return the starting line number
@@ -143,8 +143,8 @@ public final class SourceSection {
 
     /**
      * Returns the 1-based column number of the last character in this section (inclusive). Returns
-     * <code>1</code> for out of bounds or {@link #isAvailable() unavailable} source sections.
-     * Please note that calling this method causes the {@link Source#getCharacters() code} of the
+     * <code>1</code> for out of bounds or {@link #isAvailable() unavailable} source sections. Please
+     * note that calling this method causes the {@link Source#getCharacters() code} of the
      * {@link #getSource() source} to be loaded if it was not yet loaded.
      *
      * @return the starting column number
@@ -162,10 +162,9 @@ public final class SourceSection {
 
     /**
      * Returns the 0-based index of the first character in this section. Returns <code>0</code> for
-     * {@link #isAvailable() unavailable} source sections. Please note that calling this method does
-     * not cause the {@link Source#getCharacters() code} of the {@link #getSource() source} to be
-     * loaded. The returned index might be out of bounds of the source code if assertions (-ea) are
-     * not enabled.
+     * {@link #isAvailable() unavailable} source sections. Please note that calling this method does not
+     * cause the {@link Source#getCharacters() code} of the {@link #getSource() source} to be loaded.
+     * The returned index might be out of bounds of the source code if assertions (-ea) are not enabled.
      *
      * @return the starting character index
      * @since 0.8 or earlier
@@ -176,10 +175,10 @@ public final class SourceSection {
 
     /**
      * Returns the length of this section in characters. Returns <code>0</code> for
-     * {@link #isAvailable() unavailable} source sections. Please note that calling this method does
-     * not cause the {@link Source#getCharacters() code} of the {@link #getSource() source} to be
-     * loaded. The returned length might be out of bounds of the source code if assertions (-ea) are
-     * not enabled.
+     * {@link #isAvailable() unavailable} source sections. Please note that calling this method does not
+     * cause the {@link Source#getCharacters() code} of the {@link #getSource() source} to be loaded.
+     * The returned length might be out of bounds of the source code if assertions (-ea) are not
+     * enabled.
      *
      * @return the number of characters in the section
      * @since 0.8 or earlier
@@ -192,11 +191,11 @@ public final class SourceSection {
     }
 
     /**
-     * Returns the index of the text position immediately following the last character in the
-     * section. Returns <code>0</code> for {@link #isAvailable() unavailable} source sections.
-     * Please note that calling this method does not cause the {@link Source#getCharacters() code}
-     * of the {@link #getSource() source} to be loaded. The returned index might be out of bounds of
-     * the source code if assertions (-ea) are not enabled.
+     * Returns the index of the text position immediately following the last character in the section.
+     * Returns <code>0</code> for {@link #isAvailable() unavailable} source sections. Please note that
+     * calling this method does not cause the {@link Source#getCharacters() code} of the
+     * {@link #getSource() source} to be loaded. The returned index might be out of bounds of the source
+     * code if assertions (-ea) are not enabled.
      *
      * @return the end position of the section
      * @since 0.8 or earlier
@@ -218,10 +217,10 @@ public final class SourceSection {
     }
 
     /**
-     * Returns the source code fragment described by this section. Returns an empty character
-     * sequence for out of bounds or {@link #isAvailable() unavailable} source sections. Please note
-     * that calling this method causes the {@link Source#getCharacters() code} of the
-     * {@link #getSource() source} to be loaded if it was not yet loaded.
+     * Returns the source code fragment described by this section. Returns an empty character sequence
+     * for out of bounds or {@link #isAvailable() unavailable} source sections. Please note that calling
+     * this method causes the {@link Source#getCharacters() code} of the {@link #getSource() source} to
+     * be loaded if it was not yet loaded.
      *
      * @return the code as a CharSequence
      * @since 0.28

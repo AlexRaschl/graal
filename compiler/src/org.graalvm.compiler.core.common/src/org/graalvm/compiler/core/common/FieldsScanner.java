@@ -26,7 +26,8 @@ import static org.graalvm.compiler.core.common.UnsafeAccess.UNSAFE;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 import sun.misc.Unsafe;
 
@@ -87,10 +88,10 @@ public class FieldsScanner {
     private final FieldsScanner.CalcOffset calc;
 
     /**
-     * Fields not belonging to a more specific category defined by scanner subclasses are added to
-     * this list.
+     * Fields not belonging to a more specific category defined by scanner subclasses are added to this
+     * list.
      */
-    public final ArrayList<FieldsScanner.FieldInfo> data = new ArrayList<>();
+    public final SpecifiedArrayList<FieldsScanner.FieldInfo> data = SpecifiedArrayList.createNew();
 
     public FieldsScanner(FieldsScanner.CalcOffset calc) {
         this.calc = calc;

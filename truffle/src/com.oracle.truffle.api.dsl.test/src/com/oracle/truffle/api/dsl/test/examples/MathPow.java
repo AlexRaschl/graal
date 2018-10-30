@@ -99,8 +99,8 @@ public class MathPow extends Node {
         }
 
         /*
-         * We could just use the doPow specialization instead. But this makes the number of doPow
-         * calls more difficult to assert.
+         * We could just use the doPow specialization instead. But this makes the number of doPow calls more
+         * difficult to assert.
          */
         protected static double cachePow(double base, int exponent) {
             return Math.pow(base, exponent);

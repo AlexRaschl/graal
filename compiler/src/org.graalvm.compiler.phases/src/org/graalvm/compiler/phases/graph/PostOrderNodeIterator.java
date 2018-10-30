@@ -23,12 +23,12 @@
 package org.graalvm.compiler.phases.graph;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Set;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.graph.NodeBitMap;
 import org.graalvm.compiler.nodes.AbstractBeginNode;
@@ -146,7 +146,7 @@ public abstract class PostOrderNodeIterator<T extends MergeableState<T>> {
             if (node instanceof AbstractMergeNode) {
                 AbstractMergeNode merge = (AbstractMergeNode) node;
                 state = nodeStates.get(merge.forwardEndAt(0)).clone();
-                ArrayList<T> states = new ArrayList<>(merge.forwardEndCount() - 1);
+                SpecifiedArrayList<T> states = SpecifiedArrayList.createNew(merge.forwardEndCount() - 1);
                 for (int i = 1; i < merge.forwardEndCount(); i++) {
                     T other = nodeStates.get(merge.forwardEndAt(i));
                     assert other != null;
@@ -182,7 +182,7 @@ public abstract class PostOrderNodeIterator<T extends MergeableState<T>> {
             }
         }
         if (endsVisited) {
-            ArrayList<T> states = new ArrayList<>(begin.loopEnds().count());
+            SpecifiedArrayList<T> states = SpecifiedArrayList.createNew(begin.loopEnds().count());
             for (LoopEndNode le : begin.orderedLoopEnds()) {
                 states.add(nodeStates.get(le));
             }

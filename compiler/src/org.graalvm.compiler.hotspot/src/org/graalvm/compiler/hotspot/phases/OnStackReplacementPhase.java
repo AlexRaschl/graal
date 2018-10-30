@@ -117,9 +117,9 @@ public class OnStackReplacementPhase extends Phase {
 
         if (originalOSRLoop == null) {
             /*
-             * OSR with Locks: We do not have an OSR loop for the original OSR bci. Therefore we
-             * cannot decide where to deopt and which framestate will be used. In the worst case the
-             * framestate of the OSR entry would be used.
+             * OSR with Locks: We do not have an OSR loop for the original OSR bci. Therefore we cannot decide
+             * where to deopt and which framestate will be used. In the worst case the framestate of the OSR
+             * entry would be used.
              */
             throw new PermanentBailoutException("OSR compilation without OSR entry loop.");
         }
@@ -182,9 +182,9 @@ public class OnStackReplacementPhase extends Phase {
             if (value instanceof EntryProxyNode) {
                 EntryProxyNode proxy = (EntryProxyNode) value;
                 /*
-                 * We need to drop the stamp since the types we see during OSR may be too precise
-                 * (if a branch was not parsed for example). In cases when this is possible, we
-                 * insert a guard and narrow the OSRLocal stamp at its usages.
+                 * We need to drop the stamp since the types we see during OSR may be too precise (if a branch was
+                 * not parsed for example). In cases when this is possible, we insert a guard and narrow the
+                 * OSRLocal stamp at its usages.
                  */
                 Stamp narrowedStamp = proxy.value().stamp(NodeView.DEFAULT);
                 Stamp unrestrictedStamp = proxy.stamp(NodeView.DEFAULT).unrestricted();
@@ -242,10 +242,10 @@ public class OnStackReplacementPhase extends Phase {
             /*
              * Ensure balanced monitorenter - monitorexit
              *
-             * Ensure that there is no monitor exit without a monitor enter in the graph. If there
-             * is one this can only be done by bytecode as we have the monitor enter before the OSR
-             * loop but the exit in a path of the loop that must be under a condition, else it will
-             * throw an IllegalStateException anyway in the 2.iteration
+             * Ensure that there is no monitor exit without a monitor enter in the graph. If there is one this
+             * can only be done by bytecode as we have the monitor enter before the OSR loop but the exit in a
+             * path of the loop that must be under a condition, else it will throw an IllegalStateException
+             * anyway in the 2.iteration
              */
             for (MonitorExitNode exit : graph.getNodes(MonitorExitNode.TYPE)) {
                 MonitorIdNode id = exit.getMonitorId();

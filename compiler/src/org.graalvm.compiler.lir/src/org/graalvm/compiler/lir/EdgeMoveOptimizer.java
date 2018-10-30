@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.lir;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.lir.StandardOp.LoadConstantOp;
 import org.graalvm.compiler.lir.StandardOp.MoveOp;
@@ -79,12 +79,12 @@ public final class EdgeMoveOptimizer extends PostAllocationOptimizationPhase {
 
         Optimizer(LIR ir) {
             this.ir = ir;
-            edgeInstructionSeqences = new ArrayList<>(4);
+            edgeInstructionSeqences = SpecifiedArrayList.createNew(4);
         }
 
         /**
-         * Determines if two operations are both {@linkplain MoveOp moves} that have the same source
-         * and {@linkplain MoveOp#getResult() destination} operands.
+         * Determines if two operations are both {@linkplain MoveOp moves} that have the same source and
+         * {@linkplain MoveOp#getResult() destination} operands.
          *
          * @param op1 the first instruction to compare
          * @param op2 the second instruction to compare
@@ -134,7 +134,7 @@ public final class EdgeMoveOptimizer extends PostAllocationOptimizationPhase {
             for (AbstractBlockBase<?> pred : block.getPredecessors()) {
                 assert pred != null;
                 assert ir.getLIRforBlock(pred) != null;
-                ArrayList<LIRInstruction> predInstructions = ir.getLIRforBlock(pred);
+                SpecifiedArrayList<LIRInstruction> predInstructions = ir.getLIRforBlock(pred);
 
                 if (pred.getSuccessorCount() != 1) {
                     // this can happen with switch-statements where multiple edges are between
@@ -191,7 +191,7 @@ public final class EdgeMoveOptimizer extends PostAllocationOptimizationPhase {
             edgeInstructionSeqences.clear();
             int numSux = block.getSuccessorCount();
 
-            ArrayList<LIRInstruction> instructions = ir.getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> instructions = ir.getLIRforBlock(block);
 
             assert numSux == 2 : "method should not be called otherwise";
 
@@ -217,7 +217,7 @@ public final class EdgeMoveOptimizer extends PostAllocationOptimizationPhase {
 
             // setup a list with the lir-instructions of all successors
             for (AbstractBlockBase<?> sux : block.getSuccessors()) {
-                ArrayList<LIRInstruction> suxInstructions = ir.getLIRforBlock(sux);
+                SpecifiedArrayList<LIRInstruction> suxInstructions = ir.getLIRforBlock(sux);
 
                 assert suxInstructions.get(0) instanceof StandardOp.LabelOp : "block must start with label";
 

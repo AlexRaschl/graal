@@ -29,8 +29,7 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isConstantValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.Trace;
 import org.graalvm.compiler.core.common.alloc.TraceBuilderResult;
@@ -83,7 +82,7 @@ final class TraceLinearScanResolveDataFlowPhase extends TraceLinearScanAllocatio
                     debug.log("inserting moves at end of fromBlock B%d", fromBlock.getId());
                 }
 
-                ArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(fromBlock);
+                SpecifiedArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(fromBlock);
                 LIRInstruction instr = instructions.get(instructions.size() - 1);
                 if (instr instanceof StandardOp.JumpOp) {
                     // insert moves before branch
@@ -101,10 +100,9 @@ final class TraceLinearScanResolveDataFlowPhase extends TraceLinearScanAllocatio
                     assert allocator.getLIR().getLIRforBlock(fromBlock).get(0) instanceof StandardOp.LabelOp : "block does not start with a label";
 
                     /*
-                     * Because the number of predecessor edges matches the number of successor
-                     * edges, blocks which are reached by switch statements may have be more than
-                     * one predecessor but it will be guaranteed that all predecessors will be the
-                     * same.
+                     * Because the number of predecessor edges matches the number of successor edges, blocks which are
+                     * reached by switch statements may have be more than one predecessor but it will be guaranteed that
+                     * all predecessors will be the same.
                      */
                     for (AbstractBlockBase<?> predecessor : toBlock.getPredecessors()) {
                         assert fromBlock == predecessor : "all critical edges must be broken";
@@ -116,8 +114,8 @@ final class TraceLinearScanResolveDataFlowPhase extends TraceLinearScanAllocatio
         }
 
         /**
-         * Inserts necessary moves (spilling or reloading) at edges between blocks for intervals
-         * that have been split.
+         * Inserts necessary moves (spilling or reloading) at edges between blocks for intervals that have
+         * been split.
          */
         @SuppressWarnings("try")
         private void resolveDataFlow(Trace currentTrace, AbstractBlockBase<?>[] blocks) {

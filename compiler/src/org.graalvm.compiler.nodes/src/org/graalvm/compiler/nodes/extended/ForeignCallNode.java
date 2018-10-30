@@ -83,9 +83,9 @@ public class ForeignCallNode extends AbstractMemoryCheckpoint implements LIRLowe
         assert verifyDescriptor(b, targetMethod, descriptor);
 
         /*
-         * Need to update the BCI of a ForeignCallNode so that it gets the stateDuring in the case
-         * that the foreign call can deoptimize. As with all deoptimization, we need a state in a
-         * non-intrinsic method.
+         * Need to update the BCI of a ForeignCallNode so that it gets the stateDuring in the case that the
+         * foreign call can deoptimize. As with all deoptimization, we need a state in a non-intrinsic
+         * method.
          */
         GraphBuilderContext nonIntrinsicAncestor = b.getNonIntrinsicAncestor();
         if (nonIntrinsicAncestor != null) {

@@ -91,8 +91,8 @@ public interface DebugConfig {
     /**
      * Handles notification of an exception occurring within a debug scope.
      *
-     * @return the exception object that is to be propagated to parent scope. A value of
-     *         {@code null} indicates that {@code e} is to be propagated.
+     * @return the exception object that is to be propagated to parent scope. A value of {@code null}
+     *         indicates that {@code e} is to be propagated.
      */
     RuntimeException interceptException(DebugContext debug, Throwable e);
 

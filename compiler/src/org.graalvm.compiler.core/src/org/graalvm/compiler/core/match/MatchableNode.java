@@ -41,9 +41,8 @@ import org.graalvm.compiler.nodes.ValueNode;
 public @interface MatchableNode {
 
     /**
-     * The {@link ValueNode} subclass this annotation describes. These annotations might work better
-     * if they were directly on the node being described but that may complicate the annotation
-     * processing.
+     * The {@link ValueNode} subclass this annotation describes. These annotations might work better if
+     * they were directly on the node being described but that may complicate the annotation processing.
      */
     Class<? extends ValueNode> nodeClass();
 
@@ -53,8 +52,8 @@ public @interface MatchableNode {
     String[] inputs() default {};
 
     /**
-     * Can a pattern be matched with the operands swapped. This will cause swapped versions of
-     * patterns to be automatically generated.
+     * Can a pattern be matched with the operands swapped. This will cause swapped versions of patterns
+     * to be automatically generated.
      */
     boolean commutative() default false;
 

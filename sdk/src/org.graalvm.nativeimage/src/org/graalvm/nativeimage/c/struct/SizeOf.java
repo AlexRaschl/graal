@@ -41,8 +41,8 @@ public final class SizeOf {
     }
 
     /**
-     * Returns the size of the data structure pointed to by SystemJava pointer types. The class must
-     * be annotated with {@link CStruct}, {@link CPointerTo}, or {@link RawStructure}.
+     * Returns the size of the data structure pointed to by SystemJava pointer types. The class must be
+     * annotated with {@link CStruct}, {@link CPointerTo}, or {@link RawStructure}.
      */
     public static int get(Class<? extends PointerBase> clazz) {
         return ImageSingletons.lookup(SizeOfSupport.class).sizeof(clazz);

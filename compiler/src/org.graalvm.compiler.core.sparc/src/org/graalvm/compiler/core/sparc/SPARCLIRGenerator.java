@@ -140,8 +140,8 @@ public abstract class SPARCLIRGenerator extends LIRGenerator {
 
     /**
      * The SPARC backend only uses WORD and DWORD values in registers because except to the ld/st
-     * instructions no instruction deals either with 32 or 64 bits. This function converts small
-     * integer kinds to WORD.
+     * instructions no instruction deals either with 32 or 64 bits. This function converts small integer
+     * kinds to WORD.
      */
     @Override
     public <K extends ValueKind<K>> K toRegisterKind(K kind) {
@@ -297,8 +297,8 @@ public abstract class SPARCLIRGenerator extends LIRGenerator {
     }
 
     /**
-     * This method emits the compare instruction, and may reorder the operands. It returns true if
-     * it did so.
+     * This method emits the compare instruction, and may reorder the operands. It returns true if it
+     * did so.
      *
      * @param cmpKind Kind how a and b have to be compared
      * @param a the left operand of the comparison

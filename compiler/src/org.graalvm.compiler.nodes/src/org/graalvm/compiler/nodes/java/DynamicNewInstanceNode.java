@@ -47,9 +47,8 @@ public class DynamicNewInstanceNode extends AbstractNewObjectNode implements Can
     @Input ValueNode clazz;
 
     /**
-     * Class pointer to class.class needs to be exposed earlier than this node is lowered so that it
-     * can be replaced by the AOT machinery. If it's not needed for lowering this input can be
-     * ignored.
+     * Class pointer to class.class needs to be exposed earlier than this node is lowered so that it can
+     * be replaced by the AOT machinery. If it's not needed for lowering this input can be ignored.
      */
     @OptionalInput ValueNode classClass;
 

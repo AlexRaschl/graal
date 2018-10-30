@@ -86,8 +86,7 @@ public abstract class OptimizedOSRLoopNode extends LoopNode implements ReplaceOb
      */
     protected OSRRootNode createRootNode(FrameDescriptor rootFrameDescriptor, Class<? extends VirtualFrame> clazz) {
         /*
-         * Use a new frame descriptor, because the frame that this new root node creates is not
-         * used.
+         * Use a new frame descriptor, because the frame that this new root node creates is not used.
          */
         return new OSRRootNode(this, new FrameDescriptor(), clazz);
     }
@@ -217,9 +216,8 @@ public abstract class OptimizedOSRLoopNode extends LoopNode implements ReplaceOb
             @Override
             public void run() {
                 /*
-                 * Compilations need to run atomically as they may be scheduled by multiple threads
-                 * at the same time. This strategy lets the first thread win. Later threads will not
-                 * issue compiles.
+                 * Compilations need to run atomically as they may be scheduled by multiple threads at the same
+                 * time. This strategy lets the first thread win. Later threads will not issue compiles.
                  */
                 if (compiledOSRLoop == null) {
                     compiledOSRLoop = compileImpl(frame);
@@ -271,8 +269,8 @@ public abstract class OptimizedOSRLoopNode extends LoopNode implements ReplaceOb
     }
 
     /**
-     * Creates the default loop node implementation with the default configuration. If OSR is
-     * disabled {@link OptimizedLoopNode} will be used instead.
+     * Creates the default loop node implementation with the default configuration. If OSR is disabled
+     * {@link OptimizedLoopNode} will be used instead.
      */
     public static LoopNode create(RepeatingNode repeat) {
         // using static methods with LoopNode return type ensures
@@ -290,32 +288,31 @@ public abstract class OptimizedOSRLoopNode extends LoopNode implements ReplaceOb
 
     /**
      * <p>
-     * Creates a configurable instance of the OSR loop node. If readFrameSlots and writtenFrameSlots
-     * are set then the involved frame must never escape, ie {@link VirtualFrame#materialize()} is
-     * never invoked.
+     * Creates a configurable instance of the OSR loop node. If readFrameSlots and writtenFrameSlots are
+     * set then the involved frame must never escape, ie {@link VirtualFrame#materialize()} is never
+     * invoked.
      * </p>
      *
      * <p>
-     * <b>Important note:</b> All readFrameSlots that are given must be initialized before entering
-     * the loop. Also all writtenFrameSlots must be initialized inside of the loop if they were not
+     * <b>Important note:</b> All readFrameSlots that are given must be initialized before entering the
+     * loop. Also all writtenFrameSlots must be initialized inside of the loop if they were not
      * initialized outside the loop.
      * </p>
      *
      * @param repeating the repeating node to use for this loop.
-     * @param osrThreshold the threshold after how many loop iterations an OSR compilation is
-     *            triggered. If the repeating node uses child loops or
-     *            {@link LoopNode#reportLoopCount(Node, int)} then these iterations also contribute
-     *            to this loop's iterations.
+     * @param osrThreshold the threshold after how many loop iterations an OSR compilation is triggered.
+     *            If the repeating node uses child loops or {@link LoopNode#reportLoopCount(Node, int)}
+     *            then these iterations also contribute to this loop's iterations.
      * @param invalidationBackoff how many iterations the loop should get reprofiled until the next
      *            compile is scheduled.
-     * @param readFrameSlots a set of all frame slots which are read inside the loop.
-     *            <code>null</code> for unknown. All given frame slots must not have the
-     *            {@link FrameSlotKind#Illegal illegal frame slot kind} set. If readFrameSlot is
-     *            kept <code>null</code> writtenFrameSlots must be <code>null</code> as well.
+     * @param readFrameSlots a set of all frame slots which are read inside the loop. <code>null</code>
+     *            for unknown. All given frame slots must not have the {@link FrameSlotKind#Illegal
+     *            illegal frame slot kind} set. If readFrameSlot is kept <code>null</code>
+     *            writtenFrameSlots must be <code>null</code> as well.
      * @param writtenFrameSlots a set of all frame slots which are written inside the loop.
      *            <code>null</code> for unknown. All given frame slots must not have the
-     *            {@link FrameSlotKind#Illegal illegal frame slot kind} set. If readFrameSlot is
-     *            kept <code>null</code> writtenFRameSlots must be <code>null</code> as well.
+     *            {@link FrameSlotKind#Illegal illegal frame slot kind} set. If readFrameSlot is kept
+     *            <code>null</code> writtenFRameSlots must be <code>null</code> as well.
      *
      * @see LoopNode LoopNode on how to use loop nodes.
      */
@@ -518,8 +515,7 @@ public abstract class OptimizedOSRLoopNode extends LoopNode implements ReplaceOb
             byte[] currentTargetTags = target.getTags();
 
             /*
-             * We check max tags so length of the tags array is not checked inside the loop each
-             * time.
+             * We check max tags so length of the tags array is not checked inside the loop each time.
              */
             if (currentSourceTags.length < maxTagsLength || currentTargetTags.length < maxTagsLength) {
                 CompilerDirectives.transferToInterpreterAndInvalidate();

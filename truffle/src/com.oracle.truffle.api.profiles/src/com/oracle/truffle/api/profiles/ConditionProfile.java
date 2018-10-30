@@ -66,10 +66,10 @@ public abstract class ConditionProfile extends Profile {
     public abstract boolean profile(boolean value);
 
     /**
-     * Returns a {@link ConditionProfile} that speculates on conditions to be never
-     * <code>true</code> or to be never <code>false</code>. Additionally to a binary profile this
-     * method returns a condition profile that also counts the number of times the condition was
-     * true and false. This information is reported to the underlying optimization system using
+     * Returns a {@link ConditionProfile} that speculates on conditions to be never <code>true</code> or
+     * to be never <code>false</code>. Additionally to a binary profile this method returns a condition
+     * profile that also counts the number of times the condition was true and false. This information
+     * is reported to the underlying optimization system using
      * {@link CompilerDirectives#injectBranchProbability(double, boolean)}. Condition profiles are
      * intended to be used as part of if conditions.
      *
@@ -86,9 +86,9 @@ public abstract class ConditionProfile extends Profile {
     }
 
     /**
-     * Returns a {@link ConditionProfile} that speculates on conditions to be never
-     * <code>true</code> or to be never <code>false</code>. Condition profiles are intended to be
-     * used as part of if conditions.
+     * Returns a {@link ConditionProfile} that speculates on conditions to be never <code>true</code> or
+     * to be never <code>false</code>. Condition profiles are intended to be used as part of if
+     * conditions.
      *
      * @see ConditionProfile
      * @see ConditionProfile#createCountingProfile()
@@ -129,9 +129,9 @@ public abstract class ConditionProfile extends Profile {
         @CompilationFinal private int falseCount;
 
         /**
-         * A constant holding the maximum value an {@code int} can have, 2<sup>30</sup>-1. The sum
-         * of the true and false count must not overflow. This constant is used to check whether one
-         * of the counts does not exceed the required maximum value.
+         * A constant holding the maximum value an {@code int} can have, 2<sup>30</sup>-1. The sum of the
+         * true and false count must not overflow. This constant is used to check whether one of the counts
+         * does not exceed the required maximum value.
          */
         public static final int MAX_VALUE = 0x3fffffff;
 

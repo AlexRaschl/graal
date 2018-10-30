@@ -67,10 +67,10 @@ public abstract class Instrumenter {
     public abstract <T extends ExecutionEventListener> EventBinding<T> attachListener(SourceSectionFilter filter, T listener);
 
     /**
-     * Starts notifications for each newly loaded {@link Source} and returns a
-     * {@linkplain EventBinding binding} that can be used to terminate notifications. Only
-     * subsequent loads will be notified unless {@code includeExistingSources} is true, in which
-     * case a notification for each previous load will be delivered before this method returns.
+     * Starts notifications for each newly loaded {@link Source} and returns a {@linkplain EventBinding
+     * binding} that can be used to terminate notifications. Only subsequent loads will be notified
+     * unless {@code includeExistingSources} is true, in which case a notification for each previous
+     * load will be delivered before this method returns.
      * <p>
      * <strong>Note:</strong> the provided {@link SourceSectionFilter} must only contain filters on
      * {@link SourceSectionFilter.Builder#sourceIs(Source...) sources} or
@@ -78,8 +78,8 @@ public abstract class Instrumenter {
      *
      * @param filter a filter on which sources trigger events. Only filters are allowed.
      * @param listener a listener that gets notified if a source was loaded
-     * @param includeExistingSources whether or not this listener should be notified for sources
-     *            which were already loaded at the time when this listener was attached.
+     * @param includeExistingSources whether or not this listener should be notified for sources which
+     *            were already loaded at the time when this listener was attached.
      * @return a handle for stopping the notification stream
      *
      * @see LoadSourceListener#onLoad(LoadSourceEvent)
@@ -91,14 +91,13 @@ public abstract class Instrumenter {
     /**
      * Starts notifications for each {@link SourceSection} in every newly loaded {@link Source} and
      * returns a {@linkplain EventBinding binding} that can be used to terminate notifications. Only
-     * subsequent loads will be notified unless {@code includeExistingSourceSections} is true, in
-     * which case a notification for each previous load will be delivered before this method
-     * returns.
+     * subsequent loads will be notified unless {@code includeExistingSourceSections} is true, in which
+     * case a notification for each previous load will be delivered before this method returns.
      *
      * @param filter a filter on which sources sections trigger events
      * @param listener a listener that gets notified if a source section was loaded
-     * @param includeExistingSourceSections whether or not this listener should be notified for
-     *            sources which were already loaded at the time when this listener was attached.
+     * @param includeExistingSourceSections whether or not this listener should be notified for sources
+     *            which were already loaded at the time when this listener was attached.
      * @return a handle for stopping the notification stream
      *
      * @see LoadSourceSectionListener#onLoad(LoadSourceSectionEvent)
@@ -108,33 +107,32 @@ public abstract class Instrumenter {
     public abstract <T extends LoadSourceSectionListener> EventBinding<T> attachLoadSourceSectionListener(SourceSectionFilter filter, T listener, boolean includeExistingSourceSections);
 
     /**
-     * Attach an output stream as a consumer of the {@link TruffleInstrument.Env#out() standard
-     * output}. The consumer output stream receives all output that goes to
-     * {@link TruffleInstrument.Env#out()} since this call, including output emitted by the
-     * {@link com.oracle.truffle.api.vm.PolyglotEngine} this instrumenter is being executed in,
-     * output from instruments (including this one), etc. Be sure to {@link EventBinding#dispose()
-     * dispose} the binding when it's not used any more.
+     * Attach an output stream as a consumer of the {@link TruffleInstrument.Env#out() standard output}.
+     * The consumer output stream receives all output that goes to {@link TruffleInstrument.Env#out()}
+     * since this call, including output emitted by the {@link com.oracle.truffle.api.vm.PolyglotEngine}
+     * this instrumenter is being executed in, output from instruments (including this one), etc. Be
+     * sure to {@link EventBinding#dispose() dispose} the binding when it's not used any more.
      *
      * @since 0.25
      */
     public abstract <T extends OutputStream> EventBinding<T> attachOutConsumer(T stream);
 
     /**
-     * Attach an output stream as a consumer of the {@link TruffleInstrument.Env#err() error output}
-     * . The consumer output stream receives all error output that goes to
+     * Attach an output stream as a consumer of the {@link TruffleInstrument.Env#err() error output} .
+     * The consumer output stream receives all error output that goes to
      * {@link TruffleInstrument.Env#err()} since this call, including error output emitted by the
-     * {@link com.oracle.truffle.api.vm.PolyglotEngine} this instrumenter is being executed in,
-     * error output from instruments (including this one), etc. Be sure to
-     * {@link EventBinding#dispose() dispose} the binding when it's not used any more.
+     * {@link com.oracle.truffle.api.vm.PolyglotEngine} this instrumenter is being executed in, error
+     * output from instruments (including this one), etc. Be sure to {@link EventBinding#dispose()
+     * dispose} the binding when it's not used any more.
      *
      * @since 0.25
      */
     public abstract <T extends OutputStream> EventBinding<T> attachErrConsumer(T stream);
 
     /**
-     * Attach a {@link AllocationListener listener} to be notified about allocations of guest
-     * language values. Be sure to {@link EventBinding#dispose() dispose} the binding when it's not
-     * used any more.
+     * Attach a {@link AllocationListener listener} to be notified about allocations of guest language
+     * values. Be sure to {@link EventBinding#dispose() dispose} the binding when it's not used any
+     * more.
      *
      * @since 0.27
      */
@@ -142,12 +140,11 @@ public abstract class Instrumenter {
 
     /**
      * Attach a {@link ContextsListener listener} to be notified about changes in contexts in guest
-     * language application. This is supported in {@link TruffleInstrument.Env#getInstrumenter()}
-     * only.
+     * language application. This is supported in {@link TruffleInstrument.Env#getInstrumenter()} only.
      *
      * @param listener a listener to receive the context events
-     * @param includeActiveContexts whether or not this listener should be notified for present
-     *            active contexts
+     * @param includeActiveContexts whether or not this listener should be notified for present active
+     *            contexts
      * @return a handle for unregistering the listener
      * @since 0.30
      */
@@ -155,8 +152,7 @@ public abstract class Instrumenter {
 
     /**
      * Attach a {@link ThreadsListener listener} to be notified about changes in threads in guest
-     * language application. This is supported in {@link TruffleInstrument.Env#getInstrumenter()}
-     * only.
+     * language application. This is supported in {@link TruffleInstrument.Env#getInstrumenter()} only.
      *
      * @param listener a listener to receive the context events
      * @param includeInitializedThreads whether or not this listener should be notified for present
@@ -186,13 +182,12 @@ public abstract class Instrumenter {
     }
 
     /**
-     * Returns an unmodifiable {@link Set} of tag classes which where associated with this node. If
-     * the instrumenter is used as a {@link TruffleLanguage} then only nodes can be queried for tags
-     * that are associated with the current language otherwise an {@link IllegalArgumentException}
-     * is thrown. The given node must not be <code>null</code>. If the given node is not
-     * instrumentable, the given node is not yet adopted by a {@link RootNode} or the given tag was
-     * not {@link ProvidedTags provided} by the language then always an empty {@link Set} is
-     * returned.
+     * Returns an unmodifiable {@link Set} of tag classes which where associated with this node. If the
+     * instrumenter is used as a {@link TruffleLanguage} then only nodes can be queried for tags that
+     * are associated with the current language otherwise an {@link IllegalArgumentException} is thrown.
+     * The given node must not be <code>null</code>. If the given node is not instrumentable, the given
+     * node is not yet adopted by a {@link RootNode} or the given tag was not {@link ProvidedTags
+     * provided} by the language then always an empty {@link Set} is returned.
      *
      * @param node the node to query
      * @return an unmodifiable {@link Set} of tag classes which where associated with this node.

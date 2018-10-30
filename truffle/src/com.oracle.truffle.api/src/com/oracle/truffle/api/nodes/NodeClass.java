@@ -114,8 +114,8 @@ public abstract class NodeClass {
     }
 
     /**
-     * The {@link Class} this <code>NodeClass</code> has been {@link #NodeClass(java.lang.Class)
-     * created for}.
+     * The {@link Class} this <code>NodeClass</code> has been {@link #NodeClass(java.lang.Class) created
+     * for}.
      *
      * @return the clazz of node this <code>NodeClass</code> describes
      * @since 0.8 or earlier

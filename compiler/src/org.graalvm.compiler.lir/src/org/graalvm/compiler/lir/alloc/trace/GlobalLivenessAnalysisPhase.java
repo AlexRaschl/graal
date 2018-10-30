@@ -25,10 +25,10 @@ package org.graalvm.compiler.lir.alloc.trace;
 import static org.graalvm.compiler.lir.LIRValueUtil.asVariable;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.EnumSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.Loop;
 import org.graalvm.compiler.debug.DebugContext;
@@ -68,17 +68,16 @@ public final class GlobalLivenessAnalysisPhase extends AllocationPhase {
         private static final int LOG_LEVEL = DebugContext.INFO_LEVEL;
 
         /**
-         * Bit map specifying which operands are live upon entry to this block. These are values
-         * used in this block or any of its successors where such value are not defined in this
-         * block. The bit index of an operand is its {@linkplain #operandNumber operand number}.
+         * Bit map specifying which operands are live upon entry to this block. These are values used in
+         * this block or any of its successors where such value are not defined in this block. The bit index
+         * of an operand is its {@linkplain #operandNumber operand number}.
          */
         private final BitSet[] liveIns;
 
         /**
-         * Bit map specifying which operands are live upon exit from this block. These are values
-         * used in a successor block that are either defined in this block or were live upon entry
-         * to this block. The bit index of an operand is its {@linkplain #operandNumber operand
-         * number}.
+         * Bit map specifying which operands are live upon exit from this block. These are values used in a
+         * successor block that are either defined in this block or were live upon entry to this block. The
+         * bit index of an operand is its {@linkplain #operandNumber operand number}.
          */
         private final BitSet[] liveOuts;
 
@@ -165,7 +164,7 @@ public final class GlobalLivenessAnalysisPhase extends AllocationPhase {
                     }
 
                     // iterate all instructions of the block
-                    ArrayList<LIRInstruction> instructions = getLIR().getLIRforBlock(block);
+                    SpecifiedArrayList<LIRInstruction> instructions = getLIR().getLIRforBlock(block);
                     for (int j = instructions.size() - 1; j >= 0; j--) {
                         final LIRInstruction op = instructions.get(j);
 
@@ -285,9 +284,8 @@ public final class GlobalLivenessAnalysisPhase extends AllocationPhase {
                 liveInArray = livenessInfoBuilder.emptySet;
             } else {
                 /*
-                 * Collect live out of predecessors since there might be values not used in this
-                 * block which might cause out/in mismatch. Per construction the live sets of all
-                 * predecessors are equal.
+                 * Collect live out of predecessors since there might be values not used in this block which might
+                 * cause out/in mismatch. Per construction the live sets of all predecessors are equal.
                  */
                 BitSet predLiveOut = getLiveOut(block.getPredecessors()[0]);
                 liveInArray = predLiveOut.isEmpty() ? livenessInfoBuilder.emptySet : bitSetToIntArray(predLiveOut);

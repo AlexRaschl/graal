@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.lir.ssa;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.lir.LIR;
@@ -106,7 +106,7 @@ public final class SSAUtil {
 
     public static JumpOp phiOut(LIR lir, AbstractBlockBase<?> block) {
         assert block.getSuccessorCount() == 1;
-        ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
         int index = instructions.size() - 1;
         LIRInstruction op = instructions.get(index);
         return (JumpOp) op;
@@ -114,7 +114,7 @@ public final class SSAUtil {
 
     public static int phiOutIndex(LIR lir, AbstractBlockBase<?> block) {
         assert block.getSuccessorCount() == 1;
-        ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(block);
         int index = instructions.size() - 1;
         assert instructions.get(index) instanceof JumpOp;
         return index;

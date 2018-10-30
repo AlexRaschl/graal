@@ -38,8 +38,8 @@ public @interface ClassSubstitution {
     /**
      * Specifies the original class.
      * <p>
-     * If the default value is specified for this element, then a non-default value must be given
-     * for the {@link #className()} element.
+     * If the default value is specified for this element, then a non-default value must be given for
+     * the {@link #className()} element.
      */
     Class<?> value() default ClassSubstitution.class;
 
@@ -47,19 +47,19 @@ public @interface ClassSubstitution {
      * Specifies the original class or classes if a single class is being used for multiple
      * substitutions.
      * <p>
-     * This method is provided for cases where the original class is not accessible (according to
-     * Java language access control rules).
+     * This method is provided for cases where the original class is not accessible (according to Java
+     * language access control rules).
      * <p>
-     * If the default value is specified for this element, then a non-default value must be given
-     * for the {@link #value()} element.
+     * If the default value is specified for this element, then a non-default value must be given for
+     * the {@link #value()} element.
      */
     String[] className() default {};
 
     /**
      * Determines if the substitutions are for classes that may not be part of the runtime.
-     * Substitutions for such classes are omitted if the original classes cannot be found. If
-     * multiple classes are specified using {@link #className()} and {@link #optional()} is false,
-     * then at least one of the classes is required to be reachable.
+     * Substitutions for such classes are omitted if the original classes cannot be found. If multiple
+     * classes are specified using {@link #className()} and {@link #optional()} is false, then at least
+     * one of the classes is required to be reachable.
      */
     boolean optional() default false;
 }

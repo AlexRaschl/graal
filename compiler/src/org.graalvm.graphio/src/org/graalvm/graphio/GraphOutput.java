@@ -121,9 +121,9 @@ public final class GraphOutput<G, M> implements Closeable {
         }
 
         /**
-         * Chooses which version of the protocol to use. The default version is <code>4.0</code>
-         * (when the {@link GraphOutput} & co. classes were introduced). The default can be changed
-         * to other known versions manually by calling this method.
+         * Chooses which version of the protocol to use. The default version is <code>4.0</code> (when the
+         * {@link GraphOutput} & co. classes were introduced). The default can be changed to other known
+         * versions manually by calling this method.
          *
          * @param majorVersion by default 4, newer version may be known
          * @param minorVersion usually 0
@@ -171,8 +171,8 @@ public final class GraphOutput<G, M> implements Closeable {
         }
 
         /**
-         * Creates new {@link GraphOutput} to output to provided channel. The output will use
-         * interfaces currently associated with this builder.
+         * Creates new {@link GraphOutput} to output to provided channel. The output will use interfaces
+         * currently associated with this builder.
          *
          * @param channel the channel to output to
          * @return new graph output
@@ -186,11 +186,10 @@ public final class GraphOutput<G, M> implements Closeable {
         /**
          * Support for nesting heterogenous graphs. The newly created output uses all the interfaces
          * currently associated with this builder, but shares with {@code parent} the output
-         * {@code channel}, internal constant pool and {@link #protocolVersion(int, int) protocol
-         * version}.
+         * {@code channel}, internal constant pool and {@link #protocolVersion(int, int) protocol version}.
          * <p>
-         * Both GraphOutput (the {@code parent} and the returned one) has to be used in
-         * synchronization - e.g. only one
+         * Both GraphOutput (the {@code parent} and the returned one) has to be used in synchronization -
+         * e.g. only one
          * {@link #beginGroup(java.lang.Object, java.lang.String, java.lang.String, java.lang.Object, int, java.util.Map)
          * begin}, {@link #endGroup() end} of group or
          * {@link #print(java.lang.Object, java.util.Map, int, java.lang.String, java.lang.Object...)

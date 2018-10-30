@@ -53,25 +53,25 @@ public interface FrameInstance {
         NONE,
 
         /**
-         * This mode allows to read the frame and provides read only access to its local variables.
-         * The returned frame must not be stored/persisted. Writing local variables in this mode
-         * will result in an {@link AssertionError} only if assertions (-ea) are enabled.
+         * This mode allows to read the frame and provides read only access to its local variables. The
+         * returned frame must not be stored/persisted. Writing local variables in this mode will result in
+         * an {@link AssertionError} only if assertions (-ea) are enabled.
          *
          * @since 0.8 or earlier
          */
         READ_ONLY,
 
         /**
-         * This mode allows to read the frame and provides read and write access to its local
-         * variables. The returned frame must not be stored/persisted.
+         * This mode allows to read the frame and provides read and write access to its local variables. The
+         * returned frame must not be stored/persisted.
          *
          * @since 0.8 or earlier
          **/
         READ_WRITE,
         /**
-         * This mode allows to read a materialized version of the frame and provides read and write
-         * access to its local variables. In addition to {@link #READ_WRITE} this mode allows to
-         * store/persist the returned frame.
+         * This mode allows to read a materialized version of the frame and provides read and write access
+         * to its local variables. In addition to {@link #READ_WRITE} this mode allows to store/persist the
+         * returned frame.
          *
          * @since 0.8 or earlier
          **/
@@ -125,8 +125,8 @@ public interface FrameInstance {
      *
      * </pre>
      *
-     * @return a node representing the callsite of the next new target on the stack. Null in case
-     *         there is no upper target or if the target was not invoked using a
+     * @return a node representing the callsite of the next new target on the stack. Null in case there
+     *         is no upper target or if the target was not invoked using a
      *         {@link TruffleRuntime#createDirectCallNode(CallTarget) direct} or
      *         {@link TruffleRuntime#createIndirectCallNode() indirect} call node.
      *

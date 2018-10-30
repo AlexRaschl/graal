@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.phases.common.inlining.walker;
 
-import java.util.ArrayList;
 import java.util.function.ToDoubleFunction;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.SuppressFBWarnings;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.graph.NodeWorkList;
@@ -64,8 +64,8 @@ public class ComputeInliningRelevance {
      */
     private EconomicMap<FixedNode, Double> nodeRelevances;
     /**
-     * This scope is non-null if (and only if) there are no loops in the graph. In this case, the
-     * root scope is used to compute invoke relevances on the fly.
+     * This scope is non-null if (and only if) there are no loops in the graph. In this case, the root
+     * scope is used to compute invoke relevances on the fly.
      */
     private Scope rootScope;
 
@@ -75,8 +75,8 @@ public class ComputeInliningRelevance {
     }
 
     /**
-     * Initializes or updates the relevance computation. If there are no loops within the graph,
-     * most computation happens lazily.
+     * Initializes or updates the relevance computation. If there are no loops within the graph, most
+     * computation happens lazily.
      */
     public void compute() {
         rootScope = null;
@@ -150,9 +150,9 @@ public class ComputeInliningRelevance {
     }
 
     /**
-     * A scope holds information for the contents of one loop or of the root of the method. It does
-     * not include child loops, i.e., the iteration in {@link #process(NodeWorkList)} explicitly
-     * excludes the nodes of child loops.
+     * A scope holds information for the contents of one loop or of the root of the method. It does not
+     * include child loops, i.e., the iteration in {@link #process(NodeWorkList)} explicitly excludes
+     * the nodes of child loops.
      */
     private class Scope {
         public final FixedNode start;
@@ -181,8 +181,8 @@ public class ComputeInliningRelevance {
         }
 
         /**
-         * Computes the ratio between the probabilities of the current scope's entry point and the
-         * parent scope's fastPathMinProbability.
+         * Computes the ratio between the probabilities of the current scope's entry point and the parent
+         * scope's fastPathMinProbability.
          */
         @SuppressFBWarnings(value = "FE_FLOATING_POINT_EQUALITY", justification = "comparing against -1D is accurate")
         public double getScopeRelevanceWithinParent() {
@@ -200,9 +200,9 @@ public class ComputeInliningRelevance {
         }
 
         /**
-         * Processes all invokes in this scope by starting at the scope's start node and iterating
-         * all fixed nodes. Child loops are skipped by going from loop entries directly to the loop
-         * exits. Processing stops at loop exits of the current loop.
+         * Processes all invokes in this scope by starting at the scope's start node and iterating all fixed
+         * nodes. Child loops are skipped by going from loop entries directly to the loop exits. Processing
+         * stops at loop exits of the current loop.
          */
         public void process(NodeWorkList workList) {
             assert !(start instanceof Invoke);
@@ -237,8 +237,8 @@ public class ComputeInliningRelevance {
         }
 
         /**
-         * The relevance of an invoke is the ratio between the invoke's probability and the current
-         * scope's fastPathMinProbability, adjusted by scopeRelevanceWithinParent.
+         * The relevance of an invoke is the ratio between the invoke's probability and the current scope's
+         * fastPathMinProbability, adjusted by scopeRelevanceWithinParent.
          */
         public double computeInvokeRelevance(Invoke invoke) {
             double invokeProbability = nodeProbabilities.applyAsDouble(invoke.asNode());
@@ -251,11 +251,11 @@ public class ComputeInliningRelevance {
     }
 
     /**
-     * Computes the minimum probability along the most probable path within the scope. During
-     * iteration, the method returns immediately once a loop exit is discovered.
+     * Computes the minimum probability along the most probable path within the scope. During iteration,
+     * the method returns immediately once a loop exit is discovered.
      */
     private double computeFastPathMinProbability(FixedNode scopeStart) {
-        ArrayList<FixedNode> pathBeginNodes = new ArrayList<>();
+        SpecifiedArrayList<FixedNode> pathBeginNodes = SpecifiedArrayList.createNew();
         pathBeginNodes.add(scopeStart);
         double minPathProbability = nodeProbabilities.applyAsDouble(scopeStart);
         boolean isLoopScope = scopeStart instanceof LoopBeginNode;
@@ -286,10 +286,10 @@ public class ComputeInliningRelevance {
     }
 
     /**
-     * Returns the most probable successor. If multiple successors share the maximum probability,
-     * one is returned and the others are enqueued in pathBeginNodes.
+     * Returns the most probable successor. If multiple successors share the maximum probability, one is
+     * returned and the others are enqueued in pathBeginNodes.
      */
-    private static Node getMaxProbabilitySux(ControlSplitNode controlSplit, ArrayList<FixedNode> pathBeginNodes) {
+    private static Node getMaxProbabilitySux(ControlSplitNode controlSplit, SpecifiedArrayList<FixedNode> pathBeginNodes) {
         Node maxSux = null;
         double maxProbability = 0.0;
         int pathBeginCount = pathBeginNodes.size();
@@ -309,10 +309,10 @@ public class ComputeInliningRelevance {
     }
 
     /**
-     * Returns the most probable loop exit. If multiple successors share the maximum probability,
-     * one is returned and the others are enqueued in pathBeginNodes.
+     * Returns the most probable loop exit. If multiple successors share the maximum probability, one is
+     * returned and the others are enqueued in pathBeginNodes.
      */
-    private Node getMaxProbabilityLoopExit(LoopBeginNode loopBegin, ArrayList<FixedNode> pathBeginNodes) {
+    private Node getMaxProbabilityLoopExit(LoopBeginNode loopBegin, SpecifiedArrayList<FixedNode> pathBeginNodes) {
         Node maxSux = null;
         double maxProbability = 0.0;
         int pathBeginCount = pathBeginNodes.size();
@@ -331,7 +331,7 @@ public class ComputeInliningRelevance {
         return maxSux;
     }
 
-    private static void truncate(ArrayList<FixedNode> pathBeginNodes, int pathBeginCount) {
+    private static void truncate(SpecifiedArrayList<FixedNode> pathBeginNodes, int pathBeginCount) {
         for (int i = pathBeginNodes.size() - pathBeginCount; i > 0; i--) {
             pathBeginNodes.remove(pathBeginNodes.size() - 1);
         }

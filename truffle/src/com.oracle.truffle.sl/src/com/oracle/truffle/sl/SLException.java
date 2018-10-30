@@ -79,8 +79,8 @@ public class SLException extends RuntimeException implements TruffleException {
     }
 
     /**
-     * Provides a user-readable message for run-time type errors. SL is strongly typed, i.e., there
-     * are no automatic type conversions of values.
+     * Provides a user-readable message for run-time type errors. SL is strongly typed, i.e., there are
+     * no automatic type conversions of values.
      */
     @TruffleBoundary
     public static SLException typeError(Node operation, Object... values) {

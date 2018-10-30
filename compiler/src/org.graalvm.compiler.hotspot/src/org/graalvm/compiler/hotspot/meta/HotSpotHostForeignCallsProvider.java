@@ -225,9 +225,9 @@ public abstract class HotSpotHostForeignCallsProvider extends HotSpotForeignCall
 
     private void registerArrayCopy(JavaKind kind, long routine, long alignedRoutine, long disjointRoutine, long alignedDisjointRoutine, boolean uninit) {
         /*
-         * Sometimes the same function is used for multiple cases so share them when that's the case
-         * but only within the same Kind. For instance short and char are the same copy routines but
-         * they kill different memory so they still have to be distinct.
+         * Sometimes the same function is used for multiple cases so share them when that's the case but
+         * only within the same Kind. For instance short and char are the same copy routines but they kill
+         * different memory so they still have to be distinct.
          */
         EconomicMap<Long, ForeignCallDescriptor> descMap = EconomicMap.create();
         registerArraycopyDescriptor(descMap, kind, false, false, uninit, false, routine);
@@ -271,8 +271,8 @@ public abstract class HotSpotHostForeignCallsProvider extends HotSpotForeignCall
         CreateExceptionStub.registerForeignCalls(c, this);
 
         /*
-         * This message call is registered twice, where the second one must only be used for calls
-         * that do not return, i.e., that exit the VM.
+         * This message call is registered twice, where the second one must only be used for calls that do
+         * not return, i.e., that exit the VM.
          */
         registerForeignCall(VM_MESSAGE_C, c.vmMessageAddress, NativeCall, DESTROYS_REGISTERS, SAFEPOINT, REEXECUTABLE, NO_LOCATIONS);
         registerForeignCall(ASSERTION_VM_MESSAGE_C, c.vmMessageAddress, NativeCall, PRESERVES_REGISTERS, LEAF, REEXECUTABLE, NO_LOCATIONS);
@@ -364,9 +364,9 @@ public abstract class HotSpotHostForeignCallsProvider extends HotSpotForeignCall
 
         if (c.useAESIntrinsics) {
             /*
-             * When the java.ext.dirs property is modified then the crypto classes might not be
-             * found. If that's the case we ignore the ClassNotFoundException and continue since we
-             * cannot replace a non-existing method anyway.
+             * When the java.ext.dirs property is modified then the crypto classes might not be found. If that's
+             * the case we ignore the ClassNotFoundException and continue since we cannot replace a non-existing
+             * method anyway.
              */
             try {
                 // These stubs do callee saving

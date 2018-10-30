@@ -29,6 +29,7 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isJavaConstant;
 
 import java.util.ArrayList;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.PermanentBailoutException;
 import org.graalvm.compiler.debug.GraalError;
@@ -47,7 +48,7 @@ public final class HotSpotReferenceMapBuilder extends ReferenceMapBuilder {
 
     private int maxRegisterSize;
 
-    private final ArrayList<Value> objectValues;
+    private final SpecifiedArrayList<Value> objectValues;
     private int objectCount;
 
     private final int totalFrameSize;
@@ -56,7 +57,7 @@ public final class HotSpotReferenceMapBuilder extends ReferenceMapBuilder {
 
     public HotSpotReferenceMapBuilder(int totalFrameSize, int maxOopMapStackOffset, int uncompressedReferenceSize) {
         this.uncompressedReferenceSize = uncompressedReferenceSize;
-        this.objectValues = new ArrayList<>();
+        this.objectValues = SpecifiedArrayList.createNew();
         this.objectCount = 0;
         this.maxOopMapStackOffset = maxOopMapStackOffset;
         this.totalFrameSize = totalFrameSize;

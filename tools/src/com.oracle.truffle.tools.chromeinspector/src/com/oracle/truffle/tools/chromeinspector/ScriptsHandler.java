@@ -103,10 +103,10 @@ public final class ScriptsHandler implements LoadSourceListener {
     }
 
     /**
-     * Create a "nice" String representing the URI. It decodes special characters so that the name
-     * looks better in the Chrome Inspector UI. In order to know where query or fragment starts, it
-     * stores their indexes in the scheme in the form of &lt;scheme&gt;?&lt;query
-     * index&gt;#&lt;fragment index&gt;`.
+     * Create a "nice" String representing the URI. It decodes special characters so that the name looks
+     * better in the Chrome Inspector UI. In order to know where query or fragment starts, it stores
+     * their indexes in the scheme in the form of &lt;scheme&gt;?&lt;query index&gt;#&lt;fragment
+     * index&gt;`.
      */
     public static String getNiceStringFromURI(URI uri) {
         StringBuilder sb = new StringBuilder();

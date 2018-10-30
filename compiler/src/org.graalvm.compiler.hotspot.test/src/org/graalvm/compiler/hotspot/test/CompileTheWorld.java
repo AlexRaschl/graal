@@ -48,7 +48,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -70,6 +69,7 @@ import java.util.stream.Collectors;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.UnmodifiableEconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.Snippet;
 import org.graalvm.compiler.bytecode.Bytecodes;
 import org.graalvm.compiler.core.CompilerThreadFactory;
@@ -106,9 +106,9 @@ import jdk.vm.ci.runtime.JVMCICompiler;
 public final class CompileTheWorld {
 
     /**
-     * Magic token to denote that JDK classes are to be compiled. If
-     * {@link JDK9Method#Java8OrEarlier}, then the classes in {@code rt.jar} are compiled. Otherwise
-     * the classes in the Java runtime image are compiled.
+     * Magic token to denote that JDK classes are to be compiled. If {@link JDK9Method#Java8OrEarlier},
+     * then the classes in {@code rt.jar} are compiled. Otherwise the classes in the Java runtime image
+     * are compiled.
      */
     public static final String SUN_BOOT_CLASS_PATH = "sun.boot.class.path";
 
@@ -232,8 +232,8 @@ public final class CompileTheWorld {
     }
 
     /**
-     * Compiles all methods in all classes in {@link #inputClassPath}. If {@link #inputClassPath}
-     * equals {@link #SUN_BOOT_CLASS_PATH} the boot classes are used.
+     * Compiles all methods in all classes in {@link #inputClassPath}. If {@link #inputClassPath} equals
+     * {@link #SUN_BOOT_CLASS_PATH} the boot classes are used.
      */
     public void compile() throws Throwable {
         if (SUN_BOOT_CLASS_PATH.equals(inputClassPath)) {
@@ -338,7 +338,7 @@ public final class CompileTheWorld {
 
         @Override
         public List<String> getClassNames() throws IOException {
-            List<String> classNames = new ArrayList<>();
+            List<String> classNames = SpecifiedArrayList.createNew();
             String root = dir.getPath();
             SimpleFileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
                 @Override
@@ -382,7 +382,7 @@ public final class CompileTheWorld {
         @Override
         public List<String> getClassNames() throws IOException {
             Enumeration<JarEntry> e = jarFile.entries();
-            List<String> classNames = new ArrayList<>(jarFile.size());
+            List<String> classNames = SpecifiedArrayList.createNew(jarFile.size());
             while (e.hasMoreElements()) {
                 JarEntry je = e.nextElement();
                 if (je.isDirectory() || !je.getName().endsWith(".class")) {
@@ -431,7 +431,7 @@ public final class CompileTheWorld {
                     }
                 }
             }
-            List<String> classNames = new ArrayList<>();
+            List<String> classNames = SpecifiedArrayList.createNew();
             FileSystem fs = FileSystems.newFileSystem(URI.create("jrt:/"), Collections.emptyMap());
             Path top = fs.getPath("/modules/");
             Files.find(top, Integer.MAX_VALUE,
@@ -582,8 +582,7 @@ public final class CompileTheWorld {
                         }
 
                         /*
-                         * Only check filters after class loading and resolution to mitigate impact
-                         * on reproducibility.
+                         * Only check filters after class loading and resolution to mitigate impact on reproducibility.
                          */
                         if (!isClassIncluded(className)) {
                             continue;

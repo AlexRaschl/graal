@@ -112,8 +112,8 @@ public final class SnippetIntegerHistogram {
     }
 
     /**
-     * Increments the value of the matching histogram element. This method can only be used in a
-     * snippet on a compile-time constant {@link SnippetIntegerHistogram} object.
+     * Increments the value of the matching histogram element. This method can only be used in a snippet
+     * on a compile-time constant {@link SnippetIntegerHistogram} object.
      */
     public void inc(long value) {
         if (group != null) {

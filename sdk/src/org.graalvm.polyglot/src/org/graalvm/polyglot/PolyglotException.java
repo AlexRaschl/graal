@@ -94,9 +94,9 @@ public final class PolyglotException extends RuntimeException {
     }
 
     /**
-     * Gets stack trace elements for Java and guest languages. For polyglot exceptions it
-     * recommended to use {@link #getPolyglotStackTrace()} as the guest language stack elements do
-     * not always fit the Java format for stack trace elements.
+     * Gets stack trace elements for Java and guest languages. For polyglot exceptions it recommended to
+     * use {@link #getPolyglotStackTrace()} as the guest language stack elements do not always fit the
+     * Java format for stack trace elements.
      *
      * @since 1.0
      */
@@ -107,8 +107,8 @@ public final class PolyglotException extends RuntimeException {
 
     /**
      * Gets a user readable message for the polyglot exception. In case the exception is
-     * {@link #isInternalError() internal} then the original java class name is included in the
-     * message. The message never returns <code>null</code>.
+     * {@link #isInternalError() internal} then the original java class name is included in the message.
+     * The message never returns <code>null</code>.
      *
      * @since 1.0
      */
@@ -118,8 +118,8 @@ public final class PolyglotException extends RuntimeException {
     }
 
     /**
-     * Gets a guest language source location of this error or <code>null</code> if no source
-     * location is available for this exception.
+     * Gets a guest language source location of this error or <code>null</code> if no source location is
+     * available for this exception.
      *
      * @since 1.0
      */
@@ -145,12 +145,12 @@ public final class PolyglotException extends RuntimeException {
 
     /**
      * Provides programmatic access to the polyglot stack trace information printed by
-     * {@link #printStackTrace()}. Returns an array of stack trace elements, each representing one
-     * stack frame. The zeroth element of the array (assuming the array's length is non-zero)
-     * represents the top of the stack, which is the last invocation in the sequence. Typically,
-     * this is the point at which this throwable was created and thrown. The last element of the
-     * array (assuming the array's length is non-zero) represents the bottom of the stack, which is
-     * the first method invocation in the sequence.
+     * {@link #printStackTrace()}. Returns an array of stack trace elements, each representing one stack
+     * frame. The zeroth element of the array (assuming the array's length is non-zero) represents the
+     * top of the stack, which is the last invocation in the sequence. Typically, this is the point at
+     * which this throwable was created and thrown. The last element of the array (assuming the array's
+     * length is non-zero) represents the bottom of the stack, which is the first method invocation in
+     * the sequence.
      *
      * @see StackFrame
      * @since 1.0
@@ -193,10 +193,10 @@ public final class PolyglotException extends RuntimeException {
     }
 
     /**
-     * Returns <code>true</code> if this exception was caused by an internal implementation error.
-     * These errors should be reported as bugs if observed. Internal error messages are typically
-     * hard to understand for guest language programmers and might contain implementation specific
-     * details that allows guest language implementers to debug the problem.
+     * Returns <code>true</code> if this exception was caused by an internal implementation error. These
+     * errors should be reported as bugs if observed. Internal error messages are typically hard to
+     * understand for guest language programmers and might contain implementation specific details that
+     * allows guest language implementers to debug the problem.
      *
      * @since 1.0
      */
@@ -206,9 +206,9 @@ public final class PolyglotException extends RuntimeException {
 
     /**
      * Returns <code>true</code> if the execution was cancelled. The execution can be cancelled by
-     * {@link Context#close(boolean) closing} a context or if an instrument such as a debugger
-     * decides to cancel the current execution. The context that caused a cancel event becomes
-     * unusable, i.e. closed.
+     * {@link Context#close(boolean) closing} a context or if an instrument such as a debugger decides
+     * to cancel the current execution. The context that caused a cancel event becomes unusable, i.e.
+     * closed.
      *
      * @since 1.0
      */
@@ -217,9 +217,9 @@ public final class PolyglotException extends RuntimeException {
     }
 
     /**
-     * Returns <code>true</code> if this exception is caused by an attempt of a guest language
-     * program to exit the application using a builtin command. The provided exit code can be
-     * accessed using {@link #getExitStatus()}.
+     * Returns <code>true</code> if this exception is caused by an attempt of a guest language program
+     * to exit the application using a builtin command. The provided exit code can be accessed using
+     * {@link #getExitStatus()}.
      *
      * @since 1.0
      */
@@ -228,8 +228,8 @@ public final class PolyglotException extends RuntimeException {
     }
 
     /**
-     * Returns <code>true</code> if this exception indicates a parser or syntax error. In such a
-     * case #get
+     * Returns <code>true</code> if this exception indicates a parser or syntax error. In such a case
+     * #get
      *
      * @since 1.0
      */
@@ -238,10 +238,9 @@ public final class PolyglotException extends RuntimeException {
     }
 
     /**
-     * Returns <code>true</code> if this exception indicates a syntax error that is indicating that
-     * the syntax is incomplete. This allows guest language programmers to find out if more code is
-     * expected from a given source. For example, an incomplete JavaScript program could look like
-     * this:
+     * Returns <code>true</code> if this exception indicates a syntax error that is indicating that the
+     * syntax is incomplete. This allows guest language programmers to find out if more code is expected
+     * from a given source. For example, an incomplete JavaScript program could look like this:
      *
      * <pre>
      * function incompleteFunction(arg) {
@@ -257,8 +256,8 @@ public final class PolyglotException extends RuntimeException {
     }
 
     /**
-     * Returns an additional guest language object. The value is never <code>null</code> and returns
-     * a Value object where {@link Value#isNull()} returns as true if it is not available.
+     * Returns an additional guest language object. The value is never <code>null</code> and returns a
+     * Value object where {@link Value#isNull()} returns as true if it is not available.
      *
      * @since 1.0
      */
@@ -278,8 +277,7 @@ public final class PolyglotException extends RuntimeException {
     }
 
     /**
-     * Represents a polyglot stack frame originating from a guest language or the host language
-     * Java.
+     * Represents a polyglot stack frame originating from a guest language or the host language Java.
      *
      * @since 1.0
      */
@@ -292,9 +290,9 @@ public final class PolyglotException extends RuntimeException {
         }
 
         /**
-         * Returns true if the stack frame originates from the host language. Host frames do not
-         * provide a {@link #getSourceLocation() source location}. Instead the Java stack frame can
-         * be accessed using {@link #toHostFrame()}.
+         * Returns true if the stack frame originates from the host language. Host frames do not provide a
+         * {@link #getSourceLocation() source location}. Instead the Java stack frame can be accessed using
+         * {@link #toHostFrame()}.
          *
          * @since 1.0
          */
@@ -312,9 +310,9 @@ public final class PolyglotException extends RuntimeException {
         }
 
         /**
-         * Returns a Java stack trace element representation of the polyglot stack trace element.
-         * This is supported for host stack frames as well as guest language stack frames. A
-         * conversion to the host frame format can be useful for interoperability.
+         * Returns a Java stack trace element representation of the polyglot stack trace element. This is
+         * supported for host stack frames as well as guest language stack frames. A conversion to the host
+         * frame format can be useful for interoperability.
          *
          * @since 1.0
          */
@@ -323,8 +321,8 @@ public final class PolyglotException extends RuntimeException {
         }
 
         /**
-         * Returns the source location of the stack frame or <code>null</code> if no source location
-         * is available. Host frames do never provide a source location.
+         * Returns the source location of the stack frame or <code>null</code> if no source location is
+         * available. Host frames do never provide a source location.
          *
          * @since 1.0
          */
@@ -333,9 +331,9 @@ public final class PolyglotException extends RuntimeException {
         }
 
         /**
-         * Returns the root name of this stack frame. In case of the host language the Java method
-         * name is returned. In guest languages it returns a useful identifier for code. For
-         * example, in JavaScript this can be the function name.
+         * Returns the root name of this stack frame. In case of the host language the Java method name is
+         * returned. In guest languages it returns a useful identifier for code. For example, in JavaScript
+         * this can be the function name.
          *
          * @since 1.0
          */
@@ -344,8 +342,8 @@ public final class PolyglotException extends RuntimeException {
         }
 
         /**
-         * Returns the language of this stack frame. In case of the host language a synthetic Java
-         * language object is returned.
+         * Returns the language of this stack frame. In case of the host language a synthetic Java language
+         * object is returned.
          *
          * @since 1.0
          */
@@ -354,8 +352,8 @@ public final class PolyglotException extends RuntimeException {
         }
 
         /**
-         * Returns a string representation of this stack frame. The format is inspired by the Java
-         * stack frame format.
+         * Returns a string representation of this stack frame. The format is inspired by the Java stack
+         * frame format.
          *
          * @since 1.0
          */

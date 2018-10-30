@@ -55,9 +55,9 @@ public class TruffleTreeDumpHandler implements DebugDumpHandler {
     private final OptionValues options;
 
     /**
-     * The {@link OptimizedCallTarget} is dumped multiple times during Graal compilation, because it
-     * is also a subclass of InstalledCode. To disambiguate dumping, we wrap the call target into
-     * this class when we want to dump the Truffle tree.
+     * The {@link OptimizedCallTarget} is dumped multiple times during Graal compilation, because it is
+     * also a subclass of InstalledCode. To disambiguate dumping, we wrap the call target into this
+     * class when we want to dump the Truffle tree.
      */
     static class TruffleTreeDump {
         final RootCallTarget callTarget;

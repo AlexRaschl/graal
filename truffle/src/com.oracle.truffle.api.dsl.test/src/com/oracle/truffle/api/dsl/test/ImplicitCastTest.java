@@ -419,9 +419,9 @@ public class ImplicitCastTest {
     public void testExecuteChildWithImplicitCast1() throws UnexpectedResultException {
         ExecuteChildWithImplicitCast1Node node = ExecuteChildWithImplicitCast1NodeGen.create(createArguments(1));
         /*
-         * if executeLong is used for the initial execution of the node and the uninitialized case
-         * is not checked then this executeLong method might return 0L instead of 2L. This test
-         * verifies that this particular case does not happen.
+         * if executeLong is used for the initial execution of the node and the uninitialized case is not
+         * checked then this executeLong method might return 0L instead of 2L. This test verifies that this
+         * particular case does not happen.
          */
         Assert.assertEquals(2L, node.executeLong(Truffle.getRuntime().createVirtualFrame(new Object[]{2L}, new FrameDescriptor())));
     }

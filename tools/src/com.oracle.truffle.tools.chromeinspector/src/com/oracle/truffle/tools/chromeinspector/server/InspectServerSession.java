@@ -365,9 +365,9 @@ public final class InspectServerSession {
     }
 
     /**
-     * A post-processor of commands. The post-process job is run just after a response from the
-     * command is sent. This can assure deterministic order of messages for instance, it is used
-     * currently for resumes.
+     * A post-processor of commands. The post-process job is run just after a response from the command
+     * is sent. This can assure deterministic order of messages for instance, it is used currently for
+     * resumes.
      */
     public final class CommandPostProcessor {
 

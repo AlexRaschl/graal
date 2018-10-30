@@ -39,8 +39,8 @@ import java.lang.annotation.Target;
 public @interface Fold {
 
     /**
-     * Annotates a parameter to an {@link Fold}-annotated method. This parameter will be
-     * automatically injected by the compiler. The caller should always pass {@code null}.
+     * Annotates a parameter to an {@link Fold}-annotated method. This parameter will be automatically
+     * injected by the compiler. The caller should always pass {@code null}.
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.PARAMETER)

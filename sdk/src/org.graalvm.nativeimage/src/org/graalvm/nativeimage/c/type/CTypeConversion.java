@@ -54,11 +54,10 @@ public final class CTypeConversion {
     }
 
     /**
-     * Copies the {@param javaString} into the buffer up to the {@param bufferSize} bytes encoded
-     * with the default character set.
+     * Copies the {@param javaString} into the buffer up to the {@param bufferSize} bytes encoded with
+     * the default character set.
      *
-     * In case the string is larger than the {@code buffer}, the {@code bufferSize} bytes are
-     * copied.
+     * In case the string is larger than the {@code buffer}, the {@code bufferSize} bytes are copied.
      *
      * @param javaString managed Java string
      * @param buffer to store the bytes of javaString encoded with charset
@@ -72,8 +71,7 @@ public final class CTypeConversion {
     /**
      * Copies the {@code javaString} into the buffer encoded with the {@code charset} character set.
      *
-     * In case the string is larger than the {@code buffer}, the {@code bufferSize} bytes are
-     * copied.
+     * In case the string is larger than the {@code buffer}, the {@code bufferSize} bytes are copied.
      *
      * @param javaString managed Java string
      * @param charset desired character set for the returned string
@@ -96,8 +94,8 @@ public final class CTypeConversion {
     }
 
     /**
-     * Decode a C {@code char*} of length {@code length} to a Java string using the platform's
-     * default charset.
+     * Decode a C {@code char*} of length {@code length} to a Java string using the platform's default
+     * charset.
      *
      * @param cString the pointer to a 0 terminated C string
      * @return a Java string
@@ -148,8 +146,8 @@ public final class CTypeConversion {
 
     /**
      * An auto-closable that holds a Java {@link CharSequence}[] array as a null-terminated array of
-     * null-terminated C char[]s. The C pointers are only valid as long as the auto-closeable has
-     * not been closed.
+     * null-terminated C char[]s. The C pointers are only valid as long as the auto-closeable has not
+     * been closed.
      */
     public static final class CCharPointerPointerHolder implements AutoCloseable {
 

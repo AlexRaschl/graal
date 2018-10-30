@@ -61,9 +61,9 @@ public class TypeCheckHints {
     private static final Hint[] NO_HINTS = {};
 
     /**
-     * If non-null, then this is the only type that could pass the type check because the target of
-     * the type check is a final class or has been speculated to be a final class and this value is
-     * the only concrete subclass of the target type.
+     * If non-null, then this is the only type that could pass the type check because the target of the
+     * type check is a final class or has been speculated to be a final class and this value is the only
+     * concrete subclass of the target type.
      */
     public final ResolvedJavaType exact;
 
@@ -87,11 +87,10 @@ public class TypeCheckHints {
      *
      * @param targetType the target type of the type check
      * @param profile the profiling information available for the instruction (if any)
-     * @param assumptions the object in which speculations are recorded. This is null if
-     *            speculations are not supported.
-     * @param minHintHitProbability if the probability that the type check will hit one of the
-     *            profiled types (up to {@code maxHints}) is below this value, then {@link #hints}
-     *            will be null
+     * @param assumptions the object in which speculations are recorded. This is null if speculations
+     *            are not supported.
+     * @param minHintHitProbability if the probability that the type check will hit one of the profiled
+     *            types (up to {@code maxHints}) is below this value, then {@link #hints} will be null
      * @param maxHints the maximum length of {@link #hints}
      */
     public TypeCheckHints(TypeReference targetType, JavaTypeProfile profile, Assumptions assumptions, double minHintHitProbability, int maxHints) {

@@ -44,8 +44,7 @@ public class PrintStreamOptionKey extends OptionKey<String> {
     }
 
     /**
-     * Replace any instance of %p with an identifying name. Try to get it from the RuntimeMXBean
-     * name.
+     * Replace any instance of %p with an identifying name. Try to get it from the RuntimeMXBean name.
      *
      * @return the name of the file to log to
      */
@@ -74,8 +73,8 @@ public class PrintStreamOptionKey extends OptionKey<String> {
 
     /**
      * An output stream that redirects to {@link HotSpotJVMCIRuntimeProvider#getLogStream()}. The
-     * {@link HotSpotJVMCIRuntimeProvider#getLogStream()} value is only accessed the first time an
-     * IO operation is performed on the stream. This is required to break a deadlock in early JVMCI
+     * {@link HotSpotJVMCIRuntimeProvider#getLogStream()} value is only accessed the first time an IO
+     * operation is performed on the stream. This is required to break a deadlock in early JVMCI
      * initialization.
      */
     static class DelayedOutputStream extends OutputStream {
@@ -114,8 +113,8 @@ public class PrintStreamOptionKey extends OptionKey<String> {
     }
 
     /**
-     * Gets the print stream configured by this option. If no file is configured, the print stream
-     * will output to HotSpot's {@link HotSpotJVMCIRuntimeProvider#getLogStream() log} stream.
+     * Gets the print stream configured by this option. If no file is configured, the print stream will
+     * output to HotSpot's {@link HotSpotJVMCIRuntimeProvider#getLogStream() log} stream.
      */
     public PrintStream getStream(OptionValues options) {
         if (getValue(options) != null) {

@@ -60,8 +60,8 @@ import com.oracle.truffle.sl.nodes.expression.SLUnboxNodeGen;
 public final class SLWhileRepeatingNode extends Node implements RepeatingNode {
 
     /**
-     * The condition of the loop. This in a {@link SLExpressionNode} because we require a result
-     * value. We do not have a node type that can only return a {@code boolean} value, so
+     * The condition of the loop. This in a {@link SLExpressionNode} because we require a result value.
+     * We do not have a node type that can only return a {@code boolean} value, so
      * {@link #evaluateCondition executing the condition} can lead to a type error.
      */
     @Child private SLExpressionNode conditionNode;
@@ -128,15 +128,14 @@ public final class SLWhileRepeatingNode extends Node implements RepeatingNode {
     private boolean evaluateCondition(VirtualFrame frame) {
         try {
             /*
-             * The condition must evaluate to a boolean value, so we call the boolean-specialized
-             * execute method.
+             * The condition must evaluate to a boolean value, so we call the boolean-specialized execute
+             * method.
              */
             return conditionNode.executeBoolean(frame);
         } catch (UnexpectedResultException ex) {
             /*
-             * The condition evaluated to a non-boolean result. This is a type error in the SL
-             * program. We report it with the same exception that Truffle DSL generated nodes use to
-             * report type errors.
+             * The condition evaluated to a non-boolean result. This is a type error in the SL program. We
+             * report it with the same exception that Truffle DSL generated nodes use to report type errors.
              */
             throw new UnsupportedSpecializationException(this, new Node[]{conditionNode}, ex.getResult());
         }

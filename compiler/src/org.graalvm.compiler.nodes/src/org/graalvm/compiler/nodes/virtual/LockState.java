@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.nodes.virtual;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.nodes.java.MonitorIdNode;
 
 /**
@@ -51,7 +51,7 @@ public final class LockState {
         if (state == null) {
             return Collections.emptyList();
         } else {
-            ArrayList<MonitorIdNode> result = new ArrayList<>();
+            SpecifiedArrayList<MonitorIdNode> result = SpecifiedArrayList.createNew();
             LockState a = state;
             do {
                 result.add(a.monitorId);

@@ -658,8 +658,7 @@ public class MonitorSnippets implements Snippets {
     public static class Counters {
         /**
          * Counters for the various paths for acquiring a lock. The counters whose names start with
-         * {@code "lock"} are mutually exclusive. The other counters are for paths that may be
-         * shared.
+         * {@code "lock"} are mutually exclusive. The other counters are for paths that may be shared.
          */
         public final SnippetCounter lockBiasExisting;
         public final SnippetCounter lockBiasAcquired;
@@ -677,8 +676,7 @@ public class MonitorSnippets implements Snippets {
 
         /**
          * Counters for the various paths for releasing a lock. The counters whose names start with
-         * {@code "unlock"} are mutually exclusive. The other counters are for paths that may be
-         * shared.
+         * {@code "unlock"} are mutually exclusive. The other counters are for paths that may be shared.
          */
         public final SnippetCounter unlockBias;
         public final SnippetCounter unlockCas;
@@ -813,8 +811,8 @@ public class MonitorSnippets implements Snippets {
         }
 
         /**
-         * If balanced monitor checking is enabled then nodes are inserted at the start and all
-         * return points of the graph to initialize and check the monitor counter respectively.
+         * If balanced monitor checking is enabled then nodes are inserted at the start and all return
+         * points of the graph to initialize and check the monitor counter respectively.
          */
         private void checkBalancedMonitors(StructuredGraph graph, LoweringTool tool) {
             if (VerifyBalancedMonitors.getValue(options)) {

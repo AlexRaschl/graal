@@ -46,7 +46,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -59,6 +58,7 @@ import java.util.TreeMap;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Pair;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.options.OptionKey;
 import org.graalvm.compiler.options.OptionValues;
 import org.graalvm.graphio.GraphOutput;
@@ -84,9 +84,9 @@ public final class DebugContext implements AutoCloseable {
     public static final PrintStream DEFAULT_LOG_STREAM = TTY.out;
 
     /**
-     * Contains the immutable parts of a debug context. This separation allows the immutable parts
-     * to be shared and reduces the overhead of initialization since most immutable fields are
-     * configured by parsing options.
+     * Contains the immutable parts of a debug context. This separation allows the immutable parts to be
+     * shared and reduces the overhead of initialization since most immutable fields are configured by
+     * parsing options.
      */
     final Immutable immutable;
 
@@ -130,14 +130,14 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Adds version properties to the provided map. The version properties are read at a start of
-     * the JVM from a JVM specific location. Each property identifiers a commit of a certain
-     * component in the system. The properties added to the {@code properties} map are prefixed with
+     * Adds version properties to the provided map. The version properties are read at a start of the
+     * JVM from a JVM specific location. Each property identifiers a commit of a certain component in
+     * the system. The properties added to the {@code properties} map are prefixed with
      * {@code "version."} prefix.
      *
      * @param properties map to add the version properties to or {@code null}
-     * @return {@code properties} with version properties added or an unmodifiable map containing
-     *         the version properties if {@code properties == null}
+     * @return {@code properties} with version properties added or an unmodifiable map containing the
+     *         version properties if {@code properties == null}
      */
     public static Map<Object, Object> addVersionProperties(Map<Object, Object> properties) {
         return Versions.VERSIONS.withVersions(properties);
@@ -163,20 +163,19 @@ public final class DebugContext implements AutoCloseable {
         final boolean listMetrics;
 
         /**
-         * Names of unscoped counters. A counter is unscoped if this set is empty or contains the
-         * counter's name.
+         * Names of unscoped counters. A counter is unscoped if this set is empty or contains the counter's
+         * name.
          */
         final EconomicSet<String> unscopedCounters;
 
         /**
-         * Names of unscoped timers. A timer is unscoped if this set is empty or contains the
-         * timer's name.
+         * Names of unscoped timers. A timer is unscoped if this set is empty or contains the timer's name.
          */
         final EconomicSet<String> unscopedTimers;
 
         /**
-         * Names of unscoped memory usage trackers. A memory usage tracker is unscoped if this set
-         * is empty or contains the memory usage tracker's name.
+         * Names of unscoped memory usage trackers. A memory usage tracker is unscoped if this set is empty
+         * or contains the memory usage tracker's name.
          */
         final EconomicSet<String> unscopedMemUseTrackers;
 
@@ -318,8 +317,8 @@ public final class DebugContext implements AutoCloseable {
     public static final DebugContext DISABLED = new DebugContext(NO_DESCRIPTION, NO_GLOBAL_METRIC_VALUES, DEFAULT_LOG_STREAM, new Immutable(), NO_CONFIG_CUSTOMIZERS);
 
     /**
-     * Gets the debug context for the current thread. This should only be used when there is no
-     * other reasonable means to get a hold of a debug context.
+     * Gets the debug context for the current thread. This should only be used when there is no other
+     * reasonable means to get a hold of a debug context.
      */
     public static DebugContext forCurrentThread() {
         DebugContext current = activated.get();
@@ -393,8 +392,8 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Creates a {@link DebugContext} based on a given set of option values and {@code factories}.
-     * The {@link DebugHandlersFactory#LOADER} can be used for the latter.
+     * Creates a {@link DebugContext} based on a given set of option values and {@code factories}. The
+     * {@link DebugHandlersFactory#LOADER} can be used for the latter.
      */
     public static DebugContext create(OptionValues options, Iterable<DebugHandlersFactory> factories) {
         return new DebugContext(NO_DESCRIPTION, NO_GLOBAL_METRIC_VALUES, DEFAULT_LOG_STREAM, Immutable.create(options), factories);
@@ -413,8 +412,8 @@ public final class DebugContext implements AutoCloseable {
         this.globalMetrics = globalMetrics;
         if (immutable.scopesEnabled) {
             OptionValues options = immutable.options;
-            List<DebugDumpHandler> dumpHandlers = new ArrayList<>();
-            List<DebugVerifyHandler> verifyHandlers = new ArrayList<>();
+            List<DebugDumpHandler> dumpHandlers = SpecifiedArrayList.createNew();
+            List<DebugVerifyHandler> verifyHandlers = SpecifiedArrayList.createNew();
             for (DebugHandlersFactory factory : factories) {
                 for (DebugHandler handler : factory.createHandlers(options)) {
                     if (handler instanceof DebugDumpHandler) {
@@ -457,8 +456,8 @@ public final class DebugContext implements AutoCloseable {
     /**
      * Basic debug level.
      *
-     * For HIR dumping, only ~5 graphs per method: after parsing, after inlining, after high tier,
-     * after mid tier, after low tier.
+     * For HIR dumping, only ~5 graphs per method: after parsing, after inlining, after high tier, after
+     * mid tier, after low tier.
      *
      * LIR dumping: After LIR generation, after each pre-allocation, allocation and post allocation
      * stage, and after code installation.
@@ -567,8 +566,8 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Gets a string composed of the names in the current nesting of debug
-     * {@linkplain #scope(Object) scopes} separated by {@code '.'}.
+     * Gets a string composed of the names in the current nesting of debug {@linkplain #scope(Object)
+     * scopes} separated by {@code '.'}.
      */
     public String getCurrentScopeName() {
         if (currentScope != null) {
@@ -581,8 +580,8 @@ public final class DebugContext implements AutoCloseable {
     /**
      * Creates and enters a new debug scope which will be a child of the current debug scope.
      * <p>
-     * It is recommended to use the try-with-resource statement for managing entering and leaving
-     * debug scopes. For example:
+     * It is recommended to use the try-with-resource statement for managing entering and leaving debug
+     * scopes. For example:
      *
      * <pre>
      * try (Scope s = Debug.scope(&quot;InliningGraph&quot;, inlineeGraph)) {
@@ -603,8 +602,8 @@ public final class DebugContext implements AutoCloseable {
      * </pre>
      *
      * @param name the name of the new scope
-     * @param contextObjects an array of object to be appended to the {@linkplain #context()
-     *            current} debug context
+     * @param contextObjects an array of object to be appended to the {@linkplain #context() current}
+     *            debug context
      * @throws Throwable used to enforce a catch block.
      * @return the scope entered by this method which will be exited when its {@link Scope#close()}
      *         method is called
@@ -706,10 +705,8 @@ public final class DebugContext implements AutoCloseable {
 
     /**
      * @see #scope(Object, Object[])
-     * @param context1 first object to be appended to the {@linkplain #context() current} debug
-     *            context
-     * @param context2 second object to be appended to the {@linkplain #context() current} debug
-     *            context
+     * @param context1 first object to be appended to the {@linkplain #context() current} debug context
+     * @param context2 second object to be appended to the {@linkplain #context() current} debug context
      */
     public DebugContext.Scope scope(Object name, Object context1, Object context2) throws Throwable {
         if (currentScope != null) {
@@ -721,12 +718,9 @@ public final class DebugContext implements AutoCloseable {
 
     /**
      * @see #scope(Object, Object[])
-     * @param context1 first object to be appended to the {@linkplain #context() current} debug
-     *            context
-     * @param context2 second object to be appended to the {@linkplain #context() current} debug
-     *            context
-     * @param context3 third object to be appended to the {@linkplain #context() current} debug
-     *            context
+     * @param context1 first object to be appended to the {@linkplain #context() current} debug context
+     * @param context2 second object to be appended to the {@linkplain #context() current} debug context
+     * @param context3 third object to be appended to the {@linkplain #context() current} debug context
      */
     public DebugContext.Scope scope(Object name, Object context1, Object context2, Object context3) throws Throwable {
         if (currentScope != null) {
@@ -739,8 +733,8 @@ public final class DebugContext implements AutoCloseable {
     /**
      * Creates and enters a new debug scope which will be disjoint from the current debug scope.
      * <p>
-     * It is recommended to use the try-with-resource statement for managing entering and leaving
-     * debug scopes. For example:
+     * It is recommended to use the try-with-resource statement for managing entering and leaving debug
+     * scopes. For example:
      *
      * <pre>
      * try (Scope s = Debug.sandbox(&quot;CompilingStub&quot;, null, stubGraph)) {
@@ -829,7 +823,7 @@ public final class DebugContext implements AutoCloseable {
 
     public DebugContext.Scope forceLog() throws Throwable {
         if (currentConfig != null) {
-            ArrayList<Object> context = new ArrayList<>();
+            SpecifiedArrayList<Object> context = SpecifiedArrayList.createNew();
             for (Object obj : context()) {
                 context.add(obj);
             }
@@ -841,9 +835,9 @@ public final class DebugContext implements AutoCloseable {
 
     /**
      * Opens a scope in which exception
-     * {@linkplain DebugConfig#interceptException(DebugContext, Throwable) interception} is
-     * disabled. The current state of interception is restored when {@link DebugCloseable#close()}
-     * is called on the returned object.
+     * {@linkplain DebugConfig#interceptException(DebugContext, Throwable) interception} is disabled.
+     * The current state of interception is restored when {@link DebugCloseable#close()} is called on
+     * the returned object.
      *
      * This is particularly useful to suppress extraneous output in JUnit tests that are expected to
      * throw an exception.
@@ -856,10 +850,10 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Handles an exception in the context of the debug scope just exited. The just exited scope
-     * must have the current scope as its parent which will be the case if the try-with-resource
-     * pattern recommended by {@link #scope(Object)} and
-     * {@link #sandbox(CharSequence, DebugConfig, Object...)} is used
+     * Handles an exception in the context of the debug scope just exited. The just exited scope must
+     * have the current scope as its parent which will be the case if the try-with-resource pattern
+     * recommended by {@link #scope(Object)} and {@link #sandbox(CharSequence, DebugConfig, Object...)}
+     * is used
      *
      * @see #scope(Object, Object[])
      * @see #sandbox(CharSequence, DebugConfig, Object...)
@@ -1090,10 +1084,10 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Prints a message to the current debug scope's logging stream. This method must only be called
-     * if debugging scopes are {@linkplain DebugContext#areScopesEnabled() enabled} as it incurs
-     * allocation at the call site. If possible, call one of the other {@code log()} methods in this
-     * class that take a fixed number of parameters.
+     * Prints a message to the current debug scope's logging stream. This method must only be called if
+     * debugging scopes are {@linkplain DebugContext#areScopesEnabled() enabled} as it incurs allocation
+     * at the call site. If possible, call one of the other {@code log()} methods in this class that
+     * take a fixed number of parameters.
      *
      * @param format a format string
      * @param args the arguments referenced by the format specifiers in {@code format}
@@ -1106,10 +1100,10 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * This override exists to catch cases when {@link #log(String, Object)} is called with one
-     * argument bound to a varargs method parameter. It will bind to this method instead of the
-     * single arg variant and produce a deprecation warning instead of silently wrapping the
-     * Object[] inside of another Object[].
+     * This override exists to catch cases when {@link #log(String, Object)} is called with one argument
+     * bound to a varargs method parameter. It will bind to this method instead of the single arg
+     * variant and produce a deprecation warning instead of silently wrapping the Object[] inside of
+     * another Object[].
      */
     @Deprecated
     public void log(String format, Object[] args) {
@@ -1119,9 +1113,9 @@ public final class DebugContext implements AutoCloseable {
 
     /**
      * This override exists to catch cases when {@link #log(int, String, Object)} is called with one
-     * argument bound to a varargs method parameter. It will bind to this method instead of the
-     * single arg variant and produce a deprecation warning instead of silently wrapping the
-     * Object[] inside of another Object[].
+     * argument bound to a varargs method parameter. It will bind to this method instead of the single
+     * arg variant and produce a deprecation warning instead of silently wrapping the Object[] inside of
+     * another Object[].
      */
     @Deprecated
     public void log(int logLevel, String format, Object[] args) {
@@ -1142,7 +1136,7 @@ public final class DebugContext implements AutoCloseable {
             closeAfterDump = false;
         } else {
             OptionValues options = getOptions();
-            dumpHandlers = new ArrayList<>();
+            dumpHandlers = SpecifiedArrayList.createNew();
             for (DebugHandlersFactory factory : DebugHandlersFactory.LOADER) {
                 for (DebugHandler handler : factory.createHandlers(options)) {
                     if (handler instanceof DebugDumpHandler) {
@@ -1186,9 +1180,9 @@ public final class DebugContext implements AutoCloseable {
 
     /**
      * This override exists to catch cases when {@link #dump(int, Object, String, Object)} is called
-     * with one argument bound to a varargs method parameter. It will bind to this method instead of
-     * the single arg variant and produce a deprecation warning instead of silently wrapping the
-     * Object[] inside of another Object[].
+     * with one argument bound to a varargs method parameter. It will bind to this method instead of the
+     * single arg variant and produce a deprecation warning instead of silently wrapping the Object[]
+     * inside of another Object[].
      */
     @Deprecated
     public void dump(int dumpLevel, Object object, String format, Object[] args) {
@@ -1199,8 +1193,8 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Calls all {@link DebugVerifyHandler}s in the current {@linkplain #getConfig() config} to
-     * perform verification on a given object.
+     * Calls all {@link DebugVerifyHandler}s in the current {@linkplain #getConfig() config} to perform
+     * verification on a given object.
      *
      * @param object object to verify
      * @param message description of verification context
@@ -1214,8 +1208,8 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Calls all {@link DebugVerifyHandler}s in the current {@linkplain #getConfig() config} to
-     * perform verification on a given object.
+     * Calls all {@link DebugVerifyHandler}s in the current {@linkplain #getConfig() config} to perform
+     * verification on a given object.
      *
      * @param object object to verify
      * @param format a format string for the description of the verification context
@@ -1230,10 +1224,10 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * This override exists to catch cases when {@link #verify(Object, String, Object)} is called
-     * with one argument bound to a varargs method parameter. It will bind to this method instead of
-     * the single arg variant and produce a deprecation warning instead of silently wrapping the
-     * Object[] inside of another Object[].
+     * This override exists to catch cases when {@link #verify(Object, String, Object)} is called with
+     * one argument bound to a varargs method parameter. It will bind to this method instead of the
+     * single arg variant and produce a deprecation warning instead of silently wrapping the Object[]
+     * inside of another Object[].
      */
     @Deprecated
     public void verify(Object object, String format, Object[] args) {
@@ -1247,8 +1241,8 @@ public final class DebugContext implements AutoCloseable {
      * Opens a new indentation level (by adding some spaces) based on the current indentation level.
      * This should be used in a {@linkplain Indent try-with-resources} pattern.
      *
-     * @return an object that reverts to the current indentation level when
-     *         {@linkplain Indent#close() closed} or null if debugging is disabled
+     * @return an object that reverts to the current indentation level when {@linkplain Indent#close()
+     *         closed} or null if debugging is disabled
      * @see #logAndIndent(int, String)
      * @see #logAndIndent(int, String, Object)
      */
@@ -1267,8 +1261,8 @@ public final class DebugContext implements AutoCloseable {
      * A convenience function which combines {@link #log(String)} and {@link #indent()}.
      *
      * @param msg the message to log
-     * @return an object that reverts to the current indentation level when
-     *         {@linkplain Indent#close() closed} or null if debugging is disabled
+     * @return an object that reverts to the current indentation level when {@linkplain Indent#close()
+     *         closed} or null if debugging is disabled
      */
     public Indent logAndIndent(int logLevel, String msg) {
         if (currentScope != null && isLogEnabled(logLevel)) {
@@ -1286,8 +1280,8 @@ public final class DebugContext implements AutoCloseable {
      *
      * @param format a format string
      * @param arg the argument referenced by the format specifiers in {@code format}
-     * @return an object that reverts to the current indentation level when
-     *         {@linkplain Indent#close() closed} or null if debugging is disabled
+     * @return an object that reverts to the current indentation level when {@linkplain Indent#close()
+     *         closed} or null if debugging is disabled
      */
     public Indent logAndIndent(int logLevel, String format, Object arg) {
         if (currentScope != null && isLogEnabled(logLevel)) {
@@ -1305,8 +1299,8 @@ public final class DebugContext implements AutoCloseable {
      *
      * @param format a format string
      * @param arg the argument referenced by the format specifiers in {@code format}
-     * @return an object that reverts to the current indentation level when
-     *         {@linkplain Indent#close() closed} or null if debugging is disabled
+     * @return an object that reverts to the current indentation level when {@linkplain Indent#close()
+     *         closed} or null if debugging is disabled
      */
     public Indent logAndIndent(int logLevel, String format, int arg) {
         if (currentScope != null && isLogEnabled(logLevel)) {
@@ -1461,8 +1455,8 @@ public final class DebugContext implements AutoCloseable {
      *
      * @param format a format string
      * @param args the arguments referenced by the format specifiers in {@code format}
-     * @return an object that reverts to the current indentation level when
-     *         {@linkplain Indent#close() closed} or null if debugging is disabled
+     * @return an object that reverts to the current indentation level when {@linkplain Indent#close()
+     *         closed} or null if debugging is disabled
      */
     public Indent logvAndIndent(int logLevel, String format, Object... args) {
         if (currentScope != null) {
@@ -1481,10 +1475,10 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * This override exists to catch cases when {@link #logAndIndent(String, Object)} is called with
-     * one argument bound to a varargs method parameter. It will bind to this method instead of the
-     * single arg variant and produce a deprecation warning instead of silently wrapping the
-     * Object[] inside of another Object[].
+     * This override exists to catch cases when {@link #logAndIndent(String, Object)} is called with one
+     * argument bound to a varargs method parameter. It will bind to this method instead of the single
+     * arg variant and produce a deprecation warning instead of silently wrapping the Object[] inside of
+     * another Object[].
      */
     @Deprecated
     public void logAndIndent(String format, Object[] args) {
@@ -1494,9 +1488,9 @@ public final class DebugContext implements AutoCloseable {
 
     /**
      * This override exists to catch cases when {@link #logAndIndent(int, String, Object)} is called
-     * with one argument bound to a varargs method parameter. It will bind to this method instead of
-     * the single arg variant and produce a deprecation warning instead of silently wrapping the
-     * Object[] inside of another Object[].
+     * with one argument bound to a varargs method parameter. It will bind to this method instead of the
+     * single arg variant and produce a deprecation warning instead of silently wrapping the Object[]
+     * inside of another Object[].
      */
     @Deprecated
     public void logAndIndent(int logLevel, String format, Object[] args) {
@@ -1515,7 +1509,7 @@ public final class DebugContext implements AutoCloseable {
     @SuppressWarnings("unchecked")
     public <T> List<T> contextSnapshot(Class<T> clazz) {
         if (currentScope != null) {
-            List<T> result = new ArrayList<>();
+            List<T> result = SpecifiedArrayList.createNew();
             for (Object o : context()) {
                 if (clazz.isInstance(o)) {
                     result.add((T) o);
@@ -1528,8 +1522,8 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Searches the current debug scope, bottom up, for a context object that is an instance of a
-     * given type. The first such object found is returned.
+     * Searches the current debug scope, bottom up, for a context object that is an instance of a given
+     * type. The first such object found is returned.
      */
     @SuppressWarnings("unchecked")
     public <T> T contextLookup(Class<T> clazz) {
@@ -1544,8 +1538,8 @@ public final class DebugContext implements AutoCloseable {
     }
 
     /**
-     * Searches the current debug scope, top down, for a context object that is an instance of a
-     * given type. The first such object found is returned.
+     * Searches the current debug scope, top down, for a context object that is an instance of a given
+     * type. The first such object found is returned.
      */
     @SuppressWarnings("unchecked")
     public <T> T contextLookupTopdown(Class<T> clazz) {
@@ -1590,9 +1584,9 @@ public final class DebugContext implements AutoCloseable {
      * Debug.memUseTracker(String.format(format, arg1, arg2))
      * </pre>
      *
-     * except that the string formatting only happens if memory use tracking is enabled. In
-     * addition, each argument is subject to the following type based conversion before being passed
-     * as an argument to {@link String#format(String, Object...)}:
+     * except that the string formatting only happens if memory use tracking is enabled. In addition,
+     * each argument is subject to the following type based conversion before being passed as an
+     * argument to {@link String#format(String, Object...)}:
      *
      * <pre>
      *     Type          | Conversion
@@ -1734,9 +1728,9 @@ public final class DebugContext implements AutoCloseable {
      * Debug.counter(String.format(format, arg1, arg2))
      * </pre>
      *
-     * except that the string formatting only happens if count is enabled. In addition, each
-     * argument is subject to the following type based conversion before being passed as an argument
-     * to {@link String#format(String, Object...)}:
+     * except that the string formatting only happens if count is enabled. In addition, each argument is
+     * subject to the following type based conversion before being passed as an argument to
+     * {@link String#format(String, Object...)}:
      *
      * <pre>
      *     Type          | Conversion
@@ -1790,9 +1784,9 @@ public final class DebugContext implements AutoCloseable {
      * Debug.timer(String.format(format, arg1, arg2))
      * </pre>
      *
-     * except that the string formatting only happens if timing is enabled. In addition, each
-     * argument is subject to the following type based conversion before being passed as an argument
-     * to {@link String#format(String, Object...)}:
+     * except that the string formatting only happens if timing is enabled. In addition, each argument
+     * is subject to the following type based conversion before being passed as an argument to
+     * {@link String#format(String, Object...)}:
      *
      * <pre>
      *     Type          | Conversion
@@ -1846,8 +1840,8 @@ public final class DebugContext implements AutoCloseable {
 
     /**
      * Represents a debug scope entered by {@link DebugContext#scope(Object)} or
-     * {@link DebugContext#sandbox(CharSequence, DebugConfig, Object...)}. Leaving the scope is
-     * achieved via {@link #close()}.
+     * {@link DebugContext#sandbox(CharSequence, DebugConfig, Object...)}. Leaving the scope is achieved
+     * via {@link #close()}.
      */
     public interface Scope extends AutoCloseable {
         /**

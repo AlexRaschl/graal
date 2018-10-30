@@ -107,8 +107,8 @@ public abstract class InstanceOfSnippetsTemplates extends AbstractTemplates {
     }
 
     /**
-     * Gets the specific replacer object used to replace the usage of an instanceof node with the
-     * result of an instantiated instanceof snippet.
+     * Gets the specific replacer object used to replace the usage of an instanceof node with the result
+     * of an instantiated instanceof snippet.
      */
     protected InstanceOfUsageReplacer createReplacer(FloatingNode instanceOf, Instantiation instantiation, Node usage, final StructuredGraph graph) {
         InstanceOfUsageReplacer replacer;
@@ -117,8 +117,8 @@ public abstract class InstanceOfSnippetsTemplates extends AbstractTemplates {
             ValueNode falseValue = ConstantNode.forInt(0, graph);
             if (instantiation.isInitialized() && (trueValue != instantiation.trueValue || falseValue != instantiation.falseValue)) {
                 /*
-                 * This code doesn't really care what values are used so adopt the values from the
-                 * previous instantiation.
+                 * This code doesn't really care what values are used so adopt the values from the previous
+                 * instantiation.
                  */
                 trueValue = instantiation.trueValue;
                 falseValue = instantiation.falseValue;
@@ -231,8 +231,8 @@ public abstract class InstanceOfSnippetsTemplates extends AbstractTemplates {
     }
 
     /**
-     * Replaces the usage of an {@link InstanceOfNode} or {@link InstanceOfDynamicNode} that does
-     * not materialize the result of the type test.
+     * Replaces the usage of an {@link InstanceOfNode} or {@link InstanceOfDynamicNode} that does not
+     * materialize the result of the type test.
      */
     public static class NonMaterializationUsageReplacer extends InstanceOfUsageReplacer {
 

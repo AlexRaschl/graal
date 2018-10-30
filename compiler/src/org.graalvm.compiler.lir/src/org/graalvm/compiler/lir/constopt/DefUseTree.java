@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.lir.constopt;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.lir.LIRInstruction;
 import org.graalvm.compiler.lir.StandardOp.LoadConstantOp;
@@ -46,7 +46,7 @@ class DefUseTree {
         assert LoadConstantOp.isLoadConstantOp(instruction) : "Not a LoadConstantOp: " + instruction;
         this.instruction = LoadConstantOp.asLoadConstantOp(instruction);
         this.block = block;
-        this.uses = new ArrayList<>();
+        this.uses = SpecifiedArrayList.createNew();
     }
 
     public Variable getVariable() {

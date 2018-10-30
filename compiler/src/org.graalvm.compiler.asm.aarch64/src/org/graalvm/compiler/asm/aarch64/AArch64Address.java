@@ -93,9 +93,9 @@ public final class AArch64Address extends AbstractAddress {
 
     /**
      * General address generation mechanism. Accepted values for all parameters depend on the
-     * addressingMode. Null is never accepted for a register, if an addressMode doesn't use a
-     * register the register has to be the zero-register. extendType has to be null for every
-     * addressingMode except EXTENDED_REGISTER_OFFSET.
+     * addressingMode. Null is never accepted for a register, if an addressMode doesn't use a register
+     * the register has to be the zero-register. extendType has to be null for every addressingMode
+     * except EXTENDED_REGISTER_OFFSET.
      */
     public static AArch64Address createAddress(AddressingMode addressingMode, Register base, Register offset, int immediate, boolean isScaled, AArch64Assembler.ExtendType extendType) {
         return new AArch64Address(base, offset, immediate, isScaled, extendType, addressingMode);
@@ -104,8 +104,8 @@ public final class AArch64Address extends AbstractAddress {
     /**
      * @param base may not be null or the zero-register.
      * @param imm9 Signed 9-bit immediate value.
-     * @return an address specifying a post-indexed immediate address pointing to base. After
-     *         ldr/str instruction, base is updated to point to base + imm9
+     * @return an address specifying a post-indexed immediate address pointing to base. After ldr/str
+     *         instruction, base is updated to point to base + imm9
      */
     public static AArch64Address createPostIndexedImmediateAddress(Register base, int imm9) {
         return new AArch64Address(base, zr, imm9, false, null, AddressingMode.IMMEDIATE_POST_INDEXED);
@@ -123,8 +123,8 @@ public final class AArch64Address extends AbstractAddress {
 
     /**
      * @param base may not be null or the zero-register.
-     * @param imm12 Unsigned 12-bit immediate value. This is scaled by the word access size. This
-     *            means if this address is used to load/store a word, the immediate is shifted by 2
+     * @param imm12 Unsigned 12-bit immediate value. This is scaled by the word access size. This means
+     *            if this address is used to load/store a word, the immediate is shifted by 2
      *            (log2Ceil(4)).
      * @return an address specifying a signed address of the form base + imm12 <<
      *         log2(memory_transfer_size).
@@ -152,8 +152,8 @@ public final class AArch64Address extends AbstractAddress {
 
     /**
      * @param base may not be null or the zero-register.
-     * @param offset Register specifying some offset, optionally scaled by the memory_transfer_size.
-     *            May not be null or the stackpointer.
+     * @param offset Register specifying some offset, optionally scaled by the memory_transfer_size. May
+     *            not be null or the stackpointer.
      * @param scaled Specifies whether offset should be scaled by memory_transfer_size or not.
      * @return an address specifying a register offset address of the form base + offset [<< log2
      *         (memory_transfer_size)]
@@ -177,8 +177,8 @@ public final class AArch64Address extends AbstractAddress {
      *            memory_transfer_size. May not be null or the stackpointer.
      * @param scaled Specifies whether offset should be scaled by memory_transfer_size or not.
      * @param extendType Describes whether register is zero- or sign-extended. May not be null.
-     * @return an address specifying an extended register offset of the form base +
-     *         extendType(offset) [<< log2(memory_transfer_size)]
+     * @return an address specifying an extended register offset of the form base + extendType(offset)
+     *         [<< log2(memory_transfer_size)]
      */
     public static AArch64Address createExtendedRegisterOffsetAddress(Register base, Register offset, boolean scaled, AArch64Assembler.ExtendType extendType) {
         return new AArch64Address(base, offset, 0, scaled, extendType, AddressingMode.EXTENDED_REGISTER_OFFSET);
@@ -272,9 +272,9 @@ public final class AArch64Address extends AbstractAddress {
     }
 
     /**
-     * @return immediate in correct representation for the given addressing mode. For example in
-     *         case of <code>addressingMode ==IMMEDIATE_UNSCALED </code> the value will be returned
-     *         as the 9-bit signed representation.
+     * @return immediate in correct representation for the given addressing mode. For example in case of
+     *         <code>addressingMode ==IMMEDIATE_UNSCALED </code> the value will be returned as the 9-bit
+     *         signed representation.
      */
     public int getImmediate() {
         switch (addressingMode) {

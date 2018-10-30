@@ -52,8 +52,7 @@ public class DeadCodeEliminationPhase extends Phase {
     }
 
     /**
-     * Creates a dead code elimination phase that will be run irrespective of
-     * {@link Options#ReduceDCE}.
+     * Creates a dead code elimination phase that will be run irrespective of {@link Options#ReduceDCE}.
      */
     public DeadCodeEliminationPhase() {
         this(Optionality.Required);

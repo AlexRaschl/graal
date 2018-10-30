@@ -53,9 +53,9 @@ import static jdk.vm.ci.amd64.AMD64.xmm7;
 import static jdk.vm.ci.amd64.AMD64.xmm8;
 import static jdk.vm.ci.amd64.AMD64.xmm9;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 
 import jdk.vm.ci.code.Register;
@@ -64,12 +64,11 @@ import jdk.vm.ci.code.RegisterConfig;
 
 class AMD64HotSpotRegisterAllocationConfig extends RegisterAllocationConfig {
     /**
-     * Specify priority of register selection within phases of register allocation. Highest priority
-     * is first. A useful heuristic is to give registers a low priority when they are required by
-     * machine instructions, like EAX and EDX on I486, and choose no-save registers before
-     * save-on-call, & save-on-call before save-on-entry. Registers which participate in fixed
-     * calling sequences should come last. Registers which are used as pairs must fall on an even
-     * boundary.
+     * Specify priority of register selection within phases of register allocation. Highest priority is
+     * first. A useful heuristic is to give registers a low priority when they are required by machine
+     * instructions, like EAX and EDX on I486, and choose no-save registers before save-on-call, &
+     * save-on-call before save-on-entry. Registers which participate in fixed calling sequences should
+     * come last. Registers which are used as pairs must fall on an even boundary.
      *
      * Adopted from x86_64.ad.
      */
@@ -92,7 +91,7 @@ class AMD64HotSpotRegisterAllocationConfig extends RegisterAllocationConfig {
             regMap.set(reg.number);
         }
 
-        ArrayList<Register> allocatableRegisters = new ArrayList<>(registers.size());
+        SpecifiedArrayList<Register> allocatableRegisters = SpecifiedArrayList.createNewFixed(registers.size());
         for (Register reg : registerAllocationOrder) {
             if (regMap.get(reg.number)) {
                 allocatableRegisters.add(reg);

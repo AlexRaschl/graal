@@ -28,12 +28,13 @@ import static java.lang.System.getProperty;
 
 import java.io.PrintStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 import com.google.monitoring.runtime.instrumentation.AllocationRecorder;
 import com.google.monitoring.runtime.instrumentation.Sampler;
@@ -164,7 +165,7 @@ public final class AllocSpy implements AutoCloseable {
             return;
         }
 
-        List<CountedValue> list = new ArrayList<>(map.values());
+        List<CountedValue> list = SpecifiedArrayList.createNew(map.values());
         Collections.sort(list);
 
         // Sum up the total number of elements.
@@ -293,8 +294,8 @@ public final class AllocSpy implements AutoCloseable {
     }
 
     /**
-     * A value and a frequency. The ordering imposed by {@link #compareTo(CountedValue)} places
-     * values with higher frequencies first.
+     * A value and a frequency. The ordering imposed by {@link #compareTo(CountedValue)} places values
+     * with higher frequencies first.
      */
     static class CountedValue implements Comparable<CountedValue> {
 

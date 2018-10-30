@@ -22,24 +22,23 @@
  */
 package org.graalvm.compiler.nodes.test;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.compiler.core.common.type.FloatStamp;
+import org.graalvm.compiler.core.common.type.IntegerStamp;
+import org.graalvm.compiler.core.common.type.StampPair;
 import org.graalvm.compiler.nodes.NodeView;
+import org.graalvm.compiler.nodes.ParameterNode;
 import org.graalvm.compiler.nodes.ValueNode;
+import org.graalvm.compiler.nodes.calc.ReinterpretNode;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-
-import org.graalvm.compiler.core.common.type.FloatStamp;
-import org.graalvm.compiler.core.common.type.IntegerStamp;
-import org.graalvm.compiler.core.common.type.StampPair;
-import org.graalvm.compiler.nodes.ParameterNode;
-import org.graalvm.compiler.nodes.calc.ReinterpretNode;
 
 import jdk.vm.ci.meta.JavaKind;
 
@@ -48,7 +47,7 @@ public class ReinterpretStampDoubleToLongTest extends ReinterpretStampTest {
 
     @Parameters(name = "{0}")
     public static Collection<Object[]> data() {
-        List<Object[]> ret = new ArrayList<>();
+        List<Object[]> ret = SpecifiedArrayList.createNew();
 
         for (long x : interestingLongs) {
             double lowerBound = Double.longBitsToDouble(x);

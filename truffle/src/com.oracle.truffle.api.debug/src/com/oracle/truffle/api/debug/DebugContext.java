@@ -72,8 +72,8 @@ public final class DebugContext {
     }
 
     /**
-     * Run supplied operations in this context. Use it to call methods on {@link DebugValue} that
-     * was obtained from {@link #evaluate(java.lang.String, java.lang.String)}.
+     * Run supplied operations in this context. Use it to call methods on {@link DebugValue} that was
+     * obtained from {@link #evaluate(java.lang.String, java.lang.String)}.
      *
      * @param <T> a type of the return value of the supplier
      * @param run a supplier representing operations to be run in this context

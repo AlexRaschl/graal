@@ -41,9 +41,9 @@ public interface ArrayRangeWrite extends NodeInterface {
     boolean writesObjectArray();
 
     /**
-     * Returns whether this write is the initialization of the written location. If it is true, the
-     * old value of the memory location is either uninitialized or zero. If it is false, the memory
-     * location is guaranteed to contain a valid value or zero.
+     * Returns whether this write is the initialization of the written location. If it is true, the old
+     * value of the memory location is either uninitialized or zero. If it is false, the memory location
+     * is guaranteed to contain a valid value or zero.
      */
     boolean isInitialization();
 

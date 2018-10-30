@@ -623,10 +623,10 @@ public class AMD64Move {
 
     public static void const2reg(CompilationResultBuilder crb, AMD64MacroAssembler masm, Register result, JavaConstant input) {
         /*
-         * Note: we use the kind of the input operand (and not the kind of the result operand)
-         * because they don't match in all cases. For example, an object constant can be loaded to a
-         * long register when unsafe casts occurred (e.g., for a write barrier where arithmetic
-         * operations are then performed on the pointer).
+         * Note: we use the kind of the input operand (and not the kind of the result operand) because they
+         * don't match in all cases. For example, an object constant can be loaded to a long register when
+         * unsafe casts occurred (e.g., for a write barrier where arithmetic operations are then performed
+         * on the pointer).
          */
         switch (input.getJavaKind().getStackKind()) {
             case Int:

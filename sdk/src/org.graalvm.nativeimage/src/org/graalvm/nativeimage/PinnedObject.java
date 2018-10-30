@@ -65,15 +65,15 @@ public abstract class PinnedObject implements AutoCloseable {
     public abstract Object getObject();
 
     /**
-     * Returns the raw address of the pinned object. The object layout is not specified, but usually
-     * the address of an object is a pointer to to the first header word. In particular, the result
-     * is not a pointer to the first array element when the object is an array.
+     * Returns the raw address of the pinned object. The object layout is not specified, but usually the
+     * address of an object is a pointer to to the first header word. In particular, the result is not a
+     * pointer to the first array element when the object is an array.
      */
     public abstract PointerBase addressOfObject();
 
     /**
-     * Returns a pointer to the array element with the specified index. The object must be an array.
-     * No array bounds check for the index is performed.
+     * Returns a pointer to the array element with the specified index. The object must be an array. No
+     * array bounds check for the index is performed.
      */
     public abstract <T extends PointerBase> T addressOfArrayElement(int index);
 }

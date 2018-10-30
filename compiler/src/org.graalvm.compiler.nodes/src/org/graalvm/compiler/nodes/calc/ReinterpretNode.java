@@ -117,8 +117,8 @@ public final class ReinterpretNode extends UnaryNode implements ArithmeticLIRLow
      *
      * -0 | negative numbers | -Inf | NaNs | 0 | positive numbers | +Inf | NaNs
      *
-     * So we can compute a better integer range if we know that the input is positive, negative,
-     * finite, non-zero and/or not NaN.
+     * So we can compute a better integer range if we know that the input is positive, negative, finite,
+     * non-zero and/or not NaN.
      */
     private static IntegerStamp floatToInt(FloatStamp stamp) {
         int bits = stamp.getBits();
@@ -187,8 +187,8 @@ public final class ReinterpretNode extends UnaryNode implements ArithmeticLIRLow
      *
      * -0 | negative numbers | -Inf | NaNs | 0 | positive numbers | +Inf | NaNs
      *
-     * So from certain integer ranges we may be able to infer something about the sign, finiteness
-     * or NaN-ness of the result.
+     * So from certain integer ranges we may be able to infer something about the sign, finiteness or
+     * NaN-ness of the result.
      */
     private static FloatStamp intToFloat(IntegerStamp stamp) {
         int bits = stamp.getBits();

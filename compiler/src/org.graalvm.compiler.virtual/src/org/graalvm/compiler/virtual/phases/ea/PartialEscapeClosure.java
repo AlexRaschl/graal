@@ -22,7 +22,6 @@
  */
 package org.graalvm.compiler.virtual.phases.ea;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +30,7 @@ import java.util.function.IntUnaryOperator;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.GraalOptions;
 import org.graalvm.compiler.core.common.cfg.Loop;
 import org.graalvm.compiler.core.common.spi.ConstantFieldProvider;
@@ -89,8 +89,8 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
     public static final CounterKey COUNTER_MEMORYCHECKPOINT = DebugContext.counter("MemoryCheckpoint");
 
     /**
-     * Nodes with inputs that were modified during analysis are marked in this bitset - this way
-     * nodes that are not influenced at all by analysis can be rejected quickly.
+     * Nodes with inputs that were modified during analysis are marked in this bitset - this way nodes
+     * that are not influenced at all by analysis can be rejected quickly.
      */
     private final NodeBitMap hasVirtualInputs;
 
@@ -102,7 +102,7 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
     /**
      * The indexes into this array correspond to {@link VirtualObjectNode#getObjectId()}.
      */
-    public final ArrayList<VirtualObjectNode> virtualObjects = new ArrayList<>();
+    public final SpecifiedArrayList<VirtualObjectNode> virtualObjects = new SpecifiedArrayList<>();
     public final DebugContext debug;
 
     @Override
@@ -111,9 +111,8 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
             return true;
         }
         /*
-         * If there is a mismatch between the number of materializations and the number of
-         * virtualizations, we need to apply effects, even if there were no other significant
-         * changes to the graph.
+         * If there is a mismatch between the number of materializations and the number of virtualizations,
+         * we need to apply effects, even if there were no other significant changes to the graph.
          */
         int delta = 0;
         for (Block block : cfg.getBlocks()) {
@@ -161,8 +160,8 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
     }
 
     /**
-     * Final subclass of PartialEscapeClosure, for performance and to make everything behave nicely
-     * with generics.
+     * Final subclass of PartialEscapeClosure, for performance and to make everything behave nicely with
+     * generics.
      */
     public static final class Final extends PartialEscapeClosure<PartialEscapeBlockState.Final> {
 
@@ -201,9 +200,9 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
     @Override
     protected boolean processNode(Node node, BlockT state, GraphEffectList effects, FixedWithNextNode lastFixedNode) {
         /*
-         * These checks make up for the fact that an earliest schedule moves CallTargetNodes upwards
-         * and thus materializes virtual objects needlessly. Also, FrameStates and ConstantNodes are
-         * scheduled, but can safely be ignored.
+         * These checks make up for the fact that an earliest schedule moves CallTargetNodes upwards and
+         * thus materializes virtual objects needlessly. Also, FrameStates and ConstantNodes are scheduled,
+         * but can safely be ignored.
          */
         if (node instanceof CallTargetNode || node instanceof FrameState || node instanceof ConstantNode) {
             return false;
@@ -464,9 +463,9 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
         BlockT initialState = super.stripKilledLoopLocations(loop, originalInitialState);
         if (loop.getDepth() > GraalOptions.EscapeAnalysisLoopCutoff.getValue(cfg.graph.getOptions())) {
             /*
-             * After we've reached the maximum loop nesting, we'll simply materialize everything we
-             * can to make sure that the loops only need to be iterated one time. Care is taken here
-             * to not materialize virtual objects that have the "ensureVirtualized" flag set.
+             * After we've reached the maximum loop nesting, we'll simply materialize everything we can to make
+             * sure that the loops only need to be iterated one time. Care is taken here to not materialize
+             * virtual objects that have the "ensureVirtualized" flag set.
              */
             LoopBeginNode loopBegin = (LoopBeginNode) loop.getHeader().getBeginNode();
             AbstractEndNode end = loopBegin.forwardEnd();
@@ -667,11 +666,10 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
         }
 
         /**
-         * Merge all predecessor block states into one block state. This is an iterative process,
-         * because merging states can lead to materializations which make previous parts of the
-         * merging operation invalid. The merging process is executed until a stable state has been
-         * reached. This method needs to be careful to place the effects of the merging operation
-         * into the correct blocks.
+         * Merge all predecessor block states into one block state. This is an iterative process, because
+         * merging states can lead to materializations which make previous parts of the merging operation
+         * invalid. The merging process is executed until a stable state has been reached. This method needs
+         * to be careful to place the effects of the merging operation into the correct blocks.
          *
          * @param statesList the predecessor block states of the merge
          */
@@ -795,12 +793,12 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
         }
 
         /**
-         * Try to merge multiple virtual object states into a single object state. If the incoming
-         * object states are compatible, then this method will create PhiNodes for the object's
-         * entries where needed. If they are incompatible, then all incoming virtual objects will be
-         * materialized, and a PhiNode for the materialized values will be created. Object states
-         * can be incompatible if they contain {@code long} or {@code double} values occupying two
-         * {@code int} slots in such a way that that their values cannot be merged using PhiNodes.
+         * Try to merge multiple virtual object states into a single object state. If the incoming object
+         * states are compatible, then this method will create PhiNodes for the object's entries where
+         * needed. If they are incompatible, then all incoming virtual objects will be materialized, and a
+         * PhiNode for the materialized values will be created. Object states can be incompatible if they
+         * contain {@code long} or {@code double} values occupying two {@code int} slots in such a way that
+         * that their values cannot be merged using PhiNodes.
          *
          * @param states the predecessor block states of the merge
          * @return true if materialization happened during the merge, false otherwise
@@ -933,8 +931,8 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
         }
 
         /**
-         * Fill the inputs of the PhiNode corresponding to one {@link JavaKind#Object} entry in the
-         * virtual object.
+         * Fill the inputs of the PhiNode corresponding to one {@link JavaKind#Object} entry in the virtual
+         * object.
          *
          * @return true if materialization happened during the merge, false otherwise
          */
@@ -962,10 +960,10 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
         }
 
         /**
-         * Examine a PhiNode and try to replace it with merging of virtual objects if all its inputs
-         * refer to virtual object states. In order for the merging to happen, all incoming object
-         * states need to be compatible and without object identity (meaning that their object
-         * identity if not used later on).
+         * Examine a PhiNode and try to replace it with merging of virtual objects if all its inputs refer
+         * to virtual object states. In order for the merging to happen, all incoming object states need to
+         * be compatible and without object identity (meaning that their object identity if not used later
+         * on).
          *
          * @param phi the PhiNode that should be processed
          * @param states the predecessor block states of the merge
@@ -1023,8 +1021,7 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
                         for (int i = 0; i < states.length; i++) {
                             VirtualObjectNode virtual = virtualObjs[i];
                             /*
-                             * check whether we trivially see that this is the only reference to
-                             * this allocation
+                             * check whether we trivially see that this is the only reference to this allocation
                              */
                             if (virtual.hasIdentity() && !isSingleUsageAllocation(getPhiValueAt(phi, i), virtualObjs, states[i])) {
                                 compatible = false;
@@ -1079,10 +1076,10 @@ public abstract class PartialEscapeClosure<BlockT extends PartialEscapeBlockStat
 
         private boolean isSingleUsageAllocation(ValueNode value, VirtualObjectNode[] virtualObjs, PartialEscapeBlockState<?> state) {
             /*
-             * If the phi input is an allocation, we know that it is a "fresh" value, i.e., that
-             * this is a value that will only appear through this source, and cannot appear anywhere
-             * else. If the phi is also the only usage of this input, we know that no other place
-             * can check object identity against it, so it is safe to lose the object identity here.
+             * If the phi input is an allocation, we know that it is a "fresh" value, i.e., that this is a value
+             * that will only appear through this source, and cannot appear anywhere else. If the phi is also
+             * the only usage of this input, we know that no other place can check object identity against it,
+             * so it is safe to lose the object identity here.
              */
             if (!(value instanceof AllocatedObjectNode && value.hasExactlyOneUsage())) {
                 return false;

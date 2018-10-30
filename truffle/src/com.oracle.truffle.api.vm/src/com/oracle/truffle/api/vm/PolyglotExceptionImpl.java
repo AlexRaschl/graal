@@ -364,8 +364,7 @@ final class PolyglotExceptionImpl extends AbstractExceptionImpl implements VMObj
         final Iterator<TruffleStackTraceElement> guestFrames;
         final ListIterator<StackTraceElement> hostFrames;
         /*
-         * Initial host frames are skipped if the error is a regular non-internal guest language
-         * error.
+         * Initial host frames are skipped if the error is a regular non-internal guest language error.
          */
         final APIAccess apiAccess;
 

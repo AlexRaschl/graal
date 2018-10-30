@@ -86,9 +86,9 @@ import static jdk.vm.ci.sparc.SPARC.o3;
 import static jdk.vm.ci.sparc.SPARC.o4;
 import static jdk.vm.ci.sparc.SPARC.o5;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 
 import jdk.vm.ci.code.Register;
@@ -123,7 +123,7 @@ public class SPARCHotSpotRegisterAllocationConfig extends RegisterAllocationConf
             regMap.set(reg.number);
         }
 
-        ArrayList<Register> allocatableRegisters = new ArrayList<>(registers.size());
+        SpecifiedArrayList<Register> allocatableRegisters = SpecifiedArrayList.createNew(registers.size());
         for (Register reg : registerAllocationOrder) {
             if (regMap.get(reg.number)) {
                 allocatableRegisters.add(reg);

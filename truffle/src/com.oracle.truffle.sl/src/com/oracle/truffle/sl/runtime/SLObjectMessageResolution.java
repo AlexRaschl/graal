@@ -127,9 +127,9 @@ public class SLObjectMessageResolution {
     }
 
     /*
-     * An SL object resolves the INVOKE message and maps it to an object property read access
-     * followed by an function invocation. The object property must be an SL function object, which
-     * is executed eventually.
+     * An SL object resolves the INVOKE message and maps it to an object property read access followed
+     * by an function invocation. The object property must be an SL function object, which is executed
+     * eventually.
      */
     @Resolve(message = "INVOKE")
     public abstract static class SLForeignInvokeNode extends Node {

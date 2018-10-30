@@ -22,9 +22,10 @@
  */
 package org.graalvm.compiler.lir;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * A buffer to enqueue updates to a list. This avoids frequent re-sizing of the list and copying of
@@ -46,9 +47,9 @@ public final class LIRInsertionBuffer {
     private List<LIRInstruction> lir;
 
     /**
-     * List of insertion points. index and count are stored alternately: indexAndCount[i * 2]: the
-     * index into lir list where "count" ops should be inserted indexAndCount[i * 2 + 1]: the number
-     * of ops to be inserted at index
+     * List of insertion points. index and count are stored alternately: indexAndCount[i * 2]: the index
+     * into lir list where "count" ops should be inserted indexAndCount[i * 2 + 1]: the number of ops to
+     * be inserted at index
      */
     private int[] indexAndCount;
     private int indexAndCountSize;
@@ -60,7 +61,7 @@ public final class LIRInsertionBuffer {
 
     public LIRInsertionBuffer() {
         indexAndCount = new int[8];
-        ops = new ArrayList<>(4);
+        ops = SpecifiedArrayList.createNew(4);
     }
 
     /**
@@ -81,11 +82,10 @@ public final class LIRInsertionBuffer {
     }
 
     /**
-     * Enqueue a new instruction that will be appended to the instruction list when
-     * {@link #finish()} is called. The new instruction is added <b>before</b> the existing
-     * instruction with the given index. This method can only be called with increasing values of
-     * index, e.g., once an instruction was appended with index 4, subsequent instructions can only
-     * be appended with index 4 or higher.
+     * Enqueue a new instruction that will be appended to the instruction list when {@link #finish()} is
+     * called. The new instruction is added <b>before</b> the existing instruction with the given index.
+     * This method can only be called with increasing values of index, e.g., once an instruction was
+     * appended with index 4, subsequent instructions can only be appended with index 4 or higher.
      */
     public void append(int index, LIRInstruction op) {
         int i = numberOfInsertionPoints() - 1;
@@ -102,8 +102,8 @@ public final class LIRInsertionBuffer {
     }
 
     /**
-     * Append all enqueued instructions to the instruction list. After that, {@link #init(List)} can
-     * be called again to re-use this buffer.
+     * Append all enqueued instructions to the instruction list. After that, {@link #init(List)} can be
+     * called again to re-use this buffer.
      */
     public void finish() {
         if (ops.size() > 0) {

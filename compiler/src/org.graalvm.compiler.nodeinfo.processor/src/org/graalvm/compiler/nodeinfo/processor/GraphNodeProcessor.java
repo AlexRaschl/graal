@@ -97,8 +97,8 @@ public class GraphNodeProcessor extends AbstractProcessor {
     }
 
     /**
-     * Bugs in an annotation processor can cause silent failure so try to report any exception
-     * throws as errors.
+     * Bugs in an annotation processor can cause silent failure so try to report any exception throws as
+     * errors.
      */
     private void reportException(Kind kind, Element element, Throwable t) {
         StringWriter buf = new StringWriter();

@@ -64,9 +64,8 @@ public interface OptionDescriptors extends Iterable<OptionDescriptor> {
     OptionDescriptor get(String optionName);
 
     /**
-     * Creates a union options descriptor out of multiple given descriptors. The operation
-     * descriptors are not checked for duplicate keys. The option descriptors are iterated in
-     * declaration order.
+     * Creates a union options descriptor out of multiple given descriptors. The operation descriptors
+     * are not checked for duplicate keys. The option descriptors are iterated in declaration order.
      *
      * @since 1.0
      */
@@ -89,8 +88,8 @@ public interface OptionDescriptors extends Iterable<OptionDescriptor> {
     Iterator<OptionDescriptor> iterator();
 
     /**
-     * Creates an {@link OptionDescriptors} instance from a list. The option descriptors
-     * implementation is backed by a {@link LinkedHashMap} that preserves ordering.
+     * Creates an {@link OptionDescriptors} instance from a list. The option descriptors implementation
+     * is backed by a {@link LinkedHashMap} that preserves ordering.
      *
      * @since 1.0
      */

@@ -33,10 +33,9 @@ import jdk.vm.ci.meta.Signature;
 
 public interface NodePlugin extends GraphBuilderPlugin {
     /**
-     * Handle the parsing of a method invocation bytecode to a method that can be bound statically.
-     * If the method returns true, it must {@link GraphBuilderContext#push push} a value as the
-     * result of the method invocation using the {@link Signature#getReturnKind return kind} of the
-     * method.
+     * Handle the parsing of a method invocation bytecode to a method that can be bound statically. If
+     * the method returns true, it must {@link GraphBuilderContext#push push} a value as the result of
+     * the method invocation using the {@link Signature#getReturnKind return kind} of the method.
      *
      * @param b the context
      * @param method the statically bound, invoked method
@@ -49,8 +48,8 @@ public interface NodePlugin extends GraphBuilderPlugin {
 
     /**
      * Handle the parsing of a GETFIELD bytecode. If the method returns true, it must
-     * {@link GraphBuilderContext#push push} a value using the
-     * {@link ResolvedJavaField#getJavaKind() kind} of the field.
+     * {@link GraphBuilderContext#push push} a value using the {@link ResolvedJavaField#getJavaKind()
+     * kind} of the field.
      *
      * @param b the context
      * @param object the receiver object for the field access
@@ -63,8 +62,8 @@ public interface NodePlugin extends GraphBuilderPlugin {
 
     /**
      * Handle the parsing of a GETSTATIC bytecode. If the method returns true, it must
-     * {@link GraphBuilderContext#push push} a value using the
-     * {@link ResolvedJavaField#getJavaKind() kind} of the field.
+     * {@link GraphBuilderContext#push push} a value using the {@link ResolvedJavaField#getJavaKind()
+     * kind} of the field.
      *
      * @param b the context
      * @param field the accessed field
@@ -135,8 +134,8 @@ public interface NodePlugin extends GraphBuilderPlugin {
      * @param b the context
      * @param object the object to be type checked
      * @param type the type that the object is checked against
-     * @param profile the profiling information for the type check, or null if no profiling
-     *            information is available
+     * @param profile the profiling information for the type check, or null if no profiling information
+     *            is available
      * @return true if the plugin handles the cast, false otherwise
      */
     default boolean handleCheckCast(GraphBuilderContext b, ValueNode object, ResolvedJavaType type, JavaTypeProfile profile) {
@@ -151,8 +150,8 @@ public interface NodePlugin extends GraphBuilderPlugin {
      * @param b the context
      * @param object the object to be type checked
      * @param type the type that the object is checked against
-     * @param profile the profiling information for the type check, or null if no profiling
-     *            information is available
+     * @param profile the profiling information for the type check, or null if no profiling information
+     *            is available
      * @return true if the plugin handles the instanceof, false otherwise
      */
     default boolean handleInstanceOf(GraphBuilderContext b, ValueNode object, ResolvedJavaType type, JavaTypeProfile profile) {
@@ -201,9 +200,9 @@ public interface NodePlugin extends GraphBuilderPlugin {
     }
 
     /**
-     * If the plugin {@link GraphBuilderContext#push pushes} a value with a different
-     * {@link JavaKind} than specified by the bytecode, it must override this method and return
-     * {@code true}. This disables assertion checking for value kinds.
+     * If the plugin {@link GraphBuilderContext#push pushes} a value with a different {@link JavaKind}
+     * than specified by the bytecode, it must override this method and return {@code true}. This
+     * disables assertion checking for value kinds.
      *
      * @param b the context
      */

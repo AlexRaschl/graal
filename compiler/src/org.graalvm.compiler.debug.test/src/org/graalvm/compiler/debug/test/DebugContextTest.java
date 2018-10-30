@@ -222,8 +222,8 @@ public class DebugContextTest {
     }
 
     /**
-     * Tests that using a {@link DebugContext} on a thread other than the one on which it was
-     * created causes an assertion failure.
+     * Tests that using a {@link DebugContext} on a thread other than the one on which it was created
+     * causes an assertion failure.
      */
     @Test
     public void testInvariantChecking() throws InterruptedException {

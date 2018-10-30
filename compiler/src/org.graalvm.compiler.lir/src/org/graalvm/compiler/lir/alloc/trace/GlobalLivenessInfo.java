@@ -143,15 +143,15 @@ public final class GlobalLivenessInfo {
     public static boolean storesOutgoing(AbstractBlockBase<?> block) {
         assert block.getSuccessorCount() >= 0;
         /*
-         * The second condition handles non-critical empty blocks, introduced, e.g., by two
-         * consecutive loop-exits.
+         * The second condition handles non-critical empty blocks, introduced, e.g., by two consecutive
+         * loop-exits.
          */
         return block.getSuccessorCount() != 1 || block.getSuccessors()[0].getPredecessorCount() == 1;
     }
 
     /**
-     * Verifies that the local liveness information is correct, i.e., that all variables used in a
-     * block {@code b} are either defined in {@code b} or in the incoming live set.
+     * Verifies that the local liveness information is correct, i.e., that all variables used in a block
+     * {@code b} are either defined in {@code b} or in the incoming live set.
      */
     @SuppressWarnings("try")
     public boolean verify(LIR lir) {

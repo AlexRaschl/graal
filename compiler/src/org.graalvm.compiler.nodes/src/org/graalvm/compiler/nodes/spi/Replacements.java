@@ -58,9 +58,8 @@ public interface Replacements {
     /**
      * Gets the snippet graph derived from a given method.
      *
-     * @param recursiveEntry if the snippet contains a call to this method, it's considered as
-     *            recursive call and won't be processed for {@linkplain MethodSubstitution
-     *            substitutions}.
+     * @param recursiveEntry if the snippet contains a call to this method, it's considered as recursive
+     *            call and won't be processed for {@linkplain MethodSubstitution substitutions}.
      * @param args arguments to the snippet if available, otherwise {@code null}
      * @param trackNodeSourcePosition
      * @return the snippet graph, if any, that is derived from {@code method}
@@ -75,8 +74,8 @@ public interface Replacements {
     /**
      * Gets a graph that is a substitution for a given method.
      *
-     * @param invokeBci the call site BCI if this request is made for inlining a substitute
-     *            otherwise {@code -1}
+     * @param invokeBci the call site BCI if this request is made for inlining a substitute otherwise
+     *            {@code -1}
      * @param trackNodeSourcePosition
      * @return the graph, if any, that is a substitution for {@code method}
      */
@@ -85,8 +84,8 @@ public interface Replacements {
     /**
      * Gets the substitute bytecode for a given method.
      *
-     * @return the bytecode to substitute for {@code method} or {@code null} if there is no
-     *         substitute bytecode for {@code method}
+     * @return the bytecode to substitute for {@code method} or {@code null} if there is no substitute
+     *         bytecode for {@code method}
      */
     Bytecode getSubstitutionBytecode(ResolvedJavaMethod method);
 
@@ -96,11 +95,11 @@ public interface Replacements {
      *
      * A call to {@link #getSubstitution} may still return {@code null} for {@code method} and
      * {@code invokeBci}. A substitution may be based on an {@link InvocationPlugin} that returns
-     * {@code false} for {@link InvocationPlugin#execute} making it impossible to create a
-     * substitute graph.
+     * {@code false} for {@link InvocationPlugin#execute} making it impossible to create a substitute
+     * graph.
      *
-     * @param invokeBci the call site BCI if this request is made for inlining a substitute
-     *            otherwise {@code -1}
+     * @param invokeBci the call site BCI if this request is made for inlining a substitute otherwise
+     *            {@code -1}
      * @return true iff there may be a substitution graph available for {@code method}
      */
     boolean hasSubstitution(ResolvedJavaMethod method, int invokeBci);

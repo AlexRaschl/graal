@@ -66,8 +66,8 @@ public class AMD64TruffleCallBoundaryInstrumentationFactory extends TruffleCallB
 
                 AMD64Address codeBlobAddress = new AMD64Address(thisRegister, getFieldOffset("entryPoint", InstalledCode.class));
                 /*
-                 * The first instruction must be at least 5 bytes long to be safe for not entrant
-                 * patching, so force a wider encoding of the movq instruction.
+                 * The first instruction must be at least 5 bytes long to be safe for not entrant patching, so force
+                 * a wider encoding of the movq instruction.
                  */
                 asm.movq(spillRegister, codeBlobAddress, true);
                 assert asm.position() - pos >= AMD64HotSpotBackend.PATCHED_VERIFIED_ENTRY_POINT_INSTRUCTION_SIZE;

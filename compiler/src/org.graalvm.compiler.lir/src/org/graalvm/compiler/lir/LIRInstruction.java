@@ -65,25 +65,24 @@ public abstract class LIRInstruction {
      */
     public enum OperandMode {
         /**
-         * The value must have been defined before. It is alive before the instruction until the
-         * beginning of the instruction, but not necessarily throughout the instruction. A register
-         * assigned to it can also be assigned to a {@link #TEMP} or {@link #DEF} operand. The value
-         * can be used again after the instruction, so the instruction must not modify the register.
+         * The value must have been defined before. It is alive before the instruction until the beginning
+         * of the instruction, but not necessarily throughout the instruction. A register assigned to it can
+         * also be assigned to a {@link #TEMP} or {@link #DEF} operand. The value can be used again after
+         * the instruction, so the instruction must not modify the register.
          */
         USE,
 
         /**
-         * The value must have been defined before. It is alive before the instruction and
-         * throughout the instruction. A register assigned to it cannot be assigned to a
-         * {@link #TEMP} or {@link #DEF} operand. The value can be used again after the instruction,
-         * so the instruction must not modify the register.
+         * The value must have been defined before. It is alive before the instruction and throughout the
+         * instruction. A register assigned to it cannot be assigned to a {@link #TEMP} or {@link #DEF}
+         * operand. The value can be used again after the instruction, so the instruction must not modify
+         * the register.
          */
         ALIVE,
 
         /**
-         * The value must not have been defined before, and must not be used after the instruction.
-         * The instruction can do whatever it wants with the register assigned to it (or not use it
-         * at all).
+         * The value must not have been defined before, and must not be used after the instruction. The
+         * instruction can do whatever it wants with the register assigned to it (or not use it at all).
          */
         TEMP,
 
@@ -157,14 +156,14 @@ public abstract class LIRInstruction {
         ILLEGAL,
 
         /**
-         * The register allocator should try to assign a certain register to improve code quality.
-         * Use {@link LIRInstruction#forEachRegisterHint} to access the register hints.
+         * The register allocator should try to assign a certain register to improve code quality. Use
+         * {@link LIRInstruction#forEachRegisterHint} to access the register hints.
          */
         HINT,
 
         /**
-         * The value can be uninitialized, e.g., a stack slot that has not written to before. This
-         * is only used to avoid false positives in verification code.
+         * The value can be uninitialized, e.g., a stack slot that has not written to before. This is only
+         * used to avoid false positives in verification code.
          */
         UNINITIALIZED,
 
@@ -352,8 +351,8 @@ public abstract class LIRInstruction {
     /**
      * Returns {@code true} if the instruction is a {@link MoveOp}.
      *
-     * This function is preferred to {@code instanceof MoveOp} since the type check is more
-     * expensive than reading a field from {@link LIRInstructionClass}.
+     * This function is preferred to {@code instanceof MoveOp} since the type check is more expensive
+     * than reading a field from {@link LIRInstructionClass}.
      */
     public final boolean isMoveOp() {
         return instructionClass.isMoveOp();

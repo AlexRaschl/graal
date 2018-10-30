@@ -26,9 +26,9 @@ import static org.graalvm.compiler.nodes.graphbuilderconf.IntrinsicContext.Compi
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.spi.ConstantFieldProvider;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.core.common.type.StampPair;
@@ -105,7 +105,7 @@ public class GraphKit implements GraphBuilderTool {
         this.graphBuilderPlugins = graphBuilderPlugins;
         this.lastFixedNode = graph.start();
 
-        structures = new ArrayList<>();
+        structures = SpecifiedArrayList.createNew();
         /*
          * Add a dummy element, so that the access of the last element never leads to an exception.
          */
@@ -265,8 +265,7 @@ public class GraphKit implements GraphBuilderTool {
      * Determines if a given set of arguments is compatible with the signature of a given method.
      *
      * @return true if {@code args} are compatible with the signature if {@code method}
-     * @throws AssertionError if {@code args} are not compatible with the signature if
-     *             {@code method}
+     * @throws AssertionError if {@code args} are not compatible with the signature if {@code method}
      */
     public boolean checkArgs(ResolvedJavaMethod method, ValueNode... args) {
         Signature signature = method.getSignature();
@@ -305,8 +304,8 @@ public class GraphKit implements GraphBuilderTool {
     }
 
     /**
-     * Inlines a given invocation to a method. The graph of the inlined method is processed in the
-     * same manner as for snippets and method substitutions.
+     * Inlines a given invocation to a method. The graph of the inlined method is processed in the same
+     * manner as for snippets and method substitutions.
      */
     public void inline(InvokeNode invoke) {
         ResolvedJavaMethod method = ((MethodCallTargetNode) invoke.callTarget()).targetMethod();
@@ -358,10 +357,10 @@ public class GraphKit implements GraphBuilderTool {
     }
 
     /**
-     * Starts an if-block. This call can be followed by a call to {@link #thenPart} to start
-     * emitting the code executed when the condition hold; and a call to {@link #elsePart} to start
-     * emititng the code when the condition does not hold. It must be followed by a call to
-     * {@link #endIf} to close the if-block.
+     * Starts an if-block. This call can be followed by a call to {@link #thenPart} to start emitting
+     * the code executed when the condition hold; and a call to {@link #elsePart} to start emititng the
+     * code when the condition does not hold. It must be followed by a call to {@link #endIf} to close
+     * the if-block.
      *
      * @param condition The condition for the if-block
      * @param trueProbability The estimated probability the condition is true
@@ -542,10 +541,10 @@ public class GraphKit implements GraphBuilderTool {
     }
 
     /**
-     * Finishes a control flow started with {@link #startInvokeWithException}. If necessary, creates
-     * a merge of the non-exception and exception edges. The merge node is returned and the
-     * non-exception edge is the first forward end of the merge, the exception edge is the second
-     * forward end (relevant for phi nodes).
+     * Finishes a control flow started with {@link #startInvokeWithException}. If necessary, creates a
+     * merge of the non-exception and exception edges. The merge node is returned and the non-exception
+     * edge is the first forward end of the merge, the exception edge is the second forward end
+     * (relevant for phi nodes).
      */
     public AbstractMergeNode endInvokeWithException() {
         InvokeWithExceptionStructure s = saveLastInvokeWithExceptionNode();

@@ -38,8 +38,7 @@ public interface ProxyExecutable extends Proxy {
     /**
      * Executes the object with the given arguments and returns its result.
      *
-     * @throws UnsupportedOperationException if the proxy cannot be executed with the given
-     *             arguments.
+     * @throws UnsupportedOperationException if the proxy cannot be executed with the given arguments.
      * @since 1.0
      */
     Object execute(Value... arguments);

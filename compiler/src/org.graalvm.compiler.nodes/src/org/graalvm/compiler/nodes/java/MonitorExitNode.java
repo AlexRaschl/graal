@@ -49,8 +49,8 @@ public final class MonitorExitNode extends AccessMonitorNode implements Virtuali
     public static final NodeClass<MonitorExitNode> TYPE = NodeClass.create(MonitorExitNode.class);
 
     /**
-     * Non-null for the monitor exit introduced due to a synchronized root method and null in all
-     * other cases.
+     * Non-null for the monitor exit introduced due to a synchronized root method and null in all other
+     * cases.
      */
     @OptionalInput ValueNode escapedReturnValue;
 

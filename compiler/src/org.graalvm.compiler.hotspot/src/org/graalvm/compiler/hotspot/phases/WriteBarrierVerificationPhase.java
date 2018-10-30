@@ -88,8 +88,8 @@ public class WriteBarrierVerificationPhase extends Phase {
 
     private void validateWrite(Node write) {
         /*
-         * The currently validated write is checked in order to discover if it has an appropriate
-         * attached write barrier.
+         * The currently validated write is checked in order to discover if it has an appropriate attached
+         * write barrier.
          */
         if (hasAttachedBarrier((FixedWithNextNode) write)) {
             return;
@@ -169,9 +169,9 @@ public class WriteBarrierVerificationPhase extends Phase {
             return false;
         }
         /*
-         * LoopBegin nodes are also treated as safepoints since a bottom-up analysis is performed
-         * and loop safepoints are placed before LoopEnd nodes. Possible elimination of write
-         * barriers inside loops, derived from writes outside loops, can not be permitted.
+         * LoopBegin nodes are also treated as safepoints since a bottom-up analysis is performed and loop
+         * safepoints are placed before LoopEnd nodes. Possible elimination of write barriers inside loops,
+         * derived from writes outside loops, can not be permitted.
          */
         return ((node instanceof DeoptimizingNode) && ((DeoptimizingNode) node).canDeoptimize()) || (node instanceof LoopBeginNode);
     }

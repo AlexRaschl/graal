@@ -67,8 +67,8 @@ public final class RethrowDeoptMaterializeTest extends GraalCompilerTest {
     }
 
     /**
-     * This tests that a state with {@link FrameState#rethrowException()} set to true can properly
-     * throw an exception that must be rematerialized.
+     * This tests that a state with {@link FrameState#rethrowException()} set to true can properly throw
+     * an exception that must be rematerialized.
      */
     @Test
     public void testDeoptRethrow() {

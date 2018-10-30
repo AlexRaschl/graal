@@ -47,10 +47,10 @@ public abstract class GraalCompilerAssumptionsTest extends GraalCompilerTest {
     }
 
     /**
-     * Checks the behavior of class loading on {@link Assumption invalidation}. {@code methodName}
-     * is compiled and the resulting graph is checked for {@code expectedAssumption}. The code is
-     * installed and optionally {@code classToLoad} is loaded. The class is assumed to be an inner
-     * class of the test class and the name of the class to load is constructed relative to that.
+     * Checks the behavior of class loading on {@link Assumption invalidation}. {@code methodName} is
+     * compiled and the resulting graph is checked for {@code expectedAssumption}. The code is installed
+     * and optionally {@code classToLoad} is loaded. The class is assumed to be an inner class of the
+     * test class and the name of the class to load is constructed relative to that.
      *
      * @param methodName the method to compile
      * @param expectedAssumption expected {@link Assumption} instance to find in graph

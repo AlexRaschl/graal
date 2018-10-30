@@ -25,9 +25,9 @@ package org.graalvm.compiler.replacements.classfile;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.replacements.classfile.ClassfileConstant.Utf8;
 
 import jdk.vm.ci.meta.ResolvedJavaMethod;
@@ -156,7 +156,7 @@ public class Classfile {
 
     private List<ClassfileBytecode> readMethods(DataInputStream stream, ClassfileConstantPool cp) throws IOException {
         int count = stream.readUnsignedShort();
-        List<ClassfileBytecode> result = new ArrayList<>(count);
+        List<ClassfileBytecode> result = SpecifiedArrayList.createNew(count);
         for (int i = 0; i < count; i++) {
             int accessFlags = stream.readUnsignedShort();
             boolean isStatic = Modifier.isStatic(accessFlags);

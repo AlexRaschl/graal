@@ -22,13 +22,13 @@
  */
 package org.graalvm.compiler.lir.framemap;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.NumUtil;
 import org.graalvm.compiler.core.common.PermanentBailoutException;
-import org.graalvm.compiler.core.common.LIRKind;
 
 import jdk.vm.ci.code.Architecture;
 import jdk.vm.ci.code.CallingConvention;
@@ -60,9 +60,9 @@ public abstract class FrameMap {
     private final ReferenceMapBuilderFactory referenceMapFactory;
 
     /**
-     * The final frame size, not including the size of the
-     * {@link Architecture#getReturnAddressSize() return address slot}. The value is only set after
-     * register allocation is complete, i.e., after all spill slots have been allocated.
+     * The final frame size, not including the size of the {@link Architecture#getReturnAddressSize()
+     * return address slot}. The value is only set after register allocation is complete, i.e., after
+     * all spill slots have been allocated.
      */
     private int frameSize;
 
@@ -78,8 +78,8 @@ public abstract class FrameMap {
 
     /**
      * Size of the area occupied by outgoing overflow arguments. This value is adjusted as calling
-     * conventions for outgoing calls are retrieved. On some platforms, there is a minimum outgoing
-     * size even if no overflow arguments are on the stack.
+     * conventions for outgoing calls are retrieved. On some platforms, there is a minimum outgoing size
+     * even if no overflow arguments are on the stack.
      */
     protected int outgoingSize;
 
@@ -100,15 +100,15 @@ public abstract class FrameMap {
     private boolean accessesCallerFrame;
 
     /**
-     * Creates a new frame map for the specified method. The given registerConfig is optional, in
-     * case null is passed the default RegisterConfig from the CodeCacheProvider will be used.
+     * Creates a new frame map for the specified method. The given registerConfig is optional, in case
+     * null is passed the default RegisterConfig from the CodeCacheProvider will be used.
      */
     public FrameMap(CodeCacheProvider codeCache, RegisterConfig registerConfig, ReferenceMapBuilderFactory referenceMapFactory) {
         this.target = codeCache.getTarget();
         this.registerConfig = registerConfig == null ? codeCache.getRegisterConfig() : registerConfig;
         this.frameSize = -1;
         this.outgoingSize = codeCache.getMinimumOutgoingSize();
-        this.objectStackSlots = new ArrayList<>();
+        this.objectStackSlots = SpecifiedArrayList.createNew();
         this.referenceMapFactory = referenceMapFactory;
     }
 
@@ -187,9 +187,9 @@ public abstract class FrameMap {
     }
 
     /**
-     * Computes the final size of this frame. After this method has been called, methods that change
-     * the frame size cannot be called anymore, e.g., no more spill slots or outgoing arguments can
-     * be requested.
+     * Computes the final size of this frame. After this method has been called, methods that change the
+     * frame size cannot be called anymore, e.g., no more spill slots or outgoing arguments can be
+     * requested.
      */
     public void finish() {
         frameSize = currentFrameSize();
@@ -233,9 +233,8 @@ public abstract class FrameMap {
     }
 
     /**
-     * Reserves a new spill slot in the frame of the method being compiled. The returned slot is
-     * aligned on its natural alignment, i.e., an 8-byte spill slot is aligned at an 8-byte
-     * boundary.
+     * Reserves a new spill slot in the frame of the method being compiled. The returned slot is aligned
+     * on its natural alignment, i.e., an 8-byte spill slot is aligned at an 8-byte boundary.
      *
      * @param kind The kind of the spill slot to be reserved.
      * @param additionalOffset
@@ -257,8 +256,8 @@ public abstract class FrameMap {
     }
 
     /**
-     * Reserves a spill slot in the frame of the method being compiled. The returned slot is aligned
-     * on its natural alignment, i.e., an 8-byte spill slot is aligned at an 8-byte boundary, unless
+     * Reserves a spill slot in the frame of the method being compiled. The returned slot is aligned on
+     * its natural alignment, i.e., an 8-byte spill slot is aligned at an 8-byte boundary, unless
      * overridden by a subclass.
      *
      * @param kind The kind of the spill slot to be reserved.
@@ -282,14 +281,14 @@ public abstract class FrameMap {
     }
 
     /**
-     * Reserves a number of contiguous slots in the frame of the method being compiled. If the
-     * requested number of slots is 0, this method returns {@code null}.
+     * Reserves a number of contiguous slots in the frame of the method being compiled. If the requested
+     * number of slots is 0, this method returns {@code null}.
      *
      * @param slots the number of slots to reserve
-     * @param objects specifies the indexes of the object pointer slots. The caller is responsible
-     *            for guaranteeing that each such object pointer slot is initialized before any
-     *            instruction that uses a reference map. Without this guarantee, the garbage
-     *            collector could see garbage object values.
+     * @param objects specifies the indexes of the object pointer slots. The caller is responsible for
+     *            guaranteeing that each such object pointer slot is initialized before any instruction
+     *            that uses a reference map. Without this guarantee, the garbage collector could see
+     *            garbage object values.
      * @return the first reserved stack slot (i.e., at the lowest address)
      */
     public StackSlot allocateStackSlots(int slots, BitSet objects) {

@@ -54,9 +54,9 @@ public final class Scope {
 
     /**
      * Find a list of scopes enclosing the given {@link Node node}. There is at least one scope
-     * provided, that corresponds to the enclosing function. The iteration order corresponds with
-     * the scope nesting, from the inner-most to the outer-most. The scopes contain variables valid
-     * at the provided node.
+     * provided, that corresponds to the enclosing function. The iteration order corresponds with the
+     * scope nesting, from the inner-most to the outer-most. The scopes contain variables valid at the
+     * provided node.
      * <p>
      * In general, there can be a different list of scopes with different variables and arguments
      * returned for different {@link Frame} instances, as scopes may depend on runtime information.
@@ -67,8 +67,8 @@ public final class Scope {
      *            look-up} the {@link ScopeProvider} service.
      * @param node a node to get the enclosing scopes for. The node needs to be inside a
      *            {@link RootNode} associated with a language.
-     * @param frame The current frame the node is in, or <code>null</code> for lexical access when
-     *            the program is not running, or is not suspended at the node's location.
+     * @param frame The current frame the node is in, or <code>null</code> for lexical access when the
+     *            program is not running, or is not suspended at the node's location.
      * @return an {@link Iterable} providing list of scopes from the inner-most to the outer-most.
      * @see ScopeProvider#findScope(java.lang.Object, com.oracle.truffle.api.nodes.Node,
      *      com.oracle.truffle.api.frame.Frame)
@@ -105,8 +105,8 @@ public final class Scope {
     }
 
     /**
-     * Human readable name of this scope. A name description like block, name of a function,
-     * closure, script, module, etc.
+     * Human readable name of this scope. A name description like block, name of a function, closure,
+     * script, module, etc.
      *
      * @since 0.26
      */
@@ -117,8 +117,7 @@ public final class Scope {
     }
 
     /**
-     * Get a node representing this scope. Functional scopes return the appropriate {@link RootNode}
-     * .
+     * Get a node representing this scope. Functional scopes return the appropriate {@link RootNode} .
      *
      * @return the node, or <code>null<code> when no node is associated.
      * @since 0.26
@@ -132,11 +131,11 @@ public final class Scope {
      * <code>findLocalScopes(Env, Node, Frame)</code>. In general, there can be different variables
      * returned when different {@link Frame} instances are provided.
      *
-     * @param frame The current frame, or <code>null</code> for lexical access when the program is
-     *            not running, or is not suspended at the scope's location. The variables might not
-     *            be readable/writable with the <code>null</code> frame.
-     * @return A {@link com.oracle.truffle.api.interop.TruffleObject} containing the variables as
-     *         its properties, not <code>null</code>.
+     * @param frame The current frame, or <code>null</code> for lexical access when the program is not
+     *            running, or is not suspended at the scope's location. The variables might not be
+     *            readable/writable with the <code>null</code> frame.
+     * @return A {@link com.oracle.truffle.api.interop.TruffleObject} containing the variables as its
+     *         properties, not <code>null</code>.
      * @since 0.26
      */
     public Object getVariables(Frame frame) {
@@ -146,17 +145,17 @@ public final class Scope {
     }
 
     /**
-     * Get arguments of this scope. In general, there can be different arguments returned when
-     * different {@link Frame} instances are provided.
+     * Get arguments of this scope. In general, there can be different arguments returned when different
+     * {@link Frame} instances are provided.
      *
-     * @param frame The current frame, or <code>null</code> for lexical access when the program is
-     *            not running, or is not suspended at the scope's location. The arguments might not
-     *            be readable/writable with the <code>null</code> frame.
-     * @return A {@link com.oracle.truffle.api.interop.TruffleObject} containing the arguments as
-     *         its properties for named arguments, or as its array for unnamed arguments. A
-     *         <code>null</code> is returned when this scope does not have a concept of arguments.
-     *         An empty TruffleObject is provided when it has a sense to have arguments (e.g.
-     *         function scope), but there are none.
+     * @param frame The current frame, or <code>null</code> for lexical access when the program is not
+     *            running, or is not suspended at the scope's location. The arguments might not be
+     *            readable/writable with the <code>null</code> frame.
+     * @return A {@link com.oracle.truffle.api.interop.TruffleObject} containing the arguments as its
+     *         properties for named arguments, or as its array for unnamed arguments. A
+     *         <code>null</code> is returned when this scope does not have a concept of arguments. An
+     *         empty TruffleObject is provided when it has a sense to have arguments (e.g. function
+     *         scope), but there are none.
      * @since 0.26
      */
     public Object getArguments(Frame frame) {

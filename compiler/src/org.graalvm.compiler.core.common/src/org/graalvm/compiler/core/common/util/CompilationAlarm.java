@@ -53,8 +53,8 @@ public final class CompilationAlarm implements AutoCloseable {
     private static final CompilationAlarm NEVER_EXPIRES = new CompilationAlarm(0);
 
     /**
-     * Gets the current compilation alarm. If there is no current alarm, a non-null value is
-     * returned that will always return {@code false} for {@link #hasExpired()}.
+     * Gets the current compilation alarm. If there is no current alarm, a non-null value is returned
+     * that will always return {@code false} for {@link #hasExpired()}.
      */
     public static CompilationAlarm current() {
         CompilationAlarm alarm = currentAlarm.get();
@@ -86,14 +86,13 @@ public final class CompilationAlarm implements AutoCloseable {
     private final long expiration;
 
     /**
-     * Starts an alarm for setting a time limit on a compilation if there isn't already an active
-     * alarm, if assertions are disabled and
-     * {@link CompilationAlarm.Options#CompilationExpirationPeriod}{@code > 0}. The returned value
-     * can be used in a try-with-resource statement to disable the alarm once the compilation is
-     * finished.
+     * Starts an alarm for setting a time limit on a compilation if there isn't already an active alarm,
+     * if assertions are disabled and
+     * {@link CompilationAlarm.Options#CompilationExpirationPeriod}{@code > 0}. The returned value can
+     * be used in a try-with-resource statement to disable the alarm once the compilation is finished.
      *
-     * @return a {@link CompilationAlarm} if there was no current alarm for the calling thread
-     *         before this call otherwise {@code null}
+     * @return a {@link CompilationAlarm} if there was no current alarm for the calling thread before
+     *         this call otherwise {@code null}
      */
     public static CompilationAlarm trackCompilationPeriod(OptionValues options) {
         int period = Assertions.assertionsEnabled() ? 0 : Options.CompilationExpirationPeriod.getValue(options);

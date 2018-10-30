@@ -122,8 +122,8 @@ public final class MethodHandleNode extends MacroStateSplitNode implements Simpl
         }
 
         /**
-         * Call {@link StructuredGraph#addOrUnique(org.graalvm.compiler.graph.Node)} on {@code node}
-         * and link any {@link FixedWithNextNode}s into the current control flow.
+         * Call {@link StructuredGraph#addOrUnique(org.graalvm.compiler.graph.Node)} on {@code node} and
+         * link any {@link FixedWithNextNode}s into the current control flow.
          *
          * @param node
          * @return the newly added node
@@ -190,8 +190,8 @@ public final class MethodHandleNode extends MacroStateSplitNode implements Simpl
     }
 
     /**
-     * Used for the MethodHandle.invokeBasic method (the {@link IntrinsicMethod#INVOKE_BASIC }
-     * method) to get the target {@link InvokeNode} if the method handle receiver is constant.
+     * Used for the MethodHandle.invokeBasic method (the {@link IntrinsicMethod#INVOKE_BASIC } method)
+     * to get the target {@link InvokeNode} if the method handle receiver is constant.
      *
      * @param adder
      *
@@ -211,8 +211,8 @@ public final class MethodHandleNode extends MacroStateSplitNode implements Simpl
     /**
      * Used for the MethodHandle.linkTo* methods (the {@link IntrinsicMethod#LINK_TO_STATIC},
      * {@link IntrinsicMethod#LINK_TO_SPECIAL}, {@link IntrinsicMethod#LINK_TO_VIRTUAL}, and
-     * {@link IntrinsicMethod#LINK_TO_INTERFACE} methods) to get the target {@link InvokeNode} if
-     * the member name argument is constant.
+     * {@link IntrinsicMethod#LINK_TO_INTERFACE} methods) to get the target {@link InvokeNode} if the
+     * member name argument is constant.
      *
      * @param adder
      *
@@ -300,8 +300,8 @@ public final class MethodHandleNode extends MacroStateSplitNode implements Simpl
     }
 
     /**
-     * Inserts a node to cast the argument at index to the given type if the given type is more
-     * concrete than the argument type.
+     * Inserts a node to cast the argument at index to the given type if the given type is more concrete
+     * than the argument type.
      *
      * @param adder
      * @param index of the argument to be cast
@@ -313,9 +313,8 @@ public final class MethodHandleNode extends MacroStateSplitNode implements Simpl
             Assumptions assumptions = adder.getAssumptions();
             TypeReference targetType = TypeReference.create(assumptions, (ResolvedJavaType) type);
             /*
-             * When an argument is a Word type, we can have a mismatch of primitive/object types
-             * here. Not inserting a PiNode is a safe fallback, and Word types need no additional
-             * type information anyway.
+             * When an argument is a Word type, we can have a mismatch of primitive/object types here. Not
+             * inserting a PiNode is a safe fallback, and Word types need no additional type information anyway.
              */
             if (targetType != null && !targetType.getType().isPrimitive() && !argument.getStackKind().isPrimitive()) {
                 ResolvedJavaType argumentType = StampTool.typeOrNull(argument.stamp(NodeView.DEFAULT));
@@ -346,8 +345,8 @@ public final class MethodHandleNode extends MacroStateSplitNode implements Simpl
     }
 
     /**
-     * Creates an {@link InvokeNode} for the given target method. The {@link CallTargetNode} passed
-     * to the InvokeNode is in fact a {@link ResolvedMethodHandleCallTargetNode}.
+     * Creates an {@link InvokeNode} for the given target method. The {@link CallTargetNode} passed to
+     * the InvokeNode is in fact a {@link ResolvedMethodHandleCallTargetNode}.
      *
      * @return invoke node for the member name target
      */

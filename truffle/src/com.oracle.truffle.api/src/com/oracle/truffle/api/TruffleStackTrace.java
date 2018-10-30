@@ -188,9 +188,8 @@ final class TruffleStackTrace extends Exception {
     private static final class LazyStackTrace extends Throwable {
 
         /**
-         * The root of a linked list of pieces of information about the stack trace of the
-         * exception. Only used, i.e., non-null, as long as the exception wasn't queried for the
-         * full stack trace.
+         * The root of a linked list of pieces of information about the stack trace of the exception. Only
+         * used, i.e., non-null, as long as the exception wasn't queried for the full stack trace.
          */
         private TracebackElement current;
 

@@ -65,9 +65,8 @@ public abstract class VirtualFrameAccessorNode extends FixedWithNextNode impleme
 
     protected void insertDeoptimization(VirtualizerTool tool) {
         /*
-         * Escape analysis does not allow insertion of a DeoptimizeNode. We work around this
-         * restriction by inserting an always-failing guard, which will be canonicalized to a
-         * DeoptimizeNode later on.
+         * Escape analysis does not allow insertion of a DeoptimizeNode. We work around this restriction by
+         * inserting an always-failing guard, which will be canonicalized to a DeoptimizeNode later on.
          */
         LogicNode condition = LogicConstantNode.contradiction();
         tool.addNode(condition);
@@ -78,8 +77,8 @@ public abstract class VirtualFrameAccessorNode extends FixedWithNextNode impleme
             tool.delete();
         } else {
             /*
-             * Even though all usages will be eventually dead, we need to provide a valid
-             * replacement value for now.
+             * Even though all usages will be eventually dead, we need to provide a valid replacement value for
+             * now.
              */
             ConstantNode unusedValue = ConstantNode.forConstant(JavaConstant.defaultForKind(getStackKind()), tool.getMetaAccessProvider());
             tool.addNode(unusedValue);

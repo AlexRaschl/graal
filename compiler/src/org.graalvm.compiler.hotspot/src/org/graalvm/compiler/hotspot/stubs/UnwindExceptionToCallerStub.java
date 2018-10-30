@@ -62,8 +62,8 @@ public class UnwindExceptionToCallerStub extends SnippetStub {
     }
 
     /**
-     * The current frame is unwound by this stub. Therefore, it does not need to save any registers
-     * as HotSpot uses a caller save convention.
+     * The current frame is unwound by this stub. Therefore, it does not need to save any registers as
+     * HotSpot uses a caller save convention.
      */
     @Override
     public boolean preservesRegisters() {
@@ -110,8 +110,8 @@ public class UnwindExceptionToCallerStub extends SnippetStub {
     }
 
     /**
-     * Determines if either Java assertions are enabled for Graal or if this is a HotSpot build
-     * where the ASSERT mechanism is enabled.
+     * Determines if either Java assertions are enabled for Graal or if this is a HotSpot build where
+     * the ASSERT mechanism is enabled.
      */
     @Fold
     @SuppressWarnings("all")

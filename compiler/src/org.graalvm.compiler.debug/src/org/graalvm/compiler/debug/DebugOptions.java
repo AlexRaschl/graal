@@ -179,11 +179,11 @@ public class DebugOptions {
 
     /**
      * Gets the directory in which {@link DebugDumpHandler}s can generate output. This will be the
-     * directory specified by {@link #DumpPath} if it has been set otherwise it will be derived from
-     * the default value of {@link #DumpPath} and {@link PathUtilities#getGlobalTimeStamp()}.
+     * directory specified by {@link #DumpPath} if it has been set otherwise it will be derived from the
+     * default value of {@link #DumpPath} and {@link PathUtilities#getGlobalTimeStamp()}.
      *
-     * This method will ensure the returned directory exists, printing a message to {@link TTY} if
-     * it creates it.
+     * This method will ensure the returned directory exists, printing a message to {@link TTY} if it
+     * creates it.
      *
      * @return a path as described above whose directories are guaranteed to exist
      * @throws IOException if there was an error in {@link Files#createDirectories}

@@ -36,8 +36,7 @@ public interface SPARCLIRInstructionMixin {
 
     /**
      * This class represents a size estimation of a particular LIR instruction. It contains a
-     * pessimistic estimate of emitted SPARC instructions and emitted bytes into the constant
-     * section.
+     * pessimistic estimate of emitted SPARC instructions and emitted bytes into the constant section.
      */
     class SizeEstimate {
         /**

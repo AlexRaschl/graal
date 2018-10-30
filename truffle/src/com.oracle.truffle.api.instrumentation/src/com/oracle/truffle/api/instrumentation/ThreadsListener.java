@@ -55,8 +55,8 @@ public interface ThreadsListener {
     void onThreadInitialized(TruffleContext context, Thread thread);
 
     /**
-     * Notifies about disposal of thread-related resources that were used for a guest language
-     * execution in a {@link TruffleContext}.
+     * Notifies about disposal of thread-related resources that were used for a guest language execution
+     * in a {@link TruffleContext}.
      *
      * @param context the context the thread is disposed from
      * @param thread the thread

@@ -26,10 +26,10 @@ import static org.graalvm.compiler.core.common.GraalOptions.MaximumDesiredSize;
 import static org.graalvm.compiler.loop.MathUtil.add;
 import static org.graalvm.compiler.loop.MathUtil.sub;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.RetryableBailoutException;
 import org.graalvm.compiler.core.common.calc.CanonicalCondition;
 import org.graalvm.compiler.debug.DebugContext;
@@ -107,8 +107,8 @@ public abstract class LoopTransformations {
         originalLoop.entryPoint().replaceAtPredecessor(newControlSplit);
 
         /*
-         * The code below assumes that all of the control split nodes have the same successor
-         * structure, which should have been enforced by findUnswitchable.
+         * The code below assumes that all of the control split nodes have the same successor structure,
+         * which should have been enforced by findUnswitchable.
          */
         Iterator<Position> successors = firstNode.successorPositions().iterator();
         assert successors.hasNext();
@@ -416,7 +416,7 @@ public abstract class LoopTransformations {
             if (loop.isOutsideLoop(ifNode.condition())) {
                 if (controls == null) {
                     invariantValue = ifNode.condition();
-                    controls = new ArrayList<>();
+                    controls = SpecifiedArrayList.createNew();
                     controls.add(ifNode);
                 } else if (ifNode.condition() == invariantValue) {
                     controls.add(ifNode);
@@ -430,7 +430,7 @@ public abstract class LoopTransformations {
                     if (controls == null) {
                         firstSwitch = switchNode;
                         invariantValue = switchNode.value();
-                        controls = new ArrayList<>();
+                        controls = SpecifiedArrayList.createNew();
                         controls.add(switchNode);
                     } else if (switchNode.value() == invariantValue && firstSwitch.structureEquals(switchNode)) {
                         // Only collect switches which test the same values in the same order

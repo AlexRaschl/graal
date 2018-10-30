@@ -73,16 +73,16 @@ public interface ProxyArray extends Proxy {
 
     /**
      * Returns the reported size of the array. The returned size of an array does not limit a guest
-     * language to get and set values using arbitrary indices. The array size is typically used by
-     * Graal languages to traverse the array.
+     * language to get and set values using arbitrary indices. The array size is typically used by Graal
+     * languages to traverse the array.
      *
      * @since 1.0
      */
     long getSize();
 
     /**
-     * Creates a proxy array backed by a Java array. If the set values of the array are host values
-     * then the they will be {@link Value#asHostObject() unboxed}.
+     * Creates a proxy array backed by a Java array. If the set values of the array are host values then
+     * the they will be {@link Value#asHostObject() unboxed}.
      *
      * @since 1.0
      */
@@ -111,8 +111,8 @@ public interface ProxyArray extends Proxy {
     }
 
     /**
-     * Creates a proxy array backed by a Java List. If the set values of the list are host values
-     * then the they will be {@link Value#asHostObject() unboxed}.
+     * Creates a proxy array backed by a Java List. If the set values of the list are host values then
+     * the they will be {@link Value#asHostObject() unboxed}.
      *
      * @since 1.0
      */

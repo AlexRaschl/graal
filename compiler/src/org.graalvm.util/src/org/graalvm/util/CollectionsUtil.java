@@ -43,8 +43,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Concatenates two iterables into a single iterable. The iterator exposed by the returned
-     * iterable does not support {@link Iterator#remove()} even if the input iterables do.
+     * Concatenates two iterables into a single iterable. The iterator exposed by the returned iterable
+     * does not support {@link Iterator#remove()} even if the input iterables do.
      *
      * @throws NullPointerException if {@code a} or {@code b} is {@code null}
      */
@@ -98,8 +98,8 @@ public final class CollectionsUtil {
 
     /**
      * Returns whether all elements in {@code inputs} match {@code predicate}. May not evaluate
-     * {@code predicate} on all elements if not necessary for determining the result. If
-     * {@code inputs} is empty then {@code true} is returned and {@code predicate} is not evaluated.
+     * {@code predicate} on all elements if not necessary for determining the result. If {@code inputs}
+     * is empty then {@code true} is returned and {@code predicate} is not evaluated.
      *
      * @return {@code true} if either all elements in {@code inputs} match {@code predicate} or
      *         {@code inputs} is empty, otherwise {@code false}.
@@ -110,8 +110,8 @@ public final class CollectionsUtil {
 
     /**
      * Returns whether all elements in {@code inputs} match {@code predicate}. May not evaluate
-     * {@code predicate} on all elements if not necessary for determining the result. If
-     * {@code inputs} is empty then {@code true} is returned and {@code predicate} is not evaluated.
+     * {@code predicate} on all elements if not necessary for determining the result. If {@code inputs}
+     * is empty then {@code true} is returned and {@code predicate} is not evaluated.
      *
      * @return {@code true} if either all elements in {@code inputs} match {@code predicate} or
      *         {@code inputs} is empty, otherwise {@code false}.
@@ -127,9 +127,8 @@ public final class CollectionsUtil {
 
     /**
      * Returns whether any elements in {@code inputs} match {@code predicate}. May not evaluate
-     * {@code predicate} on all elements if not necessary for determining the result. If
-     * {@code inputs} is empty then {@code false} is returned and {@code predicate} is not
-     * evaluated.
+     * {@code predicate} on all elements if not necessary for determining the result. If {@code inputs}
+     * is empty then {@code false} is returned and {@code predicate} is not evaluated.
      *
      * @return {@code true} if any elements in {@code inputs} match {@code predicate}, otherwise
      *         {@code false}.
@@ -140,9 +139,8 @@ public final class CollectionsUtil {
 
     /**
      * Returns whether any elements in {@code inputs} match {@code predicate}. May not evaluate
-     * {@code predicate} on all elements if not necessary for determining the result. If
-     * {@code inputs} is empty then {@code false} is returned and {@code predicate} is not
-     * evaluated.
+     * {@code predicate} on all elements if not necessary for determining the result. If {@code inputs}
+     * is empty then {@code false} is returned and {@code predicate} is not evaluated.
      *
      * @return {@code true} if any elements in {@code inputs} match {@code predicate}, otherwise
      *         {@code false}.
@@ -182,8 +180,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Filters {@code inputs} with {@code predicate}, applies {@code mapper} and adds them in the
-     * array provided by {@code arrayGenerator}.
+     * Filters {@code inputs} with {@code predicate}, applies {@code mapper} and adds them in the array
+     * provided by {@code arrayGenerator}.
      *
      * @return the array provided by {@code arrayGenerator}.
      */
@@ -198,8 +196,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Applies {@code mapper} on the elements in {@code inputs} and adds them in the array provided
-     * by {@code arrayGenerator}.
+     * Applies {@code mapper} on the elements in {@code inputs} and adds them in the array provided by
+     * {@code arrayGenerator}.
      *
      * @return the array provided by {@code arrayGenerator}.
      */
@@ -208,8 +206,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Applies {@code mapper} on the elements in {@code inputs} and adds them in the array provided
-     * by {@code arrayGenerator}.
+     * Applies {@code mapper} on the elements in {@code inputs} and adds them in the array provided by
+     * {@code arrayGenerator}.
      *
      * @return the array provided by {@code arrayGenerator}.
      */
@@ -223,8 +221,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated
-     * by {@code delimiter}.
+     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated by
+     * {@code delimiter}.
      *
      * @return a new String that is composed from {@code inputs}.
      */
@@ -233,8 +231,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated
-     * by {@code delimiter} and starting with {@code prefix}.
+     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated by
+     * {@code delimiter} and starting with {@code prefix}.
      *
      * @return a new String that is composed from {@code inputs}.
      */
@@ -243,8 +241,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated
-     * by {@code delimiter} and starting with {@code prefix} and ending with {@code suffix}.
+     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated by
+     * {@code delimiter} and starting with {@code prefix} and ending with {@code suffix}.
      *
      * @return a new String that is composed from {@code inputs}.
      */
@@ -253,8 +251,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated
-     * by {@code delimiter}.
+     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated by
+     * {@code delimiter}.
      *
      * @return a new String that is composed from {@code inputs}.
      */
@@ -263,8 +261,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated
-     * by {@code delimiter} and starting with {@code prefix}.
+     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated by
+     * {@code delimiter} and starting with {@code prefix}.
      *
      * @return a new String that is composed from {@code inputs}.
      */
@@ -273,8 +271,8 @@ public final class CollectionsUtil {
     }
 
     /**
-     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated
-     * by {@code delimiter} and starting with {@code prefix} and ending with {@code suffix}.
+     * Applies {@code mapper} on the elements in {@code inputs}, and joins them together separated by
+     * {@code delimiter} and starting with {@code prefix} and ending with {@code suffix}.
      *
      * @return a new String that is composed from {@code inputs}.
      */

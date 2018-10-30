@@ -49,8 +49,8 @@ public abstract class ObjectHandles {
     }
 
     /**
-     * Creates a handle to the specified object. The object is kept alive by the garbage collector
-     * at least until {@link #destroy} is called for the returned handle. The object can be null.
+     * Creates a handle to the specified object. The object is kept alive by the garbage collector at
+     * least until {@link #destroy} is called for the returned handle. The object can be null.
      */
     public abstract ObjectHandle create(Object object);
 
@@ -60,8 +60,7 @@ public abstract class ObjectHandles {
     public abstract <T> T get(ObjectHandle handle);
 
     /**
-     * Destroys the given global handle. After calling this method, the handle must not be used
-     * anymore.
+     * Destroys the given global handle. After calling this method, the handle must not be used anymore.
      */
     public abstract void destroy(ObjectHandle handle);
 }

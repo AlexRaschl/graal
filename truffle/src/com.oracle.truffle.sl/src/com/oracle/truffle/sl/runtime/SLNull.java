@@ -59,8 +59,7 @@ public final class SLNull implements TruffleObject {
     public static final SLNull SINGLETON = new SLNull();
 
     /**
-     * Disallow instantiation from outside to ensure that the {@link #SINGLETON} is the only
-     * instance.
+     * Disallow instantiation from outside to ensure that the {@link #SINGLETON} is the only instance.
      */
     private SLNull() {
     }
@@ -75,9 +74,9 @@ public final class SLNull implements TruffleObject {
     }
 
     /**
-     * In case you want some of your objects to co-operate with other languages, you need to make
-     * them implement {@link TruffleObject} and provide additional {@link SLNullMessageResolution
-     * foreign access implementation}.
+     * In case you want some of your objects to co-operate with other languages, you need to make them
+     * implement {@link TruffleObject} and provide additional {@link SLNullMessageResolution foreign
+     * access implementation}.
      */
     @Override
     public ForeignAccess getForeignAccess() {

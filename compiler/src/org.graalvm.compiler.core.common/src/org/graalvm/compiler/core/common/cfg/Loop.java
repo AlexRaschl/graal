@@ -23,8 +23,9 @@
 
 package org.graalvm.compiler.core.common.cfg;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 public abstract class Loop<T extends AbstractBlockBase<T>> {
 
@@ -46,9 +47,9 @@ public abstract class Loop<T extends AbstractBlockBase<T>> {
         }
         this.index = index;
         this.header = header;
-        this.blocks = new ArrayList<>();
-        this.children = new ArrayList<>();
-        this.exits = new ArrayList<>();
+        this.blocks = SpecifiedArrayList.createNew();
+        this.children = SpecifiedArrayList.createNew();
+        this.exits = SpecifiedArrayList.createNew();
     }
 
     public abstract long numBackedges();

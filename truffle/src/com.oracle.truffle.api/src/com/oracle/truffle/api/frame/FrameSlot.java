@@ -52,8 +52,7 @@ public final class FrameSlot implements Cloneable {
     /**
      * Identifier of the slot.
      *
-     * @return value as specified in {@link FrameDescriptor#addFrameSlot(java.lang.Object)}
-     *         parameter
+     * @return value as specified in {@link FrameDescriptor#addFrameSlot(java.lang.Object)} parameter
      * @since 0.8 or earlier
      */
     public Object getIdentifier() {
@@ -98,8 +97,7 @@ public final class FrameSlot implements Cloneable {
 
     /**
      * Changes the kind of this slot. Change of the slot kind is done on <em>slow path</em> and
-     * invalidates assumptions about version of the {@link #getFrameDescriptor() associated
-     * descriptor}.
+     * invalidates assumptions about version of the {@link #getFrameDescriptor() associated descriptor}.
      *
      * @param kind new kind of the slot
      * @since 0.8 or earlier

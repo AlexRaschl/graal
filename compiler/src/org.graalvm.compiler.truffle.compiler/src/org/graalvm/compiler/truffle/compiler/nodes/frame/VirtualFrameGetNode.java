@@ -64,8 +64,8 @@ public final class VirtualFrameGetNode extends VirtualFrameAccessorNode implemen
                 ValueNode actualTag = tool.getEntry(tagVirtual, frameSlotIndex);
                 if (!actualTag.isConstant() || actualTag.asJavaConstant().asInt() != accessTag) {
                     /*
-                     * We cannot constant fold the tag-check immediately, so we need to create a
-                     * guard comparing the actualTag with the accessTag.
+                     * We cannot constant fold the tag-check immediately, so we need to create a guard comparing the
+                     * actualTag with the accessTag.
                      */
                     LogicNode comparison = new IntegerEqualsNode(actualTag, getConstant(accessTag));
                     tool.addNode(comparison);
@@ -81,9 +81,9 @@ public final class VirtualFrameGetNode extends VirtualFrameAccessorNode implemen
         }
 
         /*
-         * We could "virtualize" to a UnsafeLoadNode here that remains a memory access. However,
-         * that could prevent further escape analysis for parts of the method that actually matter.
-         * So we just deoptimize.
+         * We could "virtualize" to a UnsafeLoadNode here that remains a memory access. However, that could
+         * prevent further escape analysis for parts of the method that actually matter. So we just
+         * deoptimize.
          */
         insertDeoptimization(tool);
     }

@@ -66,8 +66,8 @@ public final class ArityException extends InteropException {
     }
 
     /**
-     * Raises an {@link ArityException}, hidden as a {@link RuntimeException}, which allows throwing
-     * it without an explicit throws declaration. The {@link ForeignAccess} methods (e.g.
+     * Raises an {@link ArityException}, hidden as a {@link RuntimeException}, which allows throwing it
+     * without an explicit throws declaration. The {@link ForeignAccess} methods (e.g.
      * <code> ForeignAccess.sendRead </code>) catch the exceptions and re-throw them as checked
      * exceptions.
      *

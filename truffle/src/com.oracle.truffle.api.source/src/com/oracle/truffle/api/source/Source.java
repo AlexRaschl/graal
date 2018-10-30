@@ -134,8 +134,8 @@ public abstract class Source {
     private volatile TextMap textMap;
 
     /**
-     * Creates new {@link Source} builder for specified <code>file</code>. Once the source is built
-     * the {@link Source#getName() name} will become {@link File#getName()} and the
+     * Creates new {@link Source} builder for specified <code>file</code>. Once the source is built the
+     * {@link Source#getName() name} will become {@link File#getName()} and the
      * {@link Source#getCharacters()} will be loaded from the file, unless
      * {@link Builder#content(java.lang.String) redefined} on the builder. Sample usage:
      * <p>
@@ -154,9 +154,8 @@ public abstract class Source {
 
     /**
      * Builds new {@link Source source} from a provided text. One needs to specify a
-     * {@link Builder#mimeType(java.lang.String)}, possibly a {@link Builder#name(java.lang.String)}
-     * and other attributes and then can {@link Builder#build()} a new instance of the source.
-     * Sample usage:
+     * {@link Builder#mimeType(java.lang.String)}, possibly a {@link Builder#name(java.lang.String)} and
+     * other attributes and then can {@link Builder#build()} a new instance of the source. Sample usage:
      *
      * {@link SourceSnippets#fromAString}
      *
@@ -170,9 +169,9 @@ public abstract class Source {
 
     /**
      * Builds new {@link Source source} from a provided character sequence. One needs to specify a
-     * {@link Builder#mimeType(java.lang.String)}, possibly a {@link Builder#name(java.lang.String)}
-     * and other attributes and then can {@link Builder#build()} a new instance of the source. The
-     * given characters must not mutate after they were accessed for the first time. Sample usage:
+     * {@link Builder#mimeType(java.lang.String)}, possibly a {@link Builder#name(java.lang.String)} and
+     * other attributes and then can {@link Builder#build()} a new instance of the source. The given
+     * characters must not mutate after they were accessed for the first time. Sample usage:
      *
      * {@link SourceSnippets#fromAString}
      *
@@ -185,8 +184,8 @@ public abstract class Source {
     }
 
     /**
-     * Creates a {@linkplain Source Source instance} that represents the contents of a sub-range of
-     * an <code>this</code> {@link Source}.
+     * Creates a {@linkplain Source Source instance} that represents the contents of a sub-range of an
+     * <code>this</code> {@link Source}.
      *
      * @param baseCharIndex 0-based index of the first character of the sub-range
      * @param length the number of characters in the sub-range
@@ -215,10 +214,10 @@ public abstract class Source {
     }
 
     /**
-     * Creates a new source whose content will be read once it is {@link Builder#build()
-     * constructed}. Multiple {@link Source} instances constructed by a single {@link Builder}
-     * instance share the content, read only once. When building source from reader, it is essential
-     * to {@link Builder#mimeType(java.lang.String) specify MIME type}. Example follows:
+     * Creates a new source whose content will be read once it is {@link Builder#build() constructed}.
+     * Multiple {@link Source} instances constructed by a single {@link Builder} instance share the
+     * content, read only once. When building source from reader, it is essential to
+     * {@link Builder#mimeType(java.lang.String) specify MIME type}. Example follows:
      *
      * {@link SourceSnippets#fromReader}
      *
@@ -266,9 +265,8 @@ public abstract class Source {
     }
 
     /**
-     * Returns the name of this resource holding a guest language program. An example would be the
-     * name of a guest language source code file. Name is supposed to be shorter than
-     * {@link #getPath()}.
+     * Returns the name of this resource holding a guest language program. An example would be the name
+     * of a guest language source code file. Name is supposed to be shorter than {@link #getPath()}.
      *
      * @return the name of the guest language program
      * @since 0.8 or earlier
@@ -278,8 +276,8 @@ public abstract class Source {
     }
 
     /**
-     * The fully qualified name of the source. In case this source originates from a {@link File},
-     * then the default path is the normalized, {@link File#getCanonicalPath() canonical path}.
+     * The fully qualified name of the source. In case this source originates from a {@link File}, then
+     * the default path is the normalized, {@link File#getCanonicalPath() canonical path}.
      *
      * @since 0.8 or earlier
      */
@@ -288,13 +286,13 @@ public abstract class Source {
     }
 
     /**
-     * Check whether this source has been marked as <em>internal</em>, meaning that it has been
-     * provided by the infrastructure, language implementation, or system library. <em>Internal</em>
-     * sources are presumed to be irrelevant to guest language programmers, as well as possibly
-     * confusing and revealing of language implementation details.
+     * Check whether this source has been marked as <em>internal</em>, meaning that it has been provided
+     * by the infrastructure, language implementation, or system library. <em>Internal</em> sources are
+     * presumed to be irrelevant to guest language programmers, as well as possibly confusing and
+     * revealing of language implementation details.
      * <p>
-     * On the other hand, tools should be free to make <em>internal</em> sources visible in
-     * (possibly privileged) modes that are useful for language implementors.
+     * On the other hand, tools should be free to make <em>internal</em> sources visible in (possibly
+     * privileged) modes that are useful for language implementors.
      * <p>
      * One can specify whether a source is internal when {@link Builder#internal() building it}.
      *
@@ -307,21 +305,19 @@ public abstract class Source {
 
     /**
      * Check whether this source has been marked as <em>interactive</em>. Interactive sources are
-     * provided by an entity which is able to interactively read output and provide an input during
-     * the source execution; that can be a user I/O through an interactive shell for instance.
+     * provided by an entity which is able to interactively read output and provide an input during the
+     * source execution; that can be a user I/O through an interactive shell for instance.
      * <p>
-     * Depending on {@link com.oracle.truffle.api.vm.PolyglotEngine.Language#isInteractive()
-     * language interactive} capability, when <em>interactive</em> sources are executed, the
-     * appropriate result could be passed directly to the polyglot engine
-     * {@link com.oracle.truffle.api.vm.PolyglotEngine.Builder#setOut(OutputStream) output stream}
-     * or {@link com.oracle.truffle.api.vm.PolyglotEngine.Builder#setErr(OutputStream) error stream}
-     * and polyglot engine
-     * {@link com.oracle.truffle.api.vm.PolyglotEngine.Builder#setIn(InputStream) input stream} can
-     * be used to read user input during the execution, to clarify the execution behavior by asking
-     * questions for instance. Non-interactive languages are expected to ignore this property.
+     * Depending on {@link com.oracle.truffle.api.vm.PolyglotEngine.Language#isInteractive() language
+     * interactive} capability, when <em>interactive</em> sources are executed, the appropriate result
+     * could be passed directly to the polyglot engine
+     * {@link com.oracle.truffle.api.vm.PolyglotEngine.Builder#setOut(OutputStream) output stream} or
+     * {@link com.oracle.truffle.api.vm.PolyglotEngine.Builder#setErr(OutputStream) error stream} and
+     * polyglot engine {@link com.oracle.truffle.api.vm.PolyglotEngine.Builder#setIn(InputStream) input
+     * stream} can be used to read user input during the execution, to clarify the execution behavior by
+     * asking questions for instance. Non-interactive languages are expected to ignore this property.
      * <p>
-     * One can specify whether a source is interactive when {@link Builder#interactive() building
-     * it}.
+     * One can specify whether a source is interactive when {@link Builder#interactive() building it}.
      *
      * @return whether this source is marked as <em>interactive</em>
      * @since 0.21
@@ -347,10 +343,9 @@ public abstract class Source {
      * register a breakpoint using a URI} to a source that isn't loaded yet and it will be activated
      * when the source is
      * {@link com.oracle.truffle.api.vm.PolyglotEngine#eval(com.oracle.truffle.api.source.Source)
-     * evaluated}. The {@link URI} returned by this method should be as unique as possible, yet it
-     * can happen that different {@link Source sources} return the same {@link #getURI} - for
-     * example when content of a {@link Source#newBuilder(java.io.File) file on a disk} changes and
-     * is re-loaded.
+     * evaluated}. The {@link URI} returned by this method should be as unique as possible, yet it can
+     * happen that different {@link Source sources} return the same {@link #getURI} - for example when
+     * content of a {@link Source#newBuilder(java.io.File) file on a disk} changes and is re-loaded.
      *
      * @return a URI, it's never <code>null</code>
      * @since 0.14
@@ -382,8 +377,8 @@ public abstract class Source {
     }
 
     /**
-     * Access to the source contents. Causes the contents of this source to be loaded if they are
-     * loaded lazily.
+     * Access to the source contents. Causes the contents of this source to be loaded if they are loaded
+     * lazily.
      *
      * @since 0.8 or earlier
      */
@@ -392,8 +387,8 @@ public abstract class Source {
     }
 
     /**
-     * Gets the number of characters in the source. Causes the contents of this source to be loaded
-     * if they are loaded lazily.
+     * Gets the number of characters in the source. Causes the contents of this source to be loaded if
+     * they are loaded lazily.
      *
      * @since 0.8 or earlier
      */
@@ -412,8 +407,8 @@ public abstract class Source {
     }
 
     /**
-     * Gets the text (not including a possible terminating newline) in a (1-based) numbered line.
-     * Causes the contents of this source to be loaded if they are loaded lazily.
+     * Gets the text (not including a possible terminating newline) in a (1-based) numbered line. Causes
+     * the contents of this source to be loaded if they are loaded lazily.
      *
      * @since 0.28
      */
@@ -424,8 +419,8 @@ public abstract class Source {
     }
 
     /**
-     * Returns the complete text of the code. Causes the contents of this source to be loaded if
-     * they are loaded lazily.
+     * Returns the complete text of the code. Causes the contents of this source to be loaded if they
+     * are loaded lazily.
      *
      * @since 0.8 or earlier
      * @deprecated use {@link #getCharacters()} instead.
@@ -436,8 +431,8 @@ public abstract class Source {
     }
 
     /**
-     * Returns a subsection of the code test. Causes the contents of this source to be loaded if
-     * they are loaded lazily.
+     * Returns a subsection of the code test. Causes the contents of this source to be loaded if they
+     * are loaded lazily.
      *
      * @since 0.8 or earlier
      * @deprecated use {@link #getCharacters() getCodeSequence()}.
@@ -450,8 +445,8 @@ public abstract class Source {
     }
 
     /**
-     * Gets the text (not including a possible terminating newline) in a (1-based) numbered line.
-     * Causes the contents of this source to be loaded if they are loaded lazily.
+     * Gets the text (not including a possible terminating newline) in a (1-based) numbered line. Causes
+     * the contents of this source to be loaded if they are loaded lazily.
      *
      * @since 0.8 or earlier
      * @deprecated use {@link #getCharacters(int)} instead.
@@ -463,8 +458,8 @@ public abstract class Source {
 
     /**
      * The number of text lines in the source, including empty lines; characters at the end of the
-     * source without a terminating newline count as a line. Causes the contents of this source to
-     * be loaded if they are loaded lazily.
+     * source without a terminating newline count as a line. Causes the contents of this source to be
+     * loaded if they are loaded lazily.
      *
      * @since 0.8 or earlier
      */
@@ -484,8 +479,8 @@ public abstract class Source {
     }
 
     /**
-     * Given a 0-based character offset, return the 1-based number of the column at the position.
-     * Causes the contents of this source to be loaded if they are loaded lazily.
+     * Given a 0-based character offset, return the 1-based number of the column at the position. Causes
+     * the contents of this source to be loaded if they are loaded lazily.
      *
      * @throws IllegalArgumentException if the offset is outside the text contents
      * @since 0.8 or earlier
@@ -505,8 +500,8 @@ public abstract class Source {
     }
 
     /**
-     * The number of characters (not counting a possible terminating newline) in a (1-based)
-     * numbered line. Causes the contents of this source to be loaded if they are loaded lazily.
+     * The number of characters (not counting a possible terminating newline) in a (1-based) numbered
+     * line. Causes the contents of this source to be loaded if they are loaded lazily.
      *
      * @throws IllegalArgumentException if there is no such line in the text
      * @since 0.8 or earlier
@@ -517,9 +512,8 @@ public abstract class Source {
 
     /**
      * Returns an unavailable source section indicating that the source location is not available.
-     * Unavailable source sections have the same characteristics as empty source sections with
-     * character index <code>0</code>, but returns <code>false</code> for
-     * {@link SourceSection#isAvailable()}.
+     * Unavailable source sections have the same characteristics as empty source sections with character
+     * index <code>0</code>, but returns <code>false</code> for {@link SourceSection#isAvailable()}.
      *
      * @see SourceSection#isAvailable()
      * @since 0.18
@@ -530,8 +524,8 @@ public abstract class Source {
 
     /**
      * Creates a representation of a line of text in the source identified only by line number, from
-     * which the character information will be computed. Please note that calling this method does
-     * cause the {@link Source#getCharacters() code} of this source to be loaded.
+     * which the character information will be computed. Please note that calling this method does cause
+     * the {@link Source#getCharacters() code} of this source to be loaded.
      *
      * @param lineNumber 1-based line number of the first character in the section
      * @return newly created object representing the specified line
@@ -550,17 +544,17 @@ public abstract class Source {
     }
 
     /**
-     * Creates a representation of a contiguous region of text in the source. Please note that
-     * calling this method does only cause the {@link Source#getCharacters() code} of this source to
-     * be loaded if assertions enabled. The bounds of the source section are only verified if
-     * assertions (-ea) are enabled in the host system. An {@link IllegalArgumentException} is
-     * thrown if the given indices are out of bounds of the source bounds.
+     * Creates a representation of a contiguous region of text in the source. Please note that calling
+     * this method does only cause the {@link Source#getCharacters() code} of this source to be loaded
+     * if assertions enabled. The bounds of the source section are only verified if assertions (-ea) are
+     * enabled in the host system. An {@link IllegalArgumentException} is thrown if the given indices
+     * are out of bounds of the source bounds.
      *
      * @param charIndex 0-based position of the first character in the section
      * @param length the number of characters in the section
      * @return newly created object representing the specified region
-     * @throws IllegalArgumentException if charIndex < 0 or length < 0; in case assertions are
-     *             enabled also if the given bounds are out of the source bounds.
+     * @throws IllegalArgumentException if charIndex < 0 or length < 0; in case assertions are enabled
+     *             also if the given bounds are out of the source bounds.
      * @since 0.17
      */
     public final SourceSection createSection(int charIndex, int length) {
@@ -576,9 +570,8 @@ public abstract class Source {
 
     /**
      * Creates a representation of a contiguous region of text in the source. Computes the
-     * {@code charIndex} value by building a text map of lines in the source. Please note that
-     * calling this method does cause the {@link Source#getCharacters() code} of this source to be
-     * loaded.
+     * {@code charIndex} value by building a text map of lines in the source. Please note that calling
+     * this method does cause the {@link Source#getCharacters() code} of this source to be loaded.
      *
      * @param startLine 1-based line number of the first character in the section
      * @param startColumn 1-based column number of the first character in the section
@@ -643,10 +636,9 @@ public abstract class Source {
     }
 
     /**
-     * MIME type that is associated with this source. By default file extensions known to the system
-     * are used to determine the MIME type (via registered {@link FileTypeDetector} classes), yet
-     * one can directly {@link Builder#mimeType(java.lang.String) provide a MIME type} to each
-     * source.
+     * MIME type that is associated with this source. By default file extensions known to the system are
+     * used to determine the MIME type (via registered {@link FileTypeDetector} classes), yet one can
+     * directly {@link Builder#mimeType(java.lang.String) provide a MIME type} to each source.
      *
      * @return MIME type of this source or <code>null</code>, if unknown
      * @since 0.8 or earlier
@@ -688,10 +680,10 @@ public abstract class Source {
     }
 
     /**
-     * Allows one to specify additional attribute before {@link #build() creating} new
-     * {@link Source} instance. One can specify {@link #name(java.lang.String)},
-     * {@link #mimeType(java.lang.String)}, {@link #content(java.lang.String)} and/or whether a
-     * {@link Source} is {@link #internal() internal} or not.
+     * Allows one to specify additional attribute before {@link #build() creating} new {@link Source}
+     * instance. One can specify {@link #name(java.lang.String)}, {@link #mimeType(java.lang.String)},
+     * {@link #content(java.lang.String)} and/or whether a {@link Source} is {@link #internal()
+     * internal} or not.
      *
      * To load a source from disk one can use:
      * <p>
@@ -711,19 +703,18 @@ public abstract class Source {
      * <p>
      *
      * The system does all it can to guarantee that newly created {@link Source source} has a
-     * {@link Source#getMimeType() MIME type assigned}. In some situations the mime type can be
-     * guessed, in others it has to be explicitly specified via the
-     * {@link #mimeType(java.lang.String)} method.
+     * {@link Source#getMimeType() MIME type assigned}. In some situations the mime type can be guessed,
+     * in others it has to be explicitly specified via the {@link #mimeType(java.lang.String)} method.
      *
-     * Once your builder is configured, call {@link #build()} to perform the loading and
-     * construction of new {@link Source}.
+     * Once your builder is configured, call {@link #build()} to perform the loading and construction of
+     * new {@link Source}.
      *
-     * @param <E1> the (checked) exception that one should expect when calling {@link #build()}
-     *            method - usually an {@link IOException},
-     *            {@link Source#newBuilder(java.lang.String) sometimes} none.
+     * @param <E1> the (checked) exception that one should expect when calling {@link #build()} method -
+     *            usually an {@link IOException}, {@link Source#newBuilder(java.lang.String) sometimes}
+     *            none.
      * @param <E2> either a {@link MissingMIMETypeException} to signal that one has to call
-     *            {@link #mimeType(java.lang.String)} or a {@link RuntimeException} to signal
-     *            everything seems to be OK
+     *            {@link #mimeType(java.lang.String)} or a {@link RuntimeException} to signal everything
+     *            seems to be OK
      * @param <E3> either a {@link MissingNameException} to signal that one has to call
      *            {@link #name(java.lang.String)} or a {@link RuntimeException} to signal everything
      *            seems to be OK
@@ -764,10 +755,10 @@ public abstract class Source {
         }
 
         /**
-         * Explicitly assigns a {@link Source#getMimeType() MIME type} to the {@link #build()
-         * to-be-built} {@link Source}. This method returns the builder parametrized with
-         * {@link Source} type parameter to signal to the compiler that it is safe to call
-         * {@link #build()} method and create an instance of a {@link Source}. Example:
+         * Explicitly assigns a {@link Source#getMimeType() MIME type} to the {@link #build() to-be-built}
+         * {@link Source}. This method returns the builder parametrized with {@link Source} type parameter
+         * to signal to the compiler that it is safe to call {@link #build()} method and create an instance
+         * of a {@link Source}. Example:
          *
          * {@link SourceSnippets#fromAString}
          *
@@ -783,8 +774,8 @@ public abstract class Source {
         }
 
         /**
-         * Assigns a language ID to the {@link #build() to-be-built} {@link Source}. After a
-         * language ID is set, it's not necessary to assign the MIME type.
+         * Assigns a language ID to the {@link #build() to-be-built} {@link Source}. After a language ID is
+         * set, it's not necessary to assign the MIME type.
          *
          * @param newLanguage the id of the language
          * @return instance of <code>this</code> builder
@@ -801,9 +792,9 @@ public abstract class Source {
         }
 
         /**
-         * Marks the source as internal. Internal sources are those that aren't created by user, but
-         * rather inherently present by the language system. Calling this method influences result
-         * of create {@link Source#isInternal()}
+         * Marks the source as internal. Internal sources are those that aren't created by user, but rather
+         * inherently present by the language system. Calling this method influences result of create
+         * {@link Source#isInternal()}
          *
          * @return the instance of this builder
          * @since 0.15
@@ -814,15 +805,14 @@ public abstract class Source {
         }
 
         /**
-         * Marks the source as interactive. {@link com.oracle.truffle.api.vm.PolyglotEngine#eval
-         * Evaluation} of interactive sources by an
-         * {@link com.oracle.truffle.api.vm.PolyglotEngine.Language#isInteractive() interactive
-         * language} can use the {@link com.oracle.truffle.api.vm.PolyglotEngine} streams to print
-         * the result and read an input. However, non-interactive languages are expected to ignore
-         * the interactive property of sources and not use the polyglot engine streams. Any desired
-         * printing of the evaluated result provided by a non-interactive language needs to be
-         * handled by the caller. Calling of this method influences the result of
-         * {@link Source#isInteractive()}.
+         * Marks the source as interactive. {@link com.oracle.truffle.api.vm.PolyglotEngine#eval Evaluation}
+         * of interactive sources by an
+         * {@link com.oracle.truffle.api.vm.PolyglotEngine.Language#isInteractive() interactive language}
+         * can use the {@link com.oracle.truffle.api.vm.PolyglotEngine} streams to print the result and read
+         * an input. However, non-interactive languages are expected to ignore the interactive property of
+         * sources and not use the polyglot engine streams. Any desired printing of the evaluated result
+         * provided by a non-interactive language needs to be handled by the caller. Calling of this method
+         * influences the result of {@link Source#isInteractive()}.
          *
          * @return the instance of this builder
          * @since 0.21
@@ -834,9 +824,9 @@ public abstract class Source {
 
         /**
          * Assigns new {@link URI} to the {@link #build() to-be-created} {@link Source}. Each source
-         * provides {@link Source#getURI()} as a persistent identification of its location. A
-         * default value for the method is deduced from the location or content, but one can change
-         * it by using this method
+         * provides {@link Source#getURI()} as a persistent identification of its location. A default value
+         * for the method is deduced from the location or content, but one can change it by using this
+         * method
          *
          * @param ownUri the URL to use instead of default one, cannot be <code>null</code>
          * @return the instance of this builder
@@ -849,9 +839,9 @@ public abstract class Source {
         }
 
         /**
-         * Specifies content of {@link #build() to-be-built} {@link Source}. Using this method one
-         * can ignore the real content of a file or URL and use already read one, or completely
-         * different one. Example:
+         * Specifies content of {@link #build() to-be-built} {@link Source}. Using this method one can
+         * ignore the real content of a file or URL and use already read one, or completely different one.
+         * Example:
          *
          * {@link SourceSnippets#fromURLWithOwnContent}
          *
@@ -867,10 +857,9 @@ public abstract class Source {
         }
 
         /**
-         * Specifies content of {@link #build() to-be-built} {@link Source}. Using this method one
-         * can ignore the real content of a file or URL and use already read one, or completely
-         * different one. The given characters must not mutate after they were accessed for the
-         * first time. Example:
+         * Specifies content of {@link #build() to-be-built} {@link Source}. Using this method one can
+         * ignore the real content of a file or URL and use already read one, or completely different one.
+         * The given characters must not mutate after they were accessed for the first time. Example:
          *
          * {@link SourceSnippets#fromURLWithOwnContent}
          *
@@ -891,19 +880,19 @@ public abstract class Source {
         }
 
         /**
-         * Uses configuration of this builder to create new {@link Source} object. The return value
-         * is parametrized to ensure your code doesn't compile until you specify a MIME type:
+         * Uses configuration of this builder to create new {@link Source} object. The return value is
+         * parametrized to ensure your code doesn't compile until you specify a MIME type:
          * <ul>
-         * <li>either via file related methods like {@link Source#newBuilder(java.io.File)} that can
-         * guess the MIME type</li>
+         * <li>either via file related methods like {@link Source#newBuilder(java.io.File)} that can guess
+         * the MIME type</li>
          * <li>or directly via {@link #mimeType(java.lang.String)} method on this builder
          * </ul>
          * This method may throw an exception - especially when dealing with files (e.g.
          * {@link Source#newBuilder(java.net.URL)}, {@link Source#newBuilder(java.io.File)} or
-         * {@link Source#newBuilder(java.io.Reader)} this method may throw {@link IOException} that
-         * one needs to deal with. In case of other building styles (like
-         * {@link Source#newBuilder(java.lang.String)} one doesn't need to capture any exception
-         * when calling this method.
+         * {@link Source#newBuilder(java.io.Reader)} this method may throw {@link IOException} that one
+         * needs to deal with. In case of other building styles (like
+         * {@link Source#newBuilder(java.lang.String)} one doesn't need to capture any exception when
+         * calling this method.
          *
          * @return the source object
          * @throws E1 exception if something went wrong while creating the source

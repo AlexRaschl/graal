@@ -53,10 +53,10 @@ public final class UnsupportedMessageException extends InteropException {
     }
 
     /**
-     * Raises an {@link UnsupportedMessageException}, hidden as a {@link RuntimeException}, which
-     * allows throwing it without an explicit throws declaration. The {@link ForeignAccess} methods
-     * (e.g. <code> ForeignAccess.sendRead </code>) catch the exceptions and re-throw them as
-     * checked exceptions.
+     * Raises an {@link UnsupportedMessageException}, hidden as a {@link RuntimeException}, which allows
+     * throwing it without an explicit throws declaration. The {@link ForeignAccess} methods (e.g.
+     * <code> ForeignAccess.sendRead </code>) catch the exceptions and re-throw them as checked
+     * exceptions.
      *
      * @param message message that is not supported
      *

@@ -64,11 +64,10 @@ public class GraalOSRLockTest extends GraalOSRTestBase {
             Assume.assumeNoException("cannot check for monitors without java.management JDK9 module", ex);
         }
         /*
-         * Note: The -Xcomp execution mode of the VM will stop most of the OSR test cases from
-         * working as every method is compiled at level3 (followed by level4 on the second
-         * invocation). The tests in this class are written in a way that they expect a method to be
-         * executed at the invocation BCI with the interpreter and then perform an OSR to an
-         * installed nmethod at a given BCI.
+         * Note: The -Xcomp execution mode of the VM will stop most of the OSR test cases from working as
+         * every method is compiled at level3 (followed by level4 on the second invocation). The tests in
+         * this class are written in a way that they expect a method to be executed at the invocation BCI
+         * with the interpreter and then perform an OSR to an installed nmethod at a given BCI.
          *
          */
         RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
@@ -199,8 +198,8 @@ public class GraalOSRLockTest extends GraalOSRTestBase {
 
     public synchronized ReturnValue synchronizedSnippet() {
         /*
-         * Test method for which liveness would conclude the original object is no longer alive
-         * although it is.
+         * Test method for which liveness would conclude the original object is no longer alive although it
+         * is.
          */
         Collection<HashSet<A>> allListeners = listeners.values();
         for (HashSet<A> group : allListeners) {

@@ -46,8 +46,7 @@ public class MatchStatement {
     private static final CounterKey MatchStatementSuccess = DebugContext.counter("MatchStatementSuccess");
 
     /**
-     * A printable name for this statement. Usually it's just the name of the method doing the
-     * emission.
+     * A printable name for this statement. Usually it's just the name of the method doing the emission.
      */
     private final String name;
 

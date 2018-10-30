@@ -36,8 +36,8 @@ public class FindUniqueConcreteMethodBugTest extends GraalCompilerTest {
     private static final int ITERATIONS = Integer.getInteger("FindUniqueConcreteMethodBugTest.ITERATIONS", 100);
 
     /**
-     * Executing {@link ResolvedJavaType#findUniqueConcreteMethod(ResolvedJavaMethod)} for the
-     * method {@link Person#getName()} on the type {@link AbstractPerson} should return null as both
+     * Executing {@link ResolvedJavaType#findUniqueConcreteMethod(ResolvedJavaMethod)} for the method
+     * {@link Person#getName()} on the type {@link AbstractPerson} should return null as both
      * {@link PersonImpl} and {@link TenantImpl} provide implementations (namely
      * {@link PersonImpl#getName()} and {@link Tenant#getName()}).
      */

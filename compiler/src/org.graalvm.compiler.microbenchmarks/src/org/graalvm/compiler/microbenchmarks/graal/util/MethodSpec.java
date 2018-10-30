@@ -34,8 +34,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface MethodSpec {
     /**
-     * The class in which the method is declared. If not specified, the annotated class is used as
-     * the declaring class.
+     * The class in which the method is declared. If not specified, the annotated class is used as the
+     * declaring class.
      */
     Class<?> declaringClass() default MethodSpec.class;
 

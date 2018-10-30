@@ -102,8 +102,8 @@ public class WordOperationPlugin extends WordFactory implements NodePlugin, Type
     }
 
     /**
-     * Processes a call to a method if it is annotated as a word operation by adding nodes to the
-     * graph being built that implement the denoted operation.
+     * Processes a call to a method if it is annotated as a word operation by adding nodes to the graph
+     * being built that implement the denoted operation.
      *
      * @return {@code true} iff {@code method} is annotated with {@link Operation} (and was thus
      *         processed by this method)
@@ -163,8 +163,8 @@ public class WordOperationPlugin extends WordFactory implements NodePlugin, Type
     public boolean handleLoadIndexed(GraphBuilderContext b, ValueNode array, ValueNode index, JavaKind elementKind) {
         ResolvedJavaType arrayType = StampTool.typeOrNull(array);
         /*
-         * There are cases where the array does not have a known type yet, i.e., the type is null.
-         * In that case we assume it is not a word type.
+         * There are cases where the array does not have a known type yet, i.e., the type is null. In that
+         * case we assume it is not a word type.
          */
         if (arrayType != null && wordTypes.isWord(arrayType.getComponentType())) {
             assert elementKind == JavaKind.Object;
@@ -395,9 +395,9 @@ public class WordOperationPlugin extends WordFactory implements NodePlugin, Type
     }
 
     /**
-     * Create an instance of a binary node which is used to lower {@link Word} operations. This
-     * method is called for all {@link Word} operations which are annotated with @Operation(node =
-     * ...) and encapsulates the reflective allocation of the node.
+     * Create an instance of a binary node which is used to lower {@link Word} operations. This method
+     * is called for all {@link Word} operations which are annotated with @Operation(node = ...) and
+     * encapsulates the reflective allocation of the node.
      */
     private static ValueNode createBinaryNodeInstance(Class<? extends ValueNode> nodeClass, ValueNode left, ValueNode right) {
         try {
@@ -447,9 +447,8 @@ public class WordOperationPlugin extends WordFactory implements NodePlugin, Type
 
     public static ValueNode readOp(GraphBuilderContext b, JavaKind readKind, AddressNode address, LocationIdentity location, BarrierType barrierType, boolean compressible) {
         /*
-         * A JavaReadNode lowered to a ReadNode that will not float. This means it cannot float
-         * above an explicit zero check on its base address or any other test that ensures the read
-         * is safe.
+         * A JavaReadNode lowered to a ReadNode that will not float. This means it cannot float above an
+         * explicit zero check on its base address or any other test that ensures the read is safe.
          */
         JavaReadNode read = b.add(new JavaReadNode(readKind, address, location, barrierType, compressible));
         return read;

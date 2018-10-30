@@ -69,8 +69,8 @@ import org.graalvm.word.WordBase;
 public @interface CPointerTo {
 
     /**
-     * The value type, as a reference to a Java interface that is either annotated with
-     * {@link CStruct} or {@link CPointerTo}.
+     * The value type, as a reference to a Java interface that is either annotated with {@link CStruct}
+     * or {@link CPointerTo}.
      *
      * Exactly one of the properties {@link #value()} and {@link CPointerTo#nameOfCType()} must be
      * specified.

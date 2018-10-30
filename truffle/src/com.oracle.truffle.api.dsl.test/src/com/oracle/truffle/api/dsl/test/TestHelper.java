@@ -129,8 +129,9 @@ class TestHelper {
         return val;
     }
 
+    // TODO LIST_OF_LIST
     static <E> List<List<E>> permutations(List<E> list) {
-        return permutations(new ArrayList<E>(), list, new ArrayList<List<E>>());
+        return permutations(new ArrayList<>(), list, new ArrayList<>());
     }
 
     static Object[][] permutations(Object... list) {

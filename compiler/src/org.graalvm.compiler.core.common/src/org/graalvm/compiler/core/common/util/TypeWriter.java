@@ -29,8 +29,8 @@ package org.graalvm.compiler.core.common.util;
 public interface TypeWriter {
 
     /**
-     * Returns the number of bytes that have been written, i.e., the byte index of the next byte to
-     * be written.
+     * Returns the number of bytes that have been written, i.e., the byte index of the next byte to be
+     * written.
      */
     long getBytesWritten();
 

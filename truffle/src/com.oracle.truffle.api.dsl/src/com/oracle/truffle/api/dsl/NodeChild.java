@@ -49,13 +49,13 @@ public @interface NodeChild {
     Class<?> type() default Node.class;
 
     /**
-     * The {@link #executeWith()} property allows a node to pass the result of one child's
-     * executable as an input to another child's executable. These referenced children must be
-     * defined before the current node in the execution order. The current node {@link #type()}
-     * attribute must be set to a {@link Node} which supports the evaluated execution with the
-     * number of {@link #executeWith()} arguments that are defined. For example if this child is
-     * executed with one argument, the {@link #type()} attribute must define a node which publicly
-     * declares a method with the signature <code>Object execute*(VirtualFrame, Object)</code>.
+     * The {@link #executeWith()} property allows a node to pass the result of one child's executable as
+     * an input to another child's executable. These referenced children must be defined before the
+     * current node in the execution order. The current node {@link #type()} attribute must be set to a
+     * {@link Node} which supports the evaluated execution with the number of {@link #executeWith()}
+     * arguments that are defined. For example if this child is executed with one argument, the
+     * {@link #type()} attribute must define a node which publicly declares a method with the signature
+     * <code>Object execute*(VirtualFrame, Object)</code>.
      * 
      * @since 0.8 or earlier
      */

@@ -93,8 +93,8 @@ import jdk.vm.ci.meta.TriState;
 public class InstanceOfSnippets implements Snippets {
 
     /**
-     * A test against a set of hints derived from a profile with 100% precise coverage of seen
-     * types. This snippet deoptimizes on hint miss paths.
+     * A test against a set of hints derived from a profile with 100% precise coverage of seen types.
+     * This snippet deoptimizes on hint miss paths.
      */
     @Snippet
     public static Object instanceofWithProfile(Object object, @VarargsParameter KlassPointer[] hints, @VarargsParameter boolean[] hintIsPositive, Object trueValue, Object falseValue,

@@ -55,8 +55,8 @@ public final class AllocaNode extends FixedWithNextNode implements LIRLowerable 
 
     /**
      * The indexes of the object pointer slots in the block. Each such object pointer slot must be
-     * initialized before any safepoint in the method otherwise the garbage collector will see
-     * garbage values when processing these slots.
+     * initialized before any safepoint in the method otherwise the garbage collector will see garbage
+     * values when processing these slots.
      */
     protected final BitSet objects;
 

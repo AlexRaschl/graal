@@ -75,8 +75,8 @@ public class InstructionPrinter {
         }
 
         /**
-         * Prints this column's label to a given stream after padding the stream with '_' characters
-         * until its {@linkplain LogStream#position() position} is equal to this column's position.
+         * Prints this column's label to a given stream after padding the stream with '_' characters until
+         * its {@linkplain LogStream#position() position} is equal to this column's position.
          *
          * @param out the print stream
          */
@@ -86,8 +86,8 @@ public class InstructionPrinter {
         }
 
         /**
-         * Prints space characters to a given stream until its {@linkplain LogStream#position()
-         * position} is equal to this column's position.
+         * Prints space characters to a given stream until its {@linkplain LogStream#position() position} is
+         * equal to this column's position.
          *
          * @param out the print stream
          */
@@ -107,8 +107,7 @@ public class InstructionPrinter {
     }
 
     /**
-     * Prints a header for the tabulated data printed by {@link #printInstructionListing(ValueNode)}
-     * .
+     * Prints a header for the tabulated data printed by {@link #printInstructionListing(ValueNode)} .
      */
     public void printInstructionListingHeader() {
         BCI.printLabel(out);

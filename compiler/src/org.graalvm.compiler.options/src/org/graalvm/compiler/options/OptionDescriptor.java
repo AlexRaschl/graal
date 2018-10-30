@@ -70,8 +70,7 @@ public final class OptionDescriptor {
     }
 
     /**
-     * Gets the type of values stored in the option. This will be the boxed type for a primitive
-     * option.
+     * Gets the type of values stored in the option. This will be the boxed type for a primitive option.
      */
     public Class<?> getType() {
         return type;
@@ -96,8 +95,8 @@ public final class OptionDescriptor {
     }
 
     /**
-     * Gets the name of the option. It's up to the client of this object how to use the name to get
-     * a user specified value for the option from the environment.
+     * Gets the name of the option. It's up to the client of this object how to use the name to get a
+     * user specified value for the option from the environment.
      */
     public String getName() {
         return name;

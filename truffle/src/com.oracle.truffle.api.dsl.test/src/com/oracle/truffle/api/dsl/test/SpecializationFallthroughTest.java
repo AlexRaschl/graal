@@ -187,8 +187,8 @@ public class SpecializationFallthroughTest {
     }
 
     /*
-     * Tests that the fall through is never triggered twice. In this case mixed fallthrough with
-     * normal specializations.
+     * Tests that the fall through is never triggered twice. In this case mixed fallthrough with normal
+     * specializations.
      */
     @Test
     public void testFallthrough3() {

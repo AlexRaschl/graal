@@ -27,8 +27,7 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 import static org.graalvm.compiler.lir.phases.LIRPhase.Options.LIROptimization;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.Assertions;
 import org.graalvm.compiler.debug.DebugContext;
@@ -79,8 +78,7 @@ public class LinearScanEliminateSpillMovePhase extends LinearScanAllocationPhase
     }
 
     /**
-     * @return the index of the first instruction that is of interest for
-     *         {@link #eliminateSpillMoves}
+     * @return the index of the first instruction that is of interest for {@link #eliminateSpillMoves}
      */
     protected int firstInstructionOfInterest() {
         // skip the first because it is always a label
@@ -94,8 +92,8 @@ public class LinearScanEliminateSpillMovePhase extends LinearScanAllocationPhase
         try (Indent indent = debug.logAndIndent("Eliminating unnecessary spill moves")) {
 
             /*
-             * collect all intervals that must be stored after their definition. The list is sorted
-             * by Interval.spillDefinitionPos.
+             * collect all intervals that must be stored after their definition. The list is sorted by
+             * Interval.spillDefinitionPos.
              */
             Interval interval;
             interval = allocator.createUnhandledLists(mustStoreAtDefinition, null).getLeft();
@@ -106,7 +104,7 @@ public class LinearScanEliminateSpillMovePhase extends LinearScanAllocationPhase
             LIRInsertionBuffer insertionBuffer = new LIRInsertionBuffer();
             for (AbstractBlockBase<?> block : allocator.sortedBlocks()) {
                 try (Indent indent1 = debug.logAndIndent("Handle %s", block)) {
-                    ArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(block);
+                    SpecifiedArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(block);
                     int numInst = instructions.size();
 
                     // iterate all instructions of the block.
@@ -117,14 +115,12 @@ public class LinearScanEliminateSpillMovePhase extends LinearScanAllocationPhase
                         if (opId == -1) {
                             MoveOp move = MoveOp.asMoveOp(op);
                             /*
-                             * Remove move from register to stack if the stack slot is guaranteed to
-                             * be correct. Only moves that have been inserted by LinearScan can be
-                             * removed.
+                             * Remove move from register to stack if the stack slot is guaranteed to be correct. Only moves that
+                             * have been inserted by LinearScan can be removed.
                              */
                             if (Options.LIROptLSRAEliminateSpillMoves.getValue(allocator.getOptions()) && canEliminateSpillMove(block, move)) {
                                 /*
-                                 * Move target is a stack slot that is always correct, so eliminate
-                                 * instruction.
+                                 * Move target is a stack slot that is always correct, so eliminate instruction.
                                  */
                                 if (debug.isLogEnabled()) {
                                     if (ValueMoveOp.isValueMoveOp(op)) {
@@ -143,8 +139,7 @@ public class LinearScanEliminateSpillMovePhase extends LinearScanAllocationPhase
 
                         } else {
                             /*
-                             * Insert move from register to stack just after the beginning of the
-                             * interval.
+                             * Insert move from register to stack just after the beginning of the interval.
                              */
                             assert interval.isEndMarker() || interval.spillDefinitionPos() >= opId : "invalid order";
                             assert interval.isEndMarker() || (interval.isSplitParent() && interval.spillState() == SpillState.StoreAtDefinition) : "invalid interval";
@@ -153,8 +148,7 @@ public class LinearScanEliminateSpillMovePhase extends LinearScanAllocationPhase
                                 if (!interval.canMaterialize()) {
                                     if (!insertionBuffer.initialized()) {
                                         /*
-                                         * prepare insertion buffer (appended when all instructions
-                                         * in the block are processed)
+                                         * prepare insertion buffer (appended when all instructions in the block are processed)
                                          */
                                         insertionBuffer.init(instructions);
                                     }

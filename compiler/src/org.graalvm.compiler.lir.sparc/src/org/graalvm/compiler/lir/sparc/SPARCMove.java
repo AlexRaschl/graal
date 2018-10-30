@@ -618,8 +618,8 @@ public class SPARCMove {
 
     /**
      * Guarantees that the given SPARCAddress given before is loadable by subsequent load/store
-     * instruction. If the displacement exceeds the simm13 value range, the value is put into a
-     * scratch register.
+     * instruction. If the displacement exceeds the simm13 value range, the value is put into a scratch
+     * register.
      *
      * @param addr Address to modify
      * @param masm assembler to output the potential code to store the value in the scratch register
@@ -765,9 +765,9 @@ public class SPARCMove {
 
     /**
      * This method creates a load from the constant section. It automatically respects the different
-     * patterns used for small constant sections (<8k) and large constant sections (>=8k). The
-     * generated patterns by this method must be understood by
-     * CodeInstaller::pd_patch_DataSectionReference (jvmciCodeInstaller_sparc.cpp).
+     * patterns used for small constant sections (<8k) and large constant sections (>=8k). The generated
+     * patterns by this method must be understood by CodeInstaller::pd_patch_DataSectionReference
+     * (jvmciCodeInstaller_sparc.cpp).
      *
      * @return the number of bytes loaded from the constant table
      */

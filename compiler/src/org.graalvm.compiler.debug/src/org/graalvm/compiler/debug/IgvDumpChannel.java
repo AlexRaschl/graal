@@ -94,8 +94,8 @@ final class IgvDumpChannel implements WritableByteChannel {
         } catch (ClosedByInterruptException | InterruptedIOException e) {
             /*
              * Interrupts should not count as errors because they may be caused by a cancelled Graal
-             * compilation. ClosedByInterruptException occurs if the SocketChannel could not be
-             * opened. InterruptedIOException occurs if new Socket(..) was interrupted.
+             * compilation. ClosedByInterruptException occurs if the SocketChannel could not be opened.
+             * InterruptedIOException occurs if new Socket(..) was interrupted.
              */
             return null;
         } catch (IOException e) {

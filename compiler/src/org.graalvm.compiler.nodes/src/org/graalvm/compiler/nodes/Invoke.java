@@ -67,9 +67,9 @@ public interface Invoke extends StateSplit, Lowerable, DeoptimizingNode.DeoptDur
     }
 
     /**
-     * Returns the {@linkplain ResolvedJavaMethod method} from which this invoke is executed. This
-     * is the caller method and in the case of inlining may be different from the method of the
-     * graph this node is in.
+     * Returns the {@linkplain ResolvedJavaMethod method} from which this invoke is executed. This is
+     * the caller method and in the case of inlining may be different from the method of the graph this
+     * node is in.
      *
      * @return the method from which this invoke is executed.
      */
@@ -82,8 +82,8 @@ public interface Invoke extends StateSplit, Lowerable, DeoptimizingNode.DeoptDur
     }
 
     /**
-     * Returns the {@linkplain ResolvedJavaType type} from which this invoke is executed. This is
-     * the declaring type of the caller method.
+     * Returns the {@linkplain ResolvedJavaType type} from which this invoke is executed. This is the
+     * declaring type of the caller method.
      *
      * @return the type from which this invoke is executed.
      */

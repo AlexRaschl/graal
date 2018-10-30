@@ -127,8 +127,8 @@ public class VerifyUsageWithEquals extends VerifyPhase<PhaseContext> {
     }
 
     /**
-     * Checks whether the type of {@code x} is assignable to the restricted type and that {@code y}
-     * is not a null constant.
+     * Checks whether the type of {@code x} is assignable to the restricted type and that {@code y} is
+     * not a null constant.
      */
     private boolean isIllegalUsage(ResolvedJavaMethod method, ValueNode x, ValueNode y, MetaAccessProvider metaAccess) {
         if (isAssignableToRestrictedType(x, metaAccess) && !isNullConstant(y)) {

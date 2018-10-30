@@ -70,15 +70,14 @@ public abstract class SLPropertyCacheNode extends Node {
 
     /**
      * Property names can be arbitrary SL objects. We could call {@link Object.equals}, but that is
-     * generally a bad idea and therefore discouraged in Truffle.{@link Object.equals} is a virtual
-     * call that can call possibly large methods that we do not want in compiled code. For example,
-     * we do not want {@link BigInteger#equals} in compiled code but behind a
-     * {@link TruffleBoundary). Therfore, we check types individually. The checks are semantically
-     * the same as {@link SLEqualNode}.
+     * generally a bad idea and therefore discouraged in Truffle.{@link Object.equals} is a virtual call
+     * that can call possibly large methods that we do not want in compiled code. For example, we do not
+     * want {@link BigInteger#equals} in compiled code but behind a {@link TruffleBoundary). Therfore,
+     * we check types individually. The checks are semantically the same as {@link SLEqualNode}.
      * <p>
      * Note that the {@code cachedName} is always a constant during compilation. Therefore, compiled
-     * code is always reduced to a single {@code if} that only checks whether the {@code name} has
-     * the same type.
+     * code is always reduced to a single {@code if} that only checks whether the {@code name} has the
+     * same type.
      *
      */
     protected static boolean namesEqual(Object cachedName, Object name) {

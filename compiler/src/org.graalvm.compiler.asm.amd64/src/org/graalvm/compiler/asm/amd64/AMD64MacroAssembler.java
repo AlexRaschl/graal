@@ -267,8 +267,8 @@ public class AMD64MacroAssembler extends AMD64Assembler {
     }
 
     /**
-     * Non-atomic write of a 64-bit constant to memory. Do not use if the address might be a
-     * volatile field!
+     * Non-atomic write of a 64-bit constant to memory. Do not use if the address might be a volatile
+     * field!
      */
     public final void movlong(AMD64Address dst, long src) {
         if (NumUtil.isInt(src)) {

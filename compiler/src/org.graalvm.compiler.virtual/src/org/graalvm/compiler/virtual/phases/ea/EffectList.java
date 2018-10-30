@@ -23,10 +23,10 @@
 package org.graalvm.compiler.virtual.phases.ea;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.graph.Node;
@@ -47,12 +47,12 @@ public class EffectList implements Iterable<EffectList.Effect> {
             return false;
         }
 
-        void apply(StructuredGraph graph, ArrayList<Node> obsoleteNodes);
+        void apply(StructuredGraph graph, SpecifiedArrayList<Node> obsoleteNodes);
     }
 
     public interface SimpleEffect extends Effect {
         @Override
-        default void apply(StructuredGraph graph, ArrayList<Node> obsoleteNodes) {
+        default void apply(StructuredGraph graph, SpecifiedArrayList<Node> obsoleteNodes) {
             apply(graph);
         }
 
@@ -170,7 +170,7 @@ public class EffectList implements Iterable<EffectList.Effect> {
         return size == 0;
     }
 
-    public void apply(StructuredGraph graph, ArrayList<Node> obsoleteNodes, boolean cfgKills) {
+    public void apply(StructuredGraph graph, SpecifiedArrayList<Node> obsoleteNodes, boolean cfgKills) {
         boolean message = false;
         for (int i = 0; i < size(); i++) {
             Effect effect = effects[i];

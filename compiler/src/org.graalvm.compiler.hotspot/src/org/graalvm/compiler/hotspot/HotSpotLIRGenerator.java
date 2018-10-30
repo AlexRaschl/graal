@@ -147,8 +147,8 @@ public interface HotSpotLIRGenerator extends LIRGeneratorTool {
     }
 
     /**
-     * Emits code for a {@link ResolveConstantNode} to resolve a klass
-     * {@link HotSpotMetaspaceConstant} and run static initializer.
+     * Emits code for a {@link ResolveConstantNode} to resolve a klass {@link HotSpotMetaspaceConstant}
+     * and run static initializer.
      *
      *
      * @param constant original constant

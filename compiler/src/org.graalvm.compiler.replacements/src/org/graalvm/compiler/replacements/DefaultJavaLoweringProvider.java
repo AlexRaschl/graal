@@ -34,10 +34,10 @@ import static org.graalvm.compiler.nodes.java.ArrayLengthNode.readArrayLength;
 import static org.graalvm.compiler.nodes.util.GraphUtil.skipPiWhileNonNull;
 
 import java.nio.ByteOrder;
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.directives.GraalDirectives;
 import org.graalvm.compiler.api.replacements.Snippet;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
@@ -267,8 +267,7 @@ public abstract class DefaultJavaLoweringProvider implements LoweringProvider {
             }
             if (method.getName().equalsIgnoreCase(math.getOperation().name()) && tool.getMetaAccess().lookupJavaType(Math.class).equals(method.getDeclaringClass())) {
                 /*
-                 * A root compilation of the intrinsic method should emit the full assembly
-                 * implementation.
+                 * A root compilation of the intrinsic method should emit the full assembly implementation.
                  */
                 return;
             }
@@ -297,8 +296,7 @@ public abstract class DefaultJavaLoweringProvider implements LoweringProvider {
             }
             if (method.getName().equalsIgnoreCase(math.getOperation().name()) && tool.getMetaAccess().lookupJavaType(Math.class).equals(method.getDeclaringClass())) {
                 /*
-                 * A root compilation of the intrinsic method should emit the full assembly
-                 * implementation.
+                 * A root compilation of the intrinsic method should emit the full assembly implementation.
                  */
                 return;
             }
@@ -456,8 +454,7 @@ public abstract class DefaultJavaLoweringProvider implements LoweringProvider {
                 }
             } else {
                 /*
-                 * The guard on the read hub should be the null check of the array that was
-                 * introduced earlier.
+                 * The guard on the read hub should be the null check of the array that was introduced earlier.
                  */
                 ValueNode arrayClass = createReadHub(graph, array, tool);
                 ValueNode componentHub = createReadArrayComponentHub(graph, arrayClass, storeIndexed);
@@ -676,7 +673,7 @@ public abstract class DefaultJavaLoweringProvider implements LoweringProvider {
     protected void lowerCommitAllocationNode(CommitAllocationNode commit, LoweringTool tool) {
         StructuredGraph graph = commit.graph();
         if (graph.getGuardsStage() == StructuredGraph.GuardsStage.FIXED_DEOPTS) {
-            List<AbstractNewObjectNode> recursiveLowerings = new ArrayList<>();
+            List<AbstractNewObjectNode> recursiveLowerings = SpecifiedArrayList.createNew();
 
             ValueNode[] allocations = new ValueNode[commit.getVirtualObjects().size()];
             BitSet omittedValues = new BitSet();
@@ -788,21 +785,20 @@ public abstract class DefaultJavaLoweringProvider implements LoweringProvider {
             graph.addBeforeFixed(commit, anchor);
         }
         /*
-         * Note that the FrameState that is assigned to these MonitorEnterNodes isn't the correct
-         * state. It will be the state from before the allocation occurred instead of a valid state
-         * after the locking is performed. In practice this should be fine since these are newly
-         * allocated objects. The bytecodes themselves permit allocating an object, doing a
-         * monitorenter and then dropping all references to the object which would produce the same
-         * state, though that would normally produce an IllegalMonitorStateException. In HotSpot
-         * some form of fast path locking should always occur so the FrameState should never
-         * actually be used.
+         * Note that the FrameState that is assigned to these MonitorEnterNodes isn't the correct state. It
+         * will be the state from before the allocation occurred instead of a valid state after the locking
+         * is performed. In practice this should be fine since these are newly allocated objects. The
+         * bytecodes themselves permit allocating an object, doing a monitorenter and then dropping all
+         * references to the object which would produce the same state, though that would normally produce
+         * an IllegalMonitorStateException. In HotSpot some form of fast path locking should always occur so
+         * the FrameState should never actually be used.
          */
-        ArrayList<MonitorEnterNode> enters = null;
+        SpecifiedArrayList<MonitorEnterNode> enters = null;
         for (int objIndex = 0; objIndex < commit.getVirtualObjects().size(); objIndex++) {
             List<MonitorIdNode> locks = commit.getLocks(objIndex);
             if (locks.size() > 1) {
                 // Ensure that the lock operations are performed in lock depth order
-                ArrayList<MonitorIdNode> newList = new ArrayList<>(locks);
+                SpecifiedArrayList<MonitorIdNode> newList = SpecifiedArrayList.createNew(locks);
                 newList.sort((a, b) -> Integer.compare(a.getLockDepth(), b.getLockDepth()));
                 locks = newList;
             }
@@ -813,7 +809,7 @@ public abstract class DefaultJavaLoweringProvider implements LoweringProvider {
                 MonitorEnterNode enter = graph.add(new MonitorEnterNode(allocations[objIndex], monitorId));
                 graph.addBeforeFixed(commit, enter);
                 if (enters == null) {
-                    enters = new ArrayList<>();
+                    enters = SpecifiedArrayList.createNew();
                 }
                 enters.add(enter);
             }
@@ -838,9 +834,9 @@ public abstract class DefaultJavaLoweringProvider implements LoweringProvider {
     }
 
     /**
-     * Insert the required {@link MemoryBarriers#STORE_STORE} barrier for an allocation and also
-     * include the {@link MemoryBarriers#LOAD_STORE} required for final fields if any final fields
-     * are being written, as if {@link FinalFieldBarrierNode} were emitted.
+     * Insert the required {@link MemoryBarriers#STORE_STORE} barrier for an allocation and also include
+     * the {@link MemoryBarriers#LOAD_STORE} required for final fields if any final fields are being
+     * written, as if {@link FinalFieldBarrierNode} were emitted.
      */
     private static void insertAllocationBarrier(CommitAllocationNode commit, StructuredGraph graph) {
         int barrier = MemoryBarriers.STORE_STORE;

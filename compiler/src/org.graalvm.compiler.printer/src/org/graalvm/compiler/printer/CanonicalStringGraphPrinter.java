@@ -33,13 +33,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.core.common.Fields;
 import org.graalvm.compiler.debug.DebugContext;
@@ -178,7 +178,7 @@ public class CanonicalStringGraphPrinter implements GraphPrinter {
 
             List<String> constantsLines = null;
             if (checkConstants) {
-                constantsLines = new ArrayList<>();
+                constantsLines = SpecifiedArrayList.createNew();
             }
 
             for (Block block : scheduleResult.getCFG().getBlocks()) {

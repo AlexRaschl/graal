@@ -66,8 +66,8 @@ public final class OptionDescriptor {
     }
 
     /**
-     * Returns <code>true</code> if this option was marked deprecated. This indicates that the
-     * option is going to be removed in a future release or its use is not recommended.
+     * Returns <code>true</code> if this option was marked deprecated. This indicates that the option is
+     * going to be removed in a future release or its use is not recommended.
      *
      * @since 1.0
      */
@@ -143,8 +143,7 @@ public final class OptionDescriptor {
     }
 
     /**
-     * Creates a new option descriptor builder by key. The option group and name is inferred by the
-     * key.
+     * Creates a new option descriptor builder by key. The option group and name is inferred by the key.
      *
      * @since 1.0
      */
@@ -175,8 +174,7 @@ public final class OptionDescriptor {
         }
 
         /**
-         * Defines the user category for this option. The default value is
-         * {@link OptionCategory#DEBUG}.
+         * Defines the user category for this option. The default value is {@link OptionCategory#DEBUG}.
          *
          * @since 1.0
          */
@@ -187,8 +185,8 @@ public final class OptionDescriptor {
         }
 
         /**
-         * Defines if this option is deprecated. The default value for deprecated is
-         * <code>false</code>. This can be used to evolve options between releases.
+         * Defines if this option is deprecated. The default value for deprecated is <code>false</code>.
+         * This can be used to evolve options between releases.
          *
          * @since 1.0
          */

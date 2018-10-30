@@ -100,8 +100,8 @@ public abstract class HotSpotBackend extends Backend implements FrameMap.Referen
 
     /**
      * Descriptor for {@link ExceptionHandlerStub}. This stub is called by the
-     * {@linkplain GraalHotSpotVMConfig#MARKID_EXCEPTION_HANDLER_ENTRY exception handler} in a
-     * compiled method.
+     * {@linkplain GraalHotSpotVMConfig#MARKID_EXCEPTION_HANDLER_ENTRY exception handler} in a compiled
+     * method.
      */
     public static final ForeignCallDescriptor EXCEPTION_HANDLER = new ForeignCallDescriptor("exceptionHandler", void.class, Object.class, Word.class);
 
@@ -116,8 +116,8 @@ public abstract class HotSpotBackend extends Backend implements FrameMap.Referen
     public static final ForeignCallDescriptor WRONG_METHOD_HANDLER = new ForeignCallDescriptor("wrongMethodHandler", void.class);
 
     /**
-     * Descriptor for {@link UnwindExceptionToCallerStub}. This stub is called by code generated
-     * from {@link UnwindNode}.
+     * Descriptor for {@link UnwindExceptionToCallerStub}. This stub is called by code generated from
+     * {@link UnwindNode}.
      */
     public static final ForeignCallDescriptor UNWIND_EXCEPTION_TO_CALLER = new ForeignCallDescriptor("unwindExceptionToCaller", void.class, Object.class, Word.class);
 
@@ -379,11 +379,10 @@ public abstract class HotSpotBackend extends Backend implements FrameMap.Referen
     /**
      * Updates a given stub with respect to the registers it destroys.
      * <p>
-     * Any entry in {@code calleeSaveInfo} that {@linkplain SaveRegistersOp#supportsRemove()
-     * supports} pruning will have {@code destroyedRegisters}
-     * {@linkplain SaveRegistersOp#remove(EconomicSet) removed} as these registers are declared as
-     * temporaries in the stub's {@linkplain ForeignCallLinkage linkage} (and thus will be saved by
-     * the stub's caller).
+     * Any entry in {@code calleeSaveInfo} that {@linkplain SaveRegistersOp#supportsRemove() supports}
+     * pruning will have {@code destroyedRegisters} {@linkplain SaveRegistersOp#remove(EconomicSet)
+     * removed} as these registers are declared as temporaries in the stub's
+     * {@linkplain ForeignCallLinkage linkage} (and thus will be saved by the stub's caller).
      *
      * @param stub the stub to update
      * @param destroyedRegisters the registers destroyed by the stub

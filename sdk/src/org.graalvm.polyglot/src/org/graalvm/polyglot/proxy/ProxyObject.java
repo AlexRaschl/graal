@@ -50,8 +50,7 @@ public interface ProxyObject extends Proxy {
      * Returns array of member keys. The returned array must be interpreted as having array elements
      * using the semantics of {@link Context#asValue(Object)} otherwise and
      * {@link IllegalStateException} is thrown. If one of the return values of the array is not a
-     * {@link String} then a {@link ClassCastException} is thrown. Examples for valid return values
-     * are:
+     * {@link String} then a {@link ClassCastException} is thrown. Examples for valid return values are:
      * <ul>
      * <li><code>null</code> for no member keys
      * <li>{@link ProxyArray} that returns {@link String} values for each array element
@@ -59,8 +58,8 @@ public interface ProxyObject extends Proxy {
      * <li>{@link String String[]}
      * <li>A guest language object representing an array of strings.
      * </ul>
-     * Every member key returned by the {@link #getMemberKeys()} method must return
-     * <code>true</code> for {@link #hasMember(String)}.
+     * Every member key returned by the {@link #getMemberKeys()} method must return <code>true</code>
+     * for {@link #hasMember(String)}.
      *
      * @see #hasMember(String)
      * @see Context#asValue(Object)
@@ -71,8 +70,8 @@ public interface ProxyObject extends Proxy {
     /**
      * Returns <code>true</code> if the proxy object contains a member with the given key, or else
      * <code>false</code>. While not required ever member key which returns <code>true</code> for
-     * {@link #hasMember(String)} should be returned by {@link #getMemberKeys()} to allow guest
-     * members to list member keys.
+     * {@link #hasMember(String)} should be returned by {@link #getMemberKeys()} to allow guest members
+     * to list member keys.
      *
      * @see #getMemberKeys()
      * @since 1.0
@@ -80,9 +79,9 @@ public interface ProxyObject extends Proxy {
     boolean hasMember(String key);
 
     /**
-     * Sets the value associated with a member. If the member does not {@link #hasMember(String)
-     * exist} then a new member is defined. If the definition of new members is not supported then
-     * an {@link UnsupportedOperationException} is thrown.
+     * Sets the value associated with a member. If the member does not {@link #hasMember(String) exist}
+     * then a new member is defined. If the definition of new members is not supported then an
+     * {@link UnsupportedOperationException} is thrown.
      *
      * @throws UnsupportedOperationException if the operation is unsupported
      * @since 1.0
@@ -90,11 +89,11 @@ public interface ProxyObject extends Proxy {
     void putMember(String key, Value value);
 
     /**
-     * Removes a member key and its value. If the removal of existing members is not supported then
-     * an {@link UnsupportedOperationException} is thrown.
+     * Removes a member key and its value. If the removal of existing members is not supported then an
+     * {@link UnsupportedOperationException} is thrown.
      *
-     * @return <code>true</code> when the member was removed, <code>false</code> when the member
-     *         didn't exist.
+     * @return <code>true</code> when the member was removed, <code>false</code> when the member didn't
+     *         exist.
      * @throws UnsupportedOperationException if the operation is unsupported
      * @since 1.0
      */
@@ -104,8 +103,8 @@ public interface ProxyObject extends Proxy {
     }
 
     /**
-     * Creates a proxy backed by a {@link Map}. If the set values of the map are host values then
-     * the they will be {@link Value#asHostObject() unboxed}.
+     * Creates a proxy backed by a {@link Map}. If the set values of the map are host values then the
+     * they will be {@link Value#asHostObject() unboxed}.
      *
      * @since 1.0
      */

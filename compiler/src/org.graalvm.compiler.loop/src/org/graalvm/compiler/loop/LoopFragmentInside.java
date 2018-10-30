@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.graph.Graph.DuplicationReplacement;
@@ -69,10 +70,10 @@ public class LoopFragmentInside extends LoopFragment {
 
     /**
      * mergedInitializers. When an inside fragment's (loop)ends are merged to create a unique exit
-     * point, some phis must be created : they phis together all the back-values of the loop-phis
-     * These can then be used to update the loop-phis' forward edge value ('initializer') in the
-     * peeling case. In the unrolling case they will be used as the value that replace the loop-phis
-     * of the duplicated inside fragment
+     * point, some phis must be created : they phis together all the back-values of the loop-phis These
+     * can then be used to update the loop-phis' forward edge value ('initializer') in the peeling case.
+     * In the unrolling case they will be used as the value that replace the loop-phis of the duplicated
+     * inside fragment
      */
     private EconomicMap<PhiNode, ValueNode> mergedInitializers;
     private final DuplicationReplacement dataFixBefore = new DuplicationReplacement() {
@@ -166,11 +167,10 @@ public class LoopFragmentInside extends LoopFragment {
         patchNodes(dataFixWithinAfter);
 
         /*
-         * Collect any new back edges values before updating them since they might reference each
-         * other.
+         * Collect any new back edges values before updating them since they might reference each other.
          */
         LoopBeginNode mainLoopBegin = loop.loopBegin();
-        ArrayList<ValueNode> backedgeValues = new ArrayList<>();
+        SpecifiedArrayList<ValueNode> backedgeValues = SpecifiedArrayList.createNew();
         for (PhiNode mainPhiNode : mainLoopBegin.phis()) {
             ValueNode duplicatedNode = getDuplicatedNode(mainPhiNode.valueAt(1));
             if (duplicatedNode == null) {

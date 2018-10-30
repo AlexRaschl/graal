@@ -27,6 +27,7 @@ import static org.graalvm.compiler.hotspot.HotSpotBackend.Options.GraalArithmeti
 import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.bytecode.BytecodeProvider;
 import org.graalvm.compiler.core.common.spi.ConstantFieldProvider;
@@ -199,7 +200,7 @@ public class AMD64HotSpotBackendFactory implements HotSpotBackendFactory {
     }
 
     protected Value[] createNativeABICallerSaveRegisters(GraalHotSpotVMConfig config, RegisterConfig regConfig) {
-        List<Register> callerSave = new ArrayList<>(regConfig.getAllocatableRegisters().asList());
+        List<Register> callerSave = SpecifiedArrayList.createNew(regConfig.getAllocatableRegisters().asList());
         if (config.windowsOs) {
             // http://msdn.microsoft.com/en-us/library/9z1stfyw.aspx
             callerSave.remove(AMD64.rdi);
@@ -233,12 +234,11 @@ public class AMD64HotSpotBackendFactory implements HotSpotBackendFactory {
              *
              * ...
              *
-             * This subsection discusses usage of each register. Registers %rbp, %rbx and %r12
-             * through %r15 "belong" to the calling function and the called function is required to
-             * preserve their values. In other words, a called function must preserve these
-             * registers' values for its caller. Remaining registers "belong" to the called
-             * function. If a calling function wants to preserve such a register value across a
-             * function call, it must save the value in its local stack frame.
+             * This subsection discusses usage of each register. Registers %rbp, %rbx and %r12 through %r15
+             * "belong" to the calling function and the called function is required to preserve their values. In
+             * other words, a called function must preserve these registers' values for its caller. Remaining
+             * registers "belong" to the called function. If a calling function wants to preserve such a
+             * register value across a function call, it must save the value in its local stack frame.
              */
             callerSave.remove(AMD64.rbp);
             callerSave.remove(AMD64.rbx);

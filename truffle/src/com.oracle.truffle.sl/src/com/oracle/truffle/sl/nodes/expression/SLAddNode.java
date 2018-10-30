@@ -66,11 +66,11 @@ public abstract class SLAddNode extends SLBinaryNode {
 
     /**
      * Specialization for primitive {@code long} values. This is the fast path of the
-     * arbitrary-precision arithmetic. We need to check for overflows of the addition, and switch to
-     * the {@link #add(BigInteger, BigInteger) slow path}. Therefore, we use an
+     * arbitrary-precision arithmetic. We need to check for overflows of the addition, and switch to the
+     * {@link #add(BigInteger, BigInteger) slow path}. Therefore, we use an
      * {@link Math#addExact(long, long) addition method that throws an exception on overflow}. The
-     * {@code rewriteOn} attribute on the {@link Specialization} annotation automatically triggers
-     * the node rewriting on the exception.
+     * {@code rewriteOn} attribute on the {@link Specialization} annotation automatically triggers the
+     * node rewriting on the exception.
      * <p>
      * In compiled code, {@link Math#addExact(long, long) addExact} is compiled to efficient machine
      * code that uses the processor's overflow flag. Therefore, this method is compiled to only two
@@ -85,16 +85,16 @@ public abstract class SLAddNode extends SLBinaryNode {
     }
 
     /**
-     * This is the slow path of the arbitrary-precision arithmetic. The {@link BigInteger} type of
-     * Java is doing everything we need.
+     * This is the slow path of the arbitrary-precision arithmetic. The {@link BigInteger} type of Java
+     * is doing everything we need.
      * <p>
      * This specialization is automatically selected by the Truffle DSL if both the left and right
      * operand are {@link BigInteger} values. Because the type system defines an {@link ImplicitCast
      * implicit conversion} from {@code long} to {@link BigInteger} in
-     * {@link SLTypes#castBigInteger(long)}, this specialization is also taken if the left or the
-     * right operand is a {@code long} value. Because the {@link #add(long, long) long}
-     * specialization} has the {@code rewriteOn} attribute, this specialization is also taken if
-     * both input values are {@code long} values but the primitive addition overflows.
+     * {@link SLTypes#castBigInteger(long)}, this specialization is also taken if the left or the right
+     * operand is a {@code long} value. Because the {@link #add(long, long) long} specialization} has
+     * the {@code rewriteOn} attribute, this specialization is also taken if both input values are
+     * {@code long} values but the primitive addition overflows.
      */
     @Specialization
     @TruffleBoundary
@@ -104,11 +104,11 @@ public abstract class SLAddNode extends SLBinaryNode {
 
     /**
      * Specialization for String concatenation. The SL specification says that String concatenation
-     * works if either the left or the right operand is a String. The non-string operand is
-     * converted then automatically converted to a String.
+     * works if either the left or the right operand is a String. The non-string operand is converted
+     * then automatically converted to a String.
      * <p>
-     * To implement these semantics, we tell the Truffle DSL to use a custom guard. The guard
-     * function is defined in {@link #isString this class}, but could also be in any superclass.
+     * To implement these semantics, we tell the Truffle DSL to use a custom guard. The guard function
+     * is defined in {@link #isString this class}, but could also be in any superclass.
      */
     @Specialization(guards = "isString(left, right)")
     @TruffleBoundary

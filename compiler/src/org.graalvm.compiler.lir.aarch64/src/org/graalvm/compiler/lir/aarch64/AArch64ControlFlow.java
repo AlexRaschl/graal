@@ -58,8 +58,8 @@ import jdk.vm.ci.meta.Value;
 public class AArch64ControlFlow {
 
     /**
-     * Compares integer register to 0 and branches if condition is true. Condition may only be equal
-     * or non-equal.
+     * Compares integer register to 0 and branches if condition is true. Condition may only be equal or
+     * non-equal.
      */
     // TODO (das) where do we need this?
     // public static class CompareAndBranchOp extends AArch64LIRInstruction implements
@@ -107,10 +107,9 @@ public class AArch64ControlFlow {
         @Override
         public void emitCode(CompilationResultBuilder crb, AArch64MacroAssembler masm) {
             /*
-             * Explanation: Depending on what the successor edge is, we can use the fall-through to
-             * optimize the generated code. If neither is a successor edge, use the branch
-             * probability to try to take the conditional jump as often as possible to avoid
-             * executing two instructions instead of one.
+             * Explanation: Depending on what the successor edge is, we can use the fall-through to optimize the
+             * generated code. If neither is a successor edge, use the branch probability to try to take the
+             * conditional jump as often as possible to avoid executing two instructions instead of one.
              */
             if (crb.isSuccessorEdge(trueDestination)) {
                 masm.branchConditionally(condition.negate(), falseDestination.label());

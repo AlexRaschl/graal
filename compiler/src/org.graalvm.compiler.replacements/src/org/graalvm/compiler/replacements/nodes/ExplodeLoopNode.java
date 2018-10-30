@@ -25,8 +25,7 @@ package org.graalvm.compiler.replacements.nodes;
 import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_0;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_0;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.Snippet.VarargsParameter;
 import org.graalvm.compiler.core.common.type.StampFactory;
 import org.graalvm.compiler.graph.Node;
@@ -51,7 +50,7 @@ public final class ExplodeLoopNode extends FixedWithNextNode {
 
     public LoopBeginNode findLoopBegin() {
         Node currentNext = next();
-        ArrayList<Node> succs = new ArrayList<>();
+        SpecifiedArrayList<Node> succs = SpecifiedArrayList.createNew();
         while (!(currentNext instanceof LoopBeginNode)) {
             assert currentNext != null : "cannot find loop after " + this;
             for (Node n : currentNext.cfgSuccessors()) {

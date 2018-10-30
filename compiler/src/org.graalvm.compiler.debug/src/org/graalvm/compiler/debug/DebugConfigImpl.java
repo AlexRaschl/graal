@@ -196,9 +196,8 @@ final class DebugConfigImpl implements DebugConfig {
                             }
                         } else {
                             /*
-                             * The context values operate as a stack so if we want MethodFilter to
-                             * only apply to the root method we have to check only the last method
-                             * seen.
+                             * The context values operate as a stack so if we want MethodFilter to only apply to the root method
+                             * we have to check only the last method seen.
                              */
                             lastMethod = method;
                         }

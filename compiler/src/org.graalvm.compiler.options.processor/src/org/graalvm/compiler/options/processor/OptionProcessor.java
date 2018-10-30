@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,6 +56,7 @@ import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.options.Option;
 import org.graalvm.compiler.options.OptionDescriptor;
 import org.graalvm.compiler.options.OptionDescriptors;
@@ -193,7 +193,7 @@ public class OptionProcessor extends AbstractProcessor {
                             help = "";
                         }
                         String line = br.readLine();
-                        List<String> lines = new ArrayList<>();
+                        List<String> lines = SpecifiedArrayList.createNew();
                         while (line != null) {
                             lines.add(line);
                             line = br.readLine();
@@ -361,7 +361,7 @@ public class OptionProcessor extends AbstractProcessor {
     static class OptionsInfo {
 
         final Element topDeclaringType;
-        final List<OptionInfo> options = new ArrayList<>();
+        final List<OptionInfo> options = SpecifiedArrayList.createNew();
         final Set<Element> originatingElements = new HashSet<>();
 
         OptionsInfo(Element topDeclaringType) {

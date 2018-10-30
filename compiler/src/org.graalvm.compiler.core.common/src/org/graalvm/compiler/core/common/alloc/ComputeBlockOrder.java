@@ -23,12 +23,12 @@
 
 package org.graalvm.compiler.core.common.alloc;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.Loop;
 
@@ -61,8 +61,8 @@ public final class ComputeBlockOrder {
 
     /**
      * Divisor used for degrading the probability of the current path versus unscheduled paths at a
-     * merge node when calculating the linear scan order. A high value means that predecessors of
-     * merge nodes are more likely to be scheduled before the merge node.
+     * merge node when calculating the linear scan order. A high value means that predecessors of merge
+     * nodes are more likely to be scheduled before the merge node.
      */
     private static final int PENALTY_VERSUS_UNSCHEDULED = 10;
 
@@ -72,7 +72,7 @@ public final class ComputeBlockOrder {
      * @return sorted list of blocks
      */
     public static <T extends AbstractBlockBase<T>> AbstractBlockBase<?>[] computeLinearScanOrder(int blockCount, T startBlock) {
-        List<T> order = new ArrayList<>();
+        List<T> order = SpecifiedArrayList.createNew();
         BitSet visitedBlocks = new BitSet(blockCount);
         PriorityQueue<T> worklist = initializeWorklist(startBlock, visitedBlocks);
         computeLinearScanOrder(order, worklist, visitedBlocks);
@@ -86,7 +86,7 @@ public final class ComputeBlockOrder {
      * @return sorted list of blocks
      */
     public static <T extends AbstractBlockBase<T>> AbstractBlockBase<?>[] computeCodeEmittingOrder(int blockCount, T startBlock) {
-        List<T> order = new ArrayList<>();
+        List<T> order = SpecifiedArrayList.createNew();
         BitSet visitedBlocks = new BitSet(blockCount);
         PriorityQueue<T> worklist = initializeWorklist(startBlock, visitedBlocks);
         computeCodeEmittingOrder(order, worklist, visitedBlocks);
@@ -234,8 +234,8 @@ public final class ComputeBlockOrder {
     }
 
     /**
-     * Skip the loop header block if the loop consists of more than one block and it has only a
-     * single loop end block.
+     * Skip the loop header block if the loop consists of more than one block and it has only a single
+     * loop end block.
      */
     private static <T extends AbstractBlockBase<T>> boolean skipLoopHeader(AbstractBlockBase<T> block) {
         return (block.isLoopHeader() && !block.isLoopEnd() && block.getLoop().numBackedges() == 1);

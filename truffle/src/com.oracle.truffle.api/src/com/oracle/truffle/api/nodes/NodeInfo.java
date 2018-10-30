@@ -49,8 +49,8 @@ public @interface NodeInfo {
     String shortName() default "";
 
     /**
-     * Provides a rough estimate for the cost of the annotated {@link Node}. This estimate can be
-     * used by runtime systems or guest languages to implement heuristics based on Truffle ASTs.
+     * Provides a rough estimate for the cost of the annotated {@link Node}. This estimate can be used
+     * by runtime systems or guest languages to implement heuristics based on Truffle ASTs.
      *
      * @see Node#getCost()
      * @see NodeCost
@@ -59,8 +59,8 @@ public @interface NodeInfo {
     NodeCost cost() default NodeCost.MONOMORPHIC;
 
     /**
-     * A human readable explanation of the purpose of the annotated {@link Node}. Can be used e.g.
-     * for debugging or visualization purposes.
+     * A human readable explanation of the purpose of the annotated {@link Node}. Can be used e.g. for
+     * debugging or visualization purposes.
      *
      * @return the description
      * @since 0.8 or earlier

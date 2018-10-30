@@ -61,8 +61,8 @@ public interface LIRGeneratorTool extends DiagnosticLIRGeneratorTool, ValueKindF
     public interface MoveFactory {
 
         /**
-         * Checks whether the supplied constant can be used without loading it into a register for
-         * most operations, i.e., for commonly used arithmetic, logical, and comparison operations.
+         * Checks whether the supplied constant can be used without loading it into a register for most
+         * operations, i.e., for commonly used arithmetic, logical, and comparison operations.
          *
          * @param c The constant to check.
          * @return True if the constant can be used directly, false if the constant needs to be in a

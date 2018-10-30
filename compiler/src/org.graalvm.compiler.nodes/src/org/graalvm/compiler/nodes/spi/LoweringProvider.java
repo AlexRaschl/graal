@@ -37,8 +37,8 @@ public interface LoweringProvider extends ArrayOffsetProvider {
     void lower(Node n, LoweringTool tool);
 
     /**
-     * Reconstructs the array index from an address node that was created as a lowering of an
-     * indexed access to an array.
+     * Reconstructs the array index from an address node that was created as a lowering of an indexed
+     * access to an array.
      *
      * @param elementKind the {@link JavaKind} of the array elements
      * @param address an {@link AddressNode} pointing to an element in an array

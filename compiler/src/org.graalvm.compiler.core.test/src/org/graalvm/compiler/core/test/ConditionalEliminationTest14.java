@@ -55,9 +55,9 @@ public class ConditionalEliminationTest14 extends ConditionalEliminationTestBase
         Object a6 = args[6];
 
         /*
-         * The order of the conditions matters: The scheduler processes the floating reads for the
-         * array loads in the order of the conditions here, and we want the index 7 access to be
-         * processed before the index 6 access.
+         * The order of the conditions matters: The scheduler processes the floating reads for the array
+         * loads in the order of the conditions here, and we want the index 7 access to be processed before
+         * the index 6 access.
          */
         if (a5 != null && a7 != null && a6 != null) {
             sink1 = 1;

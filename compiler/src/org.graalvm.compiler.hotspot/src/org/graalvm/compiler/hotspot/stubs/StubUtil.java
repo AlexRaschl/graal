@@ -71,9 +71,9 @@ public class StubUtil {
     }
 
     /**
-     * Looks for a {@link StubForeignCallNode} node intrinsic named {@code name} in
-     * {@code stubClass} and returns a {@link ForeignCallDescriptor} based on its signature and the
-     * value of {@code hasSideEffect}.
+     * Looks for a {@link StubForeignCallNode} node intrinsic named {@code name} in {@code stubClass}
+     * and returns a {@link ForeignCallDescriptor} based on its signature and the value of
+     * {@code hasSideEffect}.
      */
     private static ForeignCallDescriptor descriptorFor(Class<?> stubClass, String name) {
         Method found = null;
@@ -116,8 +116,8 @@ public class StubUtil {
     /**
      * Prints a message to the log stream.
      * <p>
-     * <b>Stubs must use this instead of {@link Log#printf(String, long)} to avoid an object
-     * constant in a RuntimeStub.</b>
+     * <b>Stubs must use this instead of {@link Log#printf(String, long)} to avoid an object constant in
+     * a RuntimeStub.</b>
      *
      * @param message a message string
      */
@@ -128,8 +128,8 @@ public class StubUtil {
     /**
      * Prints a message to the log stream.
      * <p>
-     * <b>Stubs must use this instead of {@link Log#printf(String, long)} to avoid an object
-     * constant in a RuntimeStub.</b>
+     * <b>Stubs must use this instead of {@link Log#printf(String, long)} to avoid an object constant in
+     * a RuntimeStub.</b>
      *
      * @param format a C style printf format value
      * @param value the value associated with the first conversion specifier in {@code format}
@@ -155,8 +155,8 @@ public class StubUtil {
     /**
      * Prints a message to the log stream.
      * <p>
-     * <b>Stubs must use this instead of {@link Log#printf(String, long, long, long)} to avoid an
-     * object constant in a RuntimeStub.</b>
+     * <b>Stubs must use this instead of {@link Log#printf(String, long, long, long)} to avoid an object
+     * constant in a RuntimeStub.</b>
      *
      * @param format a C style printf format value
      * @param v1 the value associated with the first conversion specifier in {@code format}
@@ -177,8 +177,8 @@ public class StubUtil {
     /**
      * Exits the VM with a given error message.
      * <p>
-     * <b>Stubs must use this instead of {@link VMErrorNode#vmError(String, long)} to avoid an
-     * object constant in a RuntimeStub.</b>
+     * <b>Stubs must use this instead of {@link VMErrorNode#vmError(String, long)} to avoid an object
+     * constant in a RuntimeStub.</b>
      *
      * @param message an error message
      */
@@ -189,8 +189,8 @@ public class StubUtil {
     /**
      * Exits the VM with a given error message.
      * <p>
-     * <b>Stubs must use this instead of {@link Log#printf(String, long, long, long)} to avoid an
-     * object constant in a RuntimeStub.</b>
+     * <b>Stubs must use this instead of {@link Log#printf(String, long, long, long)} to avoid an object
+     * constant in a RuntimeStub.</b>
      *
      * @param format a C style printf format value
      * @param value the value associated with the first conversion specifier in {@code format}
@@ -202,8 +202,8 @@ public class StubUtil {
     /**
      * Exits the VM with a given error message.
      * <p>
-     * <b>Stubs must use this instead of {@link Log#printf(String, long, long, long)} to avoid an
-     * object constant in a RuntimeStub.</b>
+     * <b>Stubs must use this instead of {@link Log#printf(String, long, long, long)} to avoid an object
+     * constant in a RuntimeStub.</b>
      *
      * @param format a C style printf format value
      * @param v1 the value associated with the first conversion specifier in {@code format}
@@ -216,8 +216,8 @@ public class StubUtil {
     /**
      * Exits the VM with a given error message.
      * <p>
-     * <b>Stubs must use this instead of {@link Log#printf(String, long, long, long)} to avoid an
-     * object constant in a RuntimeStub.</b>
+     * <b>Stubs must use this instead of {@link Log#printf(String, long, long, long)} to avoid an object
+     * constant in a RuntimeStub.</b>
      *
      * @param format a C style printf format value
      * @param v1 the value associated with the first conversion specifier in {@code format}

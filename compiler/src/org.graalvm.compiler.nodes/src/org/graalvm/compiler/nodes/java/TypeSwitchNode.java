@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.nodes.java;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.AbstractPointerStamp;
 import org.graalvm.compiler.core.common.type.ObjectStamp;
 import org.graalvm.compiler.core.common.type.Stamp;
@@ -154,7 +154,7 @@ public final class TypeSwitchNode extends SwitchNode implements LIRLowerable, Si
                     tool.addToWorkList(defaultSuccessor());
                     graph().removeSplitPropagate(this, defaultSuccessor());
                 } else if (validKeys != keys.length) {
-                    ArrayList<AbstractBeginNode> newSuccessors = new ArrayList<>(blockSuccessorCount());
+                    SpecifiedArrayList<AbstractBeginNode> newSuccessors = SpecifiedArrayList.createNew(blockSuccessorCount());
                     ResolvedJavaType[] newKeys = new ResolvedJavaType[validKeys];
                     int[] newKeySuccessors = new int[validKeys + 1];
                     double[] newKeyProbabilities = new double[validKeys + 1];

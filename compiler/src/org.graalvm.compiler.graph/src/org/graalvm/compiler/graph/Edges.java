@@ -26,9 +26,9 @@ import static org.graalvm.compiler.graph.Graph.isModificationCountsEnabled;
 import static org.graalvm.compiler.graph.Node.NOT_ITERABLE;
 import static org.graalvm.compiler.graph.UnsafeAccess.UNSAFE;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.Fields;
 import org.graalvm.compiler.core.common.FieldsScanner;
 import org.graalvm.compiler.graph.NodeClass.EdgeInfo;
@@ -50,13 +50,13 @@ public abstract class Edges extends Fields {
     private final int directCount;
     private final Type type;
 
-    public Edges(Type type, int directCount, ArrayList<? extends FieldsScanner.FieldInfo> edges) {
+    public Edges(Type type, int directCount, SpecifiedArrayList<? extends FieldsScanner.FieldInfo> edges) {
         super(edges);
         this.type = type;
         this.directCount = directCount;
     }
 
-    public static void translateInto(Edges edges, ArrayList<EdgeInfo> infos) {
+    public static void translateInto(Edges edges, SpecifiedArrayList<EdgeInfo> infos) {
         for (int index = 0; index < edges.getCount(); index++) {
             infos.add(new EdgeInfo(edges.offsets[index], edges.getName(index), edges.getType(index), edges.getDeclaringClass(index)));
         }
@@ -80,8 +80,8 @@ public abstract class Edges extends Fields {
     }
 
     /**
-     * Get the number of direct edges represented by this object. A direct edge goes directly to
-     * another {@link Node}. An indirect edge goes via a {@link NodeList}.
+     * Get the number of direct edges represented by this object. A direct edge goes directly to another
+     * {@link Node}. An indirect edge goes via a {@link NodeList}.
      */
     public int getDirectCount() {
         return directCount;
@@ -162,8 +162,8 @@ public abstract class Edges extends Fields {
     }
 
     /**
-     * Copies edges from {@code fromNode} to {@code toNode}. The nodes are expected to be of the
-     * exact same type.
+     * Copies edges from {@code fromNode} to {@code toNode}. The nodes are expected to be of the exact
+     * same type.
      *
      * @param fromNode the node from which the edges should be copied.
      * @param toNode the node to which the edges should be copied.
@@ -199,8 +199,8 @@ public abstract class Edges extends Fields {
     }
 
     /**
-     * Sets the value of a given edge without notifying the new and old nodes on the other end of
-     * the edge of the change.
+     * Sets the value of a given edge without notifying the new and old nodes on the other end of the
+     * edge of the change.
      *
      * @param node the node whose edge is to be updated
      * @param index the index of the edge (between 0 and {@link #getCount()})
@@ -223,8 +223,8 @@ public abstract class Edges extends Fields {
     }
 
     /**
-     * Sets the value of a given edge and notifies the new and old nodes on the other end of the
-     * edge of the change.
+     * Sets the value of a given edge and notifies the new and old nodes on the other end of the edge of
+     * the change.
      *
      * @param node the node whose edge is to be updated
      * @param index the index of the edge (between 0 and {@link #getCount()})

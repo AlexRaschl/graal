@@ -27,7 +27,6 @@ import static org.graalvm.compiler.test.SubprocessUtil.withoutDebuggerArguments;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -35,6 +34,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.GraalCompilerOptions;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
 import org.graalvm.compiler.test.SubprocessUtil;
@@ -98,8 +98,8 @@ public class CompilationWrapperTest extends GraalCompilerTest {
     }
 
     /**
-     * Tests {@link GraalCompilerOptions#MaxCompilationProblemsPerAction} in context of a
-     * compilation requested by the VM.
+     * Tests {@link GraalCompilerOptions#MaxCompilationProblemsPerAction} in context of a compilation
+     * requested by the VM.
      */
     @Test
     public void testVMCompilation3() throws IOException, InterruptedException {
@@ -169,7 +169,7 @@ public class CompilationWrapperTest extends GraalCompilerTest {
             System.out.println(proc);
         }
 
-        List<Probe> probes = new ArrayList<>(initialProbes);
+        List<Probe> probes = SpecifiedArrayList.createNew(initialProbes);
         Probe diagnosticProbe = null;
         if (!extraVmArgs.contains("-Dgraal.TruffleCompilationExceptionsAreFatal=true")) {
             diagnosticProbe = new Probe("Graal diagnostic output saved in ", 1);
@@ -210,7 +210,7 @@ public class CompilationWrapperTest extends GraalCompilerTest {
                 int bgv = 0;
                 int cfg = 0;
                 ZipFile dd = new ZipFile(diagnosticOutputZip);
-                List<String> entries = new ArrayList<>();
+                List<String> entries = SpecifiedArrayList.createNew();
                 for (Enumeration<? extends ZipEntry> e = dd.entries(); e.hasMoreElements();) {
                     ZipEntry ze = e.nextElement();
                     String name = ze.getName();

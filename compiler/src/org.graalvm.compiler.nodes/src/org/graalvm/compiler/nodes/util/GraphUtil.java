@@ -22,7 +22,6 @@
  */
 package org.graalvm.compiler.nodes.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,6 +33,7 @@ import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.MapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.code.SourceStackTraceBailoutException;
 import org.graalvm.compiler.core.common.spi.ConstantFieldProvider;
@@ -168,7 +168,7 @@ public class GraphUtil {
                     }
                     List<AbstractEndNode> endsSeen = unmarkedMerges.get(merge);
                     if (endsSeen == null) {
-                        endsSeen = new ArrayList<>(merge.forwardEndCount());
+                        endsSeen = SpecifiedArrayList.createNew(merge.forwardEndCount());
                         unmarkedMerges.put(merge, endsSeen);
                     }
                     endsSeen.add(end);
@@ -196,8 +196,8 @@ public class GraphUtil {
                     for (LoopExitNode loopExit : loopBegin.loopExits().snapshot()) {
                         if (markedNodes.contains(loopExit)) {
                             /*
-                             * disconnect from loop begin so that reduceDegenerateLoopBegin doesn't
-                             * transform it into a new beginNode
+                             * disconnect from loop begin so that reduceDegenerateLoopBegin doesn't transform it into a new
+                             * beginNode
                              */
                             loopExit.replaceFirstInput(loopBegin, null);
                         }
@@ -339,8 +339,7 @@ public class GraphUtil {
     }
 
     /**
-     * Removes all nodes created after the {@code mark}, assuming no "old" nodes point to "new"
-     * nodes.
+     * Removes all nodes created after the {@code mark}, assuming no "old" nodes point to "new" nodes.
      */
     public static void removeNewNodes(Graph graph, Graph.Mark mark) {
         assert checkNoOldToNewEdges(graph, mark);
@@ -463,8 +462,8 @@ public class GraphUtil {
 
         if (loopRemoved) {
             /*
-             * Removing a degenerated loop can make non-loop phi functions unnecessary. Therefore,
-             * we re-check all phi functions and remove redundant ones.
+             * Removing a degenerated loop can make non-loop phi functions unnecessary. Therefore, we re-check
+             * all phi functions and remove redundant ones.
              */
             for (Node node : graph.getNodes()) {
                 if (node instanceof PhiNode) {
@@ -499,7 +498,7 @@ public class GraphUtil {
             // positions.
             return approxSourceStackTraceElement(position);
         }
-        ArrayList<StackTraceElement> elements = new ArrayList<>();
+        SpecifiedArrayList<StackTraceElement> elements = SpecifiedArrayList.createNew();
         Node n = node;
         while (n != null) {
             if (n instanceof MethodCallTargetNode) {
@@ -523,7 +522,7 @@ public class GraphUtil {
      * @return the StackTraceElements if an approximate source location is found, null otherwise
      */
     public static StackTraceElement[] approxSourceStackTraceElement(FrameState frameState) {
-        ArrayList<StackTraceElement> elements = new ArrayList<>();
+        SpecifiedArrayList<StackTraceElement> elements = SpecifiedArrayList.createNew();
         FrameState state = frameState;
         while (state != null) {
             Bytecode code = state.getCode();
@@ -539,7 +538,7 @@ public class GraphUtil {
      * Gets approximate stack trace elements for a bytecode position.
      */
     public static StackTraceElement[] approxSourceStackTraceElement(BytecodePosition bytecodePosition) {
-        ArrayList<StackTraceElement> elements = new ArrayList<>();
+        SpecifiedArrayList<StackTraceElement> elements = SpecifiedArrayList.createNew();
         BytecodePosition position = bytecodePosition;
         while (position != null) {
             ResolvedJavaMethod method = position.getMethod();
@@ -575,8 +574,8 @@ public class GraphUtil {
     /**
      * Gets an approximate source code location for a node if possible.
      *
-     * @return a file name and source line number in stack trace format (e.g. "String.java:32") if
-     *         an approximate source location is found, null otherwise
+     * @return a file name and source line number in stack trace format (e.g. "String.java:32") if an
+     *         approximate source location is found, null otherwise
      */
     public static String approxSourceLocation(Node node) {
         StackTraceElement[] stackTraceElements = approxSourceStackTraceElement(node);
@@ -689,9 +688,9 @@ public class GraphUtil {
     }
 
     /**
-     * Tries to find an original value of the given node by traversing through proxies and
-     * unambiguous phis. Note that this method will perform an exhaustive search through phis. It is
-     * intended to be used during graph building, when phi nodes aren't yet canonicalized.
+     * Tries to find an original value of the given node by traversing through proxies and unambiguous
+     * phis. Note that this method will perform an exhaustive search through phis. It is intended to be
+     * used during graph building, when phi nodes aren't yet canonicalized.
      *
      * @param value The node whose original value should be determined.
      * @return The original value (which might be the input value itself).
@@ -708,8 +707,7 @@ public class GraphUtil {
 
         while (cur instanceof PhiNode) {
             /*
-             * We found a phi function. Check if we can analyze it without allocating temporary data
-             * structures.
+             * We found a phi function. Check if we can analyze it without allocating temporary data structures.
              */
             PhiNode phi = (PhiNode) cur;
 
@@ -727,16 +725,15 @@ public class GraphUtil {
 
                     if (phiSingleValue instanceof PhiNode || phiCurValue instanceof PhiNode) {
                         /*
-                         * We have two different input values for the phi function, and at least one
-                         * of the inputs is another phi function. We need to do a complicated
-                         * exhaustive check.
+                         * We have two different input values for the phi function, and at least one of the inputs is
+                         * another phi function. We need to do a complicated exhaustive check.
                          */
                         return originalValueForComplicatedPhi(phi, new NodeBitMap(value.graph()));
                     } else {
                         /*
-                         * We have two different input values for the phi function, but none of them
-                         * is another phi function. This phi function cannot be reduce any further,
-                         * so the phi function is the original value.
+                         * We have two different input values for the phi function, but none of them is another phi
+                         * function. This phi function cannot be reduce any further, so the phi function is the original
+                         * value.
                          */
                         return phi;
                     }
@@ -744,8 +741,8 @@ public class GraphUtil {
             }
 
             /*
-             * Successfully reduced the phi function to a single input value. The single input value
-             * can itself be a phi function again, so we might take another loop iteration.
+             * Successfully reduced the phi function to a single input value. The single input value can itself
+             * be a phi function again, so we might take another loop iteration.
              */
             assert phiSingleValue != null;
             cur = phiSingleValue;
@@ -765,14 +762,14 @@ public class GraphUtil {
     }
 
     /**
-     * Handling for complicated nestings of phi functions. We need to reduce phi functions
-     * recursively, and need a temporary map of visited nodes to avoid endless recursion of cycles.
+     * Handling for complicated nestings of phi functions. We need to reduce phi functions recursively,
+     * and need a temporary map of visited nodes to avoid endless recursion of cycles.
      */
     private static ValueNode originalValueForComplicatedPhi(PhiNode phi, NodeBitMap visited) {
         if (visited.isMarked(phi)) {
             /*
-             * Found a phi function that was already seen. Either a cycle, or just a second phi
-             * input to a path we have already processed.
+             * Found a phi function that was already seen. Either a cycle, or just a second phi input to a path
+             * we have already processed.
              */
             return null;
         }
@@ -794,9 +791,9 @@ public class GraphUtil {
                 phiSingleValue = phiCurValue;
             } else if (phiCurValue != phiSingleValue) {
                 /*
-                 * Another input that is different from the first input. Since we already
-                 * recursively looked through other phi functions, we now know that this phi
-                 * function cannot be reduce any further, so the phi function is the original value.
+                 * Another input that is different from the first input. Since we already recursively looked through
+                 * other phi functions, we now know that this phi function cannot be reduce any further, so the phi
+                 * function is the original value.
                  */
                 return phi;
             }
@@ -813,8 +810,8 @@ public class GraphUtil {
     }
 
     /**
-     * Returns an iterator that will return the given node followed by all its predecessors, up
-     * until the point where {@link Node#predecessor()} returns null.
+     * Returns an iterator that will return the given node followed by all its predecessors, up until
+     * the point where {@link Node#predecessor()} returns null.
      *
      * @param start the node at which to start iterating
      */

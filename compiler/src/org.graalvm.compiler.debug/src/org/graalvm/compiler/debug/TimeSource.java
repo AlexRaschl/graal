@@ -39,9 +39,9 @@ public class TimeSource {
     }
 
     /**
-     * Gets the current time of this thread in nanoseconds from the most accurate timer available on
-     * the system. The returned value will be the current time in nanoseconds precision but not
-     * necessarily nanoseconds accuracy.
+     * Gets the current time of this thread in nanoseconds from the most accurate timer available on the
+     * system. The returned value will be the current time in nanoseconds precision but not necessarily
+     * nanoseconds accuracy.
      * <p>
      * The intended use case of this method is to measure the time a certain action takes by making
      * successive calls to it. It should not be used to measure total times in the sense of a time

@@ -45,17 +45,17 @@ import com.oracle.truffle.api.nodes.RootNode;
 public interface TruffleException {
 
     /**
-     * Returns a node indicating the location where this exception occurred in the AST. This method
-     * may <code>null</code> to indicate that the location is not available.
+     * Returns a node indicating the location where this exception occurred in the AST. This method may
+     * <code>null</code> to indicate that the location is not available.
      *
      * @since 0.27
      */
     Node getLocation();
 
     /**
-     * Returns an additional guest language object. The return object must be an interop type so it
-     * must be either implementing TruffleObject or be a primitive value. The default implementation
-     * returns <code>null</code> to indicate that no object is available for this exception.
+     * Returns an additional guest language object. The return object must be an interop type so it must
+     * be either implementing TruffleObject or be a primitive value. The default implementation returns
+     * <code>null</code> to indicate that no object is available for this exception.
      *
      * @since 0.27
      */
@@ -66,8 +66,8 @@ public interface TruffleException {
     /**
      * Returns <code>true</code> if this exception indicates a parser or syntax error. Syntax errors
      * typically occur while
-     * {@link TruffleLanguage#parse(com.oracle.truffle.api.TruffleLanguage.ParsingRequest) parsing}
-     * of guest language source code.
+     * {@link TruffleLanguage#parse(com.oracle.truffle.api.TruffleLanguage.ParsingRequest) parsing} of
+     * guest language source code.
      *
      * @since 0.27
      */
@@ -76,10 +76,9 @@ public interface TruffleException {
     }
 
     /**
-     * Returns <code>true</code> if this exception indicates a syntax error that is indicating that
-     * the syntax is incomplete. This allows guest language programmers to find out if more code is
-     * expected from a given source. For example an incomplete JavaScript program could look like
-     * this:
+     * Returns <code>true</code> if this exception indicates a syntax error that is indicating that the
+     * syntax is incomplete. This allows guest language programmers to find out if more code is expected
+     * from a given source. For example an incomplete JavaScript program could look like this:
      *
      * <pre>
      * function incompleteFunction(arg) {
@@ -95,9 +94,9 @@ public interface TruffleException {
     }
 
     /**
-     * Returns <code>true</code> if this exception indicates an internal error. Note that all
-     * exceptions thrown in a guest language implementation that are not implementing
-     * {@link TruffleException} are considered internal.
+     * Returns <code>true</code> if this exception indicates an internal error. Note that all exceptions
+     * thrown in a guest language implementation that are not implementing {@link TruffleException} are
+     * considered internal.
      *
      * @since 0.27
      */
@@ -125,8 +124,8 @@ public interface TruffleException {
     }
 
     /**
-     * Returns <code>true</code> if the exception indicates that the application was exited within
-     * the guest language program. If {@link #isExit()} returns <code>true</code> also
+     * Returns <code>true</code> if the exception indicates that the application was exited within the
+     * guest language program. If {@link #isExit()} returns <code>true</code> also
      * {@link #getExitStatus()} should be implemented.
      *
      * @see #getExitStatus()
@@ -148,12 +147,11 @@ public interface TruffleException {
     }
 
     /**
-     * Returns the number of guest language frames that should be collected for this exception.
-     * Returns a negative integer by default for unlimited guest language frames. This is intended
-     * to be used by guest languages to limit the number of guest language stack frames. Languages
-     * might want to limit the number of frames for performance reasons. Frames that point to
-     * {@link RootNode#isInternal() internal} internal root nodes are not counted when the stack
-     * trace limit is computed.
+     * Returns the number of guest language frames that should be collected for this exception. Returns
+     * a negative integer by default for unlimited guest language frames. This is intended to be used by
+     * guest languages to limit the number of guest language stack frames. Languages might want to limit
+     * the number of frames for performance reasons. Frames that point to {@link RootNode#isInternal()
+     * internal} internal root nodes are not counted when the stack trace limit is computed.
      *
      * @since 0.27
      */

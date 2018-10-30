@@ -153,8 +153,8 @@ public class TruffleToTruffleCallExceptionHandlerTest {
     @Ignore
     public void testExceptionOnceCompileExceptionHandler() {
         /*
-         * call the function at least once so the exception profile will record an exception and the
-         * partial evaluator will compile the exception handler edge
+         * call the function at least once so the exception profile will record an exception and the partial
+         * evaluator will compile the exception handler edge
          */
         try {
             calleeWithException.callDirect(new Object());

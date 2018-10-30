@@ -62,8 +62,7 @@ public class InliningNullCheckNode2 extends AbstractTestNode {
         }
         try {
             /*
-             * A invokespecial where the receiver is guaranteed to be null during partial
-             * evaluation.
+             * A invokespecial where the receiver is guaranteed to be null during partial evaluation.
              */
             return a.foo();
         } catch (NullPointerException ex) {

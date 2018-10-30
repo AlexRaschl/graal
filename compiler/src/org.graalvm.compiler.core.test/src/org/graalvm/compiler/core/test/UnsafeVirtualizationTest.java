@@ -39,8 +39,8 @@ public class UnsafeVirtualizationTest extends GraalCompilerTest {
 
     public static class Base {
         /*
-         * This padding ensure that the size of the Base class ends up as a multiple of 8, which
-         * makes the first field of the subclass 8-byte aligned.
+         * This padding ensure that the size of the Base class ends up as a multiple of 8, which makes the
+         * first field of the subclass 8-byte aligned.
          */
         double padding;
     }

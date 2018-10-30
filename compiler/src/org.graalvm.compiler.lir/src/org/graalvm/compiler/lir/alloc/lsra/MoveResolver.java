@@ -26,10 +26,9 @@ import static jdk.vm.ci.code.ValueUtil.asRegister;
 import static jdk.vm.ci.code.ValueUtil.isIllegal;
 import static jdk.vm.ci.code.ValueUtil.isRegister;
 
-import java.util.ArrayList;
-
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -55,9 +54,9 @@ public class MoveResolver {
     private int insertIdx;
     private LIRInsertionBuffer insertionBuffer; // buffer where moves are inserted
 
-    private final ArrayList<Interval> mappingFrom;
-    private final ArrayList<Constant> mappingFromOpr;
-    private final ArrayList<Interval> mappingTo;
+    private final SpecifiedArrayList<Interval> mappingFrom;
+    private final SpecifiedArrayList<Constant> mappingFromOpr;
+    private final SpecifiedArrayList<Interval> mappingTo;
     private boolean multipleReadsAllowed;
     private final int[] registerBlocked;
 
@@ -106,9 +105,9 @@ public class MoveResolver {
     protected MoveResolver(LinearScan allocator) {
         this.allocator = allocator;
         this.multipleReadsAllowed = false;
-        this.mappingFrom = new ArrayList<>(8);
-        this.mappingFromOpr = new ArrayList<>(8);
-        this.mappingTo = new ArrayList<>(8);
+        this.mappingFrom = SpecifiedArrayList.createNew(8);
+        this.mappingFromOpr = SpecifiedArrayList.createNew(8);
+        this.mappingTo = SpecifiedArrayList.createNew(8);
         this.insertIdx = -1;
         this.insertionBuffer = new LIRInsertionBuffer();
         this.registerBlocked = new int[allocator.getRegisters().size()];
@@ -222,8 +221,8 @@ public class MoveResolver {
     }
 
     /**
-     * Checks if the {@linkplain Interval#location() location} of {@code to} is not blocked or is
-     * only blocked by {@code from}.
+     * Checks if the {@linkplain Interval#location() location} of {@code to} is not blocked or is only
+     * blocked by {@code from}.
      */
     private boolean safeToProcessMove(Interval from, Interval to) {
         Value fromReg = from != null ? from.location() : null;
@@ -254,7 +253,7 @@ public class MoveResolver {
         return isRegister(location);
     }
 
-    private void createInsertionBuffer(ArrayList<LIRInstruction> list) {
+    private void createInsertionBuffer(SpecifiedArrayList<LIRInstruction> list) {
         assert !insertionBuffer.initialized() : "overwriting existing buffer";
         insertionBuffer.init(list);
     }
@@ -332,7 +331,7 @@ public class MoveResolver {
                 }
             }
 
-            ArrayList<AllocatableValue> busySpillSlots = null;
+            SpecifiedArrayList<AllocatableValue> busySpillSlots = null;
             while (mappingFrom.size() > 0) {
                 boolean processedInterval = false;
 
@@ -353,7 +352,7 @@ public class MoveResolver {
                         move.setComment(res, "MoveResolver resolve mapping");
                         if (LIRValueUtil.isStackSlotValue(toInterval.location())) {
                             if (busySpillSlots == null) {
-                                busySpillSlots = new ArrayList<>(2);
+                                busySpillSlots = SpecifiedArrayList.createNew(2);
                             }
                             busySpillSlots.add(toInterval.location());
                         }
@@ -446,14 +445,14 @@ public class MoveResolver {
         }
     }
 
-    void setInsertPosition(ArrayList<LIRInstruction> insertList, int insertIdx) {
+    void setInsertPosition(SpecifiedArrayList<LIRInstruction> insertList, int insertIdx) {
         assert this.insertIdx == -1 : "use moveInsertPosition instead of setInsertPosition when data already set";
 
         createInsertionBuffer(insertList);
         this.insertIdx = insertIdx;
     }
 
-    void moveInsertPosition(ArrayList<LIRInstruction> newInsertList, int newInsertIdx) {
+    void moveInsertPosition(SpecifiedArrayList<LIRInstruction> newInsertList, int newInsertIdx) {
         if (insertionBuffer.lirList() != null && (insertionBuffer.lirList() != newInsertList || this.insertIdx != newInsertIdx)) {
             // insert position changed . resolve current mappings
             resolveMappings();

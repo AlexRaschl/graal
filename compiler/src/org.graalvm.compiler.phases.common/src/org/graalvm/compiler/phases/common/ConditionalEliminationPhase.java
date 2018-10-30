@@ -409,8 +409,7 @@ public class ConditionalEliminationPhase extends BasePhase<PhaseContext> {
                     ValuePhiNode phi = entries.getKey();
                     assert phi.isAlive() || phi.isDeleted();
                     /*
-                     * Phi might have been killed already via a conditional elimination in another
-                     * branch.
+                     * Phi might have been killed already via a conditional elimination in another branch.
                      */
                     if (phi.isDeleted()) {
                         continue;
@@ -548,9 +547,8 @@ public class ConditionalEliminationPhase extends BasePhase<PhaseContext> {
                         ValueNode andX = and.getX();
                         if (and.getY() == y && maybeMultipleUsages(andX)) {
                             /*
-                             * This 'and' proves something about some of the bits in and.getX().
-                             * It's equivalent to or'ing in the mask value since those values are
-                             * known to be set.
+                             * This 'and' proves something about some of the bits in and.getX(). It's equivalent to or'ing in
+                             * the mask value since those values are known to be set.
                              */
                             BinaryOp<Or> op = ArithmeticOpTable.forStamp(x.stamp(NodeView.DEFAULT)).getOr();
                             IntegerStamp newStampX = (IntegerStamp) op.foldStamp(getSafeStamp(andX), getOtherSafeStamp(y));
@@ -597,21 +595,21 @@ public class ConditionalEliminationPhase extends BasePhase<PhaseContext> {
         }
 
         /**
-         * Get the stamp that may be used for the value for which we are registering the condition.
-         * We may directly use the stamp here without restriction, because any later lookup of the
-         * registered info elements is in the same chain of pi nodes.
+         * Get the stamp that may be used for the value for which we are registering the condition. We may
+         * directly use the stamp here without restriction, because any later lookup of the registered info
+         * elements is in the same chain of pi nodes.
          */
         private static Stamp getSafeStamp(ValueNode x) {
             return x.stamp(NodeView.DEFAULT);
         }
 
         /**
-         * We can only use the stamp of a second value involved in the condition if we are sure that
-         * we are not implicitly creating a dependency on a pi node that is responsible for that
-         * stamp. For now, we are conservatively only using the stamps of constants. Under certain
-         * circumstances, we may also be able to use the stamp of the value after skipping pi nodes
-         * (e.g., the stamp of a parameter after inlining, or the stamp of a fixed node that can
-         * never be replaced with a pi node via canonicalization).
+         * We can only use the stamp of a second value involved in the condition if we are sure that we are
+         * not implicitly creating a dependency on a pi node that is responsible for that stamp. For now, we
+         * are conservatively only using the stamps of constants. Under certain circumstances, we may also
+         * be able to use the stamp of the value after skipping pi nodes (e.g., the stamp of a parameter
+         * after inlining, or the stamp of a fixed node that can never be replaced with a pi node via
+         * canonicalization).
          */
         private static Stamp getOtherSafeStamp(ValueNode x) {
             if (x.isConstant()) {
@@ -622,12 +620,11 @@ public class ConditionalEliminationPhase extends BasePhase<PhaseContext> {
 
         /**
          * Recursively try to fold stamps within this expression using information from
-         * {@link #getInfoElements(ValueNode)}. It's only safe to use constants and one
-         * {@link InfoElement} otherwise more than one guard would be required.
+         * {@link #getInfoElements(ValueNode)}. It's only safe to use constants and one {@link InfoElement}
+         * otherwise more than one guard would be required.
          *
          * @param node
-         * @return the pair of the @{link InfoElement} used and the stamp produced for the whole
-         *         expression
+         * @return the pair of the @{link InfoElement} used and the stamp produced for the whole expression
          */
         Pair<InfoElement, Stamp> recursiveFoldStampFromInfo(Node node) {
             return recursiveFoldStamp(node);
@@ -660,9 +657,8 @@ public class ConditionalEliminationPhase extends BasePhase<PhaseContext> {
                 }
                 if (result.isKnown()) {
                     /*
-                     * The test case be folded using the information available but the test can only
-                     * be moved up if we're sure there's no schedule dependence. For now limit it to
-                     * the original node and constants.
+                     * The test case be folded using the information available but the test can only be moved up if
+                     * we're sure there's no schedule dependence. For now limit it to the original node and constants.
                      */
                     InputFilter v = new InputFilter(original);
                     thisGuard.getCondition().applyInputs(v);
@@ -824,11 +820,11 @@ public class ConditionalEliminationPhase extends BasePhase<PhaseContext> {
                 }
 
                 /*
-                 * For complex expressions involving constants, see if it's possible to fold the
-                 * tests by using stamps one level up in the expression. For instance, (x + n < y)
-                 * might fold if something is known about x and all other values are constants. The
-                 * reason for the constant restriction is that if more than 1 real value is involved
-                 * the code might need to adopt multiple guards to have proper dependences.
+                 * For complex expressions involving constants, see if it's possible to fold the tests by using
+                 * stamps one level up in the expression. For instance, (x + n < y) might fold if something is known
+                 * about x and all other values are constants. The reason for the constant restriction is that if
+                 * more than 1 real value is involved the code might need to adopt multiple guards to have proper
+                 * dependences.
                  */
                 if (x instanceof BinaryArithmeticNode<?> && y.isConstant()) {
                     BinaryArithmeticNode<?> binary = (BinaryArithmeticNode<?>) x;
@@ -850,9 +846,8 @@ public class ConditionalEliminationPhase extends BasePhase<PhaseContext> {
                         AndNode and = (AndNode) x;
                         if (and.getY() == y) {
                             /*
-                             * This 'and' proves something about some of the bits in and.getX().
-                             * It's equivalent to or'ing in the mask value since those values are
-                             * known to be set.
+                             * This 'and' proves something about some of the bits in and.getX(). It's equivalent to or'ing in
+                             * the mask value since those values are known to be set.
                              */
                             BinaryOp<Or> op = ArithmeticOpTable.forStamp(x.stamp(NodeView.DEFAULT)).getOr();
                             IntegerStamp newStampX = (IntegerStamp) op.foldStamp(getSafeStamp(and.getX()), getOtherSafeStamp(y));

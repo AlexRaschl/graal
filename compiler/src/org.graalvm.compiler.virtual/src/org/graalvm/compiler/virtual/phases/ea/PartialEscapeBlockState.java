@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.virtual.phases.ea;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.graph.Node;
 import org.graalvm.compiler.nodes.FixedNode;
@@ -47,8 +47,8 @@ public abstract class PartialEscapeBlockState<T extends PartialEscapeBlockState<
 
     /**
      * This array contains the state of all virtual objects, indexed by
-     * {@link VirtualObjectNode#getObjectId()}. Entries in this array may be null if the
-     * corresponding virtual object is not alive or reachable currently.
+     * {@link VirtualObjectNode#getObjectId()}. Entries in this array may be null if the corresponding
+     * virtual object is not alive or reachable currently.
      */
     private ObjectState[] objectStates;
 
@@ -78,8 +78,8 @@ public abstract class PartialEscapeBlockState<T extends PartialEscapeBlockState<
     private final DebugContext debug;
 
     /**
-     * Final subclass of PartialEscapeBlockState, for performance and to make everything behave
-     * nicely with generics.
+     * Final subclass of PartialEscapeBlockState, for performance and to make everything behave nicely
+     * with generics.
      */
     public static final class Final extends PartialEscapeBlockState<Final> {
 
@@ -185,17 +185,17 @@ public abstract class PartialEscapeBlockState<T extends PartialEscapeBlockState<
      */
     public void materializeBefore(FixedNode fixed, VirtualObjectNode virtual, GraphEffectList materializeEffects) {
         PartialEscapeClosure.COUNTER_MATERIALIZATIONS.increment(fixed.getDebug());
-        List<AllocatedObjectNode> objects = new ArrayList<>(2);
-        List<ValueNode> values = new ArrayList<>(8);
-        List<List<MonitorIdNode>> locks = new ArrayList<>();
-        List<ValueNode> otherAllocations = new ArrayList<>(2);
-        List<Boolean> ensureVirtual = new ArrayList<>(2);
+        List<AllocatedObjectNode> objects = SpecifiedArrayList.createNew(2);
+        List<ValueNode> values = SpecifiedArrayList.createNew(8);
+        List<List<MonitorIdNode>> locks = SpecifiedArrayList.createNew();
+        List<ValueNode> otherAllocations = SpecifiedArrayList.createNew(2);
+        List<Boolean> ensureVirtual = SpecifiedArrayList.createNew(2);
         materializeWithCommit(fixed, virtual, objects, locks, values, ensureVirtual, otherAllocations);
 
         materializeEffects.addVirtualizationDelta(-(objects.size() + otherAllocations.size()));
         materializeEffects.add("materializeBefore", new Effect() {
             @Override
-            public void apply(StructuredGraph graph, ArrayList<Node> obsoleteNodes) {
+            public void apply(StructuredGraph graph, SpecifiedArrayList<Node> obsoleteNodes) {
                 for (ValueNode alloc : otherAllocations) {
                     ValueNode otherAllocation = graph.addOrUniqueWithInputs(alloc);
                     if (otherAllocation instanceof FixedWithNextNode) {

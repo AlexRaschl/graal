@@ -31,8 +31,8 @@ import jdk.vm.ci.meta.MetaAccessProvider;
 public abstract class ReplacementsTest extends GraalCompilerTest {
 
     /**
-     * Gets a {@link ClassfileBytecodeProvider} that enables snippets and intrinsics to be loaded
-     * from the system class path (instead of from the JVMCI class path or Graal module).
+     * Gets a {@link ClassfileBytecodeProvider} that enables snippets and intrinsics to be loaded from
+     * the system class path (instead of from the JVMCI class path or Graal module).
      */
     protected final ClassfileBytecodeProvider getSystemClassLoaderBytecodeProvider() {
         ReplacementsImpl d = (ReplacementsImpl) getReplacements();

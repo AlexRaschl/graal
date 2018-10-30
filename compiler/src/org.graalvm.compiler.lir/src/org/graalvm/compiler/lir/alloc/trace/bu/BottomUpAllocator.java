@@ -31,11 +31,11 @@ import static org.graalvm.compiler.lir.LIRValueUtil.isConstantValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.EnumSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig.AllocatableRegisters;
 import org.graalvm.compiler.core.common.alloc.Trace;
@@ -110,8 +110,8 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
      */
     private final AllocatableValue[] stackSlots;
 
-    private final ArrayList<LIRInstruction> insertInstructionsBefore;
-    private final ArrayList<LIRInstruction> insertInstructionsAfter;
+    private final SpecifiedArrayList<LIRInstruction> insertInstructionsBefore;
+    private final SpecifiedArrayList<LIRInstruction> insertInstructionsAfter;
     private final boolean neverSpillConstants;
 
     private final GlobalLivenessInfo livenessInfo;
@@ -131,8 +131,8 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
         this.neverSpillConstants = neverSpillConstant;
         this.livenessInfo = livenessInfo;
 
-        this.insertInstructionsBefore = new ArrayList<>(4);
-        this.insertInstructionsAfter = new ArrayList<>(4);
+        this.insertInstructionsBefore = SpecifiedArrayList.createNew(4);
+        this.insertInstructionsAfter = SpecifiedArrayList.createNew(4);
 
         if (TraceRegisterAllocationPhase.Options.TraceRACacheStackSlots.getValue(lirGenRes.getLIR().getOptions())) {
             this.stackSlots = cachedStackSlots;
@@ -210,7 +210,7 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
                 debug.log("inserting moves at end of fromBlock B%d", fromBlock.getId());
             }
 
-            ArrayList<LIRInstruction> instructions = lir.getLIRforBlock(fromBlock);
+            SpecifiedArrayList<LIRInstruction> instructions = lir.getLIRforBlock(fromBlock);
             LIRInstruction instr = instructions.get(instructions.size() - 1);
             if (instr instanceof StandardOp.JumpOp) {
                 // insert moves before branch
@@ -228,9 +228,9 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
                 assert lir.getLIRforBlock(fromBlock).get(0) instanceof StandardOp.LabelOp : "block does not start with a label";
 
                 /*
-                 * Because the number of predecessor edges matches the number of successor edges,
-                 * blocks which are reached by switch statements may have be more than one
-                 * predecessor but it will be guaranteed that all predecessors will be the same.
+                 * Because the number of predecessor edges matches the number of successor edges, blocks which are
+                 * reached by switch statements may have be more than one predecessor but it will be guaranteed that
+                 * all predecessors will be the same.
                  */
                 for (AbstractBlockBase<?> predecessor : toBlock.getPredecessors()) {
                     assert fromBlock == predecessor : "all critical edges must be broken";
@@ -244,8 +244,7 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
     private final class Allocator {
 
         /**
-         * Maps from {@linkplain Register#number register} to the current {@linkplain Variable
-         * variable}.
+         * Maps from {@linkplain Register#number register} to the current {@linkplain Variable variable}.
          */
         private final AllocatableValue[] currentRegisterMapping;
         /**
@@ -256,7 +255,7 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
         private final int[] lastRegisterUsage;
         private final int[] lastRegisterKill;
 
-        private ArrayList<LIRInstruction> currentInstructions;
+        private SpecifiedArrayList<LIRInstruction> currentInstructions;
         private int currentInstructionIndex;
         private int currentOpId;
 
@@ -372,12 +371,12 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
             }
         }
 
-        private final ArrayList<LIRInstruction> phiResolutionMoves = new ArrayList<>();
+        private final SpecifiedArrayList<LIRInstruction> phiResolutionMoves = SpecifiedArrayList.createNew();
 
         /**
-         * Resolve phi values, i.e., set the current location of values in the predecessors block
-         * (which is not yet allocated) to the location of the variable defined by the phi in the
-         * successor (which is already allocated). For constant inputs we insert moves.
+         * Resolve phi values, i.e., set the current location of values in the predecessors block (which is
+         * not yet allocated) to the location of the variable defined by the phi in the successor (which is
+         * already allocated). For constant inputs we insert moves.
          */
         private void resolvePhis(AbstractBlockBase<?> from, AbstractBlockBase<?> to) {
             if (SSAUtil.isMerge(to)) {
@@ -390,7 +389,7 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
                     visitPhiValuePair(jump.getOutgoingValue(i), label.getIncomingValue(i));
                 }
                 if (!phiResolutionMoves.isEmpty()) {
-                    ArrayList<LIRInstruction> instructions = getLIR().getLIRforBlock(from);
+                    SpecifiedArrayList<LIRInstruction> instructions = getLIR().getLIRforBlock(from);
                     instructions.addAll(instructions.size() - 1, phiResolutionMoves);
                     phiResolutionMoves.clear();
                 }
@@ -419,17 +418,17 @@ public final class BottomUpAllocator extends TraceAllocationPhase<TraceAllocatio
         private boolean requireResolution;
 
         /**
-         * Intra-trace edges, i.e., edge where both, the source and the target block are in the same
-         * trace, are either
+         * Intra-trace edges, i.e., edge where both, the source and the target block are in the same trace,
+         * are either
          * <ul>
-         * <li><em>immediate forward edges</em>, i.e., an edge from {@code i}th block of the trace
-         * to the {@code (i+1)}th block, or
+         * <li><em>immediate forward edges</em>, i.e., an edge from {@code i}th block of the trace to the
+         * {@code (i+1)}th block, or
          * <li>a <em>loop back-edge</em> from the last block of the trace to the loop header.
          * </ul>
          * This property is guaranteed due to splitting of <em>critical edge</em>.
          *
-         * Since forward edges are handled locally during bottom-up allocation we only need to check
-         * for the second case.
+         * Since forward edges are handled locally during bottom-up allocation we only need to check for the
+         * second case.
          */
         private void resolveLoopBackEdge(Trace trace) {
             AbstractBlockBase<?>[] blocks = trace.getBlocks();

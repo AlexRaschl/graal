@@ -43,9 +43,9 @@ public class GraphBuilderConfiguration {
         private ProfilingPlugin profilingPlugin;
 
         /**
-         * Creates a copy of a given set of plugins. The {@link InvocationPlugins} in
-         * {@code copyFrom} become the {@linkplain InvocationPlugins#getParent() default}
-         * {@linkplain #getInvocationPlugins() invocation plugins} in this object.
+         * Creates a copy of a given set of plugins. The {@link InvocationPlugins} in {@code copyFrom}
+         * become the {@linkplain InvocationPlugins#getParent() default} {@linkplain #getInvocationPlugins()
+         * invocation plugins} in this object.
          */
         public Plugins(Plugins copyFrom) {
             this.invocationPlugins = new InvocationPlugins(copyFrom.invocationPlugins);
@@ -62,8 +62,8 @@ public class GraphBuilderConfiguration {
         /**
          * Creates a new set of plugins.
          *
-         * @param invocationPlugins the {@linkplain #getInvocationPlugins() invocation plugins} in
-         *            this object
+         * @param invocationPlugins the {@linkplain #getInvocationPlugins() invocation plugins} in this
+         *            object
          */
         public Plugins(InvocationPlugins invocationPlugins) {
             this.invocationPlugins = invocationPlugins;
@@ -217,8 +217,7 @@ public class GraphBuilderConfiguration {
          */
         OmitAll,
         /**
-         * This mode omits exception edges at invokes, but not for implicit null checks or bounds
-         * checks.
+         * This mode omits exception edges at invokes, but not for implicit null checks or bounds checks.
          */
         ExplicitOnly,
         /**
@@ -240,8 +239,8 @@ public class GraphBuilderConfiguration {
     }
 
     /**
-     * Creates a copy of this configuration with all its plugins. The {@link InvocationPlugins} in
-     * this configuration become the {@linkplain InvocationPlugins#getParent() parent} of the
+     * Creates a copy of this configuration with all its plugins. The {@link InvocationPlugins} in this
+     * configuration become the {@linkplain InvocationPlugins#getParent() parent} of the
      * {@link InvocationPlugins} in the copy.
      */
     public GraphBuilderConfiguration copy() {
@@ -253,9 +252,9 @@ public class GraphBuilderConfiguration {
 
     /**
      * Set the {@link #unresolvedIsError} flag. This flag can be set independently from
-     * {@link #eagerResolving}, i.e., even if eager resolving fails execution is assumed to be
-     * valid. This allows us for example to process unresolved types/methods/fields even when
-     * eagerly resolving elements.
+     * {@link #eagerResolving}, i.e., even if eager resolving fails execution is assumed to be valid.
+     * This allows us for example to process unresolved types/methods/fields even when eagerly resolving
+     * elements.
      */
     public GraphBuilderConfiguration withUnresolvedIsError(boolean newUnresolvedIsError) {
         return new GraphBuilderConfiguration(eagerResolving, newUnresolvedIsError, bytecodeExceptionMode, omitAssertions, insertFullInfopoints, trackNodeSourcePosition, skippedExceptionTypes,

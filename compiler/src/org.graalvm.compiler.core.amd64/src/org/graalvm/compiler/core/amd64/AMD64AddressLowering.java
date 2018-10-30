@@ -62,16 +62,16 @@ public class AMD64AddressLowering extends AddressLowering {
     }
 
     /**
-     * Tries to optimize addresses so that they match the AMD64-specific addressing mode better
-     * (base + index * scale + displacement).
+     * Tries to optimize addresses so that they match the AMD64-specific addressing mode better (base +
+     * index * scale + displacement).
      *
      * @param graph the current graph
      * @param debug the current debug context
      * @param ret the address that should be optimized
      * @param isBaseNegated determines if the address base is negated. if so, all values that are
      *            extracted from the base will be negated as well
-     * @param isIndexNegated determines if the index is negated. if so, all values that are
-     *            extracted from the index will be negated as well
+     * @param isIndexNegated determines if the index is negated. if so, all values that are extracted
+     *            from the index will be negated as well
      * @return true if the address was modified
      */
     protected boolean improve(StructuredGraph graph, DebugContext debug, AMD64AddressNode ret, boolean isBaseNegated, boolean isIndexNegated) {
@@ -195,18 +195,17 @@ public class AMD64AddressLowering extends AddressLowering {
                  * we can't swallow zero-extends because of multiple reasons:
                  *
                  * a) we might encounter something like the following: ZeroExtend(Add(negativeValue,
-                 * positiveValue)). if we swallow the zero-extend in this case and subsequently
-                 * optimize the add, we might end up with a negative value that has less than 64
-                 * bits in base or index. such a value would require sign extension instead of
-                 * zero-extension but the backend can only do (implicit) zero-extension by using a
-                 * larger register (e.g., rax instead of eax).
+                 * positiveValue)). if we swallow the zero-extend in this case and subsequently optimize the add, we
+                 * might end up with a negative value that has less than 64 bits in base or index. such a value
+                 * would require sign extension instead of zero-extension but the backend can only do (implicit)
+                 * zero-extension by using a larger register (e.g., rax instead of eax).
                  *
-                 * b) our backend does not guarantee that the upper half of a 64-bit register equals
-                 * 0 if a 32-bit value is stored in there.
+                 * b) our backend does not guarantee that the upper half of a 64-bit register equals 0 if a 32-bit
+                 * value is stored in there.
                  *
-                 * c) we also can't swallow zero-extends with less than 32 bits as most of these
-                 * values are immediately sign-extended to 32 bit by the backend (therefore, the
-                 * subsequent implicit zero-extension to 64 bit won't do what we expect).
+                 * c) we also can't swallow zero-extends with less than 32 bits as most of these values are
+                 * immediately sign-extended to 32 bit by the backend (therefore, the subsequent implicit
+                 * zero-extension to 64 bit won't do what we expect).
                  */
 
                 if (node instanceof AddNode) {

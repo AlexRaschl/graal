@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.hotspot;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.code.CompilationResult;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.DebugOptions;
@@ -42,7 +42,7 @@ public class HotSpotGraalVMEventListener implements HotSpotVMEventListener {
 
     HotSpotGraalVMEventListener(HotSpotGraalRuntime runtime) {
         this.runtime = runtime;
-        listeners = new ArrayList<>();
+        listeners = SpecifiedArrayList.createNew();
         for (HotSpotCodeCacheListener listener : GraalServices.load(HotSpotCodeCacheListener.class)) {
             listeners.add(listener);
         }

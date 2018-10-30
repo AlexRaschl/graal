@@ -35,8 +35,8 @@ public final class PropertyDescriptor {
      *
      * @param name Property name or symbol description.
      * @param value The value associated with the property.
-     * @param writable True if the value associated with the property may be changed (data
-     *            descriptors only).
+     * @param writable True if the value associated with the property may be changed (data descriptors
+     *            only).
      * @param get A function which serves as a getter for the property, or <code>undefined</code> if
      *            there is no getter (accessor descriptors only).
      * @param set A function which serves as a setter for the property, or <code>undefined</code> if

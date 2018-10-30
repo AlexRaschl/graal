@@ -22,10 +22,11 @@
  */
 package org.graalvm.compiler.replacements.test;
 
-import jdk.vm.ci.code.InstalledCode;
-import jdk.vm.ci.meta.JavaConstant;
-import jdk.vm.ci.meta.JavaType;
-import jdk.vm.ci.meta.ResolvedJavaMethod;
+import static java.lang.reflect.Modifier.isStatic;
+
+import java.util.Collection;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
 import org.graalvm.compiler.nodes.ConstantNode;
 import org.graalvm.compiler.nodes.ParameterNode;
@@ -39,10 +40,10 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import static java.lang.reflect.Modifier.isStatic;
+import jdk.vm.ci.code.InstalledCode;
+import jdk.vm.ci.meta.JavaConstant;
+import jdk.vm.ci.meta.JavaType;
+import jdk.vm.ci.meta.ResolvedJavaMethod;
 
 @RunWith(Parameterized.class)
 public class SystemArrayCopyTest extends GraalCompilerTest {
@@ -58,7 +59,7 @@ public class SystemArrayCopyTest extends GraalCompilerTest {
         Object[] dsts = {new int[4], new Number[4]};
         int[] lens = {-1, 0, 2, 8};
 
-        ArrayList<Object[]> ret = new ArrayList<>(srcs.length * dsts.length * lens.length);
+        SpecifiedArrayList<Object[]> ret = SpecifiedArrayList.createNew(srcs.length * dsts.length * lens.length);
         for (Object src : srcs) {
             for (Object dst : dsts) {
                 for (int length : lens) {

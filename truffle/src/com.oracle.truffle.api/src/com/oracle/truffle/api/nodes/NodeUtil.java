@@ -445,8 +445,8 @@ public final class NodeUtil {
     }
 
     /**
-     * Get the nth parent of a node, where the 0th parent is the node itself. Returns null if there
-     * are less than n ancestors.
+     * Get the nth parent of a node, where the 0th parent is the node itself. Returns null if there are
+     * less than n ancestors.
      *
      * @since 0.8 or earlier
      */
@@ -697,8 +697,8 @@ public final class NodeUtil {
     }
 
     /**
-     * Prints a human readable form of a {@link Node} AST to the given {@link PrintStream}. This
-     * print method does not check for cycles in the node structure.
+     * Prints a human readable form of a {@link Node} AST to the given {@link PrintStream}. This print
+     * method does not check for cycles in the node structure.
      *
      * @param out the stream to print to.
      * @param node the root node to write

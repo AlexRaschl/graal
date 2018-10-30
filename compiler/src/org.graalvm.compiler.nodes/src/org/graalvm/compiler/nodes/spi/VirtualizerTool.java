@@ -52,8 +52,8 @@ public interface VirtualizerTool {
     MetaAccessProvider getMetaAccessProvider();
 
     /**
-     * @return the {@link ConstantReflectionProvider} associated with the current compilation, which
-     *         can be used to access {@link JavaConstant}s.
+     * @return the {@link ConstantReflectionProvider} associated with the current compilation, which can
+     *         be used to access {@link JavaConstant}s.
      */
     ConstantReflectionProvider getConstantReflectionProvider();
 
@@ -84,9 +84,9 @@ public interface VirtualizerTool {
      * virtual, the materialized value of the given value is aliased with a virtual object that was
      * materialized, the replacement if the give value was replaced, otherwise the given value.
      *
-     * Replacements via {@link #replaceWithValue(ValueNode)} are not immediately committed. This
-     * method can be used to determine if a value was replaced by another one (e.g., a load field by
-     * the loaded value).
+     * Replacements via {@link #replaceWithValue(ValueNode)} are not immediately committed. This method
+     * can be used to determine if a value was replaced by another one (e.g., a load field by the loaded
+     * value).
      */
     ValueNode getAlias(ValueNode value);
 
@@ -147,8 +147,8 @@ public interface VirtualizerTool {
     void replaceFirstInput(Node oldInput, Node replacement);
 
     /**
-     * Adds the given node to the graph.This action will only be performed when, and if, the changes
-     * are committed.
+     * Adds the given node to the graph.This action will only be performed when, and if, the changes are
+     * committed.
      *
      * @param node the node to add.
      */

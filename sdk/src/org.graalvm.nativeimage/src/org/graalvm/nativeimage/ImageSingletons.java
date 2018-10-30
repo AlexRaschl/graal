@@ -44,8 +44,8 @@ import org.graalvm.nativeimage.impl.ImageSingletonsSupport;
 public final class ImageSingletons {
 
     /**
-     * Add a singleton to the registry. The key must be unique, i.e., no value must have been
-     * registered with the given class before.
+     * Add a singleton to the registry. The key must be unique, i.e., no value must have been registered
+     * with the given class before.
      */
     @Platforms(Platform.HOSTED_ONLY.class)
     public static <T> void add(Class<T> key, T value) {
@@ -53,8 +53,8 @@ public final class ImageSingletons {
     }
 
     /**
-     * Lookup a singleton in the registry. The key must be a compile time constant, so that the call
-     * to this method can be replaced with the constant configuration objects.
+     * Lookup a singleton in the registry. The key must be a compile time constant, so that the call to
+     * this method can be replaced with the constant configuration objects.
      *
      * The key must have been {@link #add added} before, i.e., the result is guaranteed to be non-
      * {@code null}.
@@ -64,8 +64,8 @@ public final class ImageSingletons {
     }
 
     /**
-     * Checks if a singleton is in the registry. The key must be a compile time constant, so that
-     * the call to this method can be replaced with the constant {@code true} of {@code false}.
+     * Checks if a singleton is in the registry. The key must be a compile time constant, so that the
+     * call to this method can be replaced with the constant {@code true} of {@code false}.
      */
     public static boolean contains(Class<?> key) {
         return ImageSingletonsSupport.get().contains(key);

@@ -218,8 +218,8 @@ public final class SuspendedEvent {
     }
 
     /**
-     * Returns <code>true</code> if the execution is suspended before executing a guest language
-     * source location. Returns <code>false</code> if it was suspended after.
+     * Returns <code>true</code> if the execution is suspended before executing a guest language source
+     * location. Returns <code>false</code> if it was suspended after.
      * <p>
      * This method is thread-safe..
      *
@@ -258,11 +258,10 @@ public final class SuspendedEvent {
     }
 
     /**
-     * Returns the return value of the currently executed source location. Returns <code>null</code>
-     * if the execution is suspended {@link SuspendAnchor#BEFORE before} a guest language location.
-     * The returned value is <code>null</code> if an exception occurred during execution of the
-     * instrumented statement. The debug value remains valid event if the current execution was
-     * suspend.
+     * Returns the return value of the currently executed source location. Returns <code>null</code> if
+     * the execution is suspended {@link SuspendAnchor#BEFORE before} a guest language location. The
+     * returned value is <code>null</code> if an exception occurred during execution of the instrumented
+     * statement. The debug value remains valid event if the current execution was suspend.
      * <p>
      * This method is not thread-safe and will throw an {@link IllegalStateException} if called on
      * another thread than it was created with.
@@ -333,9 +332,9 @@ public final class SuspendedEvent {
 
     /**
      * Returns a list of guest language stack frame objects that indicate the current guest language
-     * location. There is always at least one, the topmost, stack frame available. The returned
-     * stack frames are usable only during {@link SuspendedCallback#onSuspend(SuspendedEvent)
-     * suspend} and should not be stored permanently.
+     * location. There is always at least one, the topmost, stack frame available. The returned stack
+     * frames are usable only during {@link SuspendedCallback#onSuspend(SuspendedEvent) suspend} and
+     * should not be stored permanently.
      *
      * <p>
      * This method is not thread-safe and will throw an {@link IllegalStateException} if called on
@@ -364,8 +363,8 @@ public final class SuspendedEvent {
     }
 
     /**
-     * Prepare to execute in Continue mode when guest language program execution resumes. In this
-     * mode execution will continue until either:
+     * Prepare to execute in Continue mode when guest language program execution resumes. In this mode
+     * execution will continue until either:
      * <ul>
      * <li>execution arrives at a node to which an enabled breakpoint is attached,
      * <strong>or:</strong></li>
@@ -375,8 +374,8 @@ public final class SuspendedEvent {
      * This method is thread-safe and the prepared Continue mode is appended to any other previously
      * prepared modes. No further modes can be prepared after continue.
      *
-     * @throws IllegalStateException when {@link #prepareContinue() continue} or
-     *             {@link #prepareKill() kill} is prepared already.
+     * @throws IllegalStateException when {@link #prepareContinue() continue} or {@link #prepareKill()
+     *             kill} is prepared already.
      * @since 0.9
      */
     public void prepareContinue() {
@@ -389,8 +388,8 @@ public final class SuspendedEvent {
      * <ul>
      * <li>Execution, when resumed, continues until either:
      * <ol>
-     * <li>execution arrives at at the <em>nth</em> node (specified by {@code stepCount}) with the
-     * tag {@link StatementTag}, <strong>or</strong></li>
+     * <li>execution arrives at at the <em>nth</em> node (specified by {@code stepCount}) with the tag
+     * {@link StatementTag}, <strong>or</strong></li>
      * <li>execution arrives at a {@link Breakpoint}, <strong>or</strong></li>
      * <li>execution completes.</li>
      * </ol>
@@ -408,10 +407,10 @@ public final class SuspendedEvent {
      * <ul>
      * <li>execution halts only <em>once</em> at the location;</li>
      * <li>the halt counts as a breakpoint {@link Breakpoint#getHitCount() hit};</li>
-     * <li>the mode reverts to {@linkplain #prepareContinue() Continue}, as if there were no
-     * breakpoint; and</li>
-     * <li>this special treatment applies only for breakpoints created <strong>before</strong> the
-     * mode is set.</li>
+     * <li>the mode reverts to {@linkplain #prepareContinue() Continue}, as if there were no breakpoint;
+     * and</li>
+     * <li>this special treatment applies only for breakpoints created <strong>before</strong> the mode
+     * is set.</li>
      * </ul>
      * </ul>
      * <p>
@@ -421,8 +420,8 @@ public final class SuspendedEvent {
      * @param stepCount the number of times to perform StepInto before halting
      * @return this event instance for an easy concatenation of method calls
      * @throws IllegalArgumentException if {@code stepCount <= 0}
-     * @throws IllegalStateException when {@link #prepareContinue() continue} or
-     *             {@link #prepareKill() kill} is prepared already.
+     * @throws IllegalStateException when {@link #prepareContinue() continue} or {@link #prepareKill()
+     *             kill} is prepared already.
      * @since 0.9
      */
     public SuspendedEvent prepareStepInto(int stepCount) {
@@ -439,8 +438,7 @@ public final class SuspendedEvent {
      * <ul>
      * <li>Execution, when resumed, continues until either:
      * <ol>
-     * <li>execution arrives at the nearest enclosing call site on the stack, <strong>or</strong>
-     * </li>
+     * <li>execution arrives at the nearest enclosing call site on the stack, <strong>or</strong></li>
      * <li>execution arrives at a {@link Breakpoint}, <strong>or</strong></li>
      * <li>execution completes.</li>
      * </ol>
@@ -493,8 +491,8 @@ public final class SuspendedEvent {
      * @param stepCount the number of times to perform StepOver before halting
      * @return this event instance for an easy concatenation of method calls
      * @throws IllegalArgumentException if {@code stepCount <= 0}
-     * @throws IllegalStateException when {@link #prepareContinue() continue} or
-     *             {@link #prepareKill() kill} is prepared already.
+     * @throws IllegalStateException when {@link #prepareContinue() continue} or {@link #prepareKill()
+     *             kill} is prepared already.
      * @since 0.26
      */
     public SuspendedEvent prepareStepOut(int stepCount) {
@@ -506,14 +504,12 @@ public final class SuspendedEvent {
     }
 
     /**
-     * Prepare to execute in StepOver mode when guest language program execution resumes. In this
-     * mode:
+     * Prepare to execute in StepOver mode when guest language program execution resumes. In this mode:
      * <ul>
      * <li>Execution, when resumed, continues until either:
      * <ol>
-     * <li>execution arrives at at the <em>nth</em> node (specified by {@code stepCount}) with the
-     * tag {@link StatementTag}, ignoring nodes nested in function/method calls, <strong>or</strong>
-     * </li>
+     * <li>execution arrives at at the <em>nth</em> node (specified by {@code stepCount}) with the tag
+     * {@link StatementTag}, ignoring nodes nested in function/method calls, <strong>or</strong></li>
      * <li>execution arrives at a {@link Breakpoint}, <strong>or</strong></li>
      * <li>execution completes.</li>
      * </ol>
@@ -531,10 +527,10 @@ public final class SuspendedEvent {
      * <ul>
      * <li>execution halts only <em>once</em> at the location;</li>
      * <li>the halt counts as a breakpoint {@link Breakpoint#getHitCount() hit};</li>
-     * <li>the mode reverts to {@linkplain #prepareContinue() Continue}, as if there were no
-     * breakpoint; and</li>
-     * <li>this special treatment applies only for breakpoints created <strong>before</strong> the
-     * mode is set.</li>
+     * <li>the mode reverts to {@linkplain #prepareContinue() Continue}, as if there were no breakpoint;
+     * and</li>
+     * <li>this special treatment applies only for breakpoints created <strong>before</strong> the mode
+     * is set.</li>
      * </ul>
      * <p>
      * This method is thread-safe and the prepared StepOver mode is appended to any other previously
@@ -543,8 +539,8 @@ public final class SuspendedEvent {
      * @param stepCount the number of times to perform StepOver before halting
      * @return this event instance for an easy concatenation of method calls
      * @throws IllegalArgumentException if {@code stepCount <= 0}
-     * @throws IllegalStateException when {@link #prepareContinue() continue} or
-     *             {@link #prepareKill() kill} is prepared already.
+     * @throws IllegalStateException when {@link #prepareContinue() continue} or {@link #prepareKill()
+     *             kill} is prepared already.
      * @since 0.9
      */
     public SuspendedEvent prepareStepOver(int stepCount) {
@@ -580,8 +576,8 @@ public final class SuspendedEvent {
      * This method is thread-safe and the prepared termination is appended to any other previously
      * prepared modes. No further modes can be prepared after kill.
      *
-     * @throws IllegalStateException when {@link #prepareContinue() continue} or
-     *             {@link #prepareKill() kill} is prepared already.
+     * @throws IllegalStateException when {@link #prepareContinue() continue} or {@link #prepareKill()
+     *             kill} is prepared already.
      * @since 0.12
      */
     public void prepareKill() {

@@ -80,8 +80,8 @@ public @interface MethodSubstitution {
     /**
      * Gets the name of the original method.
      * <p>
-     * If the default value is specified for this element, then the name of the original method is
-     * same as the substitute method.
+     * If the default value is specified for this element, then the name of the original method is same
+     * as the substitute method.
      */
     String value() default "";
 
@@ -93,15 +93,15 @@ public @interface MethodSubstitution {
     /**
      * Gets the {@linkplain Signature#toMethodDescriptor signature} of the original method.
      * <p>
-     * If the default value is specified for this element, then the signature of the original method
-     * is the same as the substitute method.
+     * If the default value is specified for this element, then the signature of the original method is
+     * the same as the substitute method.
      */
     String signature() default "";
 
     /**
-     * Determines if the substitution is for a method that may not be part of the runtime. For
-     * example, a method introduced in a later JDK version. Substitutions for such methods are
-     * omitted if the original method cannot be found.
+     * Determines if the substitution is for a method that may not be part of the runtime. For example,
+     * a method introduced in a later JDK version. Substitutions for such methods are omitted if the
+     * original method cannot be found.
      */
     boolean optional() default false;
 }

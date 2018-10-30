@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.phases.contract;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -68,7 +68,7 @@ public class NodeCostUtil {
             cfg = ControlFlowGraph.compute(graph, true, true, false, false);
             BlockMap<List<FixedNode>> nodes = new BlockMap<>(cfg);
             for (Block b : cfg.getBlocks()) {
-                ArrayList<FixedNode> curNodes = new ArrayList<>();
+                SpecifiedArrayList<FixedNode> curNodes = SpecifiedArrayList.createNew();
                 for (FixedNode node : b.getNodes()) {
                     curNodes.add(node);
                 }
@@ -104,10 +104,10 @@ public class NodeCostUtil {
     }
 
     /**
-     * Factor to control the "imprecision" of the before - after relation when verifying phase
-     * effects. If the cost model is perfect the best theoretical value is 0.0D (Ignoring the fact
-     * that profiling information is not reliable and thus the, probability based, profiling view on
-     * a graph is different than the reality).
+     * Factor to control the "imprecision" of the before - after relation when verifying phase effects.
+     * If the cost model is perfect the best theoretical value is 0.0D (Ignoring the fact that profiling
+     * information is not reliable and thus the, probability based, profiling view on a graph is
+     * different than the reality).
      */
     private static final double DELTA = 0.001D;
 

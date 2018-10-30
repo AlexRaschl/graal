@@ -191,8 +191,8 @@ public class EscapeAnalysisTest extends EATestBase {
 
     public int testMergeAllocationsInt2Snippet(int a) {
         /*
-         * The initial object in obj exists until the end of the function, but it can still be
-         * merged with the one allocated in the else block because noone can observe the identity.
+         * The initial object in obj exists until the end of the function, but it can still be merged with
+         * the one allocated in the else block because noone can observe the identity.
          */
         TestClassInt obj = new TestClassInt(1, 2);
         if (a < 0) {
@@ -309,8 +309,7 @@ public class EscapeAnalysisTest extends EATestBase {
     }
 
     /**
-     * Tests that a graph with allocations that does not make progress during PEA will not be
-     * changed.
+     * Tests that a graph with allocations that does not make progress during PEA will not be changed.
      */
     @Test
     public void testChangeHandling() {
@@ -343,9 +342,9 @@ public class EscapeAnalysisTest extends EATestBase {
     }
 
     /**
-     * Test the case where allocations before and during a loop that have no usages other than their
-     * phi need to be recognized as an important change. This needs a loop so that the allocation is
-     * not trivially removed by dead code elimination.
+     * Test the case where allocations before and during a loop that have no usages other than their phi
+     * need to be recognized as an important change. This needs a loop so that the allocation is not
+     * trivially removed by dead code elimination.
      */
     @Test
     public void testRemovalSpecialCase() {
@@ -413,8 +412,8 @@ public class EscapeAnalysisTest extends EATestBase {
     public static Object testFullyUnrolledLoopSnippet() {
         /*
          * This tests a case that can appear if PEA is performed both before and after loop
-         * unrolling/peeling: If the VirtualInstanceNode is not duplicated correctly with the loop,
-         * the resulting object will reference itself, and not a second (different) object.
+         * unrolling/peeling: If the VirtualInstanceNode is not duplicated correctly with the loop, the
+         * resulting object will reference itself, and not a second (different) object.
          */
         TestClassObject obj = staticObj;
         for (int i = 0; i < 2; i++) {

@@ -29,13 +29,18 @@ import static org.graalvm.compiler.core.common.GraalOptions.GeneratePIC;
 import static org.graalvm.compiler.core.common.GraalOptions.HotSpotPrintInlining;
 import static org.graalvm.compiler.debug.DebugContext.DEFAULT_LOG_STREAM;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
+import org.graalvm.collections.list.statistics.CSVGenerator;
+import org.graalvm.collections.list.statistics.StatisticConfigs;
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayList;
+import org.graalvm.collections.list.statistics.StatisticalSpecifiedArrayListImpl;
+import org.graalvm.collections.list.statistics.Statistics;
 import org.graalvm.compiler.api.replacements.SnippetReflectionProvider;
 import org.graalvm.compiler.api.runtime.GraalRuntime;
 import org.graalvm.compiler.core.CompilationWrapper.ExceptionAction;
@@ -119,7 +124,7 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
 
         outputDirectory = new DiagnosticsOutputDirectory(options);
         compilationProblemsPerAction = new EnumMap<>(ExceptionAction.class);
-        snippetCounterGroups = GraalOptions.SnippetCounters.getValue(options) ? new ArrayList<>() : null;
+        snippetCounterGroups = GraalOptions.SnippetCounters.getValue(options) ? SpecifiedArrayList.createNew() : null;
         CompilerConfiguration compilerConfiguration = compilerConfigurationFactory.createCompilerConfiguration();
 
         HotSpotGraalCompiler compiler = new HotSpotGraalCompiler(jvmciRuntime, this, initialOptions);
@@ -284,6 +289,44 @@ public final class HotSpotGraalRuntime implements HotSpotGraalRuntimeProvider {
         BenchmarkCounters.shutdown(runtime(), options, runtimeStartTime);
 
         outputDirectory.close();
+
+        /*
+         * TODO Remember CSVGenerator
+         */
+
+        if (StatisticConfigs.TRACKING_ENABLED) {
+            // For some reason not synchronizing this leads to inconistent data
+            // synchronized (this) {
+
+            // Wait for other threads to generate all Lists before printing results
+
+            Statistics.getReadLock();
+            try {
+// Thread.sleep(10000);
+// } catch (InterruptedException e) {
+// e.printStackTrace();
+// }
+                Statistics.printGlobalInformation();
+                System.out.println("Load Factor lines");
+                String data[] = Statistics.getLoadFactorDataLines(';');
+                for (String s : data)
+                    System.out.println(s);
+                System.out.println();
+
+// final String prefix = this.getClass().getSimpleName();
+// CSVGenerator.createFileOfAllocationSites(prefix);
+// CSVGenerator.createFileOfGlobalInfo(prefix);
+// CSVGenerator.createFileOfTrackerTypes(prefix);
+// CSVGenerator.createFileOfTrackerSizes(prefix);
+// CSVGenerator.createFileOfAllocationSites(prefix);
+// CSVGenerator.createFileOfTypeOperationDistributions(prefix);
+// CSVGenerator.createFileOfOperationDistributions(prefix);
+// }
+            } finally {
+                Statistics.releaseReadLock();
+            }
+        }
+
     }
 
     void clearMetrics() {

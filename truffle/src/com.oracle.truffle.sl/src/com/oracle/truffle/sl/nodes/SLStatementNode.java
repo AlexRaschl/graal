@@ -108,9 +108,9 @@ public abstract class SLStatementNode extends Node {
     }
 
     /**
-     * Formats a source section of a node in human readable form. If no source section could be
-     * found it looks up the parent hierarchy until it finds a source section. Nodes where this was
-     * required append a <code>'~'</code> at the end.
+     * Formats a source section of a node in human readable form. If no source section could be found it
+     * looks up the parent hierarchy until it finds a source section. Nodes where this was required
+     * append a <code>'~'</code> at the end.
      *
      * @param node the node to format.
      * @return a formatted source section string

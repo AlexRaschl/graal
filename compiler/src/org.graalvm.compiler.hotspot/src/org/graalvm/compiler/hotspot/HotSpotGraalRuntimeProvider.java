@@ -62,8 +62,8 @@ public interface HotSpotGraalRuntimeProvider extends GraalRuntime, RuntimeProvid
     GraalHotSpotVMConfig getVMConfig();
 
     /**
-     * Opens a debug context for compiling {@code compilable}. The {@link DebugContext#close()}
-     * method should be called on the returned object once the compilation is finished.
+     * Opens a debug context for compiling {@code compilable}. The {@link DebugContext#close()} method
+     * should be called on the returned object once the compilation is finished.
      *
      * @param compilationOptions the options used to configure the compilation debug context
      * @param compilationId a system wide unique compilation id

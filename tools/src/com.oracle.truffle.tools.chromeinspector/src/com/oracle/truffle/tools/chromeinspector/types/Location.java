@@ -33,8 +33,8 @@ public final class Location {
     private final int column;
 
     /**
-     * A location with 1-based line numbers and 1-based columns. When the column is 0, it is
-     * considered to be undefined.
+     * A location with 1-based line numbers and 1-based columns. When the column is 0, it is considered
+     * to be undefined.
      */
     public Location(int scriptId, int line, int column) {
         this.scriptId = scriptId;

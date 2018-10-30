@@ -61,8 +61,8 @@ public abstract class AssemblerTest extends GraalTest {
     }
 
     /**
-     * Gets the initial option values provided by the Graal runtime. These are option values
-     * typically parsed from the command line.
+     * Gets the initial option values provided by the Graal runtime. These are option values typically
+     * parsed from the command line.
      */
     public static OptionValues getInitialOptions() {
         return Graal.getRequiredCapability(OptionValues.class);

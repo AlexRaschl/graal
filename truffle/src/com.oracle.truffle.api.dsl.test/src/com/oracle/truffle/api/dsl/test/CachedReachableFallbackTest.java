@@ -60,8 +60,8 @@ public class CachedReachableFallbackTest {
         }
 
         /*
-         * s1 is not reachable after s2 is enabled therefore the fallback cannot be reached from s1
-         * and must not be included in the fallback guard.
+         * s1 is not reachable after s2 is enabled therefore the fallback cannot be reached from s1 and must
+         * not be included in the fallback guard.
          */
         @Specialization
         protected Object s2(int obj) {

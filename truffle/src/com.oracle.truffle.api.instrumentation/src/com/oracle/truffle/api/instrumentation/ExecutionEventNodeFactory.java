@@ -43,10 +43,9 @@ import com.oracle.truffle.api.CompilerDirectives.CompilationFinal;
 public interface ExecutionEventNodeFactory {
 
     /**
-     * Returns a new instance of {@link ExecutionEventNode} for this particular source location.
-     * This method might be invoked multiple times for one particular source location
-     * {@link EventContext context}. The implementation must ensure that this is handled
-     * accordingly.
+     * Returns a new instance of {@link ExecutionEventNode} for this particular source location. This
+     * method might be invoked multiple times for one particular source location {@link EventContext
+     * context}. The implementation must ensure that this is handled accordingly.
      *
      * @param context the current context where this event node should get created.
      * @return a new event node instance

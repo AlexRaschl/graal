@@ -173,9 +173,8 @@ public abstract class AMD64LIRGenerator extends LIRGenerator {
     }
 
     /**
-     * The AMD64 backend only uses DWORD and QWORD values in registers because of a performance
-     * penalty when accessing WORD or BYTE registers. This function converts small integer kinds to
-     * DWORD.
+     * The AMD64 backend only uses DWORD and QWORD values in registers because of a performance penalty
+     * when accessing WORD or BYTE registers. This function converts small integer kinds to DWORD.
      */
     @Override
     public <K extends ValueKind<K>> K toRegisterKind(K kind) {
@@ -440,8 +439,8 @@ public abstract class AMD64LIRGenerator extends LIRGenerator {
     }
 
     /**
-     * This method emits the compare instruction, and may reorder the operands. It returns true if
-     * it did so.
+     * This method emits the compare instruction, and may reorder the operands. It returns true if it
+     * did so.
      *
      * @param a the left operand of the comparison
      * @param b the right operand of the comparison

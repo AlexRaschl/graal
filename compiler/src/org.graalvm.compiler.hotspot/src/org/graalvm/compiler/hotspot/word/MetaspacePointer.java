@@ -401,8 +401,8 @@ public abstract class MetaspacePointer {
     public abstract void writeWord(WordBase offset, WordBase val, LocationIdentity locationIdentity);
 
     /**
-     * Initializes the memory at address {@code (this + offset)}. Both the base address and offset
-     * are in bytes. The memory must be uninitialized or zero prior to this operation.
+     * Initializes the memory at address {@code (this + offset)}. Both the base address and offset are
+     * in bytes. The memory must be uninitialized or zero prior to this operation.
      * <p>
      * The offset is always treated as a {@link SignedWord} value. However, the static type is
      * {@link WordBase} to avoid the frequent casts of {@link UnsignedWord} values (where the caller
@@ -656,9 +656,8 @@ public abstract class MetaspacePointer {
     public abstract Object readObject(WordBase offset);
 
     /**
-     * Reads the memory at address {@code (this + offset)}. This access will decompress the oop if
-     * the VM uses compressed oops, and it can be parameterized to allow read barriers (G1 referent
-     * field).
+     * Reads the memory at address {@code (this + offset)}. This access will decompress the oop if the
+     * VM uses compressed oops, and it can be parameterized to allow read barriers (G1 referent field).
      * <p>
      * The offset is always treated as a {@link SignedWord} value. However, the static type is
      * {@link WordBase} to avoid the frequent casts of {@link UnsignedWord} values (where the caller
@@ -762,9 +761,8 @@ public abstract class MetaspacePointer {
     public abstract Object readObject(int offset);
 
     /**
-     * Reads the memory at address {@code (this + offset)}. This access will decompress the oop if
-     * the VM uses compressed oops, and it can be parameterized to allow read barriers (G1 referent
-     * field).
+     * Reads the memory at address {@code (this + offset)}. This access will decompress the oop if the
+     * VM uses compressed oops, and it can be parameterized to allow read barriers (G1 referent field).
      *
      * @param offset the signed offset for the memory access
      * @param barrierType the type of the read barrier to be added

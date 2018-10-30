@@ -22,8 +22,7 @@
  */
 package org.graalvm.compiler.hotspot.test;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.test.GraalCompilerTest;
 import org.graalvm.compiler.nodes.graphbuilderconf.GraphBuilderConfiguration;
 import org.junit.Test;
@@ -37,7 +36,7 @@ public class ObjectCloneTest extends GraalCompilerTest {
         return array.clone();
     }
 
-    public static Object cloneList(ArrayList<?> list) {
+    public static Object cloneList(SpecifiedArrayList<?> list) {
         return list.clone();
     }
 
@@ -59,8 +58,8 @@ public class ObjectCloneTest extends GraalCompilerTest {
     }
 
     /*
-     * This test checks that the ObjectCloneNode doesn't accidentally inject non-nullness into the
-     * graph which is later removed.
+     * This test checks that the ObjectCloneNode doesn't accidentally inject non-nullness into the graph
+     * which is later removed.
      */
     public static Object notCloneable(ObjectCloneable cloneable) throws CloneNotSupportedException {
         ObjectCloneable clone = (ObjectCloneable) cloneable.clone();
@@ -79,7 +78,7 @@ public class ObjectCloneTest extends GraalCompilerTest {
 
     @Test
     public void testList() throws Throwable {
-        ArrayList<Object> list = new ArrayList<>();
+        SpecifiedArrayList<Object> list = SpecifiedArrayList.createNew();
         for (int i = 0; i < 4; i++) {
             list.add(i);
         }

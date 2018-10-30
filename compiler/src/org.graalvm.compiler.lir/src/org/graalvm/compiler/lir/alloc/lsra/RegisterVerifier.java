@@ -25,9 +25,9 @@ package org.graalvm.compiler.lir.alloc.lsra;
 import static jdk.vm.ci.code.ValueUtil.asRegister;
 import static jdk.vm.ci.code.ValueUtil.isRegister;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.BlockMap;
 import org.graalvm.compiler.debug.DebugContext;
@@ -46,7 +46,7 @@ import jdk.vm.ci.meta.Value;
 final class RegisterVerifier {
 
     LinearScan allocator;
-    ArrayList<AbstractBlockBase<?>> workList; // all blocks that must be processed
+    SpecifiedArrayList<AbstractBlockBase<?>> workList; // all blocks that must be processed
     BlockMap<Interval[]> savedStates; // saved information of previous check
 
     // simplified access to methods of LinearScan
@@ -76,7 +76,7 @@ final class RegisterVerifier {
 
     RegisterVerifier(LinearScan allocator) {
         this.allocator = allocator;
-        workList = new ArrayList<>(16);
+        workList = SpecifiedArrayList.createNew(16);
         this.savedStates = new BlockMap<>(allocator.getLIR().getControlFlowGraph());
 
     }
@@ -211,7 +211,7 @@ final class RegisterVerifier {
     }
 
     void processOperations(AbstractBlockBase<?> block, final Interval[] inputState) {
-        ArrayList<LIRInstruction> ops = allocator.getLIR().getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> ops = allocator.getLIR().getLIRforBlock(block);
         DebugContext debug = allocator.getDebug();
         InstructionValueConsumer useConsumer = new InstructionValueConsumer() {
 

@@ -97,9 +97,9 @@ public interface Feature {
         /**
          * Registers the provided function to replace objects.
          *
-         * The function checks if an object should be replaced. In such a case, the function creates
-         * the new object and returns it. The function must return the original object if the object
-         * should not be replaced.
+         * The function checks if an object should be replaced. In such a case, the function creates the new
+         * object and returns it. The function must return the original object if the object should not be
+         * replaced.
          */
         void registerObjectReplacer(Function<Object, Object> replacer);
     }
@@ -111,29 +111,27 @@ public interface Feature {
     interface BeforeAnalysisAccess extends FeatureAccess {
 
         /**
-         * Registers the provided type a used, i.e., metadata for the type is put into the native
-         * image.
+         * Registers the provided type a used, i.e., metadata for the type is put into the native image.
          */
         void registerAsUsed(Class<?> type);
 
         /**
-         * Registers the provided type as instantiated, i.e., the static analysis assumes that
-         * instances of this type exist at run time even if there is no explicit instantiation in
-         * the bytecodes.
+         * Registers the provided type as instantiated, i.e., the static analysis assumes that instances of
+         * this type exist at run time even if there is no explicit instantiation in the bytecodes.
          *
          * This implies that the type is also marked as {@link #registerAsUsed used}.
          */
         void registerAsInHeap(Class<?> type);
 
         /**
-         * Registers the provided field as accesses, i.e., the static analysis assumes the field is
-         * used even if there are no explicit reads or writes in the bytecodes.
+         * Registers the provided field as accesses, i.e., the static analysis assumes the field is used
+         * even if there are no explicit reads or writes in the bytecodes.
          */
         void registerAsAccessed(Field field);
 
         /**
-         * Registers the provided field as written by {@link sun.misc.Unsafe}, i.e., the static
-         * analysis merges together all values of unsafe accessed fields of a specific type.
+         * Registers the provided field as written by {@link sun.misc.Unsafe}, i.e., the static analysis
+         * merges together all values of unsafe accessed fields of a specific type.
          *
          * This implies that the field is also marked as {@link #registerAsAccessed accessed}.
          */
@@ -154,8 +152,7 @@ public interface Feature {
     interface DuringAnalysisAccess extends BeforeAnalysisAccess {
 
         /**
-         * Notifies the static analysis that changes are made that enforce a new iteration of the
-         * analysis.
+         * Notifies the static analysis that changes are made that enforce a new iteration of the analysis.
          */
         void requireAnalysisIteration();
     }
@@ -189,15 +186,15 @@ public interface Feature {
         long objectFieldOffset(Field field);
 
         /**
-         * Hint to the native image generator that the given object is immutable at runtime, i.e.,
-         * can be placed in a read-only section of the native image heap.
+         * Hint to the native image generator that the given object is immutable at runtime, i.e., can be
+         * placed in a read-only section of the native image heap.
          */
         void registerAsImmutable(Object object);
 
         /**
-         * Register the object, and everything it transitively references, as immutable. When the
-         * provided predicate returns false for an object, the object is not marked as immutable and
-         * the transitive iteration is stopped.
+         * Register the object, and everything it transitively references, as immutable. When the provided
+         * predicate returns false for an object, the object is not marked as immutable and the transitive
+         * iteration is stopped.
          */
         void registerAsImmutable(Object root, Predicate<Object> includeObject);
     }
@@ -244,10 +241,10 @@ public interface Feature {
     }
 
     /**
-     * This method is called immediately after the constructor, to check whether the feature is part
-     * of the configuration or not. If this method returns false, the feature is not included in the
-     * list of features and no other methods are called (in particular, the
-     * {@link #getRequiredFeatures required features} are not processed).
+     * This method is called immediately after the constructor, to check whether the feature is part of
+     * the configuration or not. If this method returns false, the feature is not included in the list
+     * of features and no other methods are called (in particular, the {@link #getRequiredFeatures
+     * required features} are not processed).
      *
      * @param access The supported operations that the feature can perform at this time
      */
@@ -291,10 +288,10 @@ public interface Feature {
 
     /**
      * Handler for performing operations during the static analysis. This handler is called after
-     * analysis is complete. So all analysis meta data is available. If the handler performs
-     * changes, e.g., makes new types or methods reachable, it needs to call
-     * {@link DuringAnalysisAccess#requireAnalysisIteration()}. This triggers a new iteration:
-     * analysis is performed again and the handler is called again.
+     * analysis is complete. So all analysis meta data is available. If the handler performs changes,
+     * e.g., makes new types or methods reachable, it needs to call
+     * {@link DuringAnalysisAccess#requireAnalysisIteration()}. This triggers a new iteration: analysis
+     * is performed again and the handler is called again.
      *
      * @param access The supported operations that the feature can perform at this time
      */
@@ -310,8 +307,8 @@ public interface Feature {
     }
 
     /**
-     * Handler for code that needs to run after the analysis, even if an error has occured, e.g.,
-     * like reporting code.
+     * Handler for code that needs to run after the analysis, even if an error has occured, e.g., like
+     * reporting code.
      *
      * @param access The supported operations that the feature can perform at this time
      */
@@ -335,10 +332,10 @@ public interface Feature {
     }
 
     /**
-     * Handler for initializations after the native image heap and code layout. Objects and methods
-     * have their offsets assigned. At this point, no additional objects must be added to the native
-     * image heap, i.e., modifying object fields of native image objects that are part of the native
-     * image heap is not allowed at this point.
+     * Handler for initializations after the native image heap and code layout. Objects and methods have
+     * their offsets assigned. At this point, no additional objects must be added to the native image
+     * heap, i.e., modifying object fields of native image objects that are part of the native image
+     * heap is not allowed at this point.
      *
      * @param access The supported operations that the feature can perform at this time
      */
@@ -346,8 +343,8 @@ public interface Feature {
     }
 
     /**
-     * Handler for altering the linker command after the native image has been built and before it
-     * is written.
+     * Handler for altering the linker command after the native image has been built and before it is
+     * written.
      *
      * @param access The supported operations that the feature can perform at this time.
      */
@@ -363,8 +360,8 @@ public interface Feature {
     }
 
     /**
-     * Handler for cleanup. Can be used to cleanup static data. This can avoid memory leaks if
-     * native image generation is done many times, e.g. during unit tests.
+     * Handler for cleanup. Can be used to cleanup static data. This can avoid memory leaks if native
+     * image generation is done many times, e.g. during unit tests.
      *
      * Usually, overriding this method can be avoided by putting a configuration object into the
      * {@link ImageSingletons}.

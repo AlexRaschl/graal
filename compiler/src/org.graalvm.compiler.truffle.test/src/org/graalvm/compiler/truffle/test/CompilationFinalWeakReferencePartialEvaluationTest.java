@@ -186,8 +186,8 @@ public class CompilationFinalWeakReferencePartialEvaluationTest extends PartialE
     }
 
     /**
-     * Perform a dummy compilation to ensure compilation result data of the last compilation kept
-     * alive through DebugScope thread locals are freed.
+     * Perform a dummy compilation to ensure compilation result data of the last compilation kept alive
+     * through DebugScope thread locals are freed.
      */
     private void clearDebugScopeTL() {
         compileHelper("dummy", RootNode.createConstantNode(null), new Object[]{});

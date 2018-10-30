@@ -78,9 +78,8 @@ public final class UnmanagedMemory {
     }
 
     /**
-     * Changes the size of the provided unmanaged memory to {@code size} bytes of unmanaged memory.
-     * If the new size is larger than the old size, the content of the additional memory is
-     * undefined.
+     * Changes the size of the provided unmanaged memory to {@code size} bytes of unmanaged memory. If
+     * the new size is larger than the old size, the content of the additional memory is undefined.
      *
      * If {@code size} is 0, the method is allowed but not required to return the null pointer.
      */

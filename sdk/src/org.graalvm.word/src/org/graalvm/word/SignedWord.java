@@ -83,8 +83,8 @@ public interface SignedWord extends ComparableWord {
     SignedWord signedShiftRight(UnsignedWord n);
 
     /**
-     * Returns a Signed whose value is {@code (this & val)}. (This method returns a negative Signed
-     * if and only if this and val are both negative.)
+     * Returns a Signed whose value is {@code (this & val)}. (This method returns a negative Signed if
+     * and only if this and val are both negative.)
      *
      * @param val value to be AND'ed with this Signed.
      * @return {@code this & val}
@@ -92,8 +92,8 @@ public interface SignedWord extends ComparableWord {
     SignedWord and(SignedWord val);
 
     /**
-     * Returns a Signed whose value is {@code (this | val)}. (This method returns a negative Signed
-     * if and only if either this or val is negative.)
+     * Returns a Signed whose value is {@code (this | val)}. (This method returns a negative Signed if
+     * and only if either this or val is negative.)
      *
      * @param val value to be OR'ed with this Signed.
      * @return {@code this | val}
@@ -101,8 +101,8 @@ public interface SignedWord extends ComparableWord {
     SignedWord or(SignedWord val);
 
     /**
-     * Returns a Signed whose value is {@code (this ^ val)}. (This method returns a negative Signed
-     * if and only if exactly one of this and val are negative.)
+     * Returns a Signed whose value is {@code (this ^ val)}. (This method returns a negative Signed if
+     * and only if exactly one of this and val are negative.)
      *
      * @param val value to be XOR'ed with this Signed.
      * @return {@code this ^ val}
@@ -222,8 +222,8 @@ public interface SignedWord extends ComparableWord {
     SignedWord signedShiftRight(int n);
 
     /**
-     * Returns a Signed whose value is {@code (this & val)}. (This method returns a negative Signed
-     * if and only if this and val are both negative.)
+     * Returns a Signed whose value is {@code (this & val)}. (This method returns a negative Signed if
+     * and only if this and val are both negative.)
      *
      * @param val value to be AND'ed with this Signed.
      * @return {@code this & val}
@@ -231,8 +231,8 @@ public interface SignedWord extends ComparableWord {
     SignedWord and(int val);
 
     /**
-     * Returns a Signed whose value is {@code (this | val)}. (This method returns a negative Signed
-     * if and only if either this or val is negative.)
+     * Returns a Signed whose value is {@code (this | val)}. (This method returns a negative Signed if
+     * and only if either this or val is negative.)
      *
      * @param val value to be OR'ed with this Signed.
      * @return {@code this | val}
@@ -240,8 +240,8 @@ public interface SignedWord extends ComparableWord {
     SignedWord or(int val);
 
     /**
-     * Returns a Signed whose value is {@code (this ^ val)}. (This method returns a negative Signed
-     * if and only if exactly one of this and val are negative.)
+     * Returns a Signed whose value is {@code (this ^ val)}. (This method returns a negative Signed if
+     * and only if exactly one of this and val are negative.)
      *
      * @param val value to be XOR'ed with this Signed.
      * @return {@code this ^ val}

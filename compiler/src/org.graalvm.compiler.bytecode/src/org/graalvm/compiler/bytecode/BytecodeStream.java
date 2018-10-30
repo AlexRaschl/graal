@@ -80,8 +80,8 @@ public final class BytecodeStream {
     }
 
     /**
-     * Gets the current opcode. This method will never return the {@link Bytecodes#WIDE WIDE}
-     * opcode, but will instead return the opcode that is modified by the {@code WIDE} opcode.
+     * Gets the current opcode. This method will never return the {@link Bytecodes#WIDE WIDE} opcode,
+     * but will instead return the opcode that is modified by the {@code WIDE} opcode.
      *
      * @return the current opcode; {@link Bytecodes#END} if at or beyond the end of the code
      */
@@ -94,8 +94,8 @@ public final class BytecodeStream {
     }
 
     /**
-     * Reads the index of a local variable for one of the load or store instructions. The WIDE
-     * modifier is handled internally.
+     * Reads the index of a local variable for one of the load or store instructions. The WIDE modifier
+     * is handled internally.
      *
      * @return the index of the local variable
      */
@@ -196,8 +196,8 @@ public final class BytecodeStream {
     }
 
     /**
-     * Sets the bytecode index to the specified value. If {@code bci} is beyond the end of the
-     * array, {@link #currentBC} will return {@link Bytecodes#END} and other methods may throw
+     * Sets the bytecode index to the specified value. If {@code bci} is beyond the end of the array,
+     * {@link #currentBC} will return {@link Bytecodes#END} and other methods may throw
      * {@link ArrayIndexOutOfBoundsException}.
      *
      * @param bci the new bytecode index

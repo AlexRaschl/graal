@@ -110,8 +110,8 @@ public class ReplacementsImpl implements Replacements, InlineInvokePlugin {
     protected final ConcurrentMap<ResolvedJavaMethod, StructuredGraph> graphs;
 
     /**
-     * The default {@link BytecodeProvider} to use for accessing the bytecode of a replacement if
-     * the replacement doesn't provide another {@link BytecodeProvider}.
+     * The default {@link BytecodeProvider} to use for accessing the bytecode of a replacement if the
+     * replacement doesn't provide another {@link BytecodeProvider}.
      */
     protected final BytecodeProvider defaultBytecodeProvider;
 
@@ -344,8 +344,7 @@ public class ReplacementsImpl implements Replacements, InlineInvokePlugin {
 
         /**
          * The original method which {@link #method} is substituting. Calls to {@link #method} or
-         * {@link #substitutedMethod} will be replaced with a forced inline of
-         * {@link #substitutedMethod}.
+         * {@link #substitutedMethod} will be replaced with a forced inline of {@link #substitutedMethod}.
          */
         protected final ResolvedJavaMethod substitutedMethod;
 
@@ -391,9 +390,9 @@ public class ReplacementsImpl implements Replacements, InlineInvokePlugin {
         }
 
         /**
-         * Filter nodes which have side effects and shouldn't be deleted from snippets when
-         * converting deoptimizations to guards. Currently this only allows exception constructors
-         * to be eliminated to cover the case when Java assertions are in the inlined code.
+         * Filter nodes which have side effects and shouldn't be deleted from snippets when converting
+         * deoptimizations to guards. Currently this only allows exception constructors to be eliminated to
+         * cover the case when Java assertions are in the inlined code.
          *
          * @param node
          * @return true for nodes that have side effects and are unsafe to delete

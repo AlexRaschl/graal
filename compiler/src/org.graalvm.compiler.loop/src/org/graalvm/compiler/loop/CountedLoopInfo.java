@@ -67,9 +67,9 @@ public class CountedLoopInfo {
     }
 
     /**
-     * Returns a node that computes the maximum trip count of this loop. That is the trip count of
-     * this loop assuming it is not exited by an other exit than the {@linkplain #getLimitTest()
-     * count check}.
+     * Returns a node that computes the maximum trip count of this loop. That is the trip count of this
+     * loop assuming it is not exited by an other exit than the {@linkplain #getLimitTest() count
+     * check}.
      *
      * This count is exact if {@link #isExactTripCount()} returns true.
      *
@@ -80,9 +80,9 @@ public class CountedLoopInfo {
     }
 
     /**
-     * Returns a node that computes the maximum trip count of this loop. That is the trip count of
-     * this loop assuming it is not exited by an other exit than the {@linkplain #getLimitTest()
-     * count check}.
+     * Returns a node that computes the maximum trip count of this loop. That is the trip count of this
+     * loop assuming it is not exited by an other exit than the {@linkplain #getLimitTest() count
+     * check}.
      *
      * This count is exact if {@link #isExactTripCount()} returns true.
      *

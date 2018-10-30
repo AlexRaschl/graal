@@ -43,8 +43,8 @@ import org.graalvm.polyglot.Value;
 public interface LanguageProvider {
 
     /**
-     * Returns an identification of a provider. The common pattern is to use the identification of
-     * the tested language.
+     * Returns an identification of a provider. The common pattern is to use the identification of the
+     * tested language.
      *
      * @return the language identification
      * @since 0.30
@@ -69,10 +69,9 @@ public interface LanguageProvider {
 
     /**
      * Creates a collection of functions creating language data types. For each language data type
-     * create a function returning a value of given type and assign a correct {@link TypeDescriptor}
-     * to it. The {@link TypeDescriptor} can be one of the predefined {@link TypeDescriptor}s, an
-     * array with component type, an executable with required parameter types or an intersection
-     * type.
+     * create a function returning a value of given type and assign a correct {@link TypeDescriptor} to
+     * it. The {@link TypeDescriptor} can be one of the predefined {@link TypeDescriptor}s, an array
+     * with component type, an executable with required parameter types or an intersection type.
      *
      * <p>
      * The JavaScript sample implementation creating a boolean type:
@@ -88,11 +87,11 @@ public interface LanguageProvider {
     Collection<? extends Snippet> createValueConstructors(Context context);
 
     /**
-     * Creates a collection of functions representing language expressions to test. For each
-     * language operator create a function performing given operator and assign a correct
-     * {@link TypeDescriptor}s to its parameters and return type. The parameter types and return
-     * type can be one of the predefined {@link TypeDescriptor}s, an array with component type, an
-     * executable with required parameter types or an union type.
+     * Creates a collection of functions representing language expressions to test. For each language
+     * operator create a function performing given operator and assign a correct {@link TypeDescriptor}s
+     * to its parameters and return type. The parameter types and return type can be one of the
+     * predefined {@link TypeDescriptor}s, an array with component type, an executable with required
+     * parameter types or an union type.
      *
      * <p>
      * The JavaScript sample implementation creating a plus operator:
@@ -108,11 +107,11 @@ public interface LanguageProvider {
     Collection<? extends Snippet> createExpressions(Context context);
 
     /**
-     * Creates a collection of functions representing language statements to test. For each control
-     * flow statement create a function performing given statement and assign a correct
-     * {@link TypeDescriptor}s to its parameters and return type. The parameter types and return
-     * type can be one of the predefined {@link TypeDescriptor}s, an array with component type, an
-     * executable with required parameter types or an union type.
+     * Creates a collection of functions representing language statements to test. For each control flow
+     * statement create a function performing given statement and assign a correct
+     * {@link TypeDescriptor}s to its parameters and return type. The parameter types and return type
+     * can be one of the predefined {@link TypeDescriptor}s, an array with component type, an executable
+     * with required parameter types or an union type.
      *
      * <p>
      * The JavaScript sample implementation creating the {@code if} statement:
@@ -129,8 +128,8 @@ public interface LanguageProvider {
 
     /**
      * Creates a collection of simple scripts used for instrumentation testing. Each script is
-     * represented as a function performing the script. The function must have no formal parameters
-     * but may return a result which can be asserted by {@link ResultVerifier}.
+     * represented as a function performing the script. The function must have no formal parameters but
+     * may return a result which can be asserted by {@link ResultVerifier}.
      * <p>
      * The JavaScript sample implementation:
      * {@codesnippet LanguageProviderSnippets#JsSnippets#createScripts}
@@ -157,8 +156,8 @@ public interface LanguageProvider {
      * Creates a collection of inline code snippets.
      * <p>
      * This method is optional, it should be implemented if
-     * <code>TruffleLanguage.parse(InlineParsingRequest)</code> is implemented. It returns an empty
-     * list by default.
+     * <code>TruffleLanguage.parse(InlineParsingRequest)</code> is implemented. It returns an empty list
+     * by default.
      * <p>
      * The JavaScript sample implementation creating inline code snippets:
      * {@codesnippet LanguageProviderSnippets#JsSnippets#createInlineScripts}

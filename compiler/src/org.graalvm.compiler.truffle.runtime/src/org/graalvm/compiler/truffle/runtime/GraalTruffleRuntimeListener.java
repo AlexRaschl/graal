@@ -54,8 +54,8 @@ public interface GraalTruffleRuntimeListener {
      * Notifies this object when the target of a Truffle call node is
      * {@linkplain DirectCallNode#cloneCallTarget() cloned}.
      *
-     * @param callNode the call node whose {@linkplain OptimizedDirectCallNode#getCallTarget()
-     *            target} has just been cloned
+     * @param callNode the call node whose {@linkplain OptimizedDirectCallNode#getCallTarget() target}
+     *            has just been cloned
      */
     default void onCompilationSplit(OptimizedDirectCallNode callNode) {
     }
@@ -89,8 +89,8 @@ public interface GraalTruffleRuntimeListener {
     }
 
     /**
-     * Notifies this object when compilation of {@code target} has completed partial evaluation and
-     * is about to perform compilation of the graph produced by partial evaluation.
+     * Notifies this object when compilation of {@code target} has completed partial evaluation and is
+     * about to perform compilation of the graph produced by partial evaluation.
      *
      * @param target the call target being compiled
      * @param inliningDecision the inlining plan used during partial evaluation
@@ -100,8 +100,8 @@ public interface GraalTruffleRuntimeListener {
     }
 
     /**
-     * Notifies this object when Graal compilation of a call target completes. Graal compilation
-     * occurs between {@link #onCompilationTruffleTierFinished} and code installation.
+     * Notifies this object when Graal compilation of a call target completes. Graal compilation occurs
+     * between {@link #onCompilationTruffleTierFinished} and code installation.
      *
      * @param target the call target that was compiled
      * @param graph the graph representing {@code target}
@@ -125,12 +125,11 @@ public interface GraalTruffleRuntimeListener {
      *
      * @param target the call target whose compilation failed
      * @param reason a description of the failure
-     * @param bailout specifies whether the failure was a bailout or an error in the compiler. A
-     *            bailout means the compiler aborted the compilation based on some of property of
-     *            {@code target} (e.g., too big). A non-bailout means an unexpected error in the
-     *            compiler itself.
-     * @param permanentBailout specifies if a bailout is due to a condition that probably won't
-     *            change if the {@code target} is compiled again. This value is meaningless if
+     * @param bailout specifies whether the failure was a bailout or an error in the compiler. A bailout
+     *            means the compiler aborted the compilation based on some of property of {@code target}
+     *            (e.g., too big). A non-bailout means an unexpected error in the compiler itself.
+     * @param permanentBailout specifies if a bailout is due to a condition that probably won't change
+     *            if the {@code target} is compiled again. This value is meaningless if
      *            {@code bailout == false}.
      */
     default void onCompilationFailed(OptimizedCallTarget target, String reason, boolean bailout, boolean permanentBailout) {
@@ -140,8 +139,8 @@ public interface GraalTruffleRuntimeListener {
      * Notifies this object when {@code target} is invalidated.
      *
      * @param target the call target whose compiled code was just invalidated
-     * @param source the source object that caused the compilation to be invalidated. For example
-     *            the source {@link Node} object. May be {@code null}.
+     * @param source the source object that caused the compilation to be invalidated. For example the
+     *            source {@link Node} object. May be {@code null}.
      * @param reason a textual description of the reason why the compilation was invalidated. May be
      *            {@code null}.
      */
@@ -149,8 +148,8 @@ public interface GraalTruffleRuntimeListener {
     }
 
     /**
-     * Notifies this object when {@code target} has just deoptimized and is now executing in the
-     * Truffle interpreter instead of executing compiled code.
+     * Notifies this object when {@code target} has just deoptimized and is now executing in the Truffle
+     * interpreter instead of executing compiled code.
      *
      * @param target the call target whose compiled code was just deoptimized
      * @param frame

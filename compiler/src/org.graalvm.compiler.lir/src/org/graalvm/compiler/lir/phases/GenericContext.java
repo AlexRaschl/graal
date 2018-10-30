@@ -22,15 +22,16 @@
  */
 package org.graalvm.compiler.lir.phases;
 
-import java.util.ArrayList;
 import java.util.ListIterator;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * Allows storing of arbitrary data.
  */
 public class GenericContext {
 
-    private ArrayList<Object> context;
+    private SpecifiedArrayList<Object> context;
 
     public GenericContext() {
         context = null;
@@ -38,7 +39,7 @@ public class GenericContext {
 
     public <T> void contextAdd(T obj) {
         if (context == null) {
-            context = new ArrayList<>();
+            context = SpecifiedArrayList.createNew();
         }
         context.add(obj);
     }

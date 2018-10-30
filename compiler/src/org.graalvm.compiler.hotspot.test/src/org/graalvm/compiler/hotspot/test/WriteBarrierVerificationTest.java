@@ -676,8 +676,7 @@ public class WriteBarrierVerificationTest extends HotSpotGraalCompilerTest {
                         LocationIdentity obj = write.getLocationIdentity();
                         if (obj.equals(barrierIdentity)) {
                             /*
-                             * A "barrierIndex" variable was found and is checked against the input
-                             * barrier array.
+                             * A "barrierIndex" variable was found and is checked against the input barrier array.
                              */
                             if (eliminateBarrier(write.value().asJavaConstant().asInt(), removedBarrierIndices)) {
                                 return true;
@@ -723,8 +722,7 @@ public class WriteBarrierVerificationTest extends HotSpotGraalCompilerTest {
                 new WriteBarrierVerificationPhase(config).apply(graph);
             } catch (AssertionError error) {
                 /*
-                 * Catch assertion, test for expected one and re-throw in order to validate unit
-                 * test.
+                 * Catch assertion, test for expected one and re-throw in order to validate unit test.
                  */
                 Assert.assertTrue(error.getMessage().contains("Write barrier must be present"));
                 throw error;

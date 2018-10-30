@@ -26,6 +26,7 @@ package com.oracle.truffle.api.vm;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +42,6 @@ import java.util.TreeSet;
 import com.oracle.truffle.api.TruffleLanguage;
 import com.oracle.truffle.api.TruffleOptions;
 import com.oracle.truffle.api.vm.PolyglotEngine.LegacyEngineImpl;
-import java.io.PrintStream;
 
 /**
  * Ahead-of-time initialization. If the JVM is started with {@link TruffleOptions#AOT}, it populates

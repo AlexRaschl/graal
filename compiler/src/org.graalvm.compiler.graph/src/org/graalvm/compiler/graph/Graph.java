@@ -28,7 +28,6 @@ import static org.graalvm.compiler.graph.Graph.SourcePositionTracking.UpdateOnly
 import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_IGNORED;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_IGNORED;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Consumer;
@@ -36,6 +35,7 @@ import java.util.function.Consumer;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.UnmodifiableEconomicMap;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.GraalOptions;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugCloseable;
@@ -110,8 +110,8 @@ public class Graph {
 
     // these two arrays contain one entry for each NodeClass, indexed by NodeClass.iterableId.
     // they contain the first and last pointer to a linked list of all nodes with this type.
-    private final ArrayList<Node> iterableNodesFirst;
-    private final ArrayList<Node> iterableNodesLast;
+    private final SpecifiedArrayList<Node> iterableNodesFirst;
+    private final SpecifiedArrayList<Node> iterableNodesLast;
 
     private int nodesDeletedSinceLastCompression;
     private int nodesDeletedBeforeLastCompression;
@@ -188,22 +188,22 @@ public class Graph {
 
     /**
      * Opens a scope in which the source information from {@code node} is copied into nodes created
-     * within the scope. If {@code node} has no source information information, no scope is opened
-     * and {@code null} is returned.
+     * within the scope. If {@code node} has no source information information, no scope is opened and
+     * {@code null} is returned.
      *
-     * @return a {@link DebugCloseable} for managing the opened scope or {@code null} if no scope
-     *         was opened
+     * @return a {@link DebugCloseable} for managing the opened scope or {@code null} if no scope was
+     *         opened
      */
     public DebugCloseable withNodeSourcePosition(Node node) {
         return withNodeSourcePosition(node.sourcePosition);
     }
 
     /**
-     * Opens a scope in which {@code sourcePosition} is copied into nodes created within the scope.
-     * If {@code sourcePosition == null}, no scope is opened and {@code null} is returned.
+     * Opens a scope in which {@code sourcePosition} is copied into nodes created within the scope. If
+     * {@code sourcePosition == null}, no scope is opened and {@code null} is returned.
      *
-     * @return a {@link DebugCloseable} for managing the opened scope or {@code null} if no scope
-     *         was opened
+     * @return a {@link DebugCloseable} for managing the opened scope or {@code null} if no scope was
+     *         opened
      */
     public DebugCloseable withNodeSourcePosition(NodeSourcePosition sourcePosition) {
         return trackNodeSourcePosition() && sourcePosition != null ? new NodeSourcePositionScope(sourcePosition) : null;
@@ -219,9 +219,9 @@ public class Graph {
     }
 
     /**
-     * Determines if this graph might contain nodes with source information. This is mainly useful
-     * to short circuit logic for updating those positions after inlining since that requires
-     * visiting every node in the graph.
+     * Determines if this graph might contain nodes with source information. This is mainly useful to
+     * short circuit logic for updating those positions after inlining since that requires visiting
+     * every node in the graph.
      */
     public boolean updateNodeSourcePosition() {
         return trackNodeSourcePosition == Track || trackNodeSourcePosition == UpdateOnly;
@@ -272,8 +272,8 @@ public class Graph {
      */
     public Graph(String name, OptionValues options, DebugContext debug) {
         nodes = new Node[INITIAL_NODES_SIZE];
-        iterableNodesFirst = new ArrayList<>(NodeClass.allocatedNodeIterabledIds());
-        iterableNodesLast = new ArrayList<>(NodeClass.allocatedNodeIterabledIds());
+        iterableNodesFirst = SpecifiedArrayList.createNew(NodeClass.allocatedNodeIterabledIds());
+        iterableNodesLast = SpecifiedArrayList.createNew(NodeClass.allocatedNodeIterabledIds());
         this.name = name;
         this.options = options;
         this.trackNodeSourcePosition = trackNodeSourcePositionDefault(options, debug);
@@ -402,11 +402,10 @@ public class Graph {
      * Resets the {@link DebugContext} for this graph to a new value. This is useful when a graph is
      * "handed over" from its creating thread to another thread.
      *
-     * This must only be done when the current thread is no longer using the graph. This is in
-     * general impossible to test due to races and since metrics can be updated at any time. As
-     * such, this method only performs a weak sanity check that at least the current debug context
-     * does not have a nested scope open (the top level scope will always be open if scopes are
-     * enabled).
+     * This must only be done when the current thread is no longer using the graph. This is in general
+     * impossible to test due to races and since metrics can be updated at any time. As such, this
+     * method only performs a weak sanity check that at least the current debug context does not have a
+     * nested scope open (the top level scope will always be open if scopes are enabled).
      */
     public void resetDebug(DebugContext newDebug) {
         assert newDebug == debug || !debug.inNestedScope() : String.format("Cannot reset the debug context for %s while it has the nested scope \"%s\" open", this, debug.getCurrentScopeName());
@@ -419,8 +418,8 @@ public class Graph {
     }
 
     /**
-     * Gets the number of live nodes in this graph. That is the number of nodes which have been
-     * added to the graph minus the number of deleted nodes.
+     * Gets the number of live nodes in this graph. That is the number of nodes which have been added to
+     * the graph minus the number of deleted nodes.
      *
      * @return the number of live nodes in this graph
      */
@@ -560,8 +559,8 @@ public class Graph {
         /**
          * A method called when a change event occurs.
          *
-         * This method dispatches the event to user-defined triggers. The methods that change the
-         * graph (typically in Graph and Node) must call this method to dispatch the event.
+         * This method dispatches the event to user-defined triggers. The methods that change the graph
+         * (typically in Graph and Node) must call this method to dispatch the event.
          *
          * @param e an event
          * @param node the node related to {@code e}
@@ -692,8 +691,8 @@ public class Graph {
     }
 
     /**
-     * Registers a given {@link NodeEventListener} with this graph. This should be used in
-     * conjunction with try-with-resources statement as follows:
+     * Registers a given {@link NodeEventListener} with this graph. This should be used in conjunction
+     * with try-with-resources statement as follows:
      *
      * <pre>
      * try (NodeEventScope nes = graph.trackNodeEvents(listener)) {
@@ -706,8 +705,8 @@ public class Graph {
     }
 
     /**
-     * Looks for a node <i>similar</i> to {@code node} and returns it if found. Otherwise
-     * {@code node} is added to this graph and returned.
+     * Looks for a node <i>similar</i> to {@code node} and returns it if found. Otherwise {@code node}
+     * is added to this graph and returned.
      *
      * @return a node similar to {@code node} if one exists, otherwise {@code node}
      */
@@ -774,8 +773,8 @@ public class Graph {
     }
 
     /**
-     * Returns a possible duplicate for the given node in the graph or {@code null} if no such
-     * duplicate exists.
+     * Returns a possible duplicate for the given node in the graph or {@code null} if no such duplicate
+     * exists.
      */
     @SuppressWarnings("unchecked")
     public <T extends Node> T findDuplicate(T node) {
@@ -791,11 +790,11 @@ public class Graph {
             }
         } else {
             /*
-             * Non-leaf node: look for another usage of the node's inputs that has the same data,
-             * inputs and successors as the node. To reduce the cost of this computation, only the
-             * input with lowest usage count is considered. If this node is the only user of any
-             * input then the search can terminate early. The usage count is only incremented once
-             * the Node is in the Graph, so account for that in the test.
+             * Non-leaf node: look for another usage of the node's inputs that has the same data, inputs and
+             * successors as the node. To reduce the cost of this computation, only the input with lowest usage
+             * count is considered. If this node is the only user of any input then the search can terminate
+             * early. The usage count is only incremented once the Node is in the Graph, so account for that in
+             * the test.
              */
             final int earlyExitUsageCount = node.graph() != null ? 1 : 0;
             int minCount = Integer.MAX_VALUE;
@@ -859,16 +858,16 @@ public class Graph {
         }
 
         /**
-         * Gets the {@linkplain Graph#getNodeCount() live node count} of the associated graph when
-         * this object was created.
+         * Gets the {@linkplain Graph#getNodeCount() live node count} of the associated graph when this
+         * object was created.
          */
         int getValue() {
             return value;
         }
 
         /**
-         * Determines if this mark still represents the {@linkplain Graph#getNodeCount() live node
-         * count} of the graph.
+         * Determines if this mark still represents the {@linkplain Graph#getNodeCount() live node count} of
+         * the graph.
          */
         public boolean isCurrent() {
             return value == graph.nodeIdCount();
@@ -932,9 +931,9 @@ public class Graph {
     private static final CounterKey GraphCompressions = DebugContext.counter("GraphCompressions");
 
     /**
-     * If the {@linkplain Options#GraphCompressionThreshold compression threshold} is met, the list
-     * of nodes is compressed such that all non-null entries precede all null entries while
-     * preserving the ordering between the nodes within the list.
+     * If the {@linkplain Options#GraphCompressionThreshold compression threshold} is met, the list of
+     * nodes is compressed such that all non-null entries precede all null entries while preserving the
+     * ordering between the nodes within the list.
      */
     public boolean maybeCompress() {
         if (debug.isDumpEnabledForMethod() || debug.isLogEnabledForMethod()) {
@@ -1021,8 +1020,8 @@ public class Graph {
             start = start.typeCacheNext;
         }
         /*
-         * Multiple threads iterating nodes can update this cache simultaneously. This is a benign
-         * race, since all threads update it to the same value.
+         * Multiple threads iterating nodes can update this cache simultaneously. This is a benign race,
+         * since all threads update it to the same value.
          */
         iterableNodesFirst.set(iterableId, start);
         if (start == null) {
@@ -1123,9 +1122,8 @@ public class Graph {
     }
 
     /**
-     * Rebuilds the lists used to support {@link #getNodes(NodeClass)}. This is useful for
-     * serialization where the underlying {@linkplain NodeClass#iterableId() iterable ids} may have
-     * changed.
+     * Rebuilds the lists used to support {@link #getNodes(NodeClass)}. This is useful for serialization
+     * where the underlying {@linkplain NodeClass#iterableId() iterable ids} may have changed.
      */
     private void recomputeIterableNodeLists() {
         iterableNodesFirst.clear();
@@ -1204,10 +1202,10 @@ public class Graph {
 
     /**
      * Adds duplicates of the nodes in {@code newNodes} to this graph. This will recreate any edges
-     * between the duplicate nodes. The {@code replacement} map can be used to replace a node from
-     * the source graph by a given node (which must already be in this graph). Edges between
-     * duplicate and replacement nodes will also be recreated so care should be taken regarding the
-     * matching of node types in the replacement map.
+     * between the duplicate nodes. The {@code replacement} map can be used to replace a node from the
+     * source graph by a given node (which must already be in this graph). Edges between duplicate and
+     * replacement nodes will also be recreated so care should be taken regarding the matching of node
+     * types in the replacement map.
      *
      * @param newNodes the nodes to be duplicated
      * @param replacementsMap the replacement map (can be null if no replacement is to be performed)

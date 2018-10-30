@@ -115,8 +115,8 @@ final class EngineTruffleObject implements TruffleObject, ForeignAccess.Factory 
     }
 
     /*
-     * This wrapper is responsible for unwrapping the receiver, potentially executing on the
-     * executor and wrapping again the return value.
+     * This wrapper is responsible for unwrapping the receiver, potentially executing on the executor
+     * and wrapping again the return value.
      */
     static class WrappingRoot extends RootNode {
 

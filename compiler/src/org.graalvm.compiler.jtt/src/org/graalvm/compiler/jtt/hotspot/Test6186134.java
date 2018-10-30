@@ -24,9 +24,8 @@ package org.graalvm.compiler.jtt.hotspot;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
-
 import org.graalvm.compiler.jtt.JTTTest;
+import org.junit.Test;
 
 // @formatter:off
 public class Test6186134 extends JTTTest {

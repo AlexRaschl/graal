@@ -97,8 +97,8 @@ public class BC_ifeq extends JTTTest {
     }
 
     /**
-     * Tests if the if does work properly on char stamp (boils down to short, just to cover all the
-     * java types).
+     * Tests if the if does work properly on char stamp (boils down to short, just to cover all the java
+     * types).
      */
     public static int testc(int b) {
         char x = (char) b;

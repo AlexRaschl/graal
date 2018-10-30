@@ -81,8 +81,8 @@ public final class MonitorDeoptTest extends GraalCompilerTest {
         }
 
         /**
-         * Change the current state to {@link State#ALLOWING_SAFEPOINT} and do a short wait to allow
-         * a safepoint to happen. Then restore the state to the original value.
+         * Change the current state to {@link State#ALLOWING_SAFEPOINT} and do a short wait to allow a
+         * safepoint to happen. Then restore the state to the original value.
          *
          * @param expectedState
          * @throws InterruptedException
@@ -127,9 +127,8 @@ public final class MonitorDeoptTest extends GraalCompilerTest {
             }
             if (System.currentTimeMillis() - safepointCheckTime > 200) {
                 /*
-                 * It's possible for a safepoint to be triggered by external code before
-                 * invalidation is ready. Allow a safepoint to occur if required but don't allow
-                 * invalidation to proceed.
+                 * It's possible for a safepoint to be triggered by external code before invalidation is ready.
+                 * Allow a safepoint to occur if required but don't allow invalidation to proceed.
                  */
                 monitor.safepoint(State.RUNNING_GRAAL);
                 safepointCheckTime = System.currentTimeMillis();
@@ -173,8 +172,8 @@ public final class MonitorDeoptTest extends GraalCompilerTest {
 
     /**
      * Remove the safepoint from the first loop in the test method, so only the safepoints on
-     * MonitorEnter and MonitorExit remain in the loop. That way, we can make sure it deopts inside
-     * the MonitorEnter by invalidating the code while holding the lock.
+     * MonitorEnter and MonitorExit remain in the loop. That way, we can make sure it deopts inside the
+     * MonitorEnter by invalidating the code while holding the lock.
      */
     private static void removeLoopSafepoint(StructuredGraph graph) {
         LoopBeginNode loopBegin = findFirstLoop(graph);

@@ -281,8 +281,7 @@ public abstract class LoopFragment {
             mark = loopNodes.isMarked(phi.merge());
             if (mark) {
                 /*
-                 * This Phi is a loop node but the inputs might not be so they must be processed by
-                 * the caller.
+                 * This Phi is a loop node but the inputs might not be so they must be processed by the caller.
                  */
                 loopNodes.mark(n);
             } else {
@@ -316,8 +315,7 @@ public abstract class LoopFragment {
                 Node current = currentEntry.n;
                 if (!isLoopNode && current instanceof GuardNode) {
                     /*
-                     * (gd) this is only OK if we are not going to make loop transforms based on
-                     * this
+                     * (gd) this is only OK if we are not going to make loop transforms based on this
                      */
                     assert !((GuardNode) current).graph().hasValueProxies();
                     isLoopNode = true;
@@ -399,8 +397,8 @@ public abstract class LoopFragment {
     }
 
     /**
-     * Merges the early exits (i.e. loop exits) that were duplicated as part of this fragment, with
-     * the original fragment's exits.
+     * Merges the early exits (i.e. loop exits) that were duplicated as part of this fragment, with the
+     * original fragment's exits.
      */
     protected void mergeEarlyExits() {
         assert isDuplicate();
@@ -431,10 +429,9 @@ public abstract class LoopFragment {
                 loopEarlyExit.setStateAfter(exitState);
                 merge.setStateAfter(originalExitState);
                 /*
-                 * Using the old exit's state as the merge's state is necessary because some of the
-                 * VirtualState nodes contained in the old exit's state may be shared by other
-                 * dominated VirtualStates. Those dominated virtual states need to see the
-                 * proxy->phi update that are applied below.
+                 * Using the old exit's state as the merge's state is necessary because some of the VirtualState
+                 * nodes contained in the old exit's state may be shared by other dominated VirtualStates. Those
+                 * dominated virtual states need to see the proxy->phi update that are applied below.
                  *
                  * We now update the original fragment's nodes accordingly:
                  */

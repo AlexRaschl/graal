@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.util.Util;
 import org.graalvm.compiler.debug.Assertions;
@@ -138,8 +139,8 @@ final class TraceInterval extends IntervalHint {
         Unhandled,
 
         /**
-         * An interval that {@linkplain TraceInterval#covers covers} {@code position} and has an
-         * assigned register.
+         * An interval that {@linkplain TraceInterval#covers covers} {@code position} and has an assigned
+         * register.
          */
         Active,
 
@@ -165,9 +166,9 @@ final class TraceInterval extends IntervalHint {
         NoDefinitionFound,
 
         /**
-         * One definition has already been found. Two consecutive definitions are treated as one
-         * (e.g. a consecutive move and add because of two-operand LIR form). The position of this
-         * definition is given by {@link TraceInterval#spillDefinitionPos()}.
+         * One definition has already been found. Two consecutive definitions are treated as one (e.g. a
+         * consecutive move and add because of two-operand LIR form). The position of this definition is
+         * given by {@link TraceInterval#spillDefinitionPos()}.
          */
         NoSpillStore,
 
@@ -182,8 +183,8 @@ final class TraceInterval extends IntervalHint {
         StartInMemory,
 
         /**
-         * The interval has more than one definition (e.g. resulting from phi moves), so stores to
-         * memory are not optimized.
+         * The interval has more than one definition (e.g. resulting from phi moves), so stores to memory
+         * are not optimized.
          */
         NoOptimization;
 
@@ -191,8 +192,8 @@ final class TraceInterval extends IntervalHint {
     }
 
     /**
-     * The {@linkplain RegisterValue register} or {@linkplain Variable variable} for this interval
-     * prior to register allocation.
+     * The {@linkplain RegisterValue register} or {@linkplain Variable variable} for this interval prior
+     * to register allocation.
      */
     public final Variable operand;
 
@@ -203,8 +204,7 @@ final class TraceInterval extends IntervalHint {
 
     /**
      * The {@linkplain RegisterValue register} or {@linkplain StackSlot spill slot} assigned to this
-     * interval. In case of a spilled interval which is re-materialized this is
-     * {@link Value#ILLEGAL}.
+     * interval. In case of a spilled interval which is re-materialized this is {@link Value#ILLEGAL}.
      */
     private AllocatableValue location;
 
@@ -244,7 +244,7 @@ final class TraceInterval extends IntervalHint {
      * List of all intervals that are split off from this interval. This is only used if this is a
      * {@linkplain #isSplitParent() split parent}.
      */
-    private ArrayList<TraceInterval> splitChildren = null;
+    private SpecifiedArrayList<TraceInterval> splitChildren = null;
 
     /**
      * Current split child that has been active or inactive last (always stored in split parents).
@@ -273,8 +273,8 @@ final class TraceInterval extends IntervalHint {
     private IntervalHint locationHint;
 
     /**
-     * The value with which a spilled child interval can be re-materialized. Currently this must be
-     * a Constant.
+     * The value with which a spilled child interval can be re-materialized. Currently this must be a
+     * Constant.
      */
     private JavaConstant materializedValue;
 
@@ -440,8 +440,7 @@ final class TraceInterval extends IntervalHint {
     }
 
     /**
-     * Returns true if this interval has a shadow copy on the stack that is correct after
-     * {@code opId}.
+     * Returns true if this interval has a shadow copy on the stack that is correct after {@code opId}.
      */
     public boolean inMemoryAt(int opId) {
         SpillState spillSt = spillState();
@@ -486,8 +485,8 @@ final class TraceInterval extends IntervalHint {
     }
 
     /**
-     * Returns true if this interval can be re-materialized when spilled. This means that no
-     * spill-moves are needed. Instead of restore-moves the {@link #materializedValue} is restored.
+     * Returns true if this interval can be re-materialized when spilled. This means that no spill-moves
+     * are needed. Instead of restore-moves the {@link #materializedValue} is restored.
      */
     public boolean canMaterialize() {
         return getMaterializedValue() != null;
@@ -561,8 +560,8 @@ final class TraceInterval extends IntervalHint {
 
     TraceInterval getSplitChildAtOpIdOrNull(int opId, LIRInstruction.OperandMode mode) {
         /*
-         * TODO(je) could be replace by a simple range check by caching `to` in the split parent
-         * when creating split children.
+         * TODO(je) could be replace by a simple range check by caching `to` in the split parent when
+         * creating split children.
          */
         return getSplitChildAtOpIdIntern(opId, mode, true);
     }
@@ -626,8 +625,7 @@ final class TraceInterval extends IntervalHint {
             for (TraceInterval interval : splitChildren) {
                 if (interval != result && interval.from() <= opId && opId < interval.to() + toOffset) {
                     /*
-                     * Should not happen: Try another compilation as it is very unlikely to happen
-                     * again.
+                     * Should not happen: Try another compilation as it is very unlikely to happen again.
                      */
                     throw new GraalError("two valid result intervals found for opId %d: %d and %d\n%s\n", opId, result.operandNumber, interval.operandNumber,
                                     result.logString(), interval.logString());
@@ -661,9 +659,9 @@ final class TraceInterval extends IntervalHint {
 
     private RegisterPriority adaptPriority(RegisterPriority priority) {
         /*
-         * In case of re-materialized values we require that use-operands are registers, because we
-         * don't have the value in a stack location. (Note that ShouldHaveRegister means that the
-         * operand can also be a StackSlot).
+         * In case of re-materialized values we require that use-operands are registers, because we don't
+         * have the value in a stack location. (Note that ShouldHaveRegister means that the operand can also
+         * be a StackSlot).
          */
         if (priority == RegisterPriority.ShouldHaveRegister && canMaterialize()) {
             return RegisterPriority.MustHaveRegister;
@@ -767,7 +765,7 @@ final class TraceInterval extends IntervalHint {
             assert isSplitParent() : "list must be initialized at first split";
 
             // Create new non-shared list
-            parent.splitChildren = new ArrayList<>(4);
+            parent.splitChildren = SpecifiedArrayList.createNew(4);
             parent.splitChildren.add(this);
         }
         parent.splitChildren.add(result);
@@ -780,10 +778,10 @@ final class TraceInterval extends IntervalHint {
      * interval of this interval's {@linkplain #splitParent() parent} interval.
      * <p>
      * When an interval is split, a bi-directional link is established between the original
-     * <i>parent</i> interval and the <i>children</i> intervals that are split off this interval.
-     * When a split child is split again, the new created interval is a direct child of the original
-     * parent. That is, there is no tree of split children stored, just a flat list. All split
-     * children are spilled to the same {@linkplain #spillSlot spill slot}.
+     * <i>parent</i> interval and the <i>children</i> intervals that are split off this interval. When a
+     * split child is split again, the new created interval is a direct child of the original parent.
+     * That is, there is no tree of split children stored, just a flat list. All split children are
+     * spilled to the same {@linkplain #spillSlot spill slot}.
      *
      * @param splitPos the position at which to split this interval
      * @param allocator the register allocator context

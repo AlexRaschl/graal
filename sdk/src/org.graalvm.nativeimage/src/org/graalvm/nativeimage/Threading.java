@@ -34,11 +34,11 @@ import org.graalvm.nativeimage.impl.ThreadingSupport;
 public final class Threading {
     /**
      * Registers a {@link RecurringCallback callback handler} that is called by the current thread
-     * approximately at the provided interval. Only one callback can be active per thread. Each
-     * thread can have its own callback with a different interval (or none at all). No guarantees
-     * are made about the actual interval. For example, when the thread is waiting for a lock or
-     * executing native code, no callback can be done. Exceptions that are thrown during the
-     * execution of the callback are caught and ignored, unless they are thrown via a call to
+     * approximately at the provided interval. Only one callback can be active per thread. Each thread
+     * can have its own callback with a different interval (or none at all). No guarantees are made
+     * about the actual interval. For example, when the thread is waiting for a lock or executing native
+     * code, no callback can be done. Exceptions that are thrown during the execution of the callback
+     * are caught and ignored, unless they are thrown via a call to
      * {@link RecurringCallbackAccess#throwException(Throwable)}. Specifying {@code null} for
      * {@code callback} clears the current thread's callback (in which case, the values of
      * {@code interval} and {@code unit} are ignored).
@@ -57,8 +57,8 @@ public final class Threading {
      */
     public interface RecurringCallbackAccess {
         /**
-         * Throws an exception from the recurring callback to the code that is regularly executing
-         * in the thread.
+         * Throws an exception from the recurring callback to the code that is regularly executing in the
+         * thread.
          */
         void throwException(Throwable t);
     }

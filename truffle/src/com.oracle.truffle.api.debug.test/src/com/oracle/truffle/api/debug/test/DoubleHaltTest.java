@@ -119,9 +119,8 @@ public class DoubleHaltTest extends AbstractDebugTest {
                     switch (modI) {
                         case 0:
                             /*
-                             * Note Chumer: breakpoints should always hit independent if we are
-                             * currently stepping out or not. thats why step out does not step out
-                             * here.
+                             * Note Chumer: breakpoints should always hit independent if we are currently stepping out or not.
+                             * thats why step out does not step out here.
                              */
                             e.prepareStepOut(1);
                             break;

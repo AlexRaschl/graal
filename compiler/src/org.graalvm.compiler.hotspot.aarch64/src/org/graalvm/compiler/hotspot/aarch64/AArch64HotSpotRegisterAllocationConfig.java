@@ -87,6 +87,7 @@ import static jdk.vm.ci.aarch64.AArch64.v9;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 
 import jdk.vm.ci.code.Register;
@@ -120,7 +121,7 @@ public class AArch64HotSpotRegisterAllocationConfig extends RegisterAllocationCo
             regMap.set(reg.number);
         }
 
-        ArrayList<Register> allocatableRegisters = new ArrayList<>(registers.size());
+        SpecifiedArrayList<Register> allocatableRegisters = SpecifiedArrayList.createNew(registers.size());
         for (Register reg : registerAllocationOrder) {
             if (regMap.get(reg.number)) {
                 allocatableRegisters.add(reg);

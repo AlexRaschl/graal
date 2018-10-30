@@ -142,24 +142,23 @@ public final class AMD64MathIntrinsicBinaryOp extends AMD64LIRInstruction {
      *
      * Reduced argument, scaled by LH: r=B*mx-LH (computed accurately in high and low parts)
      *
-     * log2(x) result: k - log2(B) + p(r) p(r) is a degree 8 polynomial -log2(B) read from data
-     * table (high, low parts) log2(x) is formed from high and low parts For |x| in [1-1/32,
-     * 1+1/16), a slower but more accurate computation based om the same table design is performed.
+     * log2(x) result: k - log2(B) + p(r) p(r) is a degree 8 polynomial -log2(B) read from data table
+     * (high, low parts) log2(x) is formed from high and low parts For |x| in [1-1/32, 1+1/16), a slower
+     * but more accurate computation based om the same table design is performed.
      *
      * Main path is taken if | floor(log2(|log2(|x|)|) + floor(log2|y|) | < 8, to filter out all
      * potential OF/UF cases. exp2(y*log2(x)) is computed using an 8-bit index table and a degree 5
      * polynomial
      *
-     * Special cases: pow(-0,y) = -INF and raises the divide-by-zero exception for y an odd integer
-     * < 0. pow(-0,y) = +INF and raises the divide-by-zero exception for y < 0 and not an odd
-     * integer. pow(-0,y) = -0 for y an odd integer > 0. pow(-0,y) = +0 for y > 0 and not an odd
-     * integer. pow(-1,-INF) = NaN. pow(+1,y) = NaN for any y, even a NaN. pow(x,-0) = 1 for any x,
-     * even a NaN. pow(x,y) = a NaN and raises the invalid exception for finite x < 0 and finite
-     * non-integer y. pow(x,-INF) = +INF for |x|<1. pow(x,-INF) = +0 for |x|>1. pow(x,+INF) = +0 for
-     * |x|<1. pow(x,+INF) = +INF for |x|>1. pow(-INF,y) = -0 for y an odd integer < 0. pow(-INF,y) =
-     * +0 for y < 0 and not an odd integer. pow(-INF,y) = -INF for y an odd integer > 0. pow(-INF,y)
-     * = +INF for y > 0 and not an odd integer. pow(+INF,y) = +0 for y <0. pow(+INF,y) = +INF for y
-     * >0.
+     * Special cases: pow(-0,y) = -INF and raises the divide-by-zero exception for y an odd integer < 0.
+     * pow(-0,y) = +INF and raises the divide-by-zero exception for y < 0 and not an odd integer.
+     * pow(-0,y) = -0 for y an odd integer > 0. pow(-0,y) = +0 for y > 0 and not an odd integer.
+     * pow(-1,-INF) = NaN. pow(+1,y) = NaN for any y, even a NaN. pow(x,-0) = 1 for any x, even a NaN.
+     * pow(x,y) = a NaN and raises the invalid exception for finite x < 0 and finite non-integer y.
+     * pow(x,-INF) = +INF for |x|<1. pow(x,-INF) = +0 for |x|>1. pow(x,+INF) = +0 for |x|<1. pow(x,+INF)
+     * = +INF for |x|>1. pow(-INF,y) = -0 for y an odd integer < 0. pow(-INF,y) = +0 for y < 0 and not
+     * an odd integer. pow(-INF,y) = -INF for y an odd integer > 0. pow(-INF,y) = +INF for y > 0 and not
+     * an odd integer. pow(+INF,y) = +0 for y <0. pow(+INF,y) = +INF for y >0.
      *
      */
 

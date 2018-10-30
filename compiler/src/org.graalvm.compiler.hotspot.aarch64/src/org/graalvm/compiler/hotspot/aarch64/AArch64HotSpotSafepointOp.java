@@ -70,8 +70,8 @@ public class AArch64HotSpotSafepointOp extends AArch64LIRInstruction {
      * Conservatively checks whether we can load the safepoint polling address with a single ldr
      * instruction or not.
      *
-     * @return true if it is guaranteed that polling page offset will always fit into a 21-bit
-     *         signed integer, false otherwise.
+     * @return true if it is guaranteed that polling page offset will always fit into a 21-bit signed
+     *         integer, false otherwise.
      */
     private static boolean isPollingPageFar(GraalHotSpotVMConfig config) {
         final long pollingPageAddress = config.safepointPollingAddress;

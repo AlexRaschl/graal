@@ -54,20 +54,19 @@ public class GraalTutorial extends InvokeGraal {
         ResolvedJavaMethod method = metaAccess.lookupJavaMethod(reflectionMethod);
 
         /*
-         * ResolvedJavaMethod provides all information that you want about a method, for example,
-         * the bytecodes.
+         * ResolvedJavaMethod provides all information that you want about a method, for example, the
+         * bytecodes.
          */
         byte[] bytecodes = method.getCode();
 
         /*
-         * BytecodeDisassembler shows you how to iterate bytecodes, how to access type information,
-         * and more.
+         * BytecodeDisassembler shows you how to iterate bytecodes, how to access type information, and
+         * more.
          */
         String disassembly = new BytecodeDisassembler().disassemble(method);
 
         /*
-         * We don't want test cases to print any output, so we check the validity of the output
-         * instead.
+         * We don't want test cases to print any output, so we check the validity of the output instead.
          */
         Pattern disassemblyLineRE = Pattern.compile(" *\\d+: [a-z][\\w_]+");
         for (String line : disassembly.split("\\n")) {
@@ -118,9 +117,9 @@ public class GraalTutorial extends InvokeGraal {
         }
 
         /*
-         * Warmup to collect profiling information is done, now we compile the method. Since the
-         * value of "flag" was always false during the warmup, the compiled code speculates that the
-         * value remains false.
+         * Warmup to collect profiling information is done, now we compile the method. Since the value of
+         * "flag" was always false during the warmup, the compiled code speculates that the value remains
+         * false.
          */
 
         InstalledCode compiledMethod = compileAndInstallMethod(findMethod(GraalTutorial.class, "speculativeOptimization"));
@@ -131,8 +130,8 @@ public class GraalTutorial extends InvokeGraal {
         Assert.assertEquals(42, f2);
 
         /*
-         * We executed the compiled method with a "flag" value that triggered deoptimization (since
-         * the warmup always used the different "flag" value). The interpreter updated the profiling
+         * We executed the compiled method with a "flag" value that triggered deoptimization (since the
+         * warmup always used the different "flag" value). The interpreter updated the profiling
          * information, so the second compilation does not perform the speculative optimization.
          */
 

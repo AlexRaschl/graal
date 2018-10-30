@@ -143,8 +143,8 @@ public class RubyCall {
         public abstract Object executeDispatch(VirtualFrame frame, InternalMethod function, Object[] packedArguments);
 
         /*
-         * Please note that cachedMethod != METHOD_MISSING is invoked once at specialization
-         * instantiation. It is never executed on the fast path.
+         * Please note that cachedMethod != METHOD_MISSING is invoked once at specialization instantiation.
+         * It is never executed on the fast path.
          */
         @Specialization(guards = {"method == cachedMethod", "cachedMethod != METHOD_MISSING"})
         protected static Object directCall(InternalMethod method, Object[] arguments, //
@@ -154,8 +154,8 @@ public class RubyCall {
         }
 
         /*
-         * The method == METHOD_MISSING can fold if the RubyLookup results just in a single entry
-         * returning the constant METHOD_MISSING.
+         * The method == METHOD_MISSING can fold if the RubyLookup results just in a single entry returning
+         * the constant METHOD_MISSING.
          */
         @Specialization(guards = "method == METHOD_MISSING")
         protected static Object methodMissing(InternalMethod method, Object[] arguments) {
@@ -238,8 +238,8 @@ public class RubyCall {
         }
 
         /*
-         * Method collects all unmodified assumptions in the class hierarchy. The result is cached
-         * per class to void recreation per call site.
+         * Method collects all unmodified assumptions in the class hierarchy. The result is cached per class
+         * to void recreation per call site.
          */
         @TruffleBoundary
         public Assumption[] getDependentAssumptions() {

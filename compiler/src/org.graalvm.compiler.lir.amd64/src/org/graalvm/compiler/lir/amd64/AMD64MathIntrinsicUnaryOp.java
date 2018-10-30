@@ -304,13 +304,12 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      *
      * Reduced argument: r=B*mx-1.0 (computed accurately in high and low parts)
      *
-     * Result: k*log(2) - log(B) + p(r) if |x-1| >= small value (2^-6) and p(r) is a degree 7
-     * polynomial -log(B) read from data table (high, low parts) Result is formed from high and low
-     * parts.
+     * Result: k*log(2) - log(B) + p(r) if |x-1| >= small value (2^-6) and p(r) is a degree 7 polynomial
+     * -log(B) read from data table (high, low parts) Result is formed from high and low parts.
      *
-     * Special cases: log(NaN) = quiet NaN, and raise invalid exception log(+INF) = that INF log(0)
-     * = -INF with divide-by-zero exception raised log(1) = +0 log(x) = NaN with invalid exception
-     * raised if x < -0, including -INF
+     * Special cases: log(NaN) = quiet NaN, and raise invalid exception log(+INF) = that INF log(0) =
+     * -INF with divide-by-zero exception raised log(1) = +0 log(x) = NaN with invalid exception raised
+     * if x < -0, including -INF
      *
      */
 
@@ -662,8 +661,8 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      * Result: k*log10(2) - log(B) + p(r) p(r) is a degree 7 polynomial -log(B) read from data table
      * (high, low parts) Result is formed from high and low parts
      *
-     * Special cases: log10(0) = -INF with divide-by-zero exception raised log10(1) = +0 log10(x) =
-     * NaN with invalid exception raised if x < -0, including -INF log10(+INF) = +INF
+     * Special cases: log10(0) = -INF with divide-by-zero exception raised log10(1) = +0 log10(x) = NaN
+     * with invalid exception raised if x < -0, including -INF log10(+INF) = +INF
      *
      */
 
@@ -901,10 +900,10 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      *
      * X =~= N * pi/32 + r
      *
-     * so that |r| <= pi/64 + epsilon. We restrict inputs to those where |N| <= 932560. Beyond this,
-     * the range reduction is insufficiently accurate. For extremely small inputs, denormalization
-     * can occur internally, impacting performance. This means that the main path is actually only
-     * taken for 2^-252 <= |X| < 90112.
+     * so that |r| <= pi/64 + epsilon. We restrict inputs to those where |N| <= 932560. Beyond this, the
+     * range reduction is insufficiently accurate. For extremely small inputs, denormalization can occur
+     * internally, impacting performance. This means that the main path is actually only taken for
+     * 2^-252 <= |X| < 90112.
      *
      * To avoid branches, we perform the range reduction to full accuracy each time.
      *
@@ -924,19 +923,18 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      *
      * 2. MAIN ALGORITHM
      *
-     * The algorithm uses a table lookup based on B = M * pi / 32 where M = N mod 64. The stored
-     * values are: sigma closest power of 2 to cos(B) C_hl 53-bit cos(B) - sigma S_hi + S_lo 2 *
-     * 53-bit sin(B)
+     * The algorithm uses a table lookup based on B = M * pi / 32 where M = N mod 64. The stored values
+     * are: sigma closest power of 2 to cos(B) C_hl 53-bit cos(B) - sigma S_hi + S_lo 2 * 53-bit sin(B)
      *
      * The computation is organized as follows:
      *
-     * sin(B + r + c) = [sin(B) + sigma * r] + r * (cos(B) - sigma) + sin(B) * [cos(r + c) - 1] +
-     * cos(B) * [sin(r + c) - r]
+     * sin(B + r + c) = [sin(B) + sigma * r] + r * (cos(B) - sigma) + sin(B) * [cos(r + c) - 1] + cos(B)
+     * * [sin(r + c) - r]
      *
      * which is approximately:
      *
-     * [S_hi + sigma * r] + C_hl * r + S_lo + S_hi * [(cos(r) - 1) - r * c] + (C_hl + sigma) *
-     * [(sin(r) - r) + c]
+     * [S_hi + sigma * r] + C_hl * r + S_lo + S_hi * [(cos(r) - 1) - r * c] + (C_hl + sigma) * [(sin(r)
+     * - r) + c]
      *
      * and this is what is actually computed. We separate this sum into four parts:
      *
@@ -953,23 +951,23 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      * since it is quite small, so we exploit parallelism to the fullest.
      *
      * psc4 = SC_4 * r_1 msc4 = psc4 * r r2 = r * r msc2 = SC_2 * r2 r4 = r2 * r2 psc3 = SC_3 + msc4
-     * psc1 = SC_1 + msc2 msc3 = r4 * psc3 sincospols = psc1 + msc3 pols = sincospols * <S_hi * r^2
-     * | (C_hl + sigma) * r^3>
+     * psc1 = SC_1 + msc2 msc3 = r4 * psc3 sincospols = psc1 + msc3 pols = sincospols * <S_hi * r^2 |
+     * (C_hl + sigma) * r^3>
      *
      * 4. CORRECTION TERM
      *
-     * This is where the "c" component of the range reduction is taken into account; recall that
-     * just "r" is used for most of the calculation.
+     * This is where the "c" component of the range reduction is taken into account; recall that just
+     * "r" is used for most of the calculation.
      *
      * -c = m_3 - c_2 -d = S_hi * r - (C_hl + sigma) corr = -c * -d + S_lo
      *
      * 5. COMPENSATED SUMMATIONS
      *
-     * The two successive compensated summations add up the high and medium parts, leaving just the
-     * low parts to add up at the end.
+     * The two successive compensated summations add up the high and medium parts, leaving just the low
+     * parts to add up at the end.
      *
-     * rs = sigma * r res_int = S_hi + rs k_0 = S_hi - res_int k_2 = k_0 + rs med = C_hl * r res_hi
-     * = res_int + med k_1 = res_int - res_hi k_3 = k_1 + med
+     * rs = sigma * r res_int = S_hi + rs k_0 = S_hi - res_int k_2 = k_0 + rs med = C_hl * r res_hi =
+     * res_int + med k_1 = res_int - res_hi k_3 = k_1 + med
      *
      * 6. FINAL SUMMATION
      *
@@ -983,11 +981,11 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      *
      * 7. SMALL ARGUMENTS
      *
-     * If |x| < SNN (SNN meaning the smallest normal number), we simply perform 0.1111111 cdots 1111
-     * * x. For SNN <= |x|, we do 2^-55 * (2^55 * x - x).
+     * If |x| < SNN (SNN meaning the smallest normal number), we simply perform 0.1111111 cdots 1111 *
+     * x. For SNN <= |x|, we do 2^-55 * (2^55 * x - x).
      *
-     * Special cases: sin(NaN) = quiet NaN, and raise invalid exception sin(INF) = NaN and raise
-     * invalid exception sin(+/-0) = +/-0
+     * Special cases: sin(NaN) = quiet NaN, and raise invalid exception sin(INF) = NaN and raise invalid
+     * exception sin(+/-0) = +/-0
      *
      */
 
@@ -1737,10 +1735,10 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      *
      * X =~= N * pi/32 + r
      *
-     * so that |r| <= pi/64 + epsilon. We restrict inputs to those where |N| <= 932560. Beyond this,
-     * the range reduction is insufficiently accurate. For extremely small inputs, denormalization
-     * can occur internally, impacting performance. This means that the main path is actually only
-     * taken for 2^-252 <= |X| < 90112.
+     * so that |r| <= pi/64 + epsilon. We restrict inputs to those where |N| <= 932560. Beyond this, the
+     * range reduction is insufficiently accurate. For extremely small inputs, denormalization can occur
+     * internally, impacting performance. This means that the main path is actually only taken for
+     * 2^-252 <= |X| < 90112.
      *
      * To avoid branches, we perform the range reduction to full accuracy each time.
      *
@@ -1760,19 +1758,18 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      *
      * 2. MAIN ALGORITHM
      *
-     * The algorithm uses a table lookup based on B = M * pi / 32 where M = N mod 64. The stored
-     * values are: sigma closest power of 2 to cos(B) C_hl 53-bit cos(B) - sigma S_hi + S_lo 2 *
-     * 53-bit sin(B)
+     * The algorithm uses a table lookup based on B = M * pi / 32 where M = N mod 64. The stored values
+     * are: sigma closest power of 2 to cos(B) C_hl 53-bit cos(B) - sigma S_hi + S_lo 2 * 53-bit sin(B)
      *
      * The computation is organized as follows:
      *
-     * sin(B + r + c) = [sin(B) + sigma * r] + r * (cos(B) - sigma) + sin(B) * [cos(r + c) - 1] +
-     * cos(B) * [sin(r + c) - r]
+     * sin(B + r + c) = [sin(B) + sigma * r] + r * (cos(B) - sigma) + sin(B) * [cos(r + c) - 1] + cos(B)
+     * * [sin(r + c) - r]
      *
      * which is approximately:
      *
-     * [S_hi + sigma * r] + C_hl * r + S_lo + S_hi * [(cos(r) - 1) - r * c] + (C_hl + sigma) *
-     * [(sin(r) - r) + c]
+     * [S_hi + sigma * r] + C_hl * r + S_lo + S_hi * [(cos(r) - 1) - r * c] + (C_hl + sigma) * [(sin(r)
+     * - r) + c]
      *
      * and this is what is actually computed. We separate this sum into four parts:
      *
@@ -1789,23 +1786,23 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      * since it is quite small, so we exploit parallelism to the fullest.
      *
      * psc4 = SC_4 * r_1 msc4 = psc4 * r r2 = r * r msc2 = SC_2 * r2 r4 = r2 * r2 psc3 = SC_3 + msc4
-     * psc1 = SC_1 + msc2 msc3 = r4 * psc3 sincospols = psc1 + msc3 pols = sincospols * <S_hi * r^2
-     * | (C_hl + sigma) * r^3>
+     * psc1 = SC_1 + msc2 msc3 = r4 * psc3 sincospols = psc1 + msc3 pols = sincospols * <S_hi * r^2 |
+     * (C_hl + sigma) * r^3>
      *
      * 4. CORRECTION TERM
      *
-     * This is where the "c" component of the range reduction is taken into account; recall that
-     * just "r" is used for most of the calculation.
+     * This is where the "c" component of the range reduction is taken into account; recall that just
+     * "r" is used for most of the calculation.
      *
      * -c = m_3 - c_2 -d = S_hi * r - (C_hl + sigma) corr = -c * -d + S_lo
      *
      * 5. COMPENSATED SUMMATIONS
      *
-     * The two successive compensated summations add up the high and medium parts, leaving just the
-     * low parts to add up at the end.
+     * The two successive compensated summations add up the high and medium parts, leaving just the low
+     * parts to add up at the end.
      *
-     * rs = sigma * r res_int = S_hi + rs k_0 = S_hi - res_int k_2 = k_0 + rs med = C_hl * r res_hi
-     * = res_int + med k_1 = res_int - res_hi k_3 = k_1 + med
+     * rs = sigma * r res_int = S_hi + rs k_0 = S_hi - res_int k_2 = k_0 + rs med = C_hl * r res_hi =
+     * res_int + med k_1 = res_int - res_hi k_3 = k_1 + med
      *
      * 6. FINAL SUMMATION
      *
@@ -1821,8 +1818,8 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      *
      * Inputs with |X| < 2^-252 are treated specially as 1 - |x|.
      *
-     * Special cases: cos(NaN) = quiet NaN, and raise invalid exception cos(INF) = NaN and raise
-     * invalid exception cos(0) = 1
+     * Special cases: cos(NaN) = quiet NaN, and raise invalid exception cos(INF) = NaN and raise invalid
+     * exception cos(0) = 1
      *
      */
 
@@ -2375,44 +2372,41 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      *
      * Polynomials coefficients and other constants.
      *
-     * Note that in this algorithm, there is a different polynomial for each breakpoint, so there
-     * are 32 sets of polynomial coefficients as well as 32 instances of the other constants.
+     * Note that in this algorithm, there is a different polynomial for each breakpoint, so there are 32
+     * sets of polynomial coefficients as well as 32 instances of the other constants.
      *
-     * The polynomial coefficients and constants are offset from the start of the main block as
-     * follows:
+     * The polynomial coefficients and constants are offset from the start of the main block as follows:
      *
-     * 0: c8 | c0 16: c9 | c1 32: c10 | c2 48: c11 | c3 64: c12 | c4 80: c13 | c5 96: c14 | c6 112:
-     * c15 | c7 128: T_hi 136: T_lo 144: Sigma 152: T_hl 160: Tau 168: Mask 176: (end of block)
+     * 0: c8 | c0 16: c9 | c1 32: c10 | c2 48: c11 | c3 64: c12 | c4 80: c13 | c5 96: c14 | c6 112: c15
+     * | c7 128: T_hi 136: T_lo 144: Sigma 152: T_hl 160: Tau 168: Mask 176: (end of block)
      *
      * The total table size is therefore 5632 bytes.
      *
-     * Note that c0 and c1 are always zero. We could try storing other constants here, and just
-     * loading the low part of the SIMD register in these cases, after ensuring the high part is
-     * zero.
+     * Note that c0 and c1 are always zero. We could try storing other constants here, and just loading
+     * the low part of the SIMD register in these cases, after ensuring the high part is zero.
      *
-     * The higher terms of the polynomial are computed in the *low* part of the SIMD register. This
-     * is so we can overlap the multiplication by r^8 and the unpacking of the other part.
+     * The higher terms of the polynomial are computed in the *low* part of the SIMD register. This is
+     * so we can overlap the multiplication by r^8 and the unpacking of the other part.
      *
-     * The constants are: T_hi + T_lo = accurate constant term in power series Sigma + T_hl =
-     * accurate coefficient of r in power series (Sigma=1 bit) Tau = multiplier for the reciprocal,
-     * always -1 or 0
+     * The constants are: T_hi + T_lo = accurate constant term in power series Sigma + T_hl = accurate
+     * coefficient of r in power series (Sigma=1 bit) Tau = multiplier for the reciprocal, always -1 or
+     * 0
      *
      * The basic reconstruction formula using these constants is:
      *
-     * High = tau * recip_hi + t_hi Med = (sgn * r + t_hl * r)_hi Low = (sgn * r + t_hl * r)_lo +
-     * tau * recip_lo + T_lo + (T_hl + sigma) * c + pol
+     * High = tau * recip_hi + t_hi Med = (sgn * r + t_hl * r)_hi Low = (sgn * r + t_hl * r)_lo + tau *
+     * recip_lo + T_lo + (T_hl + sigma) * c + pol
      *
      * where pol = c0 + c1 * r + c2 * r^2 + ... + c15 * r^15
      *
      * (c0 = c1 = 0, but using them keeps SIMD regularity)
      *
-     * We then do a compensated sum High + Med, add the low parts together and then do the final
-     * sum.
+     * We then do a compensated sum High + Med, add the low parts together and then do the final sum.
      *
      * Here recip_hi + recip_lo is an accurate reciprocal of the remainder modulo pi/2
      *
-     * Special cases: tan(NaN) = quiet NaN, and raise invalid exception tan(INF) = NaN and raise
-     * invalid exception tan(+/-0) = +/-0
+     * Special cases: tan(NaN) = quiet NaN, and raise invalid exception tan(INF) = NaN and raise invalid
+     * exception tan(+/-0) = +/-0
      *
      */
 
@@ -3443,18 +3437,18 @@ public final class AMD64MathIntrinsicUnaryOp extends AMD64LIRInstruction {
      * ALGORITHM DESCRIPTION - EXP() ---------------------
      *
      * Description: Let K = 64 (table size). x x/log(2) n e = 2 = 2 * T[j] * (1 + P(y)) where x =
-     * m*log(2)/K + y, y in [-log(2)/K..log(2)/K] m = n*K + j, m,n,j - signed integer, j in
-     * [-K/2..K/2] j/K values of 2 are tabulated as T[j] = T_hi[j] ( 1 + T_lo[j]).
+     * m*log(2)/K + y, y in [-log(2)/K..log(2)/K] m = n*K + j, m,n,j - signed integer, j in [-K/2..K/2]
+     * j/K values of 2 are tabulated as T[j] = T_hi[j] ( 1 + T_lo[j]).
      *
-     * P(y) is a minimax polynomial approximation of exp(x)-1 on small interval
-     * [-log(2)/K..log(2)/K] (were calculated by Maple V).
+     * P(y) is a minimax polynomial approximation of exp(x)-1 on small interval [-log(2)/K..log(2)/K]
+     * (were calculated by Maple V).
      *
-     * To avoid problems with arithmetic overflow and underflow, n n1 n2 value of 2 is safely
-     * computed as 2 * 2 where n1 in [-BIAS/2..BIAS/2] where BIAS is a value of exponent bias.
+     * To avoid problems with arithmetic overflow and underflow, n n1 n2 value of 2 is safely computed
+     * as 2 * 2 where n1 in [-BIAS/2..BIAS/2] where BIAS is a value of exponent bias.
      *
-     * Special cases: exp(NaN) = NaN exp(+INF) = +INF exp(-INF) = 0 exp(x) = 1 for subnormals for
-     * finite argument, only exp(0)=1 is exact For IEEE double if x > 709.782712893383973096 then
-     * exp(x) overflow if x < -745.133219101941108420 then exp(x) underflow
+     * Special cases: exp(NaN) = NaN exp(+INF) = +INF exp(-INF) = 0 exp(x) = 1 for subnormals for finite
+     * argument, only exp(0)=1 is exact For IEEE double if x > 709.782712893383973096 then exp(x)
+     * overflow if x < -745.133219101941108420 then exp(x) underflow
      *
      */
 

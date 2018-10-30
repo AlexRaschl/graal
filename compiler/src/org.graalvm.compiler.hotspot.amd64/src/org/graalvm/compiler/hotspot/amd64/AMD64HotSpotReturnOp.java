@@ -66,9 +66,9 @@ final class AMD64HotSpotReturnOp extends AMD64HotSpotEpilogueBlockEndOp implemen
             AMD64HotSpotSafepointOp.emitCode(crb, masm, config, true, null, thread, scratchForSafepointOnReturn);
 
             /*
-             * We potentially return to the interpreter, and that's an AVX-SSE transition. The only
-             * live value at this point should be the return value in either rax, or in xmm0 with
-             * the upper half of the register unused, so we don't destroy any value here.
+             * We potentially return to the interpreter, and that's an AVX-SSE transition. The only live value
+             * at this point should be the return value in either rax, or in xmm0 with the upper half of the
+             * register unused, so we don't destroy any value here.
              */
             if (masm.supports(CPUFeature.AVX)) {
                 masm.vzeroupper();

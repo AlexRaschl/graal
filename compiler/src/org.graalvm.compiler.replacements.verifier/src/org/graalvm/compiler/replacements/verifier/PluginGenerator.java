@@ -24,7 +24,6 @@ package org.graalvm.compiler.replacements.verifier;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,6 +46,8 @@ import javax.lang.model.type.WildcardType;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 public class PluginGenerator {
 
     private final Map<Element, List<GeneratedPlugin>> plugins;
@@ -59,7 +60,7 @@ public class PluginGenerator {
         Element topLevel = getTopLevelClass(plugin.intrinsicMethod);
         List<GeneratedPlugin> list = plugins.get(topLevel);
         if (list == null) {
-            list = new ArrayList<>();
+            list = SpecifiedArrayList.createNew();
             plugins.put(topLevel, list);
         }
         list.add(plugin);

@@ -40,19 +40,18 @@ public interface ResultVerifier extends Consumer<ResultVerifier.SnippetRun> {
     /**
      * Performs a verification of a result of a snippet execution. The custom {@link ResultVerifier}
      * overrides the default snippet execution verification. The default verification tests that the
-     * result type is in bounds specified by the {@link Snippet}. The custom {@link ResultVerifier}
-     * can be used to do additional checking of a result or an execution exception throwing
-     * {@link AssertionError} in case of failed assertion. The custom {@link ResultVerifier} can
-     * hide an expected execution exception. For example the division operator snippet may provide a
-     * custom {@link ResultVerifier} hiding the execution exception for division by zero. To
-     * propagate the execution exception the {@link ResultVerifier} should re-throw it. The
-     * {@link ResultVerifier} can be used to resolve problems in the {@code ErrorTypeTest} by making
-     * the {@link Snippet}'s parameter(s) more generic and restrict the required value in the
-     * verifier.
+     * result type is in bounds specified by the {@link Snippet}. The custom {@link ResultVerifier} can
+     * be used to do additional checking of a result or an execution exception throwing
+     * {@link AssertionError} in case of failed assertion. The custom {@link ResultVerifier} can hide an
+     * expected execution exception. For example the division operator snippet may provide a custom
+     * {@link ResultVerifier} hiding the execution exception for division by zero. To propagate the
+     * execution exception the {@link ResultVerifier} should re-throw it. The {@link ResultVerifier} can
+     * be used to resolve problems in the {@code ErrorTypeTest} by making the {@link Snippet}'s
+     * parameter(s) more generic and restrict the required value in the verifier.
      *
-     * @param snippetRun the snippet execution data. The {@link SnippetRun} provides the actual
-     *            snippet parameters, the execution result or the {@link PolyglotException} thrown
-     *            by the execution.
+     * @param snippetRun the snippet execution data. The {@link SnippetRun} provides the actual snippet
+     *            parameters, the execution result or the {@link PolyglotException} thrown by the
+     *            execution.
      * @throws PolyglotException may propagate the {@link PolyglotException} from the snippetRun
      * @throws AssertionError may throw an {@link AssertionError} as a result of a verification
      * @since 0.30
@@ -101,8 +100,8 @@ public interface ResultVerifier extends Consumer<ResultVerifier.SnippetRun> {
         /**
          * Returns the {@link PolyglotException} thrown during snippet execution.
          *
-         * @return the {@link PolyglotException} thrown during the execution or null in case of
-         *         successful execution.
+         * @return the {@link PolyglotException} thrown during the execution or null in case of successful
+         *         execution.
          * @since 0.30
          */
         public PolyglotException getException() {

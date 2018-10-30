@@ -89,9 +89,9 @@ public final class ComputeLoopFrequenciesClosure extends ReentrantNodeIterator.N
     }
 
     /**
-     * Computes the frequencies of all loops in the given graph. This is done by performing a
-     * reverse postorder iteration and computing the probability of all fixed nodes. The combined
-     * probability of all exits of a loop can be used to compute the loop's expected frequency.
+     * Computes the frequencies of all loops in the given graph. This is done by performing a reverse
+     * postorder iteration and computing the probability of all fixed nodes. The combined probability of
+     * all exits of a loop can be used to compute the loop's expected frequency.
      */
     public static void compute(StructuredGraph graph) {
         if (graph.hasLoops()) {

@@ -22,7 +22,6 @@
  */
 package org.graalvm.compiler.loop;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +29,7 @@ import java.util.List;
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.Loop;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.nodes.LoopBeginNode;
@@ -52,7 +52,7 @@ public class LoopsData {
             throw debug.handle(e);
         }
         assert checkLoopOrder(cfg.getLoops());
-        loops = new ArrayList<>(cfg.getLoops().size());
+        loops = SpecifiedArrayList.createNew(cfg.getLoops().size());
         for (Loop<Block> loop : cfg.getLoops()) {
             LoopEx ex = new LoopEx(loop, this);
             loops.add(ex);

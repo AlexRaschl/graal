@@ -85,8 +85,8 @@ public class ForeignCallStub extends Stub {
     private final HotSpotForeignCallLinkage target;
 
     /**
-     * Specifies if the JavaThread value for the current thread is to be prepended to the arguments
-     * for the call to {@link #target}.
+     * Specifies if the JavaThread value for the current thread is to be prepended to the arguments for
+     * the call to {@link #target}.
      */
     protected final boolean prependThread;
 
@@ -95,11 +95,11 @@ public class ForeignCallStub extends Stub {
      *
      * @param address the address of the code to call
      * @param descriptor the signature of the call to this stub
-     * @param prependThread true if the JavaThread value for the current thread is to be prepended
-     *            to the arguments for the call to {@code address}
+     * @param prependThread true if the JavaThread value for the current thread is to be prepended to
+     *            the arguments for the call to {@code address}
      * @param reexecutable specifies if the stub call can be re-executed without (meaningful) side
-     *            effects. Deoptimization will not return to a point before a stub call that cannot
-     *            be re-executed.
+     *            effects. Deoptimization will not return to a point before a stub call that cannot be
+     *            re-executed.
      * @param killedLocations the memory locations killed by the stub call
      */
     public ForeignCallStub(OptionValues options, HotSpotJVMCIRuntimeProvider runtime, HotSpotProviders providers, long address, ForeignCallDescriptor descriptor, boolean prependThread,
@@ -196,8 +196,8 @@ public class ForeignCallStub extends Stub {
      *     }
      * </pre>
      *
-     * If the stub returns a primitive or word, the graph created corresponds to this pseudo code
-     * (using {@code int} as the primitive return type):
+     * If the stub returns a primitive or word, the graph created corresponds to this pseudo code (using
+     * {@code int} as the primitive return type):
      *
      * <pre>
      *     int foreignFunctionStub(args...) {
@@ -220,8 +220,8 @@ public class ForeignCallStub extends Stub {
      *     }
      * </pre>
      *
-     * In each example above, the {@code currentThread} argument is the C++ JavaThread value (i.e.,
-     * %r15 on AMD64) and is only prepended if {@link #prependThread} is true.
+     * In each example above, the {@code currentThread} argument is the C++ JavaThread value (i.e., %r15
+     * on AMD64) and is only prepended if {@link #prependThread} is true.
      */
     @Override
     protected StructuredGraph getGraph(DebugContext debug, CompilationIdentifier compilationId) {

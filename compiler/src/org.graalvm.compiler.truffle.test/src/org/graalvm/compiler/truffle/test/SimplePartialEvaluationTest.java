@@ -210,8 +210,8 @@ public class SimplePartialEvaluationTest extends PartialEvaluationTest {
     @Test
     public void intrinsicStatic() {
         /*
-         * The intrinsic for String.equals() is inlined early during bytecode parsing, because we
-         * call equals() on a value that has the static type String.
+         * The intrinsic for String.equals() is inlined early during bytecode parsing, because we call
+         * equals() on a value that has the static type String.
          */
         FrameDescriptor fd = new FrameDescriptor();
         AbstractTestNode result = new StringEqualsNode("abc", "abf");
@@ -224,9 +224,9 @@ public class SimplePartialEvaluationTest extends PartialEvaluationTest {
     @Test
     public void intrinsicVirtual() {
         /*
-         * The intrinsic for String.equals() is inlined late during Truffle partial evaluation,
-         * because we call equals() on a value that has the static type Object, but during partial
-         * evaluation the more precise type String is known.
+         * The intrinsic for String.equals() is inlined late during Truffle partial evaluation, because we
+         * call equals() on a value that has the static type Object, but during partial evaluation the more
+         * precise type String is known.
          */
         FrameDescriptor fd = new FrameDescriptor();
         AbstractTestNode result = new ObjectEqualsNode("abc", "abf");
@@ -239,9 +239,8 @@ public class SimplePartialEvaluationTest extends PartialEvaluationTest {
     @Test
     public void intrinsicHashCode() {
         /*
-         * The intrinsic for Object.hashCode() is inlined late during Truffle partial evaluation,
-         * because we call hashCode() on a value whose exact type Object is only known during
-         * partial evaluation.
+         * The intrinsic for Object.hashCode() is inlined late during Truffle partial evaluation, because we
+         * call hashCode() on a value whose exact type Object is only known during partial evaluation.
          */
         FrameDescriptor fd = new FrameDescriptor();
         Object testObject = new Object();
@@ -257,9 +256,9 @@ public class SimplePartialEvaluationTest extends PartialEvaluationTest {
     @Test
     public void synchronizedExceptionMerge() {
         /*
-         * Multiple non-inlineable methods with exception edges called from a synchronized method
-         * lead to a complicated Graal graph that involves the BytecodeFrame.UNWIND_BCI. This test
-         * checks that partial evaluation handles that case correctly.
+         * Multiple non-inlineable methods with exception edges called from a synchronized method lead to a
+         * complicated Graal graph that involves the BytecodeFrame.UNWIND_BCI. This test checks that partial
+         * evaluation handles that case correctly.
          */
         FrameDescriptor fd = new FrameDescriptor();
         AbstractTestNode result = new SynchronizedExceptionMergeNode();
@@ -295,9 +294,9 @@ public class SimplePartialEvaluationTest extends PartialEvaluationTest {
     @Test
     public void intrinsicStringHashCodeNonFinal() {
         /*
-         * The intrinsic for String.hashcode() does not trigger on non-constant strings, so the
-         * method String.hashCode() must be inlined during partial evaluation (so there must not be
-         * an invoke after partial evaluation).
+         * The intrinsic for String.hashcode() does not trigger on non-constant strings, so the method
+         * String.hashCode() must be inlined during partial evaluation (so there must not be an invoke after
+         * partial evaluation).
          */
         FrameDescriptor fd = new FrameDescriptor();
         AbstractTestNode result = new StringHashCodeNonFinalNode("*");

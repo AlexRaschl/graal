@@ -47,8 +47,8 @@ public interface InvocationPlugin extends GraphBuilderPlugin {
         /**
          * Gets the receiver value, null checking it first if necessary.
          *
-         * @return the receiver value with a {@linkplain StampTool#isPointerNonNull(ValueNode)
-         *         non-null} stamp
+         * @return the receiver value with a {@linkplain StampTool#isPointerNonNull(ValueNode) non-null}
+         *         stamp
          */
         default ValueNode get() {
             return get(true);
@@ -76,8 +76,8 @@ public interface InvocationPlugin extends GraphBuilderPlugin {
     }
 
     /**
-     * Determines if this plugin can only be used when inlining the method is it associated with.
-     * That is, this plugin cannot be used when the associated method is the compilation root.
+     * Determines if this plugin can only be used when inlining the method is it associated with. That
+     * is, this plugin cannot be used when the associated method is the compilation root.
      */
     default boolean inlineOnly() {
         return isSignaturePolymorphic();
@@ -87,8 +87,8 @@ public interface InvocationPlugin extends GraphBuilderPlugin {
      * Handles invocation of a signature polymorphic method.
      *
      * @param receiver access to the receiver, {@code null} if {@code targetMethod} is static
-     * @param argsIncludingReceiver all arguments to the invocation include the raw receiver in
-     *            position 0 if {@code targetMethod} is not static
+     * @param argsIncludingReceiver all arguments to the invocation include the raw receiver in position
+     *            0 if {@code targetMethod} is not static
      * @see #execute
      */
     default boolean applyPolymorphic(GraphBuilderContext b, ResolvedJavaMethod targetMethod, InvocationPlugin.Receiver receiver, ValueNode... argsIncludingReceiver) {
@@ -157,17 +157,17 @@ public interface InvocationPlugin extends GraphBuilderPlugin {
      * Executes this plugin against a set of invocation arguments.
      *
      * The default implementation in {@link InvocationPlugin} dispatches to the {@code apply(...)}
-     * method that matches the number of arguments or to {@link #applyPolymorphic} if {@code plugin}
-     * is {@linkplain #isSignaturePolymorphic() signature polymorphic}.
+     * method that matches the number of arguments or to {@link #applyPolymorphic} if {@code plugin} is
+     * {@linkplain #isSignaturePolymorphic() signature polymorphic}.
      *
      * @param targetMethod the method for which this plugin is being applied
      * @param receiver access to the receiver, {@code null} if {@code targetMethod} is static
-     * @param argsIncludingReceiver all arguments to the invocation include the receiver in position
-     *            0 if {@code targetMethod} is not static
-     * @return {@code true} if this plugin handled the invocation of {@code targetMethod}
-     *         {@code false} if the graph builder should process the invoke further (e.g., by
-     *         inlining it or creating an {@link Invoke} node). A plugin that does not handle an
-     *         invocation must not modify the graph being constructed.
+     * @param argsIncludingReceiver all arguments to the invocation include the receiver in position 0
+     *            if {@code targetMethod} is not static
+     * @return {@code true} if this plugin handled the invocation of {@code targetMethod} {@code false}
+     *         if the graph builder should process the invoke further (e.g., by inlining it or creating
+     *         an {@link Invoke} node). A plugin that does not handle an invocation must not modify the
+     *         graph being constructed.
      */
     default boolean execute(GraphBuilderContext b, ResolvedJavaMethod targetMethod, InvocationPlugin.Receiver receiver, ValueNode[] argsIncludingReceiver) {
         if (isSignaturePolymorphic()) {

@@ -69,8 +69,8 @@ public final class AMD64StringIndexOfOp extends AMD64LIRInstruction {
         charPtr1Value = charPtr1;
         charPtr2Value = charPtr2;
         /*
-         * The count values are inputs but are also killed like temporaries so need both Use and
-         * Temp annotations, which will only work with fixed registers.
+         * The count values are inputs but are also killed like temporaries so need both Use and Temp
+         * annotations, which will only work with fixed registers.
          */
         cnt1Value = cnt1;
         cnt1ValueT = cnt1;

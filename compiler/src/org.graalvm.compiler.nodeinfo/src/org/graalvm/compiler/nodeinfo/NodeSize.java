@@ -47,8 +47,7 @@ public enum NodeSize {
      */
     SIZE_IGNORED(0),
     /**
-     * Nodes that do not require any code to be generated in order to be "executed", e.g. a pinode
-     * node.
+     * Nodes that do not require any code to be generated in order to be "executed", e.g. a pinode node.
      */
     SIZE_0(0),
     SIZE_1(1),

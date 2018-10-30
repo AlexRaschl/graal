@@ -140,8 +140,8 @@ final class RegStackValueSet extends ValueSet<RegStackValueSet> {
 
     private static boolean shouldProcessValue(Value v) {
         /*
-         * We always process registers because we have to track the largest register size that is
-         * alive across safepoints in order to save and restore them.
+         * We always process registers because we have to track the largest register size that is alive
+         * across safepoints in order to save and restore them.
          */
         return isRegister(v) || !LIRKind.isValue(v);
     }

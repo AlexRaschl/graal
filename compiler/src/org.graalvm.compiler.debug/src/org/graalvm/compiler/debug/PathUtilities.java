@@ -42,8 +42,8 @@ public class PathUtilities {
     private static final AtomicLong globalTimeStamp = new AtomicLong();
 
     /**
-     * Gets a time stamp for the current process. This method will always return the same value for
-     * the current VM execution.
+     * Gets a time stamp for the current process. This method will always return the same value for the
+     * current VM execution.
      */
     public static long getGlobalTimeStamp() {
         if (globalTimeStamp.get() == 0) {
@@ -85,8 +85,8 @@ public class PathUtilities {
     }
 
     /**
-     * A maximum file name length supported by most file systems. There is no platform independent
-     * way to get this in Java.
+     * A maximum file name length supported by most file systems. There is no platform independent way
+     * to get this in Java.
      */
     private static final int MAX_FILE_NAME_LENGTH = 255;
 

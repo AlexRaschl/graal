@@ -330,8 +330,8 @@ public class CachedTest {
     }
 
     /*
-     * Node should not produce any warnings in isIdentical of the generated code. Unnecessary casts
-     * were generated for isIdentical on the fast path.
+     * Node should not produce any warnings in isIdentical of the generated code. Unnecessary casts were
+     * generated for isIdentical on the fast path.
      */
     @NodeChildren({@NodeChild, @NodeChild})
     static class RegressionTestWarningInIsIdentical extends ValueNode {

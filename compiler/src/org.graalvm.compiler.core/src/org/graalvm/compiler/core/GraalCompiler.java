@@ -107,8 +107,8 @@ public class GraalCompiler {
 
         /**
          * @param graph the graph to be compiled
-         * @param installedCodeOwner the method the compiled code will be associated with once
-         *            installed. This argument can be null.
+         * @param installedCodeOwner the method the compiled code will be associated with once installed.
+         *            This argument can be null.
          * @param providers
          * @param backend
          * @param graphBuilderSuite
@@ -148,8 +148,8 @@ public class GraalCompiler {
      * Requests compilation of a given graph.
      *
      * @param graph the graph to be compiled
-     * @param installedCodeOwner the method the compiled code will be associated with once
-     *            installed. This argument can be null.
+     * @param installedCodeOwner the method the compiled code will be associated with once installed.
+     *            This argument can be null.
      * @return the result of the compilation
      */
     public static <T extends CompilationResult> T compileGraph(StructuredGraph graph, ResolvedJavaMethod installedCodeOwner, Providers providers, Backend backend,
@@ -180,8 +180,8 @@ public class GraalCompiler {
     }
 
     /**
-     * Checks whether the {@link GraalCompilerOptions#CrashAt} option indicates that the compilation
-     * of {@code graph} should result in an exception.
+     * Checks whether the {@link GraalCompilerOptions#CrashAt} option indicates that the compilation of
+     * {@code graph} should result in an exception.
      *
      * @param graph a graph currently being compiled
      * @throws RuntimeException if the value of {@link GraalCompilerOptions#CrashAt} matches

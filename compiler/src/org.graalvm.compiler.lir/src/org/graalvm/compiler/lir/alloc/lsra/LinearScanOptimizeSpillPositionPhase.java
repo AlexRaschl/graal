@@ -121,12 +121,11 @@ public final class LinearScanOptimizeSpillPositionPhase extends LinearScanAlloca
             debug.log(DebugContext.VERBOSE_LEVEL, "Spill block candidate (after loop optimizaton): %s", spillBlock);
 
             /*
-             * The spill block is the begin of the first split child (aka the value is on the
-             * stack).
+             * The spill block is the begin of the first split child (aka the value is on the stack).
              *
-             * The problem is that if spill block has more than one predecessor, the values at the
-             * end of the predecessors might differ. Therefore, we would need a spill move in all
-             * predecessors. To avoid this we spill in the dominator.
+             * The problem is that if spill block has more than one predecessor, the values at the end of the
+             * predecessors might differ. Therefore, we would need a spill move in all predecessors. To avoid
+             * this we spill in the dominator.
              */
             assert firstSpillChild != null;
             if (!defBlock.equals(spillBlock) && spillBlock.equals(allocator.blockForId(firstSpillChild.from()))) {

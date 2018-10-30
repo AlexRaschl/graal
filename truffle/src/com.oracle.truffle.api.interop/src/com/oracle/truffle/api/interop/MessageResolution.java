@@ -70,8 +70,8 @@ public @interface MessageResolution {
     /**
      * The receiver object class that this message implementation belongs to.
      *
-     * An annotation processor generates a {@link ForeignAccess} class, which the
-     * {@link TruffleObject} can use to implement {@link TruffleObject#getForeignAccess()}.
+     * An annotation processor generates a {@link ForeignAccess} class, which the {@link TruffleObject}
+     * can use to implement {@link TruffleObject#getForeignAccess()}.
      *
      * @return class of the receiver object
      *

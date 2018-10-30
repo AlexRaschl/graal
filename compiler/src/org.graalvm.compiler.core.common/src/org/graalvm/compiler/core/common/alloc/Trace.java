@@ -22,10 +22,10 @@
  */
 package org.graalvm.compiler.core.common.alloc;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 
 /**
@@ -33,7 +33,7 @@ import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
  */
 public class Trace {
     private final AbstractBlockBase<?>[] blocks;
-    private final ArrayList<Trace> successors;
+    private final SpecifiedArrayList<Trace> successors;
     private int id = -1;
 
     public Trace(Collection<AbstractBlockBase<?>> blocks) {
@@ -42,14 +42,14 @@ public class Trace {
 
     public Trace(AbstractBlockBase<?>[] blocks) {
         this.blocks = blocks;
-        this.successors = new ArrayList<>();
+        this.successors = SpecifiedArrayList.createNew();
     }
 
     public AbstractBlockBase<?>[] getBlocks() {
         return blocks;
     }
 
-    public ArrayList<Trace> getSuccessors() {
+    public SpecifiedArrayList<Trace> getSuccessors() {
         return successors;
     }
 

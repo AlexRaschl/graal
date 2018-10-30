@@ -196,8 +196,8 @@ public class AArch64IntegerArithmeticSnippets extends AbstractTemplates implemen
     private static native long safeURem(long x, long y);
 
     /**
-     * Marker interface to distinguish untreated nodes from ones where we have installed the
-     * additional checks.
+     * Marker interface to distinguish untreated nodes from ones where we have installed the additional
+     * checks.
      */
     private interface SafeNode {
     }

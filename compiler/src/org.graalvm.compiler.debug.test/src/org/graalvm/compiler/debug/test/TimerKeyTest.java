@@ -56,8 +56,8 @@ public class TimerKeyTest {
     }
 
     /**
-     * Actively spins the current thread for at least a given number of milliseconds in such a way
-     * that timers for the current thread keep ticking over.
+     * Actively spins the current thread for at least a given number of milliseconds in such a way that
+     * timers for the current thread keep ticking over.
      *
      * @return the number of milliseconds actually spent spinning which is guaranteed to be >=
      *         {@code ms}
@@ -74,8 +74,8 @@ public class TimerKeyTest {
     }
 
     /**
-     * Asserts that a timer replied recursively without any other interleaving timers has the same
-     * flat and accumulated times.
+     * Asserts that a timer replied recursively without any other interleaving timers has the same flat
+     * and accumulated times.
      */
     @Test
     public void test2() {

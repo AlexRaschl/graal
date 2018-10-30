@@ -136,8 +136,8 @@ public class ReplacesTest {
     }
 
     /*
-     * Tests that if it can be derived that two specializations actually a as powerful as the latter
-     * we can combine them. Therefore operation should always become monomorphic in the end.
+     * Tests that if it can be derived that two specializations actually a as powerful as the latter we
+     * can combine them. Therefore operation should always become monomorphic in the end.
      */
     @Test
     public void testReplaces4() {

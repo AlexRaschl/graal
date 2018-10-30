@@ -34,18 +34,18 @@ package org.graalvm.word;
 public interface Pointer extends UnsignedWord, PointerBase {
 
     /**
-     * Unsafe conversion of this Pointer to a Java language object. No correctness checks or type
-     * checks are performed. The caller must ensure that the Pointer contains a valid Java object
-     * that can i.e., processed by the garbage collector.
+     * Unsafe conversion of this Pointer to a Java language object. No correctness checks or type checks
+     * are performed. The caller must ensure that the Pointer contains a valid Java object that can
+     * i.e., processed by the garbage collector.
      *
      * @return this Pointer cast to Object.
      */
     Object toObject();
 
     /**
-     * Unsafe conversion of this Pointer to a Java language object. No correctness checks or type
-     * checks are performed. The caller must ensure that the Pointer contains a valid Java object
-     * that can i.e., processed by the garbage collector and the Pointer does not contain 0.
+     * Unsafe conversion of this Pointer to a Java language object. No correctness checks or type checks
+     * are performed. The caller must ensure that the Pointer contains a valid Java object that can
+     * i.e., processed by the garbage collector and the Pointer does not contain 0.
      *
      * @return this Pointer cast to non-null Object.
      */
@@ -380,8 +380,8 @@ public interface Pointer extends UnsignedWord, PointerBase {
     void writeWord(WordBase offset, WordBase val, LocationIdentity locationIdentity);
 
     /**
-     * Initializes the memory at address {@code (this + offset)}. Both the base address and offset
-     * are in bytes. The memory must be uninitialized or zero prior to this operation.
+     * Initializes the memory at address {@code (this + offset)}. Both the base address and offset are
+     * in bytes. The memory must be uninitialized or zero prior to this operation.
      * <p>
      * The offset is always treated as a {@link SignedWord} value. However, the static type is
      * {@link WordBase} to avoid the frequent casts of {@link UnsignedWord} values (where the caller
@@ -488,8 +488,8 @@ public interface Pointer extends UnsignedWord, PointerBase {
     void writeWord(int offset, WordBase val, LocationIdentity locationIdentity);
 
     /**
-     * Initializes the memory at address {@code (this + offset)}. Both the base address and offset
-     * are in bytes. The memory must be uninitialized or zero prior to this operation.
+     * Initializes the memory at address {@code (this + offset)}. Both the base address and offset are
+     * in bytes. The memory must be uninitialized or zero prior to this operation.
      *
      * @param offset the signed offset for the memory access
      * @param locationIdentity the identity of the write

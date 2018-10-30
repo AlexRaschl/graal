@@ -22,9 +22,9 @@
  */
 package org.graalvm.compiler.nodes.cfg;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.core.common.cfg.AbstractControlFlowGraph;
 import org.graalvm.compiler.core.common.cfg.Loop;
@@ -358,7 +358,7 @@ public final class Block extends AbstractBlockBase<Block> {
             pred.setSuccessors(newPredSuccs);
         }
 
-        ArrayList<Block> newPreds = new ArrayList<>();
+        SpecifiedArrayList<Block> newPreds = SpecifiedArrayList.createNew();
         for (int i = 0; i < next.getPredecessorCount(); i++) {
             Block curPred = next.getPredecessors()[i];
             if (curPred == this) {

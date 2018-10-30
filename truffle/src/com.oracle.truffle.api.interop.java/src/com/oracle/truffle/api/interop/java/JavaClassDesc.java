@@ -157,12 +157,12 @@ final class JavaClassDesc {
                 for (Method m : type.getMethods()) {
                     if (!Modifier.isPublic(m.getDeclaringClass().getModifiers())) {
                         /*
-                         * If a method is declared in a non-public direct superclass, there should
-                         * be a public bridge method in this class that provides access to it.
+                         * If a method is declared in a non-public direct superclass, there should be a public bridge method
+                         * in this class that provides access to it.
                          *
-                         * In some more elaborate class hierarchies, or if the method is declared in
-                         * an interface (i.e. a default method), no bridge method is generated, so
-                         * search the whole inheritance hierarchy for accessible methods.
+                         * In some more elaborate class hierarchies, or if the method is declared in an interface (i.e. a
+                         * default method), no bridge method is generated, so search the whole inheritance hierarchy for
+                         * accessible methods.
                          */
                         allMethodsPublic = false;
                         continue;
@@ -177,8 +177,8 @@ final class JavaClassDesc {
                 }
             }
             /*
-             * Look for inherited public methods if the class/interface is not public or if we have
-             * seen a public method declared in a non-public class (see above).
+             * Look for inherited public methods if the class/interface is not public or if we have seen a
+             * public method declared in a non-public class (see above).
              */
             if (!isPublicType || !allMethodsPublic) {
                 if (type.getSuperclass() != null) {

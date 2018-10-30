@@ -51,9 +51,9 @@ public @interface CContext {
     interface Directives {
 
         /**
-         * This method is called immediately after the constructor, to check whether the context is
-         * part of the configuration or not. If this method returns false, all elements registered
-         * inside this context are ignored.
+         * This method is called immediately after the constructor, to check whether the context is part of
+         * the configuration or not. If this method returns false, all elements registered inside this
+         * context are ignored.
          */
         default boolean isInConfiguration() {
             return true;
@@ -61,32 +61,32 @@ public @interface CContext {
 
         /**
          * All header files used in this context. C allows two kinds of imports: header files can be
-         * surrounded with &lt;...&gt;, or "...". One of them must be used for every element in the
-         * returned list.
+         * surrounded with &lt;...&gt;, or "...". One of them must be used for every element in the returned
+         * list.
          */
         default List<String> getHeaderFiles() {
             return Collections.emptyList();
         }
 
         /**
-         * Unparameterized macro-definitions. Each entry is in the form of <macro-name> or
-         * <macro-name> <macro-value>.
+         * Unparameterized macro-definitions. Each entry is in the form of <macro-name> or <macro-name>
+         * <macro-value>.
          */
         default List<String> getMacroDefinitions() {
             return Collections.emptyList();
         }
 
         /**
-         * Returns options to be passed to the C compiler when processing the directives. For
-         * example, the option "-Ipath" can be used to add a path for the lookup of header files.
+         * Returns options to be passed to the C compiler when processing the directives. For example, the
+         * option "-Ipath" can be used to add a path for the lookup of header files.
          */
         default List<String> getOptions() {
             return Collections.emptyList();
         }
 
         /**
-         * Returns a collection of libraries. They are treated the same way as libraries added via
-         * the {@link CLibrary} annotation.
+         * Returns a collection of libraries. They are treated the same way as libraries added via the
+         * {@link CLibrary} annotation.
          */
         default List<String> getLibraries() {
             return Collections.emptyList();

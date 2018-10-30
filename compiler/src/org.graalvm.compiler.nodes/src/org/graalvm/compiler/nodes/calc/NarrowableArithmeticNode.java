@@ -30,8 +30,7 @@ package org.graalvm.compiler.nodes.calc;
 public interface NarrowableArithmeticNode {
 
     /**
-     * Check whether this operation can be narrowed to {@code resultBits} bit without loss of
-     * precision.
+     * Check whether this operation can be narrowed to {@code resultBits} bit without loss of precision.
      *
      * @param resultBits
      */

@@ -116,9 +116,8 @@ public abstract class ShiftNode<OP> extends BinaryNode implements ArithmeticOper
         assert (wideMask & narrowMask) == narrowMask : String.format("wideMask %x should be wider than narrowMask %x", wideMask, narrowMask);
 
         /*
-         * Shifts are special because narrowing them also changes the implicit mask of the shift
-         * amount. We can narrow only if (y & wideMask) == (y & narrowMask) for all possible values
-         * of y.
+         * Shifts are special because narrowing them also changes the implicit mask of the shift amount. We
+         * can narrow only if (y & wideMask) == (y & narrowMask) for all possible values of y.
          */
         IntegerStamp yStamp = (IntegerStamp) getY().stamp(NodeView.DEFAULT);
         return (yStamp.upMask() & (wideMask & ~narrowMask)) == 0;

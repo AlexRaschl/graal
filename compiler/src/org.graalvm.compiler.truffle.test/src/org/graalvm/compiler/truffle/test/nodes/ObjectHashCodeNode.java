@@ -46,8 +46,8 @@ public class ObjectHashCodeNode extends AbstractTestNode {
             value = o1;
         }
         /*
-         * The exact type of value is Object, but Graal still thinks it can be null too - so the
-         * code that inserts a null check is tested too.
+         * The exact type of value is Object, but Graal still thinks it can be null too - so the code that
+         * inserts a null check is tested too.
          */
         return value.hashCode();
     }

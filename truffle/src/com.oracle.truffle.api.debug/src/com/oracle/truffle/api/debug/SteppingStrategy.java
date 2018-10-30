@@ -275,8 +275,8 @@ abstract class SteppingStrategy {
      * <li>Execution continues until either:
      * <ol>
      * <li>execution arrives at a node with attached user breakpoint, <strong>or:</strong></li>
-     * <li>execution <em>returns</em> to a CALL node and the call stack is smaller than when
-     * execution started, <strong>or:</strong></li>
+     * <li>execution <em>returns</em> to a CALL node and the call stack is smaller than when execution
+     * started, <strong>or:</strong></li>
      * <li>execution completes.</li>
      * </ol>
      * </ul>
@@ -343,8 +343,8 @@ abstract class SteppingStrategy {
     }
 
     /**
-     * Strategy: per-{@link #HALT_TAG} stepping, so long as not nested in method calls (i.e. at
-     * original stack depth).
+     * Strategy: per-{@link #HALT_TAG} stepping, so long as not nested in method calls (i.e. at original
+     * stack depth).
      * <ul>
      * <li>User breakpoints are enabled.</li>
      * <li>Execution continues until either:

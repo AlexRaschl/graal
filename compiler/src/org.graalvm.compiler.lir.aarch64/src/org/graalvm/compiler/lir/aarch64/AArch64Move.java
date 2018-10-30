@@ -565,9 +565,9 @@ public class AArch64Move {
     }
 
     /**
-     * Returns AArch64Address of given StackSlot. We cannot use CompilationResultBuilder.asAddress
-     * since this calls AArch64MacroAssembler.makeAddress with displacements that may be larger than
-     * 9-bit signed, which cannot be handled by that method.
+     * Returns AArch64Address of given StackSlot. We cannot use CompilationResultBuilder.asAddress since
+     * this calls AArch64MacroAssembler.makeAddress with displacements that may be larger than 9-bit
+     * signed, which cannot be handled by that method.
      *
      * Instead we create an address ourselves. We use scaled unsigned addressing since we know the
      * transfersize, which gives us a 15-bit address range (for longs/doubles) respectively a 14-bit

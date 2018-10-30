@@ -188,8 +188,8 @@ public final class MemoryTracer implements Closeable {
     }
 
     /**
-     * Sets the size of the shadow stack. Whether or not the shadow stack grew more than the
-     * provided size during execution can be checked with {@linkplain #hasStackOverflowed}
+     * Sets the size of the shadow stack. Whether or not the shadow stack grew more than the provided
+     * size during execution can be checked with {@linkplain #hasStackOverflowed}
      *
      * @param stackLimit the new size of the shadow stack
      * @since 0.30
@@ -211,8 +211,8 @@ public final class MemoryTracer implements Closeable {
     }
 
     /**
-     * Sets the {@link SourceSectionFilter filter} for the sampler. This allows the sampler to
-     * observe only parts of the executed source code.
+     * Sets the {@link SourceSectionFilter filter} for the sampler. This allows the sampler to observe
+     * only parts of the executed source code.
      *
      * @param filter The new filter describing which part of the source code to sample
      * @since 0.30
@@ -313,8 +313,7 @@ public final class MemoryTracer implements Closeable {
         private long totalAllocations = 0;
 
         /**
-         * @return Total number of allocations recorded while the associated element was on the
-         *         shadow stack
+         * @return Total number of allocations recorded while the associated element was on the shadow stack
          * @since 0.30
          */
         public long getTotalAllocations() {
@@ -322,8 +321,8 @@ public final class MemoryTracer implements Closeable {
         }
 
         /**
-         * Increases the number of total allocations recorded while the associated element was on
-         * the shadow stack.
+         * Increases the number of total allocations recorded while the associated element was on the shadow
+         * stack.
          *
          * @since 0.30
          */
@@ -332,8 +331,8 @@ public final class MemoryTracer implements Closeable {
         }
 
         /**
-         * @return Information about all the {@link AllocationEventInfo allocation events} that
-         *         happened while the associated element was at the top of the shadow stack.
+         * @return Information about all the {@link AllocationEventInfo allocation events} that happened
+         *         while the associated element was at the top of the shadow stack.
          * @since 0.30
          */
         public List<AllocationEventInfo> getEvents() {

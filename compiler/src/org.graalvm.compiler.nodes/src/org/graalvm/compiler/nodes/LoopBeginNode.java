@@ -142,9 +142,9 @@ public final class LoopBeginNode extends AbstractMergeNode implements IterableNo
     }
 
     /**
-     * Returns the <b>unordered</b> set of {@link LoopEndNode} that correspond to back-edges for
-     * this loop. The order of the back-edges is unspecified, if you need to get an ordering
-     * compatible for {@link PhiNode} creation, use {@link #orderedLoopEnds()}.
+     * Returns the <b>unordered</b> set of {@link LoopEndNode} that correspond to back-edges for this
+     * loop. The order of the back-edges is unspecified, if you need to get an ordering compatible for
+     * {@link PhiNode} creation, use {@link #orderedLoopEnds()}.
      *
      * @return the set of {@code LoopEndNode} that correspond to back-edges for this loop
      */
@@ -162,9 +162,8 @@ public final class LoopBeginNode extends AbstractMergeNode implements IterableNo
     }
 
     /**
-     * Returns the set of {@link LoopEndNode} that correspond to back-edges for this loop, in
-     * increasing {@link #phiPredecessorIndex} order. This method is suited to create new loop
-     * {@link PhiNode}.<br>
+     * Returns the set of {@link LoopEndNode} that correspond to back-edges for this loop, in increasing
+     * {@link #phiPredecessorIndex} order. This method is suited to create new loop {@link PhiNode}.<br>
      *
      * For example a new PhiNode may be added as follow:
      *
@@ -333,9 +332,8 @@ public final class LoopBeginNode extends AbstractMergeNode implements IterableNo
     private static final int NO_INCREMENT = Integer.MIN_VALUE;
 
     /**
-     * Returns an array with one entry for each input of the phi, which is either
-     * {@link #NO_INCREMENT} or the increment, i.e., the value by which the phi is incremented in
-     * the corresponding branch.
+     * Returns an array with one entry for each input of the phi, which is either {@link #NO_INCREMENT}
+     * or the increment, i.e., the value by which the phi is incremented in the corresponding branch.
      */
     private static int[] getSelfIncrements(PhiNode phi) {
         int[] selfIncrement = new int[phi.valueCount()];
@@ -361,8 +359,8 @@ public final class LoopBeginNode extends AbstractMergeNode implements IterableNo
     }
 
     /**
-     * Coalesces loop phis that represent the same value (which is not handled by normal Global
-     * Value Numbering).
+     * Coalesces loop phis that represent the same value (which is not handled by normal Global Value
+     * Numbering).
      */
     public void canonicalizePhis(SimplifierTool tool) {
         int phiCount = phis().count();

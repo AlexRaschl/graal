@@ -125,11 +125,11 @@ public class FloatingReadPhase extends Phase {
     }
 
     /**
-     * @param createFloatingReads specifies whether {@link FloatableAccessNode}s like
-     *            {@link ReadNode} should be converted into floating nodes (e.g.,
-     *            {@link FloatingReadNode}s) where possible
-     * @param createMemoryMapNodes a {@link MemoryMapNode} will be created for each return if this
-     *            is true
+     * @param createFloatingReads specifies whether {@link FloatableAccessNode}s like {@link ReadNode}
+     *            should be converted into floating nodes (e.g., {@link FloatingReadNode}s) where
+     *            possible
+     * @param createMemoryMapNodes a {@link MemoryMapNode} will be created for each return if this is
+     *            true
      */
     public FloatingReadPhase(boolean createFloatingReads, boolean createMemoryMapNodes) {
         this.createFloatingReads = createFloatingReads;
@@ -322,8 +322,8 @@ public class FloatingReadPhase extends Phase {
         }
 
         /**
-         * Improve the memory graph by re-wiring all usages of a {@link MemoryAnchorNode} to the
-         * real last access location.
+         * Improve the memory graph by re-wiring all usages of a {@link MemoryAnchorNode} to the real last
+         * access location.
          */
         private static void processAnchor(MemoryAnchorNode anchor, MemoryMapImpl state) {
             for (Node node : anchor.usages().snapshot()) {
@@ -393,11 +393,11 @@ public class FloatingReadPhase extends Phase {
             MemoryMapImpl result = new MemoryMapImpl(oldState);
             if (node.predecessor() instanceof InvokeWithExceptionNode) {
                 /*
-                 * InvokeWithException cannot be the lastLocationAccess for a FloatingReadNode.
-                 * Since it is both the invoke and a control flow split, the scheduler cannot
-                 * schedule anything immediately after the invoke. It can only schedule in the
-                 * normal or exceptional successor - and we have to tell the scheduler here which
-                 * side it needs to choose by putting in the location identity on both successors.
+                 * InvokeWithException cannot be the lastLocationAccess for a FloatingReadNode. Since it is both the
+                 * invoke and a control flow split, the scheduler cannot schedule anything immediately after the
+                 * invoke. It can only schedule in the normal or exceptional successor - and we have to tell the
+                 * scheduler here which side it needs to choose by putting in the location identity on both
+                 * successors.
                  */
                 InvokeWithExceptionNode invoke = (InvokeWithExceptionNode) node.predecessor();
                 result.lastMemorySnapshot.put(invoke.getLocationIdentity(), (MemoryCheckpoint) node);

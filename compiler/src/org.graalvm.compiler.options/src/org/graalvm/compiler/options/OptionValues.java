@@ -23,7 +23,6 @@
 package org.graalvm.compiler.options;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +33,7 @@ import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.UnmodifiableEconomicMap;
 import org.graalvm.collections.UnmodifiableMapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * A context for obtaining values for {@link OptionKey}s.
@@ -67,8 +67,8 @@ public class OptionValues {
     }
 
     /**
-     * Gets an immutable view of the key/value pairs in this object. Values read from this view
-     * should be {@linkplain #decodeNull(Object) decoded} before being used.
+     * Gets an immutable view of the key/value pairs in this object. Values read from this view should
+     * be {@linkplain #decodeNull(Object) decoded} before being used.
      */
     public UnmodifiableEconomicMap<OptionKey<?>, Object> getMap() {
         return values;
@@ -162,7 +162,7 @@ public class OptionValues {
      * @return {@code text} broken into lines
      */
     private static List<String> wrap(String text, int width) {
-        List<String> lines = new ArrayList<>();
+        List<String> lines = SpecifiedArrayList.createNew();
         if (text.length() > width) {
             String[] chunks = text.split("\\s+");
             StringBuilder line = new StringBuilder();
@@ -187,8 +187,8 @@ public class OptionValues {
 
     /**
      * Prints a help message to {@code out} describing all options available via {@code loader}. The
-     * key/value for each option is separated by {@code :=} if the option has an entry in this
-     * object otherwise {@code =} is used as the separator.
+     * key/value for each option is separated by {@code :=} if the option has an entry in this object
+     * otherwise {@code =} is used as the separator.
      *
      * @param loader
      * @param out

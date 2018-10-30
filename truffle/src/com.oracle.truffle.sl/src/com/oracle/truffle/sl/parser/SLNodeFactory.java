@@ -97,9 +97,9 @@ import com.oracle.truffle.sl.nodes.local.SLWriteLocalVariableNodeGen;
 public class SLNodeFactory {
 
     /**
-     * Local variable names that are visible in the current block. Variables are not visible outside
-     * of their defining block, to prevent the usage of undefined variables. Because of that, we can
-     * decide during parsing if a name references a local variable or is a function name.
+     * Local variable names that are visible in the current block. Variables are not visible outside of
+     * their defining block, to prevent the usage of undefined variables. Because of that, we can decide
+     * during parsing if a name references a local variable or is a function name.
      */
     static class LexicalScope {
         protected final LexicalScope outer;
@@ -158,9 +158,8 @@ public class SLNodeFactory {
 
     public void addFormalParameter(Token nameToken) {
         /*
-         * Method parameters are assigned to local variables at the beginning of the method. This
-         * ensures that accesses to parameters are specialized the same way as local variables are
-         * specialized.
+         * Method parameters are assigned to local variables at the beginning of the method. This ensures
+         * that accesses to parameters are specialized the same way as local variables are specialized.
          */
         final SLReadArgumentNode readArg = new SLReadArgumentNode(parameterCount);
         SLExpressionNode assignment = createAssignment(createStringLiteral(nameToken, false), readArg);
@@ -273,8 +272,8 @@ public class SLNodeFactory {
      * @param whileToken The token containing the while node's info
      * @param conditionNode The conditional node for this while loop
      * @param bodyNode The body of the while loop
-     * @return A SLWhileNode built using the given parameters. null if either conditionNode or
-     *         bodyNode is null.
+     * @return A SLWhileNode built using the given parameters. null if either conditionNode or bodyNode
+     *         is null.
      */
     public SLStatementNode createWhile(Token whileToken, SLExpressionNode conditionNode, SLStatementNode bodyNode) {
         if (conditionNode == null || bodyNode == null) {
@@ -456,8 +455,7 @@ public class SLNodeFactory {
 
     /**
      * Returns a {@link SLReadLocalVariableNode} if this read is a local variable or a
-     * {@link SLFunctionLiteralNode} if this read is global. In SL, the only global names are
-     * functions.
+     * {@link SLFunctionLiteralNode} if this read is global. In SL, the only global names are functions.
      *
      * @param nameNode The name of the variable/function being read
      * @return either:
@@ -527,8 +525,7 @@ public class SLNodeFactory {
      *
      * @param receiverNode The receiver of the property access
      * @param nameNode The name of the property being accessed
-     * @return An SLExpressionNode for the given parameters. null if receiverNode or nameNode is
-     *         null.
+     * @return An SLExpressionNode for the given parameters. null if receiverNode or nameNode is null.
      */
     public SLExpressionNode createReadProperty(SLExpressionNode receiverNode, SLExpressionNode nameNode) {
         if (receiverNode == null || nameNode == null) {
@@ -550,8 +547,8 @@ public class SLNodeFactory {
      * @param receiverNode The receiver object of the property assignment
      * @param nameNode The name of the property being assigned
      * @param valueNode The value to be assigned
-     * @return An SLExpressionNode for the given parameters. null if receiverNode, nameNode or
-     *         valueNode is null.
+     * @return An SLExpressionNode for the given parameters. null if receiverNode, nameNode or valueNode
+     *         is null.
      */
     public SLExpressionNode createWriteProperty(SLExpressionNode receiverNode, SLExpressionNode nameNode, SLExpressionNode valueNode) {
         if (receiverNode == null || nameNode == null || valueNode == null) {

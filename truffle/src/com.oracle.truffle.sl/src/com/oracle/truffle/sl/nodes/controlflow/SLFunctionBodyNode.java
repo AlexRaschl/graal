@@ -63,8 +63,7 @@ public final class SLFunctionBodyNode extends SLExpressionNode {
 
     /**
      * Profiling information, collected by the interpreter, capturing whether the function had an
-     * {@link SLReturnNode explicit return statement}. This allows the compiler to generate better
-     * code.
+     * {@link SLReturnNode explicit return statement}. This allows the compiler to generate better code.
      */
     private final BranchProfile exceptionTaken = BranchProfile.create();
     private final BranchProfile nullTaken = BranchProfile.create();
@@ -82,8 +81,7 @@ public final class SLFunctionBodyNode extends SLExpressionNode {
 
         } catch (SLReturnException ex) {
             /*
-             * In the interpreter, record profiling information that the function has an explicit
-             * return.
+             * In the interpreter, record profiling information that the function has an explicit return.
              */
             exceptionTaken.enter();
             /* The exception transports the actual return value. */
@@ -91,8 +89,8 @@ public final class SLFunctionBodyNode extends SLExpressionNode {
         }
 
         /*
-         * In the interpreter, record profiling information that the function ends without an
-         * explicit return.
+         * In the interpreter, record profiling information that the function ends without an explicit
+         * return.
          */
         nullTaken.enter();
         /* Return the default null value. */

@@ -100,8 +100,7 @@ public final class RightShiftNode extends ShiftNode<Shr> {
                             }
 
                             /*
-                             * if we cannot replace both shifts with a constant, replace them by a
-                             * full shift for this kind
+                             * if we cannot replace both shifts with a constant, replace them by a full shift for this kind
                              */
                             assert total >= mask;
                             return new RightShiftNode(other.getX(), ConstantNode.forInt(mask));
@@ -129,9 +128,9 @@ public final class RightShiftNode extends ShiftNode<Shr> {
     public boolean isNarrowable(int resultBits) {
         if (super.isNarrowable(resultBits)) {
             /*
-             * For signed right shifts, the narrow can be done before the shift if the cut off bits
-             * are all equal to the sign bit of the input. That's equivalent to the condition that
-             * the input is in the signed range of the narrow type.
+             * For signed right shifts, the narrow can be done before the shift if the cut off bits are all
+             * equal to the sign bit of the input. That's equivalent to the condition that the input is in the
+             * signed range of the narrow type.
              */
             IntegerStamp inputStamp = (IntegerStamp) getX().stamp(NodeView.DEFAULT);
             return CodeUtil.minValue(resultBits) <= inputStamp.lowerBound() && inputStamp.upperBound() <= CodeUtil.maxValue(resultBits);

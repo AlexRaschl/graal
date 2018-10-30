@@ -105,8 +105,8 @@ public abstract class AbstractLanguageLauncher extends Launcher {
     }
 
     /**
-     * This is called to abort execution when an argument can neither be recognized by the launcher
-     * or as an option for the polyglot engine.
+     * This is called to abort execution when an argument can neither be recognized by the launcher or
+     * as an option for the polyglot engine.
      * 
      * @param argument the argument that was not recognized.
      */
@@ -116,15 +116,14 @@ public abstract class AbstractLanguageLauncher extends Launcher {
 
     /**
      * Process command line arguments by either saving the necessary state or adding it to the
-     * {@code polyglotOptions}. Any unrecognized arguments should be accumulated and returned as a
-     * list.
+     * {@code polyglotOptions}. Any unrecognized arguments should be accumulated and returned as a list.
      *
      * Arguments that are translated to polyglot options should be removed from the list. Other
      * arguments should not be removed.
      * 
      * @param arguments the command line arguments that were passed to the launcher.
-     * @param polyglotOptions a map where polyglot options can be set. These will be uses when
-     *            creating the {@link org.graalvm.polyglot.Engine Engine}.
+     * @param polyglotOptions a map where polyglot options can be set. These will be uses when creating
+     *            the {@link org.graalvm.polyglot.Engine Engine}.
      * @return the list of arguments that were not recognized.
      */
     protected abstract List<String> preprocessArguments(List<String> arguments, Map<String, String> polyglotOptions);
@@ -142,14 +141,13 @@ public abstract class AbstractLanguageLauncher extends Launcher {
      * Launch the scripts as required by the arguments received during the previous call to
      * {@link #preprocessArguments(List, Map)}.
      * 
-     * @param contextBuilder a {@linkplain Context.Builder context builder} configured with the
-     *            proper language and polyglot options.
+     * @param contextBuilder a {@linkplain Context.Builder context builder} configured with the proper
+     *            language and polyglot options.
      */
     protected abstract void launch(Context.Builder contextBuilder);
 
     /**
-     * Returns the {@linkplain Language#getId() language id} of the language launched by this
-     * launcher.
+     * Returns the {@linkplain Language#getId() language id} of the language launched by this launcher.
      */
     protected abstract String getLanguageId();
 
@@ -159,8 +157,8 @@ public abstract class AbstractLanguageLauncher extends Launcher {
     }
 
     /**
-     * The return value specifies what languages should be available by default when not using
-     * polyglot. E.g. Ruby needs llvm as well.
+     * The return value specifies what languages should be available by default when not using polyglot.
+     * E.g. Ruby needs llvm as well.
      *
      * @return an array of required language ids
      */

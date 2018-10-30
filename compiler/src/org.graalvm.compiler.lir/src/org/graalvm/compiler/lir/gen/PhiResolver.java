@@ -27,11 +27,11 @@ import static jdk.vm.ci.code.ValueUtil.isLegal;
 import static jdk.vm.ci.meta.Value.ILLEGAL;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVariable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.lir.LIRInsertionBuffer;
 import org.graalvm.compiler.lir.LIRInstruction;
@@ -68,15 +68,14 @@ public class PhiResolver {
     static class PhiResolverNode {
 
         /**
-         * A source operand whose value flows into the {@linkplain #destinations destination}
-         * operands.
+         * A source operand whose value flows into the {@linkplain #destinations destination} operands.
          */
         final Value operand;
 
         /**
          * The operands whose values are defined by the {@linkplain #operand source} operand.
          */
-        final ArrayList<PhiResolverNode> destinations;
+        final SpecifiedArrayList<PhiResolverNode> destinations;
 
         /**
          * Denotes if a move instruction has already been emitted to initialize the value of
@@ -96,7 +95,7 @@ public class PhiResolver {
 
         PhiResolverNode(Value operand) {
             this.operand = operand;
-            destinations = new ArrayList<>(4);
+            destinations = SpecifiedArrayList.createNew(4);
         }
 
         @Override
@@ -124,8 +123,8 @@ public class PhiResolver {
 
     private Value temp;
 
-    private final ArrayList<PhiResolverNode> variableOperands = new ArrayList<>(3);
-    private final ArrayList<PhiResolverNode> otherOperands = new ArrayList<>(3);
+    private final SpecifiedArrayList<PhiResolverNode> variableOperands = SpecifiedArrayList.createNew(3);
+    private final SpecifiedArrayList<PhiResolverNode> otherOperands = SpecifiedArrayList.createNew(3);
 
     /**
      * Maps operands to nodes.
@@ -135,7 +134,7 @@ public class PhiResolver {
     public static PhiResolver create(LIRGeneratorTool gen) {
         AbstractBlockBase<?> block = gen.getCurrentBlock();
         assert block != null;
-        ArrayList<LIRInstruction> instructions = gen.getResult().getLIR().getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> instructions = gen.getResult().getLIR().getLIRforBlock(block);
 
         return new PhiResolver(gen, new LIRInsertionBuffer(), instructions, instructions.size());
     }

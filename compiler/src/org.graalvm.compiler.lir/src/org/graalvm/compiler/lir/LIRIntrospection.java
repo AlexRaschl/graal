@@ -29,13 +29,13 @@ import static org.graalvm.compiler.lir.LIRInstruction.OperandFlag.STACK;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
 import org.graalvm.collections.MapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.FieldIntrospection;
 import org.graalvm.compiler.core.common.Fields;
 import org.graalvm.compiler.core.common.FieldsScanner;
@@ -68,7 +68,7 @@ abstract class LIRIntrospection<T> extends FieldIntrospection<T> {
         }
 
         @SuppressWarnings({"unchecked"})
-        public Values(int directCount, ArrayList<ValueFieldInfo> fields) {
+        public Values(int directCount, SpecifiedArrayList<ValueFieldInfo> fields) {
             super(fields);
             this.directCount = directCount;
             flags = (EnumSet<OperandFlag>[]) new EnumSet<?>[fields.size()];
@@ -146,13 +146,13 @@ abstract class LIRIntrospection<T> extends FieldIntrospection<T> {
          * Number of non-array fields in {@link #values}.
          */
         public int directCount;
-        public final ArrayList<ValueFieldInfo> values = new ArrayList<>();
+        public final SpecifiedArrayList<ValueFieldInfo> values = SpecifiedArrayList.createNew();
     }
 
     protected abstract static class LIRFieldsScanner extends FieldsScanner {
 
         public final EconomicMap<Class<? extends Annotation>, OperandModeAnnotation> valueAnnotations;
-        public final ArrayList<FieldsScanner.FieldInfo> states = new ArrayList<>();
+        public final SpecifiedArrayList<FieldsScanner.FieldInfo> states = SpecifiedArrayList.createNew();
 
         public LIRFieldsScanner(FieldsScanner.CalcOffset calc) {
             super(calc);
@@ -331,8 +331,8 @@ abstract class LIRIntrospection<T> extends FieldIntrospection<T> {
     }
 
     /**
-     * Tests if all values in this string are printable ASCII characters or value \0 (b in
-     * [0x20,0x7F]) or b == 0.
+     * Tests if all values in this string are printable ASCII characters or value \0 (b in [0x20,0x7F])
+     * or b == 0.
      *
      * @param array
      * @return true if there are only printable ASCII characters and \0, false otherwise

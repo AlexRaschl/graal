@@ -47,25 +47,24 @@ public final class LoopEndNode extends AbstractEndNode {
 
     /*
      * The declared type of the field cannot be LoopBeginNode, because loop explosion during partial
-     * evaluation can temporarily assign a non-loop begin. This node will then be deleted shortly
-     * after - but we still must not have type system violations for that short amount of time.
+     * evaluation can temporarily assign a non-loop begin. This node will then be deleted shortly after
+     * - but we still must not have type system violations for that short amount of time.
      */
     @Input(Association) AbstractBeginNode loopBegin;
     protected int endIndex;
 
     /**
      * Most loop ends need a safepoint (flag set to true) so that garbage collection can interrupt a
-     * long-running (possibly endless) loop. Safepoints may be disabled for two reasons: 1) Some
-     * code must be safepoint free, i.e., uninterruptible by garbage collection. 2) An optimization
-     * phase determined that the loop already has another safepoint or cannot be endless, so there
-     * is no need for a loop-end safepoint.
+     * long-running (possibly endless) loop. Safepoints may be disabled for two reasons: 1) Some code
+     * must be safepoint free, i.e., uninterruptible by garbage collection. 2) An optimization phase
+     * determined that the loop already has another safepoint or cannot be endless, so there is no need
+     * for a loop-end safepoint.
      *
-     * Note that 1) is a hard correctness issue: emitting a safepoint in uninterruptible code is a
-     * bug, i.e., it is not allowed to set the flag back to true once it is false. To ensure that
-     * loop ends that are created late, e.g., during control flow simplifications, have no
-     * safepoints in such cases, the safepoints are actually disabled for the
-     * {@link LoopBeginNode#canEndsSafepoint loop begin}. New loop ends inherit the flag value from
-     * the loop begin.
+     * Note that 1) is a hard correctness issue: emitting a safepoint in uninterruptible code is a bug,
+     * i.e., it is not allowed to set the flag back to true once it is false. To ensure that loop ends
+     * that are created late, e.g., during control flow simplifications, have no safepoints in such
+     * cases, the safepoints are actually disabled for the {@link LoopBeginNode#canEndsSafepoint loop
+     * begin}. New loop ends inherit the flag value from the loop begin.
      */
     boolean canSafepoint;
 

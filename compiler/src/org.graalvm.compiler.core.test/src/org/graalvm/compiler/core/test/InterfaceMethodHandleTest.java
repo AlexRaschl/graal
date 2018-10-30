@@ -114,8 +114,8 @@ public final class InterfaceMethodHandleTest extends GraalCompilerTest {
     }
 
     /**
-     * Try to exercise a mixed calling sequence with regular JIT code calling a method handle that
-     * can't be inlined with an implementation compiled by Graal that throws an exception.
+     * Try to exercise a mixed calling sequence with regular JIT code calling a method handle that can't
+     * be inlined with an implementation compiled by Graal that throws an exception.
      */
     @Test
     public void testInvokeInterface03() throws Throwable {
@@ -145,8 +145,8 @@ public final class InterfaceMethodHandleTest extends GraalCompilerTest {
 
     static class Gen implements Opcodes {
         /**
-         * Construct a type which claims to implement {@link I} but with incorrect access on
-         * {@link I#m} so that an exception must be thrown.
+         * Construct a type which claims to implement {@link I} but with incorrect access on {@link I#m} so
+         * that an exception must be thrown.
          */
         public static byte[] bytesForB() {
 

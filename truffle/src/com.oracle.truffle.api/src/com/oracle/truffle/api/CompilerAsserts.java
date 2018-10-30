@@ -37,10 +37,9 @@ public final class CompilerAsserts {
     }
 
     /**
-     * Assertion that this code position should never be reached during compilation. It can be used
-     * for exceptional code paths or rare code paths that should never be included in a compilation
-     * unit. See {@link CompilerDirectives#transferToInterpreter()} for the corresponding compiler
-     * directive.
+     * Assertion that this code position should never be reached during compilation. It can be used for
+     * exceptional code paths or rare code paths that should never be included in a compilation unit.
+     * See {@link CompilerDirectives#transferToInterpreter()} for the corresponding compiler directive.
      * 
      * @since 0.8 or earlier
      */
@@ -48,10 +47,9 @@ public final class CompilerAsserts {
     }
 
     /**
-     * Assertion that this code position should never be reached during compilation. It can be used
-     * for exceptional code paths or rare code paths that should never be included in a compilation
-     * unit. See {@link CompilerDirectives#transferToInterpreter()} for the corresponding compiler
-     * directive.
+     * Assertion that this code position should never be reached during compilation. It can be used for
+     * exceptional code paths or rare code paths that should never be included in a compilation unit.
+     * See {@link CompilerDirectives#transferToInterpreter()} for the corresponding compiler directive.
      *
      * @param message text associated with the bailout exception
      * @since 0.8 or earlier

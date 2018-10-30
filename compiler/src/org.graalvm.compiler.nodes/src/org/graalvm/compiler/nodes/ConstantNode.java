@@ -85,9 +85,9 @@ public final class ConstantNode extends FloatingNode implements LIRLowerable {
         this.stableDimension = stableDimension;
         if (stableDimension == 0) {
             /*
-             * Ensure that isDefaultStable has a canonical value to avoid having two constant nodes
-             * that only differ in this field. The value of isDefaultStable is only used when we
-             * have a stable array dimension.
+             * Ensure that isDefaultStable has a canonical value to avoid having two constant nodes that only
+             * differ in this field. The value of isDefaultStable is only used when we have a stable array
+             * dimension.
              */
             this.isDefaultStable = false;
         } else {
@@ -382,8 +382,8 @@ public final class ConstantNode extends FloatingNode implements LIRLowerable {
     }
 
     /**
-     * Returns a node for a constant integer that's not directly representable as Java primitive
-     * (e.g. short).
+     * Returns a node for a constant integer that's not directly representable as Java primitive (e.g.
+     * short).
      */
     public static ConstantNode forIntegerBits(int bits, long value, StructuredGraph graph) {
         return forIntegerBits(bits, JavaConstant.forPrimitiveInt(bits, value), graph);
@@ -396,8 +396,8 @@ public final class ConstantNode extends FloatingNode implements LIRLowerable {
     }
 
     /**
-     * Returns a node for a constant integer that's not directly representable as Java primitive
-     * (e.g. short).
+     * Returns a node for a constant integer that's not directly representable as Java primitive (e.g.
+     * short).
      */
     public static ConstantNode forIntegerBits(int bits, long value) {
         return forIntegerBits(bits, JavaConstant.forPrimitiveInt(bits, value));

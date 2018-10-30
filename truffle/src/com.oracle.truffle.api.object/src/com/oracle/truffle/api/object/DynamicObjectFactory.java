@@ -33,8 +33,8 @@ package com.oracle.truffle.api.object;
  */
 public interface DynamicObjectFactory {
     /**
-     * Create a new {@link DynamicObject} and initialize instance properties with the provided
-     * values. Exactly as many values are required as there are instance properties.
+     * Create a new {@link DynamicObject} and initialize instance properties with the provided values.
+     * Exactly as many values are required as there are instance properties.
      *
      * @param initialValues the values to initialize the object with, in order.
      * @return a new {@link DynamicObject} initialized with the provided values.

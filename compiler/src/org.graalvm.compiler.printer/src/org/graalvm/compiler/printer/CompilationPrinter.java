@@ -27,10 +27,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.CompilationIdentifier;
 import org.graalvm.compiler.debug.LogStream;
 import org.graalvm.compiler.debug.TTY;
@@ -165,7 +165,7 @@ public class CompilationPrinter implements Closeable {
 
         if (codePos != null) {
             BytecodePosition curCodePos = codePos;
-            List<VirtualObject> virtualObjects = new ArrayList<>();
+            List<VirtualObject> virtualObjects = SpecifiedArrayList.createNew();
             do {
                 sb.append(MetaUtil.toLocation(curCodePos.getMethod(), curCodePos.getBCI()));
                 sb.append('\n');

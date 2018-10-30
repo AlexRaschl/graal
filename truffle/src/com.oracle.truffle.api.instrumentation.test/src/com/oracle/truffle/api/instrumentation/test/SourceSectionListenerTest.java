@@ -28,6 +28,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.polyglot.Instrument;
+import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.SourceSection;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,10 +41,6 @@ import com.oracle.truffle.api.instrumentation.SourceSectionFilter;
 import com.oracle.truffle.api.instrumentation.StandardTags;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument;
 import com.oracle.truffle.api.instrumentation.TruffleInstrument.Registration;
-
-import org.graalvm.polyglot.Instrument;
-import org.graalvm.polyglot.Source;
-import org.graalvm.polyglot.SourceSection;
 
 public class SourceSectionListenerTest extends AbstractInstrumentationTest {
 

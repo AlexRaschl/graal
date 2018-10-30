@@ -32,8 +32,7 @@ public class InliningNullCheckNode1 extends AbstractTestNode {
         @SuppressWarnings("static-method")
         private int foo(int n) {
             /*
-             * Since we do not access "this", inlining the method with a null receiver would
-             * actually work.
+             * Since we do not access "this", inlining the method with a null receiver would actually work.
              */
 
             int x = n;
@@ -80,8 +79,7 @@ public class InliningNullCheckNode1 extends AbstractTestNode {
         }
         try {
             /*
-             * A invokespecial where the receiver is guaranteed to be null during partial
-             * evaluation.
+             * A invokespecial where the receiver is guaranteed to be null during partial evaluation.
              */
             return a.foo(0);
         } catch (NullPointerException ex) {

@@ -49,8 +49,8 @@ import jdk.vm.ci.code.TargetDescription;
 public class AssertionSnippets implements Snippets {
 
     /**
-     * This call can only be used with true for the "vmError" parameter, so that it can be
-     * configured to be a leaf method.
+     * This call can only be used with true for the "vmError" parameter, so that it can be configured to
+     * be a leaf method.
      */
     public static final ForeignCallDescriptor ASSERTION_VM_MESSAGE_C = new ForeignCallDescriptor("assertionVmMessageC", void.class, boolean.class, Word.class, long.class, long.class, long.class);
 

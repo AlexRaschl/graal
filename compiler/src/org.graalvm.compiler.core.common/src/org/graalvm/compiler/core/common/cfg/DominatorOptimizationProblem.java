@@ -114,8 +114,8 @@ public abstract class DominatorOptimizationProblem<E extends Enum<E>, C> {
     }
 
     /**
-     * Sets {@code flag} for all blocks along the dominator path from {@code block} to the root
-     * until a block it finds a block where {@code flag} is already set.
+     * Sets {@code flag} for all blocks along the dominator path from {@code block} to the root until a
+     * block it finds a block where {@code flag} is already set.
      */
     public final void setDominatorPath(E flag, AbstractBlockBase<?> block) {
         BitSet bitSet = flags.get(flag);

@@ -48,6 +48,7 @@ public class KnownTruffleTypes extends AbstractKnownTruffleTypes {
     public final ResolvedJavaField fieldFrameDescriptorMaterializeCalled = findField(classFrameDescriptor, "materializeCalled");
     public final ResolvedJavaField fieldFrameDescriptorSlots = findField(classFrameDescriptor, "slots");
 
+    // TODO CHECK REPLACE
     public final ResolvedJavaField fieldArrayListElementData = findField(lookupType(ArrayList.class), "elementData");
 
     public final ResolvedJavaField fieldFrameSlotKind = findField(classFrameSlot, "kind");

@@ -113,10 +113,10 @@ public abstract class TruffleCompilerImpl implements TruffleCompiler {
     protected final TrufflePostCodeInstallationTaskFactory codeInstallationTaskFactory;
 
     /**
-     * The instrumentation object is used by the Truffle instrumentation to count executions. The
-     * value is lazily initialized the first time it is requested because it depends on the Truffle
-     * options, and tests that need the instrumentation table need to override these options after
-     * the TruffleRuntime object is created.
+     * The instrumentation object is used by the Truffle instrumentation to count executions. The value
+     * is lazily initialized the first time it is requested because it depends on the Truffle options,
+     * and tests that need the instrumentation table need to override these options after the
+     * TruffleRuntime object is created.
      */
     private volatile InstrumentPhase.Instrumentation instrumentation;
 
@@ -166,8 +166,8 @@ public abstract class TruffleCompilerImpl implements TruffleCompiler {
     }
 
     /**
-     * Gets the instrumentation manager associated with this compiler, creating it first if
-     * necessary. Each compiler instance has its own instrumentation manager.
+     * Gets the instrumentation manager associated with this compiler, creating it first if necessary.
+     * Each compiler instance has its own instrumentation manager.
      */
     public final InstrumentPhase.Instrumentation getInstrumentation() {
         if (instrumentation == null) {
@@ -225,8 +225,8 @@ public abstract class TruffleCompilerImpl implements TruffleCompiler {
      *
      * @param compilable the context for the {@code "Truffle"} scope
      * @param debug the current debug context
-     * @return a new opened {@code "Truffle"} scope or {@code null} if the current (unqualified)
-     *         scope is already named {@code "Truffle"}
+     * @return a new opened {@code "Truffle"} scope or {@code null} if the current (unqualified) scope
+     *         is already named {@code "Truffle"}
      */
     private static Scope maybeOpenTruffleScope(CompilableTruffleAST compilable, DebugContext debug) throws Throwable {
         if (debug.getCurrentScopeName().endsWith(".Truffle")) {
@@ -264,8 +264,7 @@ public abstract class TruffleCompilerImpl implements TruffleCompiler {
     protected abstract DiagnosticsOutputDirectory getDebugOutputDirectory();
 
     /**
-     * Gets the map used to count the number of compilation failures or bailouts handled by each
-     * action.
+     * Gets the map used to count the number of compilation failures or bailouts handled by each action.
      *
      * @see CompilationWrapper#CompilationWrapper(DiagnosticsOutputDirectory, Map)
      */
@@ -344,8 +343,8 @@ public abstract class TruffleCompilerImpl implements TruffleCompiler {
     }
 
     /**
-     * Compiles a Truffle AST. If compilation succeeds, the AST will have compiled code associated
-     * with it that can be executed instead of interpreting the AST.
+     * Compiles a Truffle AST. If compilation succeeds, the AST will have compiled code associated with
+     * it that can be executed instead of interpreting the AST.
      *
      * @param compilable representation of the AST to be compiled
      * @param inliningPlan

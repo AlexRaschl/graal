@@ -24,9 +24,9 @@ package org.graalvm.compiler.core.common;
 
 import static org.graalvm.compiler.core.common.UnsafeAccess.UNSAFE;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.GraalError;
 
 import sun.misc.Unsafe;
@@ -59,7 +59,7 @@ public class Fields {
         return new Fields(scanner.data);
     }
 
-    public Fields(ArrayList<? extends FieldsScanner.FieldInfo> fields) {
+    public Fields(SpecifiedArrayList<? extends FieldsScanner.FieldInfo> fields) {
         Collections.sort(fields);
         this.offsets = new long[fields.size()];
         this.names = new String[offsets.length];
@@ -82,7 +82,7 @@ public class Fields {
         return offsets.length;
     }
 
-    public static void translateInto(Fields fields, ArrayList<FieldsScanner.FieldInfo> infos) {
+    public static void translateInto(Fields fields, SpecifiedArrayList<FieldsScanner.FieldInfo> infos) {
         for (int index = 0; index < fields.getCount(); index++) {
             infos.add(new FieldsScanner.FieldInfo(fields.offsets[index], fields.names[index], fields.types[index], fields.declaringClasses[index]));
         }
@@ -112,8 +112,8 @@ public class Fields {
      *
      * @param from the object from which the fields should be copied
      * @param to the object to which the fields should be copied
-     * @param trans function to applied to object field values as they are copied. If {@code null},
-     *            the value is copied unchanged.
+     * @param trans function to applied to object field values as they are copied. If {@code null}, the
+     *            value is copied unchanged.
      */
     public void copy(Object from, Object to, ObjectTransformer trans) {
         assert from.getClass() == to.getClass();
@@ -217,8 +217,8 @@ public class Fields {
     }
 
     /**
-     * Determines if a field in the domain of this object is the same as the field denoted by the
-     * same index in another {@link Fields} object.
+     * Determines if a field in the domain of this object is the same as the field denoted by the same
+     * index in another {@link Fields} object.
      */
     public boolean isSame(Fields other, int index) {
         return other.offsets[index] == offsets[index];

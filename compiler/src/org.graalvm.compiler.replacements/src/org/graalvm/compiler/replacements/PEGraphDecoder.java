@@ -26,7 +26,6 @@ import static org.graalvm.compiler.debug.GraalError.unimplemented;
 import static org.graalvm.compiler.nodeinfo.NodeCycles.CYCLES_IGNORED;
 import static org.graalvm.compiler.nodeinfo.NodeSize.SIZE_IGNORED;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +33,7 @@ import java.util.Map;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.BytecodeProvider;
 import org.graalvm.compiler.core.common.PermanentBailoutException;
@@ -496,9 +496,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
             if (frameState.bci == BytecodeFrame.UNWIND_BCI) {
                 /*
                  * handleMissingAfterExceptionFrameState is called during graph decoding from
-                 * InliningUtil.processFrameState - but during graph decoding it does not do
-                 * anything because the usages of the frameState are not available yet. So we need
-                 * to call it again.
+                 * InliningUtil.processFrameState - but during graph decoding it does not do anything because the
+                 * usages of the frameState are not available yet. So we need to call it again.
                  */
                 PEMethodScope peMethodScope = (PEMethodScope) methodScope;
                 Invoke invoke = peMethodScope.invokeData != null ? peMethodScope.invokeData.invoke : null;
@@ -532,8 +531,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
         PEMethodScope methodScope = (PEMethodScope) s;
 
         /*
-         * Decode the call target, but do not add it to the graph yet. This avoids adding usages for
-         * all the arguments, which are expensive to remove again when we can inline the method.
+         * Decode the call target, but do not add it to the graph yet. This avoids adding usages for all the
+         * arguments, which are expensive to remove again when we can inline the method.
          */
         assert invokeData.invoke.callTarget() == null : "callTarget edge is ignored during decoding of Invoke";
         CallTargetNode callTarget = (CallTargetNode) decodeFloatingNode(methodScope, loopScope, invokeData.callTargetOrderId);
@@ -726,8 +725,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
         if (!inlineMethod.isStatic()) {
             if (StampTool.isPointerAlwaysNull(arguments[0])) {
                 /*
-                 * The receiver is null, so we can unconditionally throw a NullPointerException
-                 * instead of performing any inlining.
+                 * The receiver is null, so we can unconditionally throw a NullPointerException instead of
+                 * performing any inlining.
                  */
                 DeoptimizeNode deoptimizeNode = graph.add(new DeoptimizeNode(DeoptimizationAction.InvalidateReprofile, DeoptimizationReason.NullCheckException));
                 predecessor.setNext(deoptimizeNode);
@@ -746,9 +745,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
         LoopScope inlineLoopScope = createInitialLoopScope(inlineScope, predecessor);
 
         /*
-         * The GraphEncoder assigns parameters a nodeId immediately after the fixed nodes.
-         * Initializing createdNodes here avoid decoding and immediately replacing the
-         * ParameterNodes.
+         * The GraphEncoder assigns parameters a nodeId immediately after the fixed nodes. Initializing
+         * createdNodes here avoid decoding and immediately replacing the ParameterNodes.
          */
         int firstArgumentNodeId = inlineScope.maxFixedNodeOrderId + 1;
         for (int i = 0; i < arguments.length; i++) {
@@ -804,9 +802,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
             } else {
                 /*
                  * More than one UnwindNode. This can happen with the loop explosion strategy
-                 * FULL_EXPLODE_UNTIL_RETURN, where we keep exploding after the loop and therefore
-                 * also explode exception paths. Merge the exception in a similar way as multiple
-                 * return values.
+                 * FULL_EXPLODE_UNTIL_RETURN, where we keep exploding after the loop and therefore also explode
+                 * exception paths. Merge the exception in a similar way as multiple return values.
                  */
                 MergeNode unwindMergeNode = graph.add(new MergeNode());
                 exceptionValue = InliningUtil.mergeValueProducers(unwindMergeNode, getMatchingNodes(returnAndUnwindNodes, returnNodeCount > 0, UnwindNode.class, unwindNodeCount),
@@ -839,8 +836,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
         invokeNode.replaceAtUsages(returnValue);
 
         /*
-         * Usage the handles that we have on the return value and the exception to update the
-         * orderId->Node table.
+         * Usage the handles that we have on the return value and the exception to update the orderId->Node
+         * table.
          */
         registerNode(loopScope, invokeData.invokeOrderId, returnValue, true, true);
         if (invoke instanceof InvokeWithExceptionNode) {
@@ -878,7 +875,7 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
             return (List<T>) returnAndUnwindNodes;
         }
 
-        List<T> result = new ArrayList<>(resultCount);
+        List<T> result = SpecifiedArrayList.createNew(resultCount);
         for (int i = 0; i < returnAndUnwindNodes.size(); i++) {
             ControlSinkNode node = returnAndUnwindNodes.get(i);
             if (clazz.isInstance(node)) {
@@ -896,7 +893,7 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
             methodCounts.put(cur.method, oldCount == null ? 1 : oldCount + 1);
         }
 
-        List<Map.Entry<ResolvedJavaMethod, Integer>> methods = new ArrayList<>(methodCounts.entrySet());
+        List<Map.Entry<ResolvedJavaMethod, Integer>> methods = SpecifiedArrayList.createNew(methodCounts.entrySet());
         methods.sort((e1, e2) -> -Integer.compare(e1.getValue(), e2.getValue()));
 
         StringBuilder msg = new StringBuilder("Too deep inlining, probably caused by recursive inlining.").append(System.lineSeparator()).append("== Inlined methods ordered by inlining frequency:");
@@ -931,8 +928,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
 
     private static void deleteInvoke(Invoke invoke) {
         /*
-         * Clean up unused nodes. We cannot just call killCFG on the invoke node because that can
-         * kill too much: nodes that are decoded later can use values that appear unused by now.
+         * Clean up unused nodes. We cannot just call killCFG on the invoke node because that can kill too
+         * much: nodes that are decoded later can use values that appear unused by now.
          */
         FrameState frameState = invoke.stateAfter();
         invoke.asNode().safeDelete();
@@ -1104,8 +1101,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
             FrameState outerState = stateAtReturn.duplicateModified(graph, methodScope.invokeData.invoke.bci(), stateAtReturn.rethrowException(), true, invokeReturnKind, null, null);
 
             /*
-             * When the encoded graph has methods inlining, we can already have a proper caller
-             * state. If not, we set the caller state here.
+             * When the encoded graph has methods inlining, we can already have a proper caller state. If not,
+             * we set the caller state here.
              */
             if (outerState.outerFrameState() == null && methodScope.caller != null) {
                 ensureOuterStateDecoded(methodScope.caller);
@@ -1153,8 +1150,8 @@ public abstract class PEGraphDecoder extends SimplifyingGraphDecoder {
                 List<ValueNode> invokeArgsList = null;
                 if (frameState.bci == BytecodeFrame.BEFORE_BCI) {
                     /*
-                     * We know that the argument list is only used in this case, so avoid the List
-                     * allocation for "normal" bcis.
+                     * We know that the argument list is only used in this case, so avoid the List allocation for
+                     * "normal" bcis.
                      */
                     invokeArgsList = Arrays.asList(methodScope.arguments);
                 }

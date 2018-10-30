@@ -137,9 +137,9 @@ public class StampFactory {
     }
 
     /**
-     * Create a new stamp use {@code newLowerBound} and {@code newUpperBound} computing the
-     * appropriate {@link IntegerStamp#upMask} and {@link IntegerStamp#downMask} and incorporating
-     * any mask information from {@code maskStamp}.
+     * Create a new stamp use {@code newLowerBound} and {@code newUpperBound} computing the appropriate
+     * {@link IntegerStamp#upMask} and {@link IntegerStamp#downMask} and incorporating any mask
+     * information from {@code maskStamp}.
      *
      * @param bits
      * @param newLowerBound

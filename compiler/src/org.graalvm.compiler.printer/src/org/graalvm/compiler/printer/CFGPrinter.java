@@ -25,7 +25,6 @@ package org.graalvm.compiler.printer;
 import static java.lang.Character.toLowerCase;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Iterator;
@@ -34,6 +33,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.graalvm.collections.UnmodifiableMapCursor;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.bytecode.Bytecode;
 import org.graalvm.compiler.bytecode.BytecodeDisassembler;
 import org.graalvm.compiler.core.common.alloc.Trace;
@@ -101,8 +101,7 @@ class CFGPrinter extends CompilationPrinter {
      * Prints the control flow graph denoted by a given block map.
      *
      * @param label A label describing the compilation phase that produced the control flow graph.
-     * @param blockMap A data structure describing the blocks in a method and how they are
-     *            connected.
+     * @param blockMap A data structure describing the blocks in a method and how they are connected.
      */
     public void printCFG(String label, BciBlockMapping blockMap) {
         begin("cfg");
@@ -477,7 +476,7 @@ class CFGPrinter extends CompilationPrinter {
         if (lir == null) {
             return;
         }
-        ArrayList<LIRInstruction> lirInstructions = lir.getLIRforBlock(block);
+        SpecifiedArrayList<LIRInstruction> lirInstructions = lir.getLIRforBlock(block);
         if (lirInstructions == null) {
             return;
         }
@@ -746,7 +745,7 @@ class CFGPrinter extends CompilationPrinter {
         out.println("LIR");
 
         for (AbstractBlockBase<?> block : trace.getBlocks()) {
-            ArrayList<LIRInstruction> lirInstructions = lir.getLIRforBlock(block);
+            SpecifiedArrayList<LIRInstruction> lirInstructions = lir.getLIRforBlock(block);
             if (lirInstructions == null) {
                 continue;
             }
@@ -809,7 +808,7 @@ class CFGPrinter extends CompilationPrinter {
                 }
             }
         }
-        List<Trace> succ = new ArrayList<>();
+        List<Trace> succ = SpecifiedArrayList.createNew();
         for (int i = bs.nextSetBit(0); i >= 0; i = bs.nextSetBit(i + 1)) {
             succ.add(traceBuilderResult.getTraces().get(i));
         }
@@ -827,7 +826,7 @@ class CFGPrinter extends CompilationPrinter {
                 }
             }
         }
-        List<Trace> pred = new ArrayList<>();
+        List<Trace> pred = SpecifiedArrayList.createNew();
         for (int i = bs.nextSetBit(0); i >= 0; i = bs.nextSetBit(i + 1)) {
             pred.add(traceBuilderResult.getTraces().get(i));
         }

@@ -27,8 +27,7 @@ import static org.graalvm.compiler.lir.LIRValueUtil.asConstant;
 import static org.graalvm.compiler.lir.LIRValueUtil.isConstantValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.AbstractBlockBase;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -60,7 +59,7 @@ class SSALinearScanResolveDataFlowPhase extends LinearScanResolveDataFlowPhase {
             int fromBlockLastInstructionId = allocator.getLastLirInstructionId(fromBlock) + 1;
 
             AbstractBlockBase<?> phiOutBlock = midBlock != null ? midBlock : fromBlock;
-            ArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(phiOutBlock);
+            SpecifiedArrayList<LIRInstruction> instructions = allocator.getLIR().getLIRforBlock(phiOutBlock);
             int phiOutIdx = SSAUtil.phiOutIndex(allocator.getLIR(), phiOutBlock);
             int phiOutId = midBlock != null ? fromBlockLastInstructionId : instructions.get(phiOutIdx).id();
             assert phiOutId >= 0;

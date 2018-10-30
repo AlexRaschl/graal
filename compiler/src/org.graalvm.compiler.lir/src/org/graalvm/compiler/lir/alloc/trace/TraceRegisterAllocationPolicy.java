@@ -22,8 +22,7 @@
  */
 package org.graalvm.compiler.lir.alloc.trace;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.Trace;
 import org.graalvm.compiler.core.common.alloc.TraceBuilderResult;
@@ -79,15 +78,15 @@ public final class TraceRegisterAllocationPolicy {
         /**
          * Returns {@code true} if the allocation strategy should be used for {@code trace}.
          *
-         * This method must not alter any state of the strategy, nor rely on being called in a
-         * specific trace order.
+         * This method must not alter any state of the strategy, nor rely on being called in a specific
+         * trace order.
          */
         public abstract boolean shouldApplyTo(Trace trace);
 
         @SuppressWarnings("hiding")
         protected abstract TraceAllocationPhase<TraceAllocationContext> initAllocator(TargetDescription target, LIRGenerationResult lirGenRes, MoveFactory spillMoveFactory,
                         RegisterAllocationConfig registerAllocationConfig, AllocatableValue[] cachedStackSlots, TraceBuilderResult resultTraces, boolean neverSpillConstant,
-                        GlobalLivenessInfo livenessInfo, ArrayList<AllocationStrategy> strategies);
+                        GlobalLivenessInfo livenessInfo, SpecifiedArrayList<AllocationStrategy> strategies);
     }
 
     private final TargetDescription target;
@@ -99,7 +98,7 @@ public final class TraceRegisterAllocationPolicy {
     private final boolean neverSpillConstants;
     private final GlobalLivenessInfo livenessInfo;
 
-    private final ArrayList<AllocationStrategy> strategies;
+    private final SpecifiedArrayList<AllocationStrategy> strategies;
 
     public TraceRegisterAllocationPolicy(TargetDescription target, LIRGenerationResult lirGenRes, MoveFactory spillMoveFactory, RegisterAllocationConfig registerAllocationConfig,
                     AllocatableValue[] cachedStackSlots, TraceBuilderResult resultTraces, boolean neverSpillConstant, GlobalLivenessInfo livenessInfo) {
@@ -112,7 +111,7 @@ public final class TraceRegisterAllocationPolicy {
         this.neverSpillConstants = neverSpillConstant;
         this.livenessInfo = livenessInfo;
 
-        this.strategies = new ArrayList<>(3);
+        this.strategies = SpecifiedArrayList.createNew(3);
     }
 
     protected OptionValues getOptions() {

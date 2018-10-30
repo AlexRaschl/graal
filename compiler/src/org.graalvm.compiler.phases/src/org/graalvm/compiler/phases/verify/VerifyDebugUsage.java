@@ -24,12 +24,12 @@ package org.graalvm.compiler.phases.verify;
 
 import static org.graalvm.compiler.debug.DebugContext.BASIC_LEVEL;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.ObjectStamp;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.GraalError;
@@ -112,7 +112,7 @@ public class VerifyDebugUsage extends VerifyPhase<PhaseContext> {
     private void verifyParameters(MethodCallTargetNode callTarget, StructuredGraph callerGraph, NodeInputList<? extends ValueNode> args, ResolvedJavaType stringType, int startArgIdx) {
         if (callTarget.targetMethod().isVarArgs() && args.get(args.count() - 1) instanceof NewArrayNode) {
             // unpack the arguments to the var args
-            List<ValueNode> unpacked = new ArrayList<>(args.snapshot());
+            List<ValueNode> unpacked = new SpecifiedArrayList<>(args.snapshot());
             NewArrayNode varArgParameter = (NewArrayNode) unpacked.remove(unpacked.size() - 1);
             int firstVarArg = unpacked.size();
             for (Node usage : varArgParameter.usages()) {
@@ -132,12 +132,12 @@ public class VerifyDebugUsage extends VerifyPhase<PhaseContext> {
 
     /**
      * The set of methods allowed to call a {@code Debug.dump(...)} method with the {@code level}
-     * parameter bound to {@link DebugContext#BASIC_LEVEL} and the {@code object} parameter bound to
-     * a {@link StructuredGraph} value.
+     * parameter bound to {@link DebugContext#BASIC_LEVEL} and the {@code object} parameter bound to a
+     * {@link StructuredGraph} value.
      *
-     * This whitelist exists to ensure any increase in graph dumps is in line with the policy
-     * outlined by {@link DebugContext#BASIC_LEVEL}. If you add a *justified* graph dump at this
-     * level, then update the whitelist.
+     * This whitelist exists to ensure any increase in graph dumps is in line with the policy outlined
+     * by {@link DebugContext#BASIC_LEVEL}. If you add a *justified* graph dump at this level, then
+     * update the whitelist.
      */
     private static final Set<String> BasicLevelStructuredGraphDumpWhitelist = new HashSet<>(Arrays.asList(
                     "org.graalvm.compiler.phases.BasePhase.dumpAfter",
@@ -152,12 +152,12 @@ public class VerifyDebugUsage extends VerifyPhase<PhaseContext> {
 
     /**
      * The set of methods allowed to call a {@code Debug.dump(...)} method with the {@code level}
-     * parameter bound to {@link DebugContext#INFO_LEVEL} and the {@code object} parameter bound to
-     * a {@link StructuredGraph} value.
+     * parameter bound to {@link DebugContext#INFO_LEVEL} and the {@code object} parameter bound to a
+     * {@link StructuredGraph} value.
      *
-     * This whitelist exists to ensure any increase in graph dumps is in line with the policy
-     * outlined by {@link DebugContext#INFO_LEVEL}. If you add a *justified* graph dump at this
-     * level, then update the whitelist.
+     * This whitelist exists to ensure any increase in graph dumps is in line with the policy outlined
+     * by {@link DebugContext#INFO_LEVEL}. If you add a *justified* graph dump at this level, then
+     * update the whitelist.
      */
     private static final Set<String> InfoLevelStructuredGraphDumpWhitelist = new HashSet<>(Arrays.asList(
                     "org.graalvm.compiler.core.GraalCompiler.emitFrontEnd",
@@ -210,8 +210,8 @@ public class VerifyDebugUsage extends VerifyPhase<PhaseContext> {
     }
 
     /**
-     * The {@code level} arg for the {@code Debug.dump(...)} methods must be a reference to one of
-     * the {@code Debug.*_LEVEL} constants.
+     * The {@code level} arg for the {@code Debug.dump(...)} methods must be a reference to one of the
+     * {@code Debug.*_LEVEL} constants.
      */
     protected Integer verifyDumpLevelParameter(StructuredGraph callerGraph, MethodCallTargetNode debugCallTarget, ResolvedJavaMethod verifiedCallee, ValueNode arg)
                     throws org.graalvm.compiler.phases.VerifyPhase.VerificationError {

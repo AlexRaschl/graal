@@ -536,12 +536,11 @@ public class ElementUtils {
         String qualifiedName = element.getQualifiedName().toString();
         if (qualifiedName.contains("$")) {
             /*
-             * If a class gets loaded in its binary form by the ECJ compiler it fails to produce the
-             * proper canonical class name. It leaves the $ in the qualified name of the class. So
-             * one instance of a TypeElement may be loaded in binary and one in source form. The
-             * current type comparison in #typeEquals compares by the qualified name so the
-             * qualified name must match. This is basically a hack to fix the returned qualified
-             * name of eclipse.
+             * If a class gets loaded in its binary form by the ECJ compiler it fails to produce the proper
+             * canonical class name. It leaves the $ in the qualified name of the class. So one instance of a
+             * TypeElement may be loaded in binary and one in source form. The current type comparison in
+             * #typeEquals compares by the qualified name so the qualified name must match. This is basically a
+             * hack to fix the returned qualified name of eclipse.
              */
             qualifiedName = qualifiedName.replace('$', '.');
         }
@@ -667,8 +666,8 @@ public class ElementUtils {
     }
 
     /**
-     * Gets the element representing the {@linkplain TypeElement#getSuperclass() super class} of a
-     * given type element.
+     * Gets the element representing the {@linkplain TypeElement#getSuperclass() super class} of a given
+     * type element.
      */
     public static TypeElement getSuperType(TypeElement element) {
         if (element.getSuperclass() != null) {

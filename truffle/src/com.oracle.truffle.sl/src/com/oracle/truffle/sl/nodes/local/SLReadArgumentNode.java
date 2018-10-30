@@ -59,8 +59,8 @@ public class SLReadArgumentNode extends SLExpressionNode {
     private final int index;
 
     /**
-     * Profiling information, collected by the interpreter, capturing whether the function was
-     * called with fewer actual arguments than formal arguments.
+     * Profiling information, collected by the interpreter, capturing whether the function was called
+     * with fewer actual arguments than formal arguments.
      */
     private final BranchProfile outOfBoundsTaken = BranchProfile.create();
 

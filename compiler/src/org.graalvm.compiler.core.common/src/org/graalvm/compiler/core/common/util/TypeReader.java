@@ -82,8 +82,8 @@ public interface TypeReader {
     }
 
     /**
-     * Reads an unsigned value that has been written using {@link TypeWriter#putSV variable byte
-     * size encoding}.
+     * Reads an unsigned value that has been written using {@link TypeWriter#putSV variable byte size
+     * encoding}.
      */
     default long getUV() {
         long result = 0;
@@ -99,8 +99,7 @@ public interface TypeReader {
     }
 
     /**
-     * Reads an unsigned variable byte size encoded value that is known to fit into the range of
-     * int.
+     * Reads an unsigned variable byte size encoded value that is known to fit into the range of int.
      */
     default int getUVInt() {
         return TypeConversion.asS4(getUV());

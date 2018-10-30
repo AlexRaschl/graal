@@ -38,6 +38,7 @@ import static org.graalvm.compiler.lir.alloc.trace.lsra.TraceLinearScanPhase.isV
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.core.common.alloc.RegisterAllocationConfig;
 import org.graalvm.compiler.core.common.alloc.Trace;
@@ -240,8 +241,8 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
             int defPos = op.id();
             if (interval.from() <= defPos) {
                 /*
-                 * Update the starting point (when a range is first created for a use, its start is
-                 * the beginning of the current block until a def is encountered).
+                 * Update the starting point (when a range is first created for a use, its start is the beginning of
+                 * the current block until a def is encountered).
                  */
                 interval.setFrom(defPos);
 
@@ -274,8 +275,8 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
                 }
             } else {
                 /*
-                 * Update the starting point (when a range is first created for a use, its start is
-                 * the beginning of the current block until a def is encountered).
+                 * Update the starting point (when a range is first created for a use, its start is the beginning of
+                 * the current block until a def is encountered).
                  */
                 interval.setFrom(defPos);
             }
@@ -357,8 +358,7 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
                     assert defPos <= interval.spillDefinitionPos() : "positions are processed in reverse order when intervals are created";
                     if (defPos < interval.spillDefinitionPos() - 2) {
                         /*
-                         * Second definition found, so no spill optimization possible for this
-                         * interval.
+                         * Second definition found, so no spill optimization possible for this interval.
                          */
                         interval.setSpillState(SpillState.NoOptimization);
                     } else {
@@ -427,8 +427,8 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
 
         private static boolean optimizeMethodArgument(Value value) {
             /*
-             * Object method arguments that are passed on the stack are currently not optimized
-             * because this requires that the runtime visits method arguments during stack walking.
+             * Object method arguments that are passed on the stack are currently not optimized because this
+             * requires that the runtime visits method arguments during stack walking.
              */
             return isStackSlot(value) && asStackSlot(value).isInCallerFrame() && LIRKind.isValue(value);
         }
@@ -453,8 +453,7 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
         }
 
         /**
-         * Determines the priority which with an instruction's input operand will be allocated a
-         * register.
+         * Determines the priority which with an instruction's input operand will be allocated a register.
          */
         private static RegisterPriority registerPriorityOfInputOperand(EnumSet<OperandFlag> flags) {
             if (flags.contains(OperandFlag.OUTGOING)) {
@@ -485,10 +484,10 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
                         handleBlockEnd(block, (instructionIndex - 1) << 1);
 
                         /*
-                         * Iterate all instructions of the block in reverse order. definitions of
-                         * intervals are processed before uses.
+                         * Iterate all instructions of the block in reverse order. definitions of intervals are processed
+                         * before uses.
                          */
-                        ArrayList<LIRInstruction> instructions = getLIR().getLIRforBlock(block);
+                        SpecifiedArrayList<LIRInstruction> instructions = getLIR().getLIRforBlock(block);
                         for (int instIdx = instructions.size() - 1; instIdx >= 1; instIdx--) {
                             final LIRInstruction op = instructions.get(instIdx);
                             // number instruction
@@ -499,8 +498,7 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
                             try (Indent indent3 = debug.logAndIndent("handle inst %d: %s", opId, op)) {
 
                                 /*
-                                 * Add a temp range for each register if operation destroys
-                                 * caller-save registers.
+                                 * Add a temp range for each register if operation destroys caller-save registers.
                                  */
                                 if (op.destroysCallerSavedRegisters()) {
                                     for (Register r : callerSaveRegs) {
@@ -519,9 +517,8 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
                                 op.visitEachInput(inputConsumer);
 
                                 /*
-                                 * Add uses of live locals from interpreter's point of view for
-                                 * proper debug information generation. Treat these operands as temp
-                                 * values (if the live range is extended to a call site, the value
+                                 * Add uses of live locals from interpreter's point of view for proper debug information generation.
+                                 * Treat these operands as temp values (if the live range is extended to a call site, the value
                                  * would be in a register at the call otherwise).
                                  */
                                 op.visitEachState(stateProc);
@@ -681,8 +678,7 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
             IntervalHint currentHint = to.locationHint(false);
             if (currentHint == null) {
                 /*
-                 * Update hint if there was none or if the hint interval starts after the hinted
-                 * interval.
+                 * Update hint if there was none or if the hint interval starts after the hinted interval.
                  */
                 to.setLocationHint(from);
                 if (debug.isLogEnabled()) {
@@ -719,8 +715,8 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
      * @param operand The destination operand of the instruction
      * @param interval The interval for this defined value.
      * @return Returns the value which is moved to the instruction and which can be reused at all
-     *         reload-locations in case the interval of this instruction is spilled. Currently this
-     *         can only be a {@link JavaConstant}.
+     *         reload-locations in case the interval of this instruction is spilled. Currently this can
+     *         only be a {@link JavaConstant}.
      */
     private static JavaConstant getMaterializedValue(LIRInstruction op, Value operand, TraceInterval interval, boolean neverSpillConstants, MoveFactory spillMoveFactory) {
         if (LoadConstantOp.isLoadConstantOp(op)) {
@@ -731,10 +727,9 @@ public final class TraceLinearScanLifetimeAnalysisPhase extends TraceLinearScanA
                         return null;
                     }
                     /*
-                     * Check if the interval has any uses which would accept an stack location
-                     * (priority == ShouldHaveRegister). Rematerialization of such intervals can
-                     * result in a degradation, because rematerialization always inserts a constant
-                     * load, even if the value is not needed in a register.
+                     * Check if the interval has any uses which would accept an stack location (priority ==
+                     * ShouldHaveRegister). Rematerialization of such intervals can result in a degradation, because
+                     * rematerialization always inserts a constant load, even if the value is not needed in a register.
                      */
                     int numUsePos = interval.numUsePos();
                     for (int useIdx = 0; useIdx < numUsePos; useIdx++) {

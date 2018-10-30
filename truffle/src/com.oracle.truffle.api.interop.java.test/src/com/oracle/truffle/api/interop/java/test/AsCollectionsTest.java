@@ -355,7 +355,7 @@ public class AsCollectionsTest {
         private final List keys;
 
         private MapKeysTO(Set keys) {
-            this.keys = new ArrayList(keys);
+            this.keys = new ArrayList<>(keys);
         }
 
         @Override

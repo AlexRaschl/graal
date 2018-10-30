@@ -86,9 +86,9 @@ public final class TypeDescriptor {
      */
     public static final TypeDescriptor OBJECT = new TypeDescriptor(new PrimitiveImpl(PrimitiveKind.OBJECT));
     /**
-     * Represents an array with any content type. Any array type, including those with content type,
-     * is assignable to this type. This array type is not assignable to any array type having a
-     * content type.
+     * Represents an array with any content type. Any array type, including those with content type, is
+     * assignable to this type. This array type is not assignable to any array type having a content
+     * type.
      *
      * @see #isAssignable(org.graalvm.polyglot.tck.TypeDescriptor).
      * @see Value#hasMembers().
@@ -111,8 +111,8 @@ public final class TypeDescriptor {
     public static final TypeDescriptor NATIVE_POINTER = new TypeDescriptor(new PrimitiveImpl(PrimitiveKind.NATIVE_POINTER));
 
     /**
-     * Represents an executable type returning any type and accepting any number of parameters of
-     * any type. To create an executable type with concrete types use
+     * Represents an executable type returning any type and accepting any number of parameters of any
+     * type. To create an executable type with concrete types use
      * {@link TypeDescriptor#executable(org.graalvm.polyglot.tck.TypeDescriptor, org.graalvm.polyglot.tck.TypeDescriptor...)}
      * . This type can be used for creating value constructors but should not be used for specifying
      * expressions or statements parameter types as no other executable is assignable to it.
@@ -128,12 +128,12 @@ public final class TypeDescriptor {
     public static final TypeDescriptor EXECUTABLE = new TypeDescriptor(new ExecutableImpl(ExecutableImpl.Kind.BOTTOM, ANY.impl, true, Collections.emptyList()));
 
     /**
-     * Represents a raw executable type. Any executable can be assigned into the raw executable
-     * type, but the raw executable type cannot be assigned to any other executable. To create an
-     * executable type with concrete types use
+     * Represents a raw executable type. Any executable can be assigned into the raw executable type,
+     * but the raw executable type cannot be assigned to any other executable. To create an executable
+     * type with concrete types use
      * {@link TypeDescriptor#executable(org.graalvm.polyglot.tck.TypeDescriptor, org.graalvm.polyglot.tck.TypeDescriptor...)}
-     * . This type can be used for specifying expressions or statements parameter types when the
-     * passed executable is actually not invoked.
+     * . This type can be used for specifying expressions or statements parameter types when the passed
+     * executable is actually not invoked.
      *
      * <p>
      * The JavaScript sample usage for plus operator:
@@ -193,14 +193,13 @@ public final class TypeDescriptor {
     }
 
     /**
-     * Checks if the given type is assignable to this type. The primitive types are assignable only
-     * to itself or to an union type containing the given primitive type. The array type with a
-     * component type can be assigned to itself, to an array type without a component type and to an
-     * union type containing the given array type or an array type without a component type. The
-     * union type can be assigned to other union type containing all union elements. The
-     * intersection type can be assigned to type having any intersection type. To the target
-     * intersection type only an intersection type having all the target intersection elements can
-     * be assigned.
+     * Checks if the given type is assignable to this type. The primitive types are assignable only to
+     * itself or to an union type containing the given primitive type. The array type with a component
+     * type can be assigned to itself, to an array type without a component type and to an union type
+     * containing the given array type or an array type without a component type. The union type can be
+     * assigned to other union type containing all union elements. The intersection type can be assigned
+     * to type having any intersection type. To the target intersection type only an intersection type
+     * having all the target intersection elements can be assigned.
      *
      * @param fromType the type to assign
      * @return true if the fromType is assignable to this type
@@ -300,8 +299,8 @@ public final class TypeDescriptor {
     /**
      * Creates a new intersection type. The intersection type is all of the given types. The
      * intersection can be also used to create a no type. The no type is a type which has no other
-     * specialized type. The no type can be assigned to {@link TypeDescriptor#ANY} and itself. Any
-     * type can be assigned to no type. The no type is created as an empty intersection,
+     * specialized type. The no type can be assigned to {@link TypeDescriptor#ANY} and itself. Any type
+     * can be assigned to no type. The no type is created as an empty intersection,
      * {@code TypeDescriptor.intersection()}.
      *
      * @param types the types to include in the intersection
@@ -363,9 +362,9 @@ public final class TypeDescriptor {
     }
 
     /**
-     * Collects all disjunctive normal form components. Computes cartesian product of unions
-     * appended by tail types. The components have also reduced arrays and executables. If there is
-     * a generic ARRAY (EXECUTABLE) the other arrays (executables) are removed.
+     * Collects all disjunctive normal form components. Computes cartesian product of unions appended by
+     * tail types. The components have also reduced arrays and executables. If there is a generic ARRAY
+     * (EXECUTABLE) the other arrays (executables) are removed.
      *
      * @param unions the union types
      * @param tail the non union types
@@ -421,8 +420,8 @@ public final class TypeDescriptor {
     }
 
     /**
-     * Creates a new array type with given component type. To create a multi-dimensional array use
-     * an array type as a component type.
+     * Creates a new array type with given component type. To create a multi-dimensional array use an
+     * array type as a component type.
      *
      * @param componentType the required component type.
      * @return an array type with given component
@@ -449,11 +448,11 @@ public final class TypeDescriptor {
      * Creates a new executable type with a given return type and parameter types.
      *
      * @param returnType the required return type, use ANY as any type
-     * @param vararg the executable has variable length arguments or ignores additional parameters.
-     *            For executables created by the
-     *            {@link LanguageProvider#createValueConstructors(org.graalvm.polyglot.Context)} set
-     *            to {@code false} if the language neither ignores extra parameters nor the
-     *            executable has variable arguments length.
+     * @param vararg the executable has variable length arguments or ignores additional parameters. For
+     *            executables created by the
+     *            {@link LanguageProvider#createValueConstructors(org.graalvm.polyglot.Context)} set to
+     *            {@code false} if the language neither ignores extra parameters nor the executable has
+     *            variable arguments length.
      * @param parameterTypes the required parameter types
      * @return an executable type
      * @since 0.31

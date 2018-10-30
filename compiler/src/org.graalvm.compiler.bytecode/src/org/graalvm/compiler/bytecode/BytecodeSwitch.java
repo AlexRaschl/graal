@@ -37,8 +37,8 @@ public abstract class BytecodeSwitch {
      */
     protected final int bci;
     /**
-     * Index of the start of the additional data for the switch instruction, aligned to a multiple
-     * of four from the method start.
+     * Index of the start of the additional data for the switch instruction, aligned to a multiple of
+     * four from the method start.
      */
     protected final int alignedBci;
 

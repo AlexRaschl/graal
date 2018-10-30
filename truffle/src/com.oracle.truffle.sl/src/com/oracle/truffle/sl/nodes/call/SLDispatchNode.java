@@ -73,13 +73,12 @@ public abstract class SLDispatchNode extends Node {
      * Inline cached specialization of the dispatch.
      *
      * <p>
-     * Since SL is a quite simple language, the benefit of the inline cache seems small: after
-     * checking that the actual function to be executed is the same as the cachedFuntion, we can
-     * safely execute the cached call target. You can reasonably argue that caching the call target
-     * is overkill, since we could just retrieve it via {@code function.getCallTarget()}. However,
-     * caching the call target and using a {@link DirectCallNode} allows Truffle to perform method
-     * inlining. In addition, in a more complex language the lookup of the call target is usually
-     * much more complicated than in SL.
+     * Since SL is a quite simple language, the benefit of the inline cache seems small: after checking
+     * that the actual function to be executed is the same as the cachedFuntion, we can safely execute
+     * the cached call target. You can reasonably argue that caching the call target is overkill, since
+     * we could just retrieve it via {@code function.getCallTarget()}. However, caching the call target
+     * and using a {@link DirectCallNode} allows Truffle to perform method inlining. In addition, in a
+     * more complex language the lookup of the call target is usually much more complicated than in SL.
      * </p>
      *
      * <p>
@@ -91,11 +90,11 @@ public abstract class SLDispatchNode extends Node {
      * cachedTarget is a final field so that the compiler can optimize the check.
      * </p>
      * <p>
-     * {@code assumptions = "callTargetStable"} Support for function redefinition: When a function
-     * is redefined, the call target maintained by the SLFunction object is changed. To avoid a
-     * check for that, we use an Assumption that is invalidated by the SLFunction when the change is
-     * performed. Since checking an assumption is a no-op in compiled code, the assumption check
-     * performed by the DSL does not add any overhead during optimized execution.
+     * {@code assumptions = "callTargetStable"} Support for function redefinition: When a function is
+     * redefined, the call target maintained by the SLFunction object is changed. To avoid a check for
+     * that, we use an Assumption that is invalidated by the SLFunction when the change is performed.
+     * Since checking an assumption is a no-op in compiled code, the assumption check performed by the
+     * DSL does not add any overhead during optimized execution.
      * </p>
      *
      * @see Cached
@@ -121,15 +120,15 @@ public abstract class SLDispatchNode extends Node {
 
     /**
      * Slow-path code for a call, used when the polymorphic inline cache exceeded its maximum size
-     * specified in <code>INLINE_CACHE_SIZE</code>. Such calls are not optimized any further, e.g.,
-     * no method inlining is performed.
+     * specified in <code>INLINE_CACHE_SIZE</code>. Such calls are not optimized any further, e.g., no
+     * method inlining is performed.
      */
     @Specialization(replaces = "doDirect")
     protected static Object doIndirect(SLFunction function, Object[] arguments,
                     @Cached("create()") IndirectCallNode callNode) {
         /*
-         * SL has a quite simple call lookup: just ask the function for the current call target, and
-         * call it.
+         * SL has a quite simple call lookup: just ask the function for the current call target, and call
+         * it.
          */
         return callNode.call(function.getCallTarget(), arguments);
     }

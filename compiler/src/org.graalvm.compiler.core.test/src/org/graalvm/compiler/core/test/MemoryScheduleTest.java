@@ -28,9 +28,9 @@ import static org.graalvm.compiler.graph.test.matchers.NodeIterableCount.hasCoun
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.directives.GraalDirectives;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.graph.Node;
@@ -85,7 +85,7 @@ public class MemoryScheduleTest extends GraphScheduleTest {
     }
 
     private static final Container container = new Container();
-    private static final List<Container> containerList = new ArrayList<>();
+    private static final List<Container> containerList = SpecifiedArrayList.createNew();
     private static final double LOOP_ENTRY_PROBABILITY = 0.9;
 
     /**
@@ -571,7 +571,7 @@ public class MemoryScheduleTest extends GraphScheduleTest {
 
     public static void testProxySnippet() {
         while (container.a < container.b) {
-            List<Container> list = new ArrayList<>(containerList);
+            List<Container> list = SpecifiedArrayList.createNew(containerList);
             while (container.c < list.size()) {
                 if (container.obj != null) {
                     return;

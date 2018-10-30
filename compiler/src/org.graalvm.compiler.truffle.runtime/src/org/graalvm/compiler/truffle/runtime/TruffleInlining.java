@@ -137,8 +137,8 @@ public class TruffleInlining implements Iterable<TruffleInliningDecision>, Truff
                         callStack.size() < 15 &&
                         recursions <= TruffleCompilerOptions.getValue(TruffleMaximumRecursiveInlining)) {
             /*
-             * We make a preliminary optimistic inlining decision with best possible characteristics
-             * to avoid the exploration of unnecessary paths in the inlining tree.
+             * We make a preliminary optimistic inlining decision with best possible characteristics to avoid
+             * the exploration of unnecessary paths in the inlining tree.
              */
             visitedNodes[0]++;
             final CompilerOptions options = callNode.getCompilerOptions();
@@ -263,8 +263,8 @@ public class TruffleInlining implements Iterable<TruffleInliningDecision>, Truff
     }
 
     /**
-     * This visitor extends the {@link NodeVisitor} interface to be usable for traversing the full
-     * call tree.
+     * This visitor extends the {@link NodeVisitor} interface to be usable for traversing the full call
+     * tree.
      */
     public interface CallTreeNodeVisitor extends NodeVisitor {
 
@@ -306,8 +306,8 @@ public class TruffleInlining implements Iterable<TruffleInliningDecision>, Truff
     }
 
     /**
-     * This visitor wraps an existing {@link NodeVisitor} or {@link CallTreeNodeVisitor} and
-     * traverses the full Truffle tree including inlined call sites.
+     * This visitor wraps an existing {@link NodeVisitor} or {@link CallTreeNodeVisitor} and traverses
+     * the full Truffle tree including inlined call sites.
      */
     private final class CallTreeNodeVisitorImpl implements NodeVisitor {
 

@@ -66,8 +66,8 @@ public class AssumedValue<T> {
     }
 
     /**
-     * Get the current value, updating it if it has been {@link #set}. The compiler may be able to
-     * make this method return a constant value, but still accommodate mutation.
+     * Get the current value, updating it if it has been {@link #set}. The compiler may be able to make
+     * this method return a constant value, but still accommodate mutation.
      *
      * @since 0.8 or earlier
      */

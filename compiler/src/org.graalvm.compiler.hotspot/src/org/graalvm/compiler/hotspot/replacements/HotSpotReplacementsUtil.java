@@ -406,8 +406,8 @@ public class HotSpotReplacementsUtil {
      */
     public static boolean klassIsArray(KlassPointer klassNonNull) {
         /*
-         * The less-than check only works if both values are ints. We use local variables to make
-         * sure these are still ints and haven't changed.
+         * The less-than check only works if both values are ints. We use local variables to make sure these
+         * are still ints and haven't changed.
          */
         final int layoutHelper = readLayoutHelper(klassNonNull);
         final int layoutHelperNeutralValue = config(INJECTED_VMCONFIG).klassLayoutHelperNeutralValue;
@@ -586,15 +586,15 @@ public class HotSpotReplacementsUtil {
     }
 
     /**
-     * Computes the size of the memory chunk allocated for an array. This size accounts for the
-     * array header size, body size and any padding after the last element to satisfy object
-     * alignment requirements.
+     * Computes the size of the memory chunk allocated for an array. This size accounts for the array
+     * header size, body size and any padding after the last element to satisfy object alignment
+     * requirements.
      *
      * @param length the number of elements in the array
      * @param headerSize the size of the array header
      * @param log2ElementSize log2 of the size of an element in the array
-     * @param config the VM configuration providing the
-     *            {@linkplain GraalHotSpotVMConfig#objectAlignment object alignment requirement}
+     * @param config the VM configuration providing the {@linkplain GraalHotSpotVMConfig#objectAlignment
+     *            object alignment requirement}
      * @return the size of the memory chunk
      */
     public static int arrayAllocationSize(int length, int headerSize, int log2ElementSize, GraalHotSpotVMConfig config) {

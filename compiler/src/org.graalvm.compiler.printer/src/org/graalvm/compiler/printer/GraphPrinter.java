@@ -50,14 +50,13 @@ import jdk.vm.ci.services.Services;
 interface GraphPrinter extends Closeable, JavaConstantFormatter {
 
     /**
-     * Starts a new group of graphs with the given name, short name and method byte code index (BCI)
-     * as properties.
+     * Starts a new group of graphs with the given name, short name and method byte code index (BCI) as
+     * properties.
      */
     void beginGroup(DebugContext debug, String name, String shortName, ResolvedJavaMethod method, int bci, Map<Object, Object> properties) throws IOException;
 
     /**
-     * Prints an entire {@link Graph} with the specified title, optionally using short names for
-     * nodes.
+     * Prints an entire {@link Graph} with the specified title, optionally using short names for nodes.
      */
     void print(DebugContext debug, Graph graph, Map<Object, Object> properties, int id, String format, Object... args) throws IOException;
 
@@ -143,8 +142,7 @@ interface GraphPrinter extends Closeable, JavaConstantFormatter {
 
     /**
      * Sets or updates the {@code "rawvalue"} and {@code "toString"} properties in {@code props} for
-     * {@code cn} if it's a boxed Object value and {@code snippetReflection} can access the raw
-     * value.
+     * {@code cn} if it's a boxed Object value and {@code snippetReflection} can access the raw value.
      */
     default void updateStringPropertiesForConstant(Map<Object, Object> props, ConstantNode cn) {
         if (cn.isJavaConstant() && cn.getStackKind().isObject()) {

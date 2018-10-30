@@ -38,16 +38,16 @@ import com.oracle.truffle.api.source.Source;
 public interface LoadSourceListener {
 
     /**
-     * Invoked whenever a new {@link Source source} is loaded.The order in which multiple source
-     * event listeners are notified matches the order they are
+     * Invoked whenever a new {@link Source source} is loaded.The order in which multiple source event
+     * listeners are notified matches the order they are
      * {@link Instrumenter#attachLoadSourceListener(com.oracle.truffle.api.instrumentation.SourceSectionFilter, com.oracle.truffle.api.instrumentation.LoadSourceListener, boolean)
      * attached}.
      * <p>
      * <b>Implementation Note:</b> Source load events are notified when the guest language
      * implementation uses a new {@link Source source} by invoking
      * {@link TruffleRuntime#createCallTarget(RootNode)} with a root node that uses a new source in
-     * {@link Node#getSourceSection()}. It assumes that all nodes of an AST have the same
-     * {@link Source source} as their root.
+     * {@link Node#getSourceSection()}. It assumes that all nodes of an AST have the same {@link Source
+     * source} as their root.
      * </p>
      *
      * @param event an event with context information

@@ -190,8 +190,8 @@ public abstract class BinaryArithmeticNode<OP> extends BinaryNode implements Ari
      * Tries to re-associate values which satisfy the criterion. For example with a constantness
      * criterion: {@code (a + 2) + 1 => a + (1 + 2)}
      * <p>
-     * This method accepts only {@linkplain BinaryOp#isAssociative() associative} operations such as
-     * +, -, *, &amp;, | and ^
+     * This method accepts only {@linkplain BinaryOp#isAssociative() associative} operations such as +,
+     * -, *, &amp;, | and ^
      *
      * @param forY
      * @param forX
@@ -270,9 +270,9 @@ public abstract class BinaryArithmeticNode<OP> extends BinaryNode implements Ari
 
     /**
      * Ensure a canonical ordering of inputs for commutative nodes to improve GVN results. Order the
-     * inputs by increasing {@link Node#id} and call {@link Graph#findDuplicate(Node)} on the node
-     * if it's currently in a graph. It's assumed that if there was a constant on the left it's been
-     * moved to the right by other code and that ordering is left alone.
+     * inputs by increasing {@link Node#id} and call {@link Graph#findDuplicate(Node)} on the node if
+     * it's currently in a graph. It's assumed that if there was a constant on the left it's been moved
+     * to the right by other code and that ordering is left alone.
      *
      * @return the original node or another node with the same input ordering
      */
@@ -296,9 +296,8 @@ public abstract class BinaryArithmeticNode<OP> extends BinaryNode implements Ari
 
     /**
      * Determines if it would be better to swap the inputs in order to produce better assembly code.
-     * First we try to pick a value which is dead after this use. If both values are dead at this
-     * use then we try pick an induction variable phi to encourage the phi to live in a single
-     * register.
+     * First we try to pick a value which is dead after this use. If both values are dead at this use
+     * then we try pick an induction variable phi to encourage the phi to live in a single register.
      *
      * @param nodeValueMap
      * @return true if inputs should be swapped, false otherwise

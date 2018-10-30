@@ -44,10 +44,10 @@ import com.oracle.truffle.api.nodes.Node;
 public interface Assumption {
 
     /**
-     * Checks that this assumption is still valid. The method throws an exception, if this is no
-     * longer the case. This method is preferred over the {@link #isValid()} method when writing
-     * guest language interpreter code. The catch block should perform a node rewrite (see
-     * {@link Node#replace(Node)}) with a node that no longer relies on the assumption.
+     * Checks that this assumption is still valid. The method throws an exception, if this is no longer
+     * the case. This method is preferred over the {@link #isValid()} method when writing guest language
+     * interpreter code. The catch block should perform a node rewrite (see {@link Node#replace(Node)})
+     * with a node that no longer relies on the assumption.
      *
      * @throws InvalidAssumptionException If the assumption is no longer valid.
      * @since 0.8 or earlier

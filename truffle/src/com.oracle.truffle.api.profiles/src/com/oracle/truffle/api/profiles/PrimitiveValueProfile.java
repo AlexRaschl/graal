@@ -96,8 +96,7 @@ public abstract class PrimitiveValueProfile extends ValueProfile {
     @Deprecated
     public static boolean exactCompare(float a, float b) {
         /*
-         * -0.0 == 0.0, but you can tell the difference through other means, so we need to
-         * differentiate.
+         * -0.0 == 0.0, but you can tell the difference through other means, so we need to differentiate.
          */
         return Float.floatToRawIntBits(a) == Float.floatToRawIntBits(b);
     }
@@ -109,8 +108,7 @@ public abstract class PrimitiveValueProfile extends ValueProfile {
     @Deprecated
     public static boolean exactCompare(double a, double b) {
         /*
-         * -0.0 == 0.0, but you can tell the difference through other means, so we need to
-         * differentiate.
+         * -0.0 == 0.0, but you can tell the difference through other means, so we need to differentiate.
          */
         return Double.doubleToRawLongBits(a) == Double.doubleToRawLongBits(b);
     }
@@ -337,8 +335,8 @@ public abstract class PrimitiveValueProfile extends ValueProfile {
         }
 
         /**
-         * Returns a {@link PrimitiveValueProfile} that speculates on the primitive equality or
-         * object identity of a value.
+         * Returns a {@link PrimitiveValueProfile} that speculates on the primitive equality or object
+         * identity of a value.
          */
         static PrimitiveValueProfile create() {
             return new Enabled();

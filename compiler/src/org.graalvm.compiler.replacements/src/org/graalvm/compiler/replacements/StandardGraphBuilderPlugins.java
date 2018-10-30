@@ -501,9 +501,9 @@ public class StandardGraphBuilderPlugins {
             @Override
             public boolean apply(GraphBuilderContext b, ResolvedJavaMethod targetMethod, Receiver receiver) {
                 /*
-                 * Object.<init> is a common instrumentation point so only perform this rewrite if
-                 * the current definition is the normal empty method with a single return bytecode.
-                 * The finalizer registration will instead be performed by the BytecodeParser.
+                 * Object.<init> is a common instrumentation point so only perform this rewrite if the current
+                 * definition is the normal empty method with a single return bytecode. The finalizer registration
+                 * will instead be performed by the BytecodeParser.
                  */
                 if (targetMethod.getCodeSize() == 1) {
                     ValueNode object = receiver.get();
@@ -944,8 +944,7 @@ public class StandardGraphBuilderPlugins {
     }
 
     /**
-     * Registers a plugin to ignore {@code com.sun.tdk.jcov.runtime.Collect.hit} within an
-     * intrinsic.
+     * Registers a plugin to ignore {@code com.sun.tdk.jcov.runtime.Collect.hit} within an intrinsic.
      */
     private static void registerJcovCollectPlugins(InvocationPlugins plugins, BytecodeProvider bytecodeProvider) {
         Registration r = new Registration(plugins, "com.sun.tdk.jcov.runtime.Collect", bytecodeProvider);

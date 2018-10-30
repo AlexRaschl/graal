@@ -40,8 +40,8 @@ import jdk.vm.ci.hotspot.HotSpotVMConfigStore;
 public class GraalHotSpotVMConfig extends HotSpotVMConfigAccess {
 
     /**
-     * Sentinel value to use for an {@linkplain InjectedParameter injected}
-     * {@link GraalHotSpotVMConfig} parameter to a {@linkplain Fold foldable} method.
+     * Sentinel value to use for an {@linkplain InjectedParameter injected} {@link GraalHotSpotVMConfig}
+     * parameter to a {@linkplain Fold foldable} method.
      */
     public static final GraalHotSpotVMConfig INJECTED_VMCONFIG = null;
 
@@ -63,8 +63,8 @@ public class GraalHotSpotVMConfig extends HotSpotVMConfigAccess {
     }
 
     /**
-     * Gets the value of a static C++ field under two possible names. {@code name} is the preferred
-     * name and will be checked first.
+     * Gets the value of a static C++ field under two possible names. {@code name} is the preferred name
+     * and will be checked first.
      *
      * @param name fully qualified name of the field
      * @param alternateName fully qualified alternate name of the field
@@ -409,15 +409,15 @@ public class GraalHotSpotVMConfig extends HotSpotVMConfigAccess {
 
     /**
      * A pseudo-handle which when used as the first argument to {@link #dllLookup} means lookup will
-     * return the first occurrence of the desired symbol using the default library search order. If
-     * this field is {@value #INVALID_RTLD_DEFAULT_HANDLE}, then this capability is not supported on
-     * the current platform.
+     * return the first occurrence of the desired symbol using the default library search order. If this
+     * field is {@value #INVALID_RTLD_DEFAULT_HANDLE}, then this capability is not supported on the
+     * current platform.
      */
     public final long rtldDefault = getAddress("RTLD_DEFAULT", osName.equals("bsd") || osName.equals("linux") ? null : INVALID_RTLD_DEFAULT_HANDLE);
 
     /**
-     * This field is used to pass exception objects into and out of the runtime system during
-     * exception handling for compiled code.
+     * This field is used to pass exception objects into and out of the runtime system during exception
+     * handling for compiled code.
      */
     public final int threadExceptionOopOffset = getFieldOffset("JavaThread::_exception_oop", Integer.class, "oop");
     public final int threadExceptionPcOffset = getFieldOffset("JavaThread::_exception_pc", Integer.class, "address");
@@ -543,8 +543,8 @@ public class GraalHotSpotVMConfig extends HotSpotVMConfigAccess {
     public final int heapWordSize = getConstant("HeapWordSize", Integer.class);
 
     /**
-     * Bit pattern that represents a non-oop. Neither the high bits nor the low bits of this value
-     * are allowed to look like (respectively) the high or low bits of a real oop.
+     * Bit pattern that represents a non-oop. Neither the high bits nor the low bits of this value are
+     * allowed to look like (respectively) the high or low bits of a real oop.
      */
     public final long nonOopBits = getFieldValue("CompilerToVM::Data::Universe_non_oop_bits", Long.class, "void*");
 
@@ -809,8 +809,8 @@ public class GraalHotSpotVMConfig extends HotSpotVMConfigAccess {
 
     /**
      * The following constants are given default values here since they are missing in the native
-     * JVMCI-8 code but are still required for {@link GraalHotSpotVMConfigNode#canonical} to work in
-     * a JDK8 environment.
+     * JVMCI-8 code but are still required for {@link GraalHotSpotVMConfigNode#canonical} to work in a
+     * JDK8 environment.
      */
     public final int MARKID_HEAP_TOP_ADDRESS = getConstant("CodeInstaller::HEAP_TOP_ADDRESS", Integer.class, 17);
     public final int MARKID_HEAP_END_ADDRESS = getConstant("CodeInstaller::HEAP_END_ADDRESS", Integer.class, 18);

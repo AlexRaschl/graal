@@ -176,8 +176,8 @@ public class HotSpotGraalCompiler implements GraalJVMCICompiler {
         OptimisticOptimizations optimisticOpts = getOptimisticOpts(profilingInfo, options);
 
         /*
-         * Cut off never executed code profiles if there is code, e.g. after the osr loop, that is
-         * never executed.
+         * Cut off never executed code profiles if there is code, e.g. after the osr loop, that is never
+         * executed.
          */
         if (isOSR && !OnStackReplacementPhase.Options.DeoptAfterOSR.getValue(options)) {
             optimisticOpts.remove(Optimization.RemoveNeverExecutedCode);
@@ -203,8 +203,8 @@ public class HotSpotGraalCompiler implements GraalJVMCICompiler {
     }
 
     /**
-     * Gets a graph produced from the intrinsic for a given method that can be compiled and
-     * installed for the method.
+     * Gets a graph produced from the intrinsic for a given method that can be compiled and installed
+     * for the method.
      *
      * @param method
      * @param compilationId
@@ -248,8 +248,8 @@ public class HotSpotGraalCompiler implements GraalJVMCICompiler {
     }
 
     /**
-     * Reconfigures a given graph builder suite (GBS) if one of the given GBS parameter values is
-     * not the default.
+     * Reconfigures a given graph builder suite (GBS) if one of the given GBS parameter values is not
+     * the default.
      *
      * @param suite the graph builder suite
      * @param shouldDebugNonSafepoints specifies if extra debug info should be generated (default is
@@ -290,8 +290,8 @@ public class HotSpotGraalCompiler implements GraalJVMCICompiler {
     }
 
     /**
-     * Converts {@code method} to a String with {@link JavaMethod#format(String)} and the format
-     * string {@code "%H.%n(%p)"}.
+     * Converts {@code method} to a String with {@link JavaMethod#format(String)} and the format string
+     * {@code "%H.%n(%p)"}.
      */
     static String str(JavaMethod method) {
         return method.format("%H.%n(%p)");

@@ -32,16 +32,16 @@ package org.graalvm.collections;
 public interface UnmodifiableEconomicMap<K, V> {
 
     /**
-     * Returns the value to which {@code key} is mapped, or {@code null} if this map contains no
-     * mapping for {@code key}.
+     * Returns the value to which {@code key} is mapped, or {@code null} if this map contains no mapping
+     * for {@code key}.
      *
      * @since 1.0
      */
     V get(K key);
 
     /**
-     * Returns the value to which {@code key} is mapped, or {@code defaultValue} if this map
-     * contains no mapping for {@code key}.
+     * Returns the value to which {@code key} is mapped, or {@code defaultValue} if this map contains no
+     * mapping for {@code key}.
      *
      * @since 1.0
      */

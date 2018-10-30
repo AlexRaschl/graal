@@ -27,7 +27,6 @@ import static org.graalvm.compiler.core.common.GraalOptions.MaximumRecursiveInli
 import static org.graalvm.compiler.core.common.GraalOptions.MegamorphicInliningMinMethodProbability;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,6 +35,7 @@ import java.util.List;
 
 import org.graalvm.collections.EconomicSet;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.type.ObjectStamp;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -299,8 +299,8 @@ public class InliningData {
             }
 
             // Find unique methods and their probabilities.
-            ArrayList<ResolvedJavaMethod> concreteMethods = new ArrayList<>();
-            ArrayList<Double> concreteMethodsProbabilities = new ArrayList<>();
+            SpecifiedArrayList<ResolvedJavaMethod> concreteMethods = SpecifiedArrayList.createNew();
+            SpecifiedArrayList<Double> concreteMethodsProbabilities = SpecifiedArrayList.createNew();
             for (int i = 0; i < ptypes.length; i++) {
                 ResolvedJavaMethod concrete = ptypes[i].getType().resolveConcreteMethod(targetMethod, contextType);
                 if (concrete == null) {
@@ -320,8 +320,8 @@ public class InliningData {
 
             // Clear methods that fall below the threshold.
             if (notRecordedTypeProbability > 0) {
-                ArrayList<ResolvedJavaMethod> newConcreteMethods = new ArrayList<>();
-                ArrayList<Double> newConcreteMethodsProbabilities = new ArrayList<>();
+                SpecifiedArrayList<ResolvedJavaMethod> newConcreteMethods = SpecifiedArrayList.createNew();
+                SpecifiedArrayList<Double> newConcreteMethodsProbabilities = SpecifiedArrayList.createNew();
                 for (int i = 0; i < concreteMethods.size(); ++i) {
                     if (concreteMethodsProbabilities.get(i) >= MegamorphicInliningMinMethodProbability.getValue(options)) {
                         newConcreteMethods.add(concreteMethods.get(i));
@@ -346,8 +346,8 @@ public class InliningData {
             }
 
             // Clean out types whose methods are no longer available.
-            ArrayList<JavaTypeProfile.ProfiledType> usedTypes = new ArrayList<>();
-            ArrayList<Integer> typesToConcretes = new ArrayList<>();
+            SpecifiedArrayList<JavaTypeProfile.ProfiledType> usedTypes = SpecifiedArrayList.createNew();
+            SpecifiedArrayList<Integer> typesToConcretes = SpecifiedArrayList.createNew();
             for (JavaTypeProfile.ProfiledType type : ptypes) {
                 ResolvedJavaMethod concrete = type.getType().resolveConcreteMethod(targetMethod, contextType);
                 int index = concreteMethods.indexOf(concrete);
@@ -435,9 +435,9 @@ public class InliningData {
      *
      * This method attempts:
      * <ol>
-     * <li>to inline at the callsite given by <code>calleeInvocation</code>, where that callsite
-     * belongs to the {@link CallsiteHolderExplorable} at the top of the {@link #graphQueue}
-     * maintained in this class.</li>
+     * <li>to inline at the callsite given by <code>calleeInvocation</code>, where that callsite belongs
+     * to the {@link CallsiteHolderExplorable} at the top of the {@link #graphQueue} maintained in this
+     * class.</li>
      * <li>otherwise, to devirtualize the callsite in question.</li>
      * </ol>
      *
@@ -462,10 +462,9 @@ public class InliningData {
     }
 
     /**
-     * This method picks one of the callsites belonging to the current
-     * {@link CallsiteHolderExplorable}. Provided the callsite qualifies to be analyzed for
-     * inlining, this method prepares a new stack top in {@link InliningData} for such callsite,
-     * which comprises:
+     * This method picks one of the callsites belonging to the current {@link CallsiteHolderExplorable}.
+     * Provided the callsite qualifies to be analyzed for inlining, this method prepares a new stack top
+     * in {@link InliningData} for such callsite, which comprises:
      * <ul>
      * <li>preparing a summary of feasible targets, ie preparing an {@link InlineInfo}</li>
      * <li>based on it, preparing the stack top proper which consists of:</li>
@@ -481,9 +480,8 @@ public class InliningData {
      * </p>
      *
      * <p>
-     * The {@link InlineInfo} used to get things rolling is kept around in the
-     * {@link MethodInvocation}, it will be needed in case of inlining, see
-     * {@link InlineInfo#inline(Providers)}
+     * The {@link InlineInfo} used to get things rolling is kept around in the {@link MethodInvocation},
+     * it will be needed in case of inlining, see {@link InlineInfo#inline(Providers)}
      * </p>
      */
     private void processNextInvoke() {
@@ -648,7 +646,7 @@ public class InliningData {
      * Gets a stack trace representing the current inlining stack represented by this object.
      */
     public Collection<StackTraceElement> getInvocationStackTrace() {
-        List<StackTraceElement> result = new ArrayList<>();
+        List<StackTraceElement> result = SpecifiedArrayList.createNew();
         for (CallsiteHolder graph : graphQueue) {
             result.add(graph.method().asStackTraceElement(0));
         }
@@ -682,10 +680,10 @@ public class InliningData {
      * <li>{@link #tryToInline(MethodInvocation, int) try to inline}: move past the current graph
      * (remove it from the topmost element).
      * <ul>
-     * <li>If that was the last one then {@link #tryToInline(MethodInvocation, int) try to inline}
-     * the callsite under consideration (ie, the "current invocation").</li>
-     * <li>Whether inlining occurs or not, that callsite is removed from the top of
-     * {@link InliningData} .</li>
+     * <li>If that was the last one then {@link #tryToInline(MethodInvocation, int) try to inline} the
+     * callsite under consideration (ie, the "current invocation").</li>
+     * <li>Whether inlining occurs or not, that callsite is removed from the top of {@link InliningData}
+     * .</li>
      * </ul>
      * </li>
      * </ol>
@@ -753,9 +751,9 @@ public class InliningData {
     }
 
     /**
-     * Checks an invariant that {@link #moveForward()} must maintain: "the top invocation records
-     * how many concrete target methods (for it) remain on the {@link #graphQueue}; those targets
-     * 'belong' to the current invocation in question.
+     * Checks an invariant that {@link #moveForward()} must maintain: "the top invocation records how
+     * many concrete target methods (for it) remain on the {@link #graphQueue}; those targets 'belong'
+     * to the current invocation in question.
      */
     private boolean topGraphsForTopInvocation() {
         if (invocationQueue.isEmpty()) {
@@ -784,8 +782,8 @@ public class InliningData {
     }
 
     /**
-     * This method checks invariants for this class. Named after shorthand for "internal
-     * representation is ok".
+     * This method checks invariants for this class. Named after shorthand for "internal representation
+     * is ok".
      */
     public boolean repOK() {
         assert topGraphsForTopInvocation();

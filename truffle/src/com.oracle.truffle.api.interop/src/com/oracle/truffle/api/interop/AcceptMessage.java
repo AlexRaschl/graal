@@ -41,11 +41,11 @@ import com.oracle.truffle.api.TruffleLanguage;
 @Retention(RetentionPolicy.SOURCE)
 public @interface AcceptMessage {
     /**
-     * Identification of the {@link Message message} to accept. Well known messages include fields
-     * of the {@link Message} class (e.g. <em>"READ"</em>, <em>"WRITE"</em>, <em>"UNBOX"</em>,
+     * Identification of the {@link Message message} to accept. Well known messages include fields of
+     * the {@link Message} class (e.g. <em>"READ"</em>, <em>"WRITE"</em>, <em>"UNBOX"</em>,
      * <em>IS_NULL</em>) or slightly mangled names of {@link Message} class factory methods (
-     * <em>EXECUTE</em>, <em>INVOKE</em>). For more details on the string encoding of message names
-     * see {@link Message#valueOf(java.lang.String)} method.
+     * <em>EXECUTE</em>, <em>INVOKE</em>). For more details on the string encoding of message names see
+     * {@link Message#valueOf(java.lang.String)} method.
      *
      * @return string identification of an inter-operability message
      * @see Message#valueOf(java.lang.String)
@@ -56,8 +56,8 @@ public @interface AcceptMessage {
     /**
      * The receiver object class that this message implementation belongs to.
      *
-     * An annotation processor generates a {@link ForeignAccess} class, which the
-     * {@link TruffleObject} can use to implement {@link TruffleObject#getForeignAccess()}.
+     * An annotation processor generates a {@link ForeignAccess} class, which the {@link TruffleObject}
+     * can use to implement {@link TruffleObject#getForeignAccess()}.
      *
      * @return class of the receiver object
      * @since 0.11

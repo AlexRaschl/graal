@@ -72,8 +72,8 @@ public class AArch64ReadNode extends ReadNode {
     }
 
     /**
-     * replace a ReadNode with an AArch64-specific variant which knows how to merge a downstream
-     * zero or sign extend into the read operation.
+     * replace a ReadNode with an AArch64-specific variant which knows how to merge a downstream zero or
+     * sign extend into the read operation.
      *
      * @param readNode
      */

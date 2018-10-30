@@ -90,16 +90,16 @@ public class ServiceProviderProcessor extends AbstractProcessor {
                 if (verifyAnnotation(service, serviceProvider)) {
                     if (serviceProvider.getNestingKind().isNested()) {
                         /*
-                         * This is a simplifying constraint that means we don't have to process the
-                         * qualified name to insert '$' characters at the relevant positions.
+                         * This is a simplifying constraint that means we don't have to process the qualified name to insert
+                         * '$' characters at the relevant positions.
                          */
                         String msg = String.format("Service provider class %s must be a top level class", serviceProvider.getSimpleName());
                         processingEnv.getMessager().printMessage(Kind.ERROR, msg, serviceProvider);
                     } else {
                         /*
-                         * Since the definition of the service class is not necessarily modifiable,
-                         * we need to support a non-top-level service class and ensure its name is
-                         * properly expressed with '$' separating nesting levels instead of '.'.
+                         * Since the definition of the service class is not necessarily modifiable, we need to support a
+                         * non-top-level service class and ensure its name is properly expressed with '$' separating nesting
+                         * levels instead of '.'.
                          */
                         TypeElement serviceElement = (TypeElement) processingEnv.getTypeUtils().asElement(service);
                         String serviceName = serviceElement.getSimpleName().toString();

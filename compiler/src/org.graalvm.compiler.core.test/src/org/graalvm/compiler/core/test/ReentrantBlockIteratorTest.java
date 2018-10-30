@@ -22,13 +22,10 @@
  */
 package org.graalvm.compiler.core.test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.directives.GraalDirectives;
 import org.graalvm.compiler.core.common.cfg.Loop;
 import org.graalvm.compiler.nodes.StructuredGraph;
@@ -39,6 +36,8 @@ import org.graalvm.compiler.nodes.cfg.ControlFlowGraph;
 import org.graalvm.compiler.phases.graph.ReentrantBlockIterator;
 import org.graalvm.compiler.phases.graph.ReentrantBlockIterator.BlockIteratorClosure;
 import org.graalvm.compiler.phases.schedule.SchedulePhase;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ReentrantBlockIteratorTest extends GraalCompilerTest {
 
@@ -206,7 +205,7 @@ public class ReentrantBlockIteratorTest extends GraalCompilerTest {
         StructuredGraph graph = parseEager(snippet, AllowAssumptions.YES);
         // after FSA to ensure HIR loop data structure does not contain loop exits
         graph.setGuardsStage(GuardsStage.AFTER_FSA);
-        ArrayList<Block> blocks = new ArrayList<>();
+        SpecifiedArrayList<Block> blocks = SpecifiedArrayList.createNew();
         class VoidState {
         }
         final VoidState voidState = new VoidState();

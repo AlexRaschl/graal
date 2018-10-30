@@ -22,11 +22,11 @@
  */
 package org.graalvm.compiler.phases.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.graalvm.collections.EconomicMap;
 import org.graalvm.collections.Equivalence;
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.cfg.Loop;
 import org.graalvm.compiler.debug.GraalError;
 import org.graalvm.compiler.graph.GraalGraphError;
@@ -64,9 +64,9 @@ public final class GraphOrder {
     }
 
     /**
-     * Quick (and imprecise) assertion that there are no (invalid) cycles in the given graph. First,
-     * an ordered list of all nodes in the graph (a total ordering) is created. A second run over
-     * this list checks whether inputs are scheduled before their usages.
+     * Quick (and imprecise) assertion that there are no (invalid) cycles in the given graph. First, an
+     * ordered list of all nodes in the graph (a total ordering) is created. A second run over this list
+     * checks whether inputs are scheduled before their usages.
      *
      * @param graph the graph to be checked.
      * @throws AssertionError if a cycle was detected.
@@ -96,7 +96,7 @@ public final class GraphOrder {
     }
 
     private static List<Node> createOrder(StructuredGraph graph) {
-        final ArrayList<Node> nodes = new ArrayList<>();
+        final SpecifiedArrayList<Node> nodes = SpecifiedArrayList.createNew();
         final NodeBitMap visited = graph.createNodeBitMap();
 
         new StatelessPostOrderNodeIterator(graph.start()) {
@@ -108,7 +108,7 @@ public final class GraphOrder {
         return nodes;
     }
 
-    private static void visitForward(ArrayList<Node> nodes, NodeBitMap visited, Node node, boolean floatingOnly) {
+    private static void visitForward(SpecifiedArrayList<Node> nodes, NodeBitMap visited, Node node, boolean floatingOnly) {
         try {
             assert node == null || node.isAlive() : node + " not alive";
             if (node != null && !visited.isMarked(node)) {
@@ -148,8 +148,8 @@ public final class GraphOrder {
     }
 
     /**
-     * This method schedules the graph and makes sure that, for every node, all inputs are available
-     * at the position where it is scheduled. This is a very expensive assertion.
+     * This method schedules the graph and makes sure that, for every node, all inputs are available at
+     * the position where it is scheduled. This is a very expensive assertion.
      */
     public static boolean assertSchedulableGraph(final StructuredGraph graph) {
         assert graph.getGuardsStage() != GuardsStage.AFTER_FSA : "Cannot use the BlockIteratorClosure after FrameState Assignment, HIR Loop Data Structures are no longer valid.";
@@ -171,9 +171,8 @@ public final class GraphOrder {
                     final List<Node> list = graph.getLastSchedule().getBlockToNodesMap().get(block);
 
                     /*
-                     * A stateAfter is not valid directly after its associated state split, but
-                     * right before the next fixed node. Therefore a pending stateAfter is kept that
-                     * will be checked at the correct position.
+                     * A stateAfter is not valid directly after its associated state split, but right before the next
+                     * fixed node. Therefore a pending stateAfter is kept that will be checked at the correct position.
                      */
                     FrameState pendingStateAfter = null;
                     for (final Node node : list) {

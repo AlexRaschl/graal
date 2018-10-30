@@ -31,11 +31,11 @@ import static org.graalvm.compiler.lir.LIRValueUtil.asVirtualStackSlot;
 import static org.graalvm.compiler.lir.LIRValueUtil.isStackSlotValue;
 import static org.graalvm.compiler.lir.LIRValueUtil.isVirtualStackSlot;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.LIRKind;
 import org.graalvm.compiler.debug.CounterKey;
 import org.graalvm.compiler.debug.DebugContext;
@@ -64,9 +64,9 @@ final class TraceLocalMoveResolver {
     private int insertIdx;
     private LIRInsertionBuffer insertionBuffer; // buffer where moves are inserted
 
-    private final ArrayList<TraceInterval> mappingFrom;
-    private final ArrayList<Constant> mappingFromOpr;
-    private final ArrayList<TraceInterval> mappingTo;
+    private final SpecifiedArrayList<TraceInterval> mappingFrom;
+    private final SpecifiedArrayList<Constant> mappingFromOpr;
+    private final SpecifiedArrayList<TraceInterval> mappingTo;
     private final int[] registerBlocked;
 
     private int[] stackBlocked;
@@ -169,9 +169,9 @@ final class TraceLocalMoveResolver {
 
         this.allocator = allocator;
         this.debug = allocator.getDebug();
-        this.mappingFrom = new ArrayList<>(8);
-        this.mappingFromOpr = new ArrayList<>(8);
-        this.mappingTo = new ArrayList<>(8);
+        this.mappingFrom = SpecifiedArrayList.createNew(8);
+        this.mappingFromOpr = SpecifiedArrayList.createNew(8);
+        this.mappingTo = SpecifiedArrayList.createNew(8);
         this.insertIdx = -1;
         this.insertionBuffer = new LIRInsertionBuffer();
         this.registerBlocked = new int[allocator.getRegisters().size()];
@@ -272,8 +272,8 @@ final class TraceLocalMoveResolver {
     }
 
     /**
-     * Checks if the {@linkplain TraceInterval#location() location} of {@code to} is not blocked or
-     * is only blocked by {@code from}.
+     * Checks if the {@linkplain TraceInterval#location() location} of {@code to} is not blocked or is
+     * only blocked by {@code from}.
      */
     private boolean safeToProcessMove(TraceInterval from, TraceInterval to) {
         Value fromReg = from != null ? from.location() : null;
@@ -379,7 +379,7 @@ final class TraceLocalMoveResolver {
                 }
             }
 
-            ArrayList<AllocatableValue> busySpillSlots = null;
+            SpecifiedArrayList<AllocatableValue> busySpillSlots = null;
             while (mappingFrom.size() > 0) {
                 boolean processedInterval = false;
 
@@ -398,7 +398,7 @@ final class TraceLocalMoveResolver {
                         }
                         if (isStackSlotValue(toInterval.location())) {
                             if (busySpillSlots == null) {
-                                busySpillSlots = new ArrayList<>(2);
+                                busySpillSlots = SpecifiedArrayList.createNew(2);
                             }
                             busySpillSlots.add(toInterval.location());
                         }

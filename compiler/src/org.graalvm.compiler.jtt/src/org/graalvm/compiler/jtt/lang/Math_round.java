@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.jtt.JTTTest;
 
 @RunWith(Parameterized.class)
@@ -67,7 +67,7 @@ public class Math_round extends JTTTest {
 
     @Parameters(name = "{0}")
     public static Collection<Object[]> data() {
-        ArrayList<Object[]> tests = new ArrayList<>();
+        SpecifiedArrayList<Object[]> tests = SpecifiedArrayList.createNew();
         for (int i = -3; i < 3; i++) {
             addTest(tests, i);
             addTest(tests, i + 0.2);
@@ -81,7 +81,7 @@ public class Math_round extends JTTTest {
         return tests;
     }
 
-    private static void addTest(ArrayList<Object[]> tests, double input) {
+    private static void addTest(SpecifiedArrayList<Object[]> tests, double input) {
         tests.add(new Object[]{input});
     }
 }

@@ -62,8 +62,8 @@ public class ExplodeLoopUntilReturnNode extends AbstractTestNode {
         for (int i = 0; i < array.length; i++) {
             if (i == search) {
                 /*
-                 * The test only passes when loop explosion also explodes this block with the return
-                 * value, i.e., inlines through the calls of getAsInt().
+                 * The test only passes when loop explosion also explodes this block with the return value, i.e.,
+                 * inlines through the calls of getAsInt().
                  */
                 return array[i].getAsInt();
             }

@@ -22,7 +22,6 @@
  */
 package org.graalvm.compiler.replacements.verifier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.processing.ProcessingEnvironment;
@@ -31,13 +30,15 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic.Kind;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
+
 /**
  * Pretty much copied from HotSpotSignature but using a different method for resolving types. This
  * class should be rewritten, its just a quick hack to get signatures working.
  */
 final class APHotSpotSignature {
 
-    private final List<String> arguments = new ArrayList<>();
+    private final List<String> arguments = SpecifiedArrayList.createNew();
     private final String returnType;
     private final String originalString;
     private TypeMirror[] argumentTypes;

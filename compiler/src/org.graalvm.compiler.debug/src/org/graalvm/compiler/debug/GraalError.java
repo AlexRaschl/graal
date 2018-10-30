@@ -22,8 +22,9 @@
  */
 package org.graalvm.compiler.debug;
 
-import java.util.ArrayList;
 import java.util.Locale;
+
+import org.graalvm.collections.list.SpecifiedArrayList;
 
 /**
  * Indicates a condition that should never occur during normal operation.
@@ -31,7 +32,7 @@ import java.util.Locale;
 public class GraalError extends Error {
 
     private static final long serialVersionUID = 531632331813456233L;
-    private final ArrayList<String> context = new ArrayList<>();
+    private final SpecifiedArrayList<String> context = SpecifiedArrayList.createNew();
 
     public static RuntimeException unimplemented() {
         throw new GraalError("unimplemented");
@@ -54,10 +55,9 @@ public class GraalError extends Error {
     }
 
     /**
-     * Checks a given condition and throws a {@link GraalError} if it is false. Guarantees are
-     * stronger than assertions in that they are always checked. Error messages for guarantee
-     * violations should clearly indicate the nature of the problem as well as a suggested solution
-     * if possible.
+     * Checks a given condition and throws a {@link GraalError} if it is false. Guarantees are stronger
+     * than assertions in that they are always checked. Error messages for guarantee violations should
+     * clearly indicate the nature of the problem as well as a suggested solution if possible.
      *
      * @param condition the condition to check
      * @param msg the message that will be associated with the error
@@ -69,10 +69,9 @@ public class GraalError extends Error {
     }
 
     /**
-     * Checks a given condition and throws a {@link GraalError} if it is false. Guarantees are
-     * stronger than assertions in that they are always checked. Error messages for guarantee
-     * violations should clearly indicate the nature of the problem as well as a suggested solution
-     * if possible.
+     * Checks a given condition and throws a {@link GraalError} if it is false. Guarantees are stronger
+     * than assertions in that they are always checked. Error messages for guarantee violations should
+     * clearly indicate the nature of the problem as well as a suggested solution if possible.
      *
      * @param condition the condition to check
      * @param msg the message that will be associated with the error, in
@@ -86,10 +85,9 @@ public class GraalError extends Error {
     }
 
     /**
-     * Checks a given condition and throws a {@link GraalError} if it is false. Guarantees are
-     * stronger than assertions in that they are always checked. Error messages for guarantee
-     * violations should clearly indicate the nature of the problem as well as a suggested solution
-     * if possible.
+     * Checks a given condition and throws a {@link GraalError} if it is false. Guarantees are stronger
+     * than assertions in that they are always checked. Error messages for guarantee violations should
+     * clearly indicate the nature of the problem as well as a suggested solution if possible.
      *
      * @param condition the condition to check
      * @param msg the message that will be associated with the error, in
@@ -104,10 +102,9 @@ public class GraalError extends Error {
     }
 
     /**
-     * Checks a given condition and throws a {@link GraalError} if it is false. Guarantees are
-     * stronger than assertions in that they are always checked. Error messages for guarantee
-     * violations should clearly indicate the nature of the problem as well as a suggested solution
-     * if possible.
+     * Checks a given condition and throws a {@link GraalError} if it is false. Guarantees are stronger
+     * than assertions in that they are always checked. Error messages for guarantee violations should
+     * clearly indicate the nature of the problem as well as a suggested solution if possible.
      *
      * @param condition the condition to check
      * @param msg the message that will be associated with the error, in
@@ -123,10 +120,10 @@ public class GraalError extends Error {
     }
 
     /**
-     * This override exists to catch cases when {@link #guarantee(boolean, String, Object)} is
-     * called with one argument bound to a varargs method parameter. It will bind to this method
-     * instead of the single arg variant and produce a deprecation warning instead of silently
-     * wrapping the Object[] inside of another Object[].
+     * This override exists to catch cases when {@link #guarantee(boolean, String, Object)} is called
+     * with one argument bound to a varargs method parameter. It will bind to this method instead of the
+     * single arg variant and produce a deprecation warning instead of silently wrapping the Object[]
+     * inside of another Object[].
      */
     @Deprecated
     public static void guarantee(boolean condition, String msg, Object... args) {
@@ -146,8 +143,8 @@ public class GraalError extends Error {
 
     /**
      * This constructor creates a {@link GraalError} with a message assembled via
-     * {@link String#format(String, Object...)}. It always uses the ENGLISH locale in order to
-     * always generate the same output.
+     * {@link String#format(String, Object...)}. It always uses the ENGLISH locale in order to always
+     * generate the same output.
      *
      * @param msg the message that will be associated with the error, in String.format syntax
      * @param args parameters to String.format - parameters that implement {@link Iterable} will be
@@ -167,8 +164,8 @@ public class GraalError extends Error {
     }
 
     /**
-     * This constructor creates a {@link GraalError} and adds all the
-     * {@linkplain #addContext(String) context} of another {@link GraalError}.
+     * This constructor creates a {@link GraalError} and adds all the {@linkplain #addContext(String)
+     * context} of another {@link GraalError}.
      *
      * @param e the original {@link GraalError}
      */
@@ -198,7 +195,7 @@ public class GraalError extends Error {
             // expand Iterable parameters into a list representation
             for (int i = 0; i < args.length; i++) {
                 if (args[i] instanceof Iterable<?>) {
-                    ArrayList<Object> list = new ArrayList<>();
+                    SpecifiedArrayList<Object> list = SpecifiedArrayList.createNew();
                     for (Object o : (Iterable<?>) args[i]) {
                         list.add(o);
                     }

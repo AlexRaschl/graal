@@ -68,16 +68,15 @@ public final class TypeReference {
     }
 
     /**
-     * Creates a type reference using the given type without assumptions and without trusting
-     * interface types.
+     * Creates a type reference using the given type without assumptions and without trusting interface
+     * types.
      */
     public static TypeReference createWithoutAssumptions(ResolvedJavaType type) {
         return create(null, type);
     }
 
     /**
-     * Creates a type reference using the given type without assumptions and trusting interface
-     * types.
+     * Creates a type reference using the given type without assumptions and trusting interface types.
      */
     public static TypeReference createTrustedWithoutAssumptions(ResolvedJavaType type) {
         return createTrusted(null, type);

@@ -23,7 +23,6 @@
 package org.graalvm.compiler.replacements.verifier;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,6 +41,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.api.replacements.ClassSubstitution;
 import org.graalvm.compiler.api.replacements.MethodSubstitution;
 
@@ -115,7 +115,7 @@ public final class MethodSubstitutionVerifier extends AbstractVerifier {
     private TypeMirror[] originalSignature(TypeElement originalType, ExecutableElement method, AnnotationMirror annotation, boolean isStatic) {
         AnnotationValue signatureValue = findAnnotationValue(annotation, ORIGINAL_SIGNATURE);
         String signatureString = resolveAnnotationValue(String.class, signatureValue);
-        List<TypeMirror> parameters = new ArrayList<>();
+        List<TypeMirror> parameters = SpecifiedArrayList.createNew();
         if (signatureString.equals(ORIGINAL_SIGNATURE_DEFAULT)) {
             for (int i = 0; i < method.getParameters().size(); i++) {
                 parameters.add(method.getParameters().get(i).asType());
@@ -142,8 +142,7 @@ public final class MethodSubstitutionVerifier extends AbstractVerifier {
                 }
             } catch (Exception e) {
                 /*
-                 * That's not good practice and should be changed after APHotSpotSignature has
-                 * received a cleanup.
+                 * That's not good practice and should be changed after APHotSpotSignature has received a cleanup.
                  */
                 env.getMessager().printMessage(Kind.ERROR, String.format("Parsing the signature failed: %s", e.getMessage() != null ? e.getMessage() : e.toString()), method, annotation,
                                 signatureValue);
@@ -227,8 +226,7 @@ public final class MethodSubstitutionVerifier extends AbstractVerifier {
     }
 
     /**
-     * Tests whether one type is a subtype of another. Any type is considered to be a subtype of
-     * itself.
+     * Tests whether one type is a subtype of another. Any type is considered to be a subtype of itself.
      *
      * @param t1 the first type
      * @param t2 the second type

@@ -75,9 +75,9 @@ public class VerifyVirtualizableUsage extends VerifyPhase<PhaseContext> {
     private static void verifyVirtualizableEffectArguments(ResolvedJavaType constantNodeType, ResolvedJavaMethod caller, ResolvedJavaMethod callee, int bciCaller,
                     NodeInputList<? extends Node> arguments, int startIdx) {
         /*
-         * Virtualizable.virtualize should never apply effects on the graph during the execution of
-         * the call as the handling of loops during pea might be speculative and does not hold. We
-         * should only allow nodes changing the graph that do no harm like constants.
+         * Virtualizable.virtualize should never apply effects on the graph during the execution of the call
+         * as the handling of loops during pea might be speculative and does not hold. We should only allow
+         * nodes changing the graph that do no harm like constants.
          */
         int i = 0;
         for (Node arg : arguments) {

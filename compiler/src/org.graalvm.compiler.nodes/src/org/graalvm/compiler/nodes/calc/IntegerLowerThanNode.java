@@ -308,12 +308,11 @@ public abstract class IntegerLowerThanNode extends CompareNode {
              *
              * if a is negative those bounds wrap around correctly.
              *
-             * If a is exactly zero this gives an unbounded stamp (any integer) in the positive case
-             * and an empty stamp in the negative case: if x |<| x is true, then either x has no
-             * value or any value...
+             * If a is exactly zero this gives an unbounded stamp (any integer) in the positive case and an
+             * empty stamp in the negative case: if x |<| x is true, then either x has no value or any value...
              *
-             * This does not use upper/lowerBound from LowerOp because it's about the (signed)
-             * addition not the comparison.
+             * This does not use upper/lowerBound from LowerOp because it's about the (signed) addition not the
+             * comparison.
              */
             if (mirrored) {
                 if (a.contains(0)) {

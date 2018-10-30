@@ -113,8 +113,8 @@ public class NodeMapTest extends GraphTest {
     @Test
     public void testNewGet() {
         /*
-         * Failing here is not required, but if this behavior changes, usages of get need to be
-         * checked for compatibility.
+         * Failing here is not required, but if this behavior changes, usages of get need to be checked for
+         * compatibility.
          */
         TestNode newNode = graph.add(new TestNode());
         try {
@@ -130,8 +130,8 @@ public class NodeMapTest extends GraphTest {
     @Test
     public void testNewSet() {
         /*
-         * Failing here is not required, but if this behavior changes, usages of set need to be
-         * checked for compatibility.
+         * Failing here is not required, but if this behavior changes, usages of set need to be checked for
+         * compatibility.
          */
         TestNode newNode = graph.add(new TestNode());
         try {

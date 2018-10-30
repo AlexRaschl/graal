@@ -213,8 +213,8 @@ public class NodeSourcePosition extends BytecodePosition {
         int opcode = BytecodeDisassembler.getBytecodeAt(caller.getMethod(), caller.getBCI());
         JavaMethod method = BytecodeDisassembler.getInvokedMethodAt(caller.getMethod(), caller.getBCI());
         /*
-         * It's not really possible to match the declaring classes since this might be an interface
-         * invoke. Matching name and signature probably provides enough accuracy.
+         * It's not really possible to match the declaring classes since this might be an interface invoke.
+         * Matching name and signature probably provides enough accuracy.
          */
         assert method == null || (method.getName().equals(current.getMethod().getName()) &&
                         method.getSignature().equals(current.getMethod().getSignature())) ||

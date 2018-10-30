@@ -63,9 +63,8 @@ public final class Snippet {
     }
 
     /**
-     * Returns the identifier of a snippet. The {@link Snippet}s from a single
-     * {@link LanguageProvider} with the same identifier but different types are treated as
-     * overloads.
+     * Returns the identifier of a snippet. The {@link Snippet}s from a single {@link LanguageProvider}
+     * with the same identifier but different types are treated as overloads.
      *
      * @return the {@link Snippet} identifier
      * @since 0.30
@@ -129,8 +128,8 @@ public final class Snippet {
      * Creates a new {@link Snippet} builder object.
      *
      * @param id the {@link Snippet} identifier The {@link Snippet}s from a single
-     *            {@link LanguageProvider} with the same identifier but different types are treated
-     *            as overloads.
+     *            {@link LanguageProvider} with the same identifier but different types are treated as
+     *            overloads.
      * @param executableValue the executable {@link Value} used to execute the {@link Snippet}
      * @param executableReturnType the {@link Snippet} return type
      * @return the new {@link Builder}

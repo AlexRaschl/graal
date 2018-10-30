@@ -26,7 +26,6 @@ import static org.graalvm.compiler.debug.DebugConfig.asJavaMethod;
 
 import java.io.IOException;
 import java.nio.channels.ClosedByInterruptException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -35,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.debug.DebugContext;
 import org.graalvm.compiler.debug.DebugDumpHandler;
 import org.graalvm.compiler.debug.DebugDumpScope;
@@ -98,7 +98,7 @@ public class GraphPrinterDumpHandler implements DebugDumpHandler {
             if (failuresCount >= FAILURE_LIMIT) {
                 return;
             }
-            previousInlineContext = new ArrayList<>();
+            previousInlineContext = SpecifiedArrayList.createNew();
             inlineContextMap = new WeakHashMap<>();
             DebugContext debug = graph.getDebug();
             try {
@@ -137,8 +137,8 @@ public class GraphPrinterDumpHandler implements DebugDumpHandler {
                 addCompilationId(properties, graph);
                 if (inlineContext.equals(previousInlineContext)) {
                     /*
-                     * two different graphs have the same inline context, so make sure they appear
-                     * in different folders by closing and reopening the top scope.
+                     * two different graphs have the same inline context, so make sure they appear in different folders
+                     * by closing and reopening the top scope.
                      */
                     int inlineDepth = previousInlineContext.size() - 1;
                     closeScope(debug, inlineDepth);
@@ -221,7 +221,7 @@ public class GraphPrinterDumpHandler implements DebugDumpHandler {
     private List<String> getInlineContext(Graph graph) {
         List<String> result = inlineContextMap.get(graph);
         if (result == null) {
-            result = new ArrayList<>();
+            result = SpecifiedArrayList.createNew();
             Object lastMethodOrGraph = null;
             boolean graphSeen = false;
             DebugContext debug = graph.getDebug();
@@ -256,8 +256,8 @@ public class GraphPrinterDumpHandler implements DebugDumpHandler {
             Collections.reverse(result);
             if (!graphSeen) {
                 /*
-                 * The graph isn't in any context but is being processed within another graph so add
-                 * it to the end of the scopes.
+                 * The graph isn't in any context but is being processed within another graph so add it to the end
+                 * of the scopes.
                  */
                 if (asJavaMethod(graph) != null) {
                     addMethodContext(result, graph, lastMethodOrGraph);
@@ -275,19 +275,17 @@ public class GraphPrinterDumpHandler implements DebugDumpHandler {
         if (method != null) {
             /*
              * Include the current method in the context if there was no previous JavaMethod or
-             * JavaMethodContext or if the method is different or if the method is the same but it
-             * comes from two different graphs. This ensures that recursive call patterns are
-             * handled properly.
+             * JavaMethodContext or if the method is different or if the method is the same but it comes from
+             * two different graphs. This ensures that recursive call patterns are handled properly.
              */
             if (lastMethodOrGraph == null || asJavaMethod(lastMethodOrGraph) == null || !asJavaMethod(lastMethodOrGraph).equals(method) ||
                             (lastMethodOrGraph != o && lastMethodOrGraph instanceof Graph && o instanceof Graph)) {
                 result.add(method.format("%H.%n(%p)"));
             } else {
                 /*
-                 * This prevents multiple adjacent method context objects for the same method from
-                 * resulting in multiple IGV tree levels. This works on the assumption that real
-                 * inlining debug scopes will have a graph context object between the inliner and
-                 * inlinee context objects.
+                 * This prevents multiple adjacent method context objects for the same method from resulting in
+                 * multiple IGV tree levels. This works on the assumption that real inlining debug scopes will have
+                 * a graph context object between the inliner and inlinee context objects.
                  */
             }
         }

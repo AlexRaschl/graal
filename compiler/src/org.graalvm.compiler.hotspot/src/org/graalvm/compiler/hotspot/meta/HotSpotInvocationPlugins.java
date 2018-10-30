@@ -118,8 +118,8 @@ final class HotSpotInvocationPlugins extends InvocationPlugins {
      *
      * On JDK 8, only classes loaded by the boot, JVMCI or extension class loaders are trusted.
      *
-     * On JDK 9 and later, only classes in the {@link CompilerConfiguration} defining module or any
-     * of its module dependencies are trusted.
+     * On JDK 9 and later, only classes in the {@link CompilerConfiguration} defining module or any of
+     * its module dependencies are trusted.
      */
     @Override
     public boolean canBeIntrinsified(ResolvedJavaType declaringClass) {

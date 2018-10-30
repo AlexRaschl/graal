@@ -24,8 +24,7 @@ package org.graalvm.compiler.lir.alloc.trace;
 
 import static org.graalvm.compiler.lir.alloc.trace.TraceUtil.isTrivialTrace;
 
-import java.util.ArrayList;
-
+import org.graalvm.collections.list.SpecifiedArrayList;
 import org.graalvm.compiler.core.common.alloc.BiDirectionalTraceBuilder;
 import org.graalvm.compiler.core.common.alloc.SingleBlockTraceBuilder;
 import org.graalvm.compiler.core.common.alloc.Trace;
@@ -75,7 +74,7 @@ public class TraceBuilderPhase extends AllocationPhase {
 
         DebugContext debug = lir.getDebug();
         if (debug.isLogEnabled(DebugContext.BASIC_LEVEL)) {
-            ArrayList<Trace> traces = traceBuilderResult.getTraces();
+            SpecifiedArrayList<Trace> traces = traceBuilderResult.getTraces();
             for (int i = 0; i < traces.size(); i++) {
                 Trace trace = traces.get(i);
                 debug.log(DebugContext.BASIC_LEVEL, "Trace %5d: %s%s", i, trace, isTrivialTrace(lirGenRes.getLIR(), trace) ? " (trivial)" : "");

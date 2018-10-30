@@ -99,10 +99,10 @@ public class GreedyInliningPolicy extends AbstractInliningPolicy {
         }
 
         /*
-         * TODO (chaeubl): invoked methods that are on important paths but not yet compiled -> will
-         * be compiled anyways and it is likely that we are the only caller... might be useful to
-         * inline those methods but increases bootstrap time (maybe those methods are also getting
-         * queued in the compilation queue concurrently)
+         * TODO (chaeubl): invoked methods that are on important paths but not yet compiled -> will be
+         * compiled anyways and it is likely that we are the only caller... might be useful to inline those
+         * methods but increases bootstrap time (maybe those methods are also getting queued in the
+         * compilation queue concurrently)
          */
         double invokes = determineInvokeProbability(info);
         if (LimitInlinedInvokes.getValue(options) > 0 && fullyProcessed && invokes > LimitInlinedInvokes.getValue(options) * inliningBonus) {

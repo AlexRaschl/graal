@@ -41,16 +41,15 @@ public interface LoadSourceSectionListener {
     /**
      * Invoked whenever a new {@link SourceSection source section} is loaded. The listener might be
      * notified for one source section multiple times but never with the same instrumented node. The
-     * order in which multiple source section event listeners are notified matches the order they
-     * are
+     * order in which multiple source section event listeners are notified matches the order they are
      * {@link Instrumenter#attachLoadSourceListener(com.oracle.truffle.api.instrumentation.SourceSectionFilter, com.oracle.truffle.api.instrumentation.LoadSourceListener, boolean)
      * attached}.
      *
      * <b>Implementation Note:</b> Source load events are notified when the guest language
      * implementation uses a new {@link Source source} by invoking
      * {@link TruffleRuntime#createCallTarget(RootNode)} with a root node that uses a new source in
-     * {@link Node#getSourceSection()}. It assumes that all nodes of an AST have the same
-     * {@link Source source} as their root.
+     * {@link Node#getSourceSection()}. It assumes that all nodes of an AST have the same {@link Source
+     * source} as their root.
      * </p>
      *
      * @param event an event with context information
